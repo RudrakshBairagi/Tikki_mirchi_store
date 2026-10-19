@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tikki Mirchi — 3D Cylindrical Carousel Preview</title>
+  <link rel="stylesheet" href="assets/hero-3d-cylinder.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #0b0b0c;
+      overflow-x: hidden;
+    }
+
+    /* Floating control bar for live experimentation */
+    .preview-floating-panel {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: rgba(18, 18, 20, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      padding: 16px 20px;
+      border-radius: 16px;
+      z-index: 9999;
+      color: #f5f2eb;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 12px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-width: 240px;
+    }
+
+    .preview-floating-panel h4 {
+      margin: 0;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #f59e0b;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .control-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .control-row label {
+      color: rgba(245, 242, 235, 0.7);
+    }
+
+    .control-row input[type="range"] {
+      cursor: pointer;
+      width: 110px;
+      accent-color: #f59e0b;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 3D Cylindrical Hero Section -->
+  <section
+    id="Hero3D-preview"
+    class="hero-3d-section"
+    data-speed="14"
+    data-tilt="18"
+    data-gap="24"
+    data-lighting="true"
+    data-reflection="true"
+    style="
+      --hero-bg: #0b0b0c;
+      --hero-text: #f5f2eb;
+      --hero-title-color: #f5f2eb;
+      --cylinder-tilt: 18deg;
+      --cylinder-perspective: 1100px;
+      --card-width: 220px;
+      --card-height: 320px;
+      --card-radius: 16px;
+      --reflection-opacity: 0.25;
+    "
+  >
+    <!-- Top Meta Navigation Bar -->
+    <div class="hero-3d-topbar">
+      <div class="topbar-brand">TIKKI MIRCHI</div>
+      <div class="topbar-tag">ARTISANAL PANTRY • COLLECTION 2026</div>
+      <div class="topbar-status">
+        <span class="status-dot"></span>
+        <span>ALL NATURAL</span>
+      </div>
+    </div>
+
+    <!-- 3D Stage & Central Rotating Ribbon -->
+    <div class="hero-3d-stage">
+      <!-- Giant Editorial Background Headline -->
+      <h1 class="hero-3d-giant-title">
+        TIKKI MIRCHI
+      </h1>
+
+      <!-- 3D Viewport -->
+      <div class="hero-3d-viewport">
+        <div class="hero-3d-tilter">
+          <div class="hero-3d-cylinder">
+            
+            <!-- Card 1 -->
+            <div class="hero-3d-card">
+              <a href="#" class="hero-3d-card-inner">
+                <img src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80" alt="Kashmiri Saffron" class="hero-3d-card-media" width="300" height="400">
+                <div class="hero-3d-card-scrim"></div>
+                <div class="hero-3d-card-content">
+                  <span class="hero-3d-card-tag">Pure Grade A</span>
+                  <h3 class="hero-3d-card-title">Kashmiri Saffron</h3>
+                  <p class="hero-3d-card-subtitle">Artisanal Harvest</p>
+                </div>
+              </a>
+              <div class="hero-3d-reflection" aria-hidden="true">
+                <img src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80" alt="" width="300" height="400">
+              </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="hero-3d-card">
+              <a href="#" class="hero-3d-card-inner">
+                <img src="https://images.unsplash.com/photo-1588252303782-cb80119abd6d?auto=format&fit=crop&w=600&q=80" alt="Fiery Guntur Chilli" class="hero-3d-card-media" width="300" height="400">
+                <div class="hero-3d-card-scrim"></div>
+                <div class="hero-3d-card-content">
+                  <span class="hero-3d-card-tag">Signature Heat</span>
+                  <h3 class="hero-3d-card-title">Fiery Guntur Chilli</h3>
+                  <p class="hero-3d-card-subtitle">Sun-Dried Spice</p>
+                </div>
+              </a>
+              <div class="hero-3d-reflection" aria-hidden="true">
+                <img src="https://images.unsplash.com/photo-1588252303782-cb80119abd6d?auto=format&fit=crop&w=600&q=80" alt="" width="300" height="400">
+              </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="hero-3d-card">
+              <a href="#" class="hero-3d-card-inner">
+                <img src="https://images.unsplash.com/photo-1599940824399-b87987ceb72a?auto=format&fit=crop&w=600&q=80" alt="Roasted Cardamom" class="hero-3d-card-media" width="300" height="400">
+                <div class="hero-3d-card-scrim"></div>
+                <div class="hero-3d-card-content">
+                  <span class="hero-3d-card-tag">Rare Pods</span>
+                  <h3 class="hero-3d-card-title">Roasted Cardamom</h3>
+                  <p class="hero-3d-card-subtitle">Cold Smoked Pods</p>
+                </div>
+              </a>
+              <div class="hero-3d-reflection" aria-hidden="true">
+                <img src="https://images.unsplash.com/photo-1599940824399-b87987ceb72a?auto=format&fit=crop&w=600&q=80" alt="" width="300" height="400">
+              </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="hero-3d-card">
+              <a href="#" class="hero-3d-card-inner">
+                <img src="https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=600&q=80" alt="Golden Turmeric" class="hero-3d-card-media" width="300" height="400">
+                <div class="hero-3d-card-scrim"></div>
+                <div class="hero-3d-card-content">
+                  <span class="hero-3d-card-tag">Potent Curcumin</span>
+                  <h3 class="hero-3d-card-title">Golden Turmeric</h3>
+                  <p class="hero-3d-card-subtitle">Single Origin</p>
+                </div>
+              </a>
+              <div class="hero-3d-reflection" aria-hidden="true">
+                <img src="https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=600&q=80" alt="" width="300" height="400">
+              </div>
+            </div>
+
+            <!-- Card 5 -->
+            <div class="hero-3d-card">
+              <a href="#" class="hero-3d-card-inner">
+                <img src="https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=600&q=80" alt="Crispy Tikki Blend" class="hero-3d-card-media" width="300" height="400">
+                <div class="hero-3d-card-scrim"></div>
+                <div class="hero-3d-card-content">
+                  <span class="hero-3d-card-tag">Street & Soul</span>
+                  <h3 class="hero-3d-card-title">Crispy Tikki Blend</h3>
+                  <p class="hero-3d-card-subtitle">Chef Reserve</p>
+                </div>
+              </a>
+              <div class="hero-3d-reflection" aria-hidden="true">
+                <img src="https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=600&q=80" alt="" width="300" height="400">
+              </div>
+            </div>
+
+            <!-- Card 6 -->
+            <div class="hero-3d-card">
+              <a href="#" class="hero-3d-card-inner">
+                <img src="https://images.unsplash.com/photo-1509358271058-acd22cc93898?auto=format&fit=crop&w=600&q=80" alt="Tellicherry Peppercorn" class="hero-3d-card-media" width="300" height="400">
+                <div class="hero-3d-card-scrim"></div>
+                <div class="hero-3d-card-content">
+                  <span class="hero-3d-card-tag">Bold Crunch</span>
+                  <h3 class="hero-3d-card-title">Tellicherry Pepper</h3>
+                  <p class="hero-3d-card-subtitle">Black Pepper Pods</p>
+                </div>
+              </a>
+              <div class="hero-3d-reflection" aria-hidden="true">
+                <img src="https://images.unsplash.com/photo-1509358271058-acd22cc93898?auto=format&fit=crop&w=600&q=80" alt="" width="300" height="400">
+              </div>
+            </div>
+
+            <!-- Card 7 -->
+            <div class="hero-3d-card">
+              <a href="#" class="hero-3d-card-inner">
+                <img src="https://images.unsplash.com/photo-1514733670139-4d87a1941d55?auto=format&fit=crop&w=600&q=80" alt="Star Anise Infusion" class="hero-3d-card-media" width="300" height="400">
+                <div class="hero-3d-card-scrim"></div>
+                <div class="hero-3d-card-content">
+                  <span class="hero-3d-card-tag">Whole Spice</span>
+                  <h3 class="hero-3d-card-title">Star Anise</h3>
+                  <p class="hero-3d-card-subtitle">Fragrant Botanicals</p>
+                </div>
+              </a>
+              <div class="hero-3d-reflection" aria-hidden="true">
+                <img src="https://images.unsplash.com/photo-1514733670139-4d87a1941d55?auto=format&fit=crop&w=600&q=80" alt="" width="300" height="400">
+              </div>
+            </div>
+
+            <!-- Card 8 -->
+            <div class="hero-3d-card">
+              <a href="#" class="hero-3d-card-inner">
+                <img src="https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=600&q=80" alt="Smoked Mirchi Oil" class="hero-3d-card-media" width="300" height="400">
+                <div class="hero-3d-card-scrim"></div>
+                <div class="hero-3d-card-content">
+                  <span class="hero-3d-card-tag">Infused Reserve</span>
+                  <h3 class="hero-3d-card-title">Smoked Mirchi Oil</h3>
+                  <p class="hero-3d-card-subtitle">Cold Pressed Extract</p>
+                </div>
+              </a>
+              <div class="hero-3d-reflection" aria-hidden="true">
+                <img src="https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=600&q=80" alt="" width="300" height="400">
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Interaction & Navigation Bar -->
+    <div class="hero-3d-bottombar">
+      <div class="hero-3d-interaction-hint">
+        <span class="hint-icon">✦</span>
+        <span>Drag or swipe to rotate</span>
+      </div>
+
+      <a href="#" class="hero-3d-cta">
+        <span>Explore Collection</span>
+        <span>→</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- Interactive Controls Panel (For Live Testing) -->
+  <div class="preview-floating-panel">
+    <h4>3D Controls <span>⚙</span></h4>
+    <div class="control-row">
+      <label for="tiltSlider">Tilt Angle</label>
+      <input type="range" id="tiltSlider" min="-20" max="40" value="18">
+    </div>
+    <div class="control-row">
+      <label for="speedSlider">Speed</label>
+      <input type="range" id="speedSlider" min="-40" max="40" value="14">
+    </div>
+    <div class="control-row">
+      <label for="depthSlider">Perspective</label>
+      <input type="range" id="depthSlider" min="600" max="2000" value="1100">
+    </div>
+  </div>
+
+  <script src="assets/hero-3d-cylinder.js"></script>
+  <script>
+    // Live adjustment sliders for preview
+    const section = document.getElementById('Hero3D-preview');
+    const tilter = document.querySelector('.hero-3d-tilter');
+    const viewport = document.querySelector('.hero-3d-viewport');
+
+    document.getElementById('tiltSlider').addEventListener('input', (e) => {
+      tilter.style.transform = `rotateX(${e.target.value}deg)`;
+    });
+
+    document.getElementById('depthSlider').addEventListener('input', (e) => {
+      viewport.style.perspective = `${e.target.value}px`;
+    });
+
+    document.getElementById('speedSlider').addEventListener('input', (e) => {
+      // Find carousel instance
+      const carousel = document.querySelector('.hero-3d-section');
+      if (carousel) {
+        carousel.dataset.speed = e.target.value;
+      }
+    });
+  </script>
+</body>
+</html>

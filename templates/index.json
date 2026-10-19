@@ -1,5 +1,103 @@
 {
   "sections": {
+    "hero_3d_cylinder": {
+      "type": "hero-3d-cylinder",
+      "blocks": {
+        "card_1": {
+          "type": "card",
+          "settings": {
+            "title": "Kashmiri Saffron",
+            "subtitle": "Artisanal Harvest",
+            "tag": "Pure Grade A"
+          }
+        },
+        "card_2": {
+          "type": "card",
+          "settings": {
+            "title": "Fiery Guntur Chilli",
+            "subtitle": "Sun-Dried Spice",
+            "tag": "Signature Heat"
+          }
+        },
+        "card_3": {
+          "type": "card",
+          "settings": {
+            "title": "Roasted Cardamom",
+            "subtitle": "Cold Smoked Pods",
+            "tag": "Rare Pods"
+          }
+        },
+        "card_4": {
+          "type": "card",
+          "settings": {
+            "title": "Golden Turmeric",
+            "subtitle": "Single Origin",
+            "tag": "Potent Curcumin"
+          }
+        },
+        "card_5": {
+          "type": "card",
+          "settings": {
+            "title": "Crispy Tikki Blend",
+            "subtitle": "Chef Reserve",
+            "tag": "Street & Soul"
+          }
+        },
+        "card_6": {
+          "type": "card",
+          "settings": {
+            "title": "Tellicherry Peppercorn",
+            "subtitle": "Black Pepper Pods",
+            "tag": "Bold Crunch"
+          }
+        },
+        "card_7": {
+          "type": "card",
+          "settings": {
+            "title": "Star Anise Infusion",
+            "subtitle": "Fragrant Botanicals",
+            "tag": "Whole Spice"
+          }
+        },
+        "card_8": {
+          "type": "card",
+          "settings": {
+            "title": "Smoked Mirchi Oil",
+            "subtitle": "Cold Pressed Extract",
+            "tag": "Infused Reserve"
+          }
+        }
+      },
+      "block_order": [
+        "card_1",
+        "card_2",
+        "card_3",
+        "card_4",
+        "card_5",
+        "card_6",
+        "card_7",
+        "card_8"
+      ],
+      "settings": {
+        "heading": "TIKKI MIRCHI",
+        "topbar_right": "COLLECTION 2026",
+        "cta_label": "Explore Collection",
+        "cta_link": "shopify://collections/all",
+        "bg_color": "#0b0b0c",
+        "text_color": "#f5f2eb",
+        "title_color": "#f5f2eb",
+        "auto_rotate_speed": 14,
+        "tilt_angle": 18,
+        "perspective": 1100,
+        "card_width": 220,
+        "card_height": 320,
+        "card_radius": 16,
+        "card_gap": 24,
+        "enable_lighting": true,
+        "enable_reflection": true,
+        "reflection_opacity": 25
+      }
+    },
     "image_banner": {
       "type": "image-banner",
       "blocks": {
@@ -69,6 +167,7 @@
     }
   },
   "order": [
+    "hero_3d_cylinder",
     "image_banner",
     "featured_collection"
   ]

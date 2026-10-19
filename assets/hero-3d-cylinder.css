@@ -1,0 +1,385 @@
+/* ==========================================================================
+   Hero 3D Cylinder Carousel (Kai Marlow Inspired)
+   Pure CSS 3D Space & Responsive Cylindrical Ribbon
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Italiana&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+.hero-3d-section {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow: hidden;
+  background-color: var(--hero-bg, #0b0b0c);
+  color: var(--hero-text, #f5f2eb);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0;
+  box-sizing: border-box;
+  user-select: none;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Subtle background ambient grain / glow */
+.hero-3d-section::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 900px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(235, 94, 40, 0.12) 0%, rgba(200, 40, 20, 0.04) 40%, transparent 70%);
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Top Meta / Header Bar */
+.hero-3d-topbar {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 36px;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(245, 242, 235, 0.7);
+  font-weight: 500;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.hero-3d-topbar .topbar-brand {
+  font-weight: 700;
+  color: #f5f2eb;
+  letter-spacing: 0.22em;
+}
+
+.hero-3d-topbar .topbar-tag {
+  opacity: 0.75;
+}
+
+.hero-3d-topbar .topbar-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hero-3d-topbar .status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #34d399;
+  box-shadow: 0 0 10px #34d399;
+  animation: pulse-dot 2s infinite ease-in-out;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+/* Hero Stage & Background Typography */
+.hero-3d-stage {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 520px;
+  overflow: visible;
+}
+
+/* Giant Editorial Brand Typography */
+.hero-3d-giant-title {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  text-align: center;
+  font-family: 'Italiana', Georgia, serif;
+  font-size: clamp(3.8rem, 15vw, 15rem);
+  line-height: 0.88;
+  letter-spacing: -0.04em;
+  color: var(--hero-title-color, rgba(245, 242, 235, 0.92));
+  text-transform: uppercase;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 2;
+  margin: 0;
+  text-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+}
+
+.hero-3d-giant-title .title-accent {
+  font-style: italic;
+  font-weight: 400;
+  opacity: 0.85;
+}
+
+/* 3D Perspective Viewport */
+.hero-3d-viewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: var(--cylinder-perspective, 1100px);
+  perspective-origin: 50% 50%;
+  z-index: 4;
+  overflow: visible;
+  touch-action: pan-y;
+}
+
+/* Tilter (controls vertical isometric / tilt angle) */
+.hero-3d-tilter {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+  transform: rotateX(var(--cylinder-tilt, 18deg));
+  will-change: transform;
+}
+
+/* Cylinder Rotator (rotates continuously on Y axis) */
+.hero-3d-cylinder {
+  position: relative;
+  width: 1px;
+  height: var(--card-height, 320px);
+  transform-style: preserve-3d;
+  will-change: transform;
+  cursor: grab;
+}
+
+.hero-3d-cylinder:active,
+.hero-3d-cylinder.is-dragging {
+  cursor: grabbing;
+}
+
+/* Individual 3D Card */
+.hero-3d-card {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: var(--card-width, 220px);
+  height: var(--card-height, 320px);
+  margin-left: calc(var(--card-width, 220px) / -2);
+  transform-style: preserve-3d;
+  backface-visibility: visible;
+  border-radius: var(--card-radius, 16px);
+  user-select: none;
+  -webkit-user-drag: none;
+  will-change: transform, filter;
+  transition: box-shadow 0.3s ease;
+}
+
+.hero-3d-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--card-radius, 16px);
+  overflow: hidden;
+  background: #18181b;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.55), 0 2px 8px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  text-decoration: none;
+  color: #fff;
+  transition: border-color 0.3s ease, transform 0.25s ease;
+}
+
+.hero-3d-card:hover .hero-3d-card-inner {
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
+.hero-3d-card-media {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  -webkit-user-drag: none;
+  filter: saturate(1.08) contrast(1.04);
+}
+
+/* Scrim Gradient & Card Info */
+.hero-3d-card-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 45%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-3d-card-content {
+  position: relative;
+  z-index: 2;
+  padding: 16px;
+  transform: translateZ(1px); /* Prevent subpixel z-fighting */
+}
+
+.hero-3d-card-tag {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #f59e0b;
+  margin-bottom: 4px;
+}
+
+.hero-3d-card-title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hero-3d-card-subtitle {
+  margin: 2px 0 0;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.65);
+  font-weight: 400;
+}
+
+/* Floor Reflection (Curved Mirror Illusion) */
+.hero-3d-reflection {
+  position: absolute;
+  top: calc(var(--card-height, 320px) + 8px);
+  left: 0;
+  width: 100%;
+  height: calc(var(--card-height, 320px) * 0.55);
+  border-radius: var(--card-radius, 16px);
+  overflow: hidden;
+  transform: scaleY(-1);
+  transform-origin: top center;
+  opacity: var(--reflection-opacity, 0.28);
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0) 65%);
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0) 65%);
+}
+
+.hero-3d-reflection img {
+  width: 100%;
+  height: var(--card-height, 320px);
+  object-fit: cover;
+  filter: blur(0.5px);
+}
+
+/* Bottom Bar / Interaction Hint */
+.hero-3d-bottombar {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 36px;
+  font-size: 12px;
+  color: rgba(245, 242, 235, 0.7);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.hero-3d-interaction-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #f5f2eb;
+}
+
+.hint-icon {
+  display: inline-flex;
+  animation: hint-nudge 2s infinite ease-in-out;
+}
+
+@keyframes hint-nudge {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(5px); }
+}
+
+.hero-3d-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 24px;
+  border-radius: 999px;
+  background: #f5f2eb;
+  color: #0b0b0c;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hero-3d-cta:hover {
+  transform: translateY(-2px);
+  background: #ffffff;
+  box-shadow: 0 10px 25px rgba(245, 242, 235, 0.2);
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 990px) {
+  :root {
+    --card-width: 180px;
+    --card-height: 270px;
+  }
+
+  .hero-3d-topbar,
+  .hero-3d-bottombar {
+    padding: 16px 20px;
+  }
+
+  .hero-3d-giant-title {
+    font-size: clamp(3rem, 14vw, 7rem);
+  }
+
+  .hero-3d-topbar .topbar-tag {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  :root {
+    --card-width: 145px;
+    --card-height: 220px;
+  }
+
+  .hero-3d-stage {
+    min-height: 440px;
+  }
+
+  .hero-3d-giant-title {
+    font-size: clamp(2.5rem, 15vw, 5rem);
+    white-space: normal;
+    padding: 0 12px;
+  }
+
+  .hero-3d-bottombar {
+    flex-direction: column;
+    gap: 14px;
+  }
+}
