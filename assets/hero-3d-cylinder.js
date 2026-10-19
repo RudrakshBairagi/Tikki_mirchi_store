@@ -49,6 +49,12 @@ class Hero3dCylinderCarousel {
   }
 
   updateDimensions() {
+    // Read configured card dimensions from CSS custom properties or DOM
+    const computedWidth = parseFloat(getComputedStyle(this.container).getPropertyValue('--card-width'));
+    const computedHeight = parseFloat(getComputedStyle(this.container).getPropertyValue('--card-height'));
+    if (computedWidth > 0) this.cardWidth = computedWidth;
+    if (computedHeight > 0) this.cardHeight = computedHeight;
+
     if (this.cards.length > 0) {
       const rect = this.cards[0].getBoundingClientRect();
       if (rect.width > 0) this.cardWidth = rect.width;
@@ -56,9 +62,10 @@ class Hero3dCylinderCarousel {
     }
 
     const n = Math.max(this.cards.length, 3);
-    // Exact polygon radius formula: R = (width + gap) / (2 * sin(PI / n))
-    const angleStep = (2 * Math.PI) / n;
-    this.radius = Math.max(300, (this.cardWidth + this.gap) / (2 * Math.sin(angleStep / 2)));
+    const halfAngle = Math.PI / n;
+    // Exact polygon apothem formula: R = (width + gap) / (2 * tan(PI / n))
+    // Cards sit closely adjacent to each other with minimal hairline gap
+    this.radius = Math.round((this.cardWidth + this.gap) / (2 * Math.tan(halfAngle)));
     
     // Set CSS custom property for reference
     this.container.style.setProperty('--cylinder-radius', `${this.radius}px`);
