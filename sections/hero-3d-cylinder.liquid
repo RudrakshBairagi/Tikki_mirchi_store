@@ -66,9 +66,10 @@
                       height="400"
                     >
                   {%- else -%}
-                    {%- assign default_img_index = forloop.index | modulo: 5 | plus: 1 -%}
+                    {%- assign default_img_index = forloop.index0 | modulo: 5 | plus: 1 -%}
+                    {%- capture asset_name -%}cylinder-card-{{ default_img_index }}.jpg{%- endcapture -%}
                     <img
-                      src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80"
+                      src="{{ asset_name | asset_url }}"
                       alt="Card {{ forloop.index }}"
                       class="hero-3d-card-media"
                       loading="lazy"
@@ -90,7 +91,7 @@
                       >
                     {%- else -%}
                       <img
-                        src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80"
+                        src="{{ asset_name | asset_url }}"
                         alt=""
                         loading="lazy"
                         width="300"
@@ -102,15 +103,14 @@
               </div>
             {%- endfor -%}
           {%- else -%}
-            <!-- Fallback Demo Cards: 5 Clean Cards -->
-            {%- assign demo_imgs = "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80,https://images.unsplash.com/photo-1588252303782-cb80119abd6d?auto=format&fit=crop&w=600&q=80,https://images.unsplash.com/photo-1599940824399-b87987ceb72a?auto=format&fit=crop&w=600&q=80,https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=600&q=80,https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=600&q=80" | split: "," -%}
-            
-            {%- for card_img in demo_imgs -%}
+            <!-- Fallback 5 Clean Cards with user pictures -->
+            {%- for i in (1..5) -%}
+              {%- capture fallback_name -%}cylinder-card-{{ i }}.jpg{%- endcapture -%}
               <div class="hero-3d-card">
-                <a href="/collections/all" class="hero-3d-card-inner" aria-label="Card {{ forloop.index }}">
+                <a href="/collections/all" class="hero-3d-card-inner" aria-label="Card {{ i }}">
                   <img
-                    src="{{ card_img }}"
-                    alt="Card {{ forloop.index }}"
+                    src="{{ fallback_name | asset_url }}"
+                    alt="Card {{ i }}"
                     class="hero-3d-card-media"
                     loading="lazy"
                     width="300"
@@ -120,7 +120,7 @@
 
                 {%- if section.settings.enable_reflection -%}
                   <div class="hero-3d-reflection" aria-hidden="true">
-                    <img src="{{ card_img }}" alt="" loading="lazy" width="300" height="400">
+                    <img src="{{ fallback_name | asset_url }}" alt="" loading="lazy" width="300" height="400">
                   </div>
                 {%- endif -%}
               </div>
