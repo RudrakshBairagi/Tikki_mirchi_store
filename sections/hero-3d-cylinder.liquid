@@ -54,42 +54,28 @@
                 <a
                   href="{{ block.settings.link | default: '#' }}"
                   class="hero-3d-card-inner"
-                  aria-label="{{ block.settings.title | default: 'Collection Card' }}"
+                  aria-label="Card {{ forloop.index }}"
                 >
                   {%- if block.settings.image != blank -%}
                     <img
                       src="{{ block.settings.image | image_url: width: 600 }}"
-                      alt="{{ block.settings.title | escape }}"
+                      alt="{{ block.settings.image.alt | default: 'Image Card' | escape }}"
                       class="hero-3d-card-media"
                       loading="lazy"
                       width="300"
                       height="400"
                     >
                   {%- else -%}
-                    {%- assign default_img_index = forloop.index | modulo: 8 | plus: 1 -%}
+                    {%- assign default_img_index = forloop.index | modulo: 5 | plus: 1 -%}
                     <img
                       src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80"
-                      alt="{{ block.settings.title | default: 'Spice Collection Card' }}"
+                      alt="Card {{ forloop.index }}"
                       class="hero-3d-card-media"
                       loading="lazy"
                       width="300"
                       height="400"
                     >
                   {%- endif -%}
-
-                  <div class="hero-3d-card-scrim"></div>
-
-                  <div class="hero-3d-card-content">
-                    {%- if block.settings.tag != blank -%}
-                      <span class="hero-3d-card-tag">{{ block.settings.tag }}</span>
-                    {%- endif -%}
-                    {%- if block.settings.title != blank -%}
-                      <h3 class="hero-3d-card-title">{{ block.settings.title }}</h3>
-                    {%- endif -%}
-                    {%- if block.settings.subtitle != blank -%}
-                      <p class="hero-3d-card-subtitle">{{ block.settings.subtitle }}</p>
-                    {%- endif -%}
-                  </div>
                 </a>
 
                 {%- if section.settings.enable_reflection -%}
@@ -116,32 +102,20 @@
               </div>
             {%- endfor -%}
           {%- else -%}
-            <!-- Fallback Demo Cards (Tikki Mirchi High-End Spices & Artisanal Culinary Imagery) -->
-            {%- assign demo_cards = "Kashmiri Saffron:Artisanal Harvest:Pure Grade A:https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80,Fiery Guntur Chilli:Sun-Dried Spice:Signature Heat:https://images.unsplash.com/photo-1588252303782-cb80119abd6d?auto=format&fit=crop&w=600&q=80,Roasted Cardamom:Cold Smoked:Rare Pods:https://images.unsplash.com/photo-1599940824399-b87987ceb72a?auto=format&fit=crop&w=600&q=80,Golden Turmeric:Single Origin:Potent Curcumin:https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=600&q=80,Crispy Tikki Blend:Chef Reserve:Street & Soul:https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=600&q=80,Black Peppercorn:Tellicherry Reserve:Bold Crunch:https://images.unsplash.com/photo-1509358271058-acd22cc93898?auto=format&fit=crop&w=600&q=80,Star Anise Infusion:Fragrant Botanicals:Whole Spice:https://images.unsplash.com/photo-1514733670139-4d87a1941d55?auto=format&fit=crop&w=600&q=80,Smoked Mirchi Oil:Infused Reserve:Cold Pressed:https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=600&q=80" | split: "," -%}
+            <!-- Fallback Demo Cards: 5 Clean Cards -->
+            {%- assign demo_imgs = "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80,https://images.unsplash.com/photo-1588252303782-cb80119abd6d?auto=format&fit=crop&w=600&q=80,https://images.unsplash.com/photo-1599940824399-b87987ceb72a?auto=format&fit=crop&w=600&q=80,https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=600&q=80,https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=600&q=80" | split: "," -%}
             
-            {%- for card_data in demo_cards -%}
-              {%- assign parts = card_data | split: ":" -%}
-              {%- assign card_title = parts[0] -%}
-              {%- assign card_subtitle = parts[1] -%}
-              {%- assign card_tag = parts[2] -%}
-              {%- assign card_img = parts[3] -%}
-
+            {%- for card_img in demo_imgs -%}
               <div class="hero-3d-card">
-                <a href="/collections/all" class="hero-3d-card-inner">
+                <a href="/collections/all" class="hero-3d-card-inner" aria-label="Card {{ forloop.index }}">
                   <img
                     src="{{ card_img }}"
-                    alt="{{ card_title }}"
+                    alt="Card {{ forloop.index }}"
                     class="hero-3d-card-media"
                     loading="lazy"
                     width="300"
                     height="400"
                   >
-                  <div class="hero-3d-card-scrim"></div>
-                  <div class="hero-3d-card-content">
-                    <span class="hero-3d-card-tag">{{ card_tag }}</span>
-                    <h3 class="hero-3d-card-title">{{ card_title }}</h3>
-                    <p class="hero-3d-card-subtitle">{{ card_subtitle }}</p>
-                  </div>
                 </a>
 
                 {%- if section.settings.enable_reflection -%}

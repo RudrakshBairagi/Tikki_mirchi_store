@@ -14,75 +14,23 @@
       "blocks": {
         "card_1": {
           "type": "card",
-          "settings": {
-            "title": "Kashmiri Saffron",
-            "subtitle": "Artisanal Harvest",
-            "tag": "Pure Grade A",
-            "link": ""
-          }
+          "settings": {}
         },
         "card_2": {
           "type": "card",
-          "settings": {
-            "title": "Fiery Guntur Chilli",
-            "subtitle": "Sun-Dried Spice",
-            "tag": "Signature Heat",
-            "link": ""
-          }
+          "settings": {}
         },
         "card_3": {
           "type": "card",
-          "settings": {
-            "title": "Roasted Cardamom",
-            "subtitle": "Cold Smoked Pods",
-            "tag": "Rare Pods",
-            "link": ""
-          }
+          "settings": {}
         },
         "card_4": {
           "type": "card",
-          "settings": {
-            "title": "Golden Turmeric",
-            "subtitle": "Single Origin",
-            "tag": "Potent Curcumin",
-            "link": ""
-          }
+          "settings": {}
         },
         "card_5": {
           "type": "card",
-          "settings": {
-            "title": "Crispy Tikki Blend",
-            "subtitle": "Chef Reserve",
-            "tag": "Street & Soul",
-            "link": ""
-          }
-        },
-        "card_6": {
-          "type": "card",
-          "settings": {
-            "title": "Tellicherry Peppercorn",
-            "subtitle": "Black Pepper Pods",
-            "tag": "Bold Crunch",
-            "link": ""
-          }
-        },
-        "card_7": {
-          "type": "card",
-          "settings": {
-            "title": "Star Anise Infusion",
-            "subtitle": "Fragrant Botanicals",
-            "tag": "Whole Spice",
-            "link": ""
-          }
-        },
-        "card_8": {
-          "type": "card",
-          "settings": {
-            "title": "Smoked Mirchi Oil",
-            "subtitle": "Cold Pressed Extract",
-            "tag": "Infused Reserve",
-            "link": ""
-          }
+          "settings": {}
         }
       },
       "block_order": [
@@ -90,10 +38,7 @@
         "card_2",
         "card_3",
         "card_4",
-        "card_5",
-        "card_6",
-        "card_7",
-        "card_8"
+        "card_5"
       ],
       "settings": {
         "heading": "TIKKI MIRCHI",
