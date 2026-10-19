@@ -123,6 +123,26 @@
         background-color: rgb(var(--color-background));
       }
 
+      @font-face {
+        font-family: 'Ragara';
+        src: url('{{ "Ragara.woff" | asset_url }}') format('woff'),
+             url('{{ "Ragara.otf" | asset_url }}') format('opentype'),
+             url('{{ "Ragara.ttf" | asset_url }}') format('truetype');
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'Ragara';
+        src: url('{{ "Ragara-Italic.woff" | asset_url }}') format('woff'),
+             url('{{ "Ragara-Italic.otf" | asset_url }}') format('opentype'),
+             url('{{ "Ragara-Italic.ttf" | asset_url }}') format('truetype');
+        font-weight: 400;
+        font-style: italic;
+        font-display: swap;
+      }
+
       :root {
         --font-body-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
         --font-body-style: {{ settings.type_body_font.style }};
