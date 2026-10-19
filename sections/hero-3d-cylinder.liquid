@@ -2,6 +2,26 @@
 <script src="{{ 'hero-3d-cylinder.js' | asset_url }}" defer="defer"></script>
 
 {%- style -%}
+  @font-face {
+    font-family: 'Ragara';
+    src: url('{{ "Ragara.woff" | asset_url }}') format('woff'),
+         url('{{ "Ragara.otf" | asset_url }}') format('opentype'),
+         url('{{ "Ragara.ttf" | asset_url }}') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Ragara';
+    src: url('{{ "Ragara-Italic.woff" | asset_url }}') format('woff'),
+         url('{{ "Ragara-Italic.otf" | asset_url }}') format('opentype'),
+         url('{{ "Ragara-Italic.ttf" | asset_url }}') format('truetype');
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+  }
+
   #Hero3D-{{ section.id }} {
     --hero-bg: {{ section.settings.bg_color }};
     --hero-text: {{ section.settings.text_color }};
@@ -12,6 +32,10 @@
     --card-height: {{ section.settings.card_height }}px;
     --card-radius: {{ section.settings.card_radius }}px;
     --reflection-opacity: {{ section.settings.reflection_opacity | divided_by: 100.0 }};
+  }
+
+  #Hero3D-{{ section.id }} .hero-3d-giant-title {
+    font-family: 'Ragara', 'Italiana', Georgia, serif;
   }
 {%- endstyle -%}
 

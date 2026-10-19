@@ -5,6 +5,26 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Italiana&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
+@font-face {
+  font-family: 'Ragara';
+  src: url('Ragara.woff') format('woff'),
+       url('Ragara.otf') format('opentype'),
+       url('Ragara.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Ragara';
+  src: url('Ragara-Italic.woff') format('woff'),
+       url('Ragara-Italic.otf') format('opentype'),
+       url('Ragara-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
 .hero-3d-section {
   position: relative;
   width: 100%;
@@ -102,10 +122,10 @@
   transform: translate(-50%, -50%);
   width: 100%;
   text-align: center;
-  font-family: 'Italiana', Georgia, serif;
+  font-family: 'Ragara', 'Italiana', Georgia, serif;
   font-size: clamp(3.8rem, 15vw, 15rem);
   line-height: 0.88;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.02em;
   color: var(--hero-title-color, rgba(245, 242, 235, 0.92));
   text-transform: uppercase;
   white-space: nowrap;
