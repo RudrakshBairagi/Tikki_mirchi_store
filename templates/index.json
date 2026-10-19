@@ -14,23 +14,48 @@
       "blocks": {
         "card_1": {
           "type": "card",
-          "settings": {}
+          "settings": {
+            "title": "Special Reserve",
+            "subtitle": "Organic Harvest",
+            "tag": "Edition 01",
+            "link": ""
+          }
         },
         "card_2": {
           "type": "card",
-          "settings": {}
+          "settings": {
+            "title": "Special Reserve",
+            "subtitle": "Organic Harvest",
+            "tag": "Edition 01",
+            "link": ""
+          }
         },
         "card_3": {
           "type": "card",
-          "settings": {}
+          "settings": {
+            "title": "Special Reserve",
+            "subtitle": "Organic Harvest",
+            "tag": "Edition 01",
+            "link": ""
+          }
         },
         "card_4": {
           "type": "card",
-          "settings": {}
+          "settings": {
+            "title": "Special Reserve",
+            "subtitle": "Organic Harvest",
+            "tag": "Edition 01",
+            "link": ""
+          }
         },
         "card_5": {
           "type": "card",
-          "settings": {}
+          "settings": {
+            "title": "Special Reserve",
+            "subtitle": "Organic Harvest",
+            "tag": "Edition 01",
+            "link": ""
+          }
         }
       },
       "block_order": [
@@ -42,6 +67,7 @@
       ],
       "settings": {
         "heading": "TIKKI MIRCHI",
+        "heading_accent": "",
         "topbar_left": "TIKKI MIRCHI",
         "topbar_center": "PARTY WEAR FOR WOMEN • DROP 01",
         "topbar_right": "VIP EARLY ACCESS",
@@ -51,14 +77,14 @@
         "text_color": "#f5f2eb",
         "title_color": "#f5f2eb",
         "auto_rotate_speed": 14,
-        "tilt_angle": 18,
+        "tilt_angle": 0,
         "perspective": 1100,
         "card_width": 220,
         "card_height": 320,
         "card_radius": 16,
         "card_gap": 24,
         "enable_lighting": true,
-        "enable_reflection": true,
+        "enable_reflection": false,
         "reflection_opacity": 25
       }
     },
