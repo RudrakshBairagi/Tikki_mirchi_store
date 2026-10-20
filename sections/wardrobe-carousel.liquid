@@ -1,0 +1,346 @@
+{{ 'wardrobe-carousel.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'wardrobe-carousel.js' | asset_url }}" defer="defer"></script>
+
+{%- style -%}
+  #Wardrobe-{{ section.id }} {
+    --wardrobe-bg: {{ section.settings.bg_color | default: '#f3f0e7' }};
+    --wardrobe-text: {{ section.settings.text_color | default: '#2a2529' }};
+    --wardrobe-accent: {{ section.settings.accent_color | default: '#c59b27' }};
+    --wardrobe-cabinet-outer: #221f20;
+    --wardrobe-cabinet-inner: #161415;
+    --wardrobe-door-face: #2c2829;
+    --wardrobe-brass: #d4af37;
+  }
+
+  #Wardrobe-{{ section.id }} .wardrobe-title {
+    font-family: 'Ragara', 'Italiana', Georgia, serif;
+  }
+{%- endstyle -%}
+
+<section
+  id="Wardrobe-{{ section.id }}"
+  class="wardrobe-section"
+  data-auto-open="{% if section.settings.auto_open %}true{% else %}false{% endif %}"
+  data-auto-cycle="{% if section.settings.auto_cycle %}true{% else %}false{% endif %}"
+  data-speed="{{ section.settings.cycle_speed | default: 4 }}"
+>
+  <div class="wardrobe-container">
+    <!-- Header / Editorial Labeling -->
+    <div class="wardrobe-header">
+      <div class="wardrobe-tagline">
+        <span class="wardrobe-tag-dot">✦</span>
+        <span>{{ section.settings.eyebrow | default: 'TIKKI BELLA • DROP 01' }}</span>
+      </div>
+      <h2 class="wardrobe-title">{{ section.settings.heading | default: 'THE ATELIER WARDROBE' }}</h2>
+      {%- if section.settings.subheading != blank -%}
+        <p class="wardrobe-subtitle">{{ section.settings.subheading }}</p>
+      {%- endif -%}
+
+      <!-- Door Toggle Control -->
+      <div class="wardrobe-controls-bar">
+        <button
+          type="button"
+          class="wardrobe-door-toggle-btn"
+          aria-expanded="false"
+          aria-label="Toggle wardrobe doors"
+        >
+          <span class="door-toggle-icon">🚪</span>
+          <span class="door-toggle-text">Open Wardrobe</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 3D Wardrobe Stage -->
+    <div class="wardrobe-stage">
+      <div class="wardrobe-cabinet">
+        <!-- Cabinet Crown / Top Molding -->
+        <div class="wardrobe-crown">
+          <div class="crown-brass-trim"></div>
+        </div>
+
+        <!-- Interior Spotlight Illumination -->
+        <div class="wardrobe-spotlight" aria-hidden="true"></div>
+
+        <!-- Clothes Hanging Rail -->
+        <div class="wardrobe-rail" aria-hidden="true">
+          <div class="rail-bar"></div>
+          <div class="rail-bracket left"></div>
+          <div class="rail-bracket right"></div>
+        </div>
+
+        <!-- Cycling Outfits Track -->
+        <div class="wardrobe-interior">
+          <div class="wardrobe-carousel-track">
+            {%- if section.blocks.size > 0 -%}
+              {%- for block in section.blocks -%}
+                {%- assign default_idx = forloop.index -%}
+                {%- capture fallback_src -%}wardrobe-look-{{ default_idx }}.jpg{%- endcapture -%}
+                {%- assign outfit_src = fallback_src | asset_url -%}
+                {%- if block.settings.image != blank -%}
+                  {%- assign outfit_src = block.settings.image | image_url: width: 900 -%}
+                {%- endif -%}
+
+                <div
+                  class="wardrobe-outfit-card {% if forloop.first %}is-active{% endif %}"
+                  data-index="{{ forloop.index0 }}"
+                  {{ block.shopify_attributes }}
+                >
+                  <!-- Brass Hanger -->
+                  <div class="wardrobe-hanger" aria-hidden="true">
+                    <div class="hanger-hook"></div>
+                    <div class="hanger-body"></div>
+                  </div>
+
+                  <!-- Outfit Card Frame -->
+                  <div class="outfit-media-box">
+                    <img
+                      src="{{ outfit_src }}"
+                      alt="{{ block.settings.title | default: 'Partywear Outfit' | escape }}"
+                      class="outfit-image"
+                      loading="lazy"
+                      width="600"
+                      height="800"
+                    >
+                    <div class="outfit-overlay-scrim"></div>
+                    
+                    <!-- Floating Look Details Badge -->
+                    <div class="outfit-badge">
+                      <span class="outfit-tag">{{ block.settings.tag | default: 'Drop 01' }}</span>
+                      <h3 class="outfit-name">{{ block.settings.title | default: 'Special Edition' }}</h3>
+                      {%- if block.settings.details != blank -%}
+                        <p class="outfit-desc">{{ block.settings.details }}</p>
+                      {%- endif -%}
+                      <a href="{{ block.settings.cta_link | default: '#waitlist' }}" class="outfit-cta">
+                        <span>{{ block.settings.cta_label | default: 'Join Waitlist' }}</span>
+                        <span>→</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              {%- endfor -%}
+            {%- else -%}
+              <!-- Default 5 Handcrafted Partywear Looks -->
+              {%- for i in (1..5) -%}
+                {%- capture fallback_src -%}wardrobe-look-{{ i }}.jpg{%- endcapture -%}
+                {%- case i -%}
+                  {%- when 1 -%}
+                    {%- assign look_name = 'Golden Corset & Pearl Fringe Skirt' -%}
+                    {%- assign look_desc = 'Sweetheart corset with intricate floral beading and pearl drop fringe.' -%}
+                  {%- when 2 -%}
+                    {%- assign look_name = 'Emerald Velvet Crystal Corset Set' -%}
+                    {%- assign look_desc = 'Rich emerald velvet bustier with crystal straps and side-slit mini skirt.' -%}
+                  {%- when 3 -%}
+                    {%- assign look_name = 'Midnight Black Satin Bustier Dress' -%}
+                    {%- assign look_desc = 'Sculpted boned corset dress with shimmering crystal rhinestone borders.' -%}
+                  {%- when 4 -%}
+                    {%- assign look_name = 'Metallic Ruby Draped Halter Dress' -%}
+                    {%- assign look_desc = 'High-glamour liquid metallic silk with cowl draping and crystal collar.' -%}
+                  {%- when 5 -%}
+                    {%- assign look_name = 'Champagne Pleated Corset Set' -%}
+                    {%- assign look_desc = 'Silky satin sweetheart top with sparkling crystal fringe pleated skirt.' -%}
+                {%- endcase -%}
+
+                <div class="wardrobe-outfit-card {% if forloop.first %}is-active{% endif %}" data-index="{{ forloop.index0 }}">
+                  <div class="wardrobe-hanger" aria-hidden="true">
+                    <div class="hanger-hook"></div>
+                    <div class="hanger-body"></div>
+                  </div>
+                  <div class="outfit-media-box">
+                    <img
+                      src="{{ fallback_src | asset_url }}"
+                      alt="{{ look_name }}"
+                      class="outfit-image"
+                      loading="lazy"
+                      width="600"
+                      height="800"
+                    >
+                    <div class="outfit-overlay-scrim"></div>
+                    <div class="outfit-badge">
+                      <span class="outfit-tag">LOOK 0{{ i }}</span>
+                      <h3 class="outfit-name">{{ look_name }}</h3>
+                      <p class="outfit-desc">{{ look_desc }}</p>
+                      <a href="#waitlist" class="outfit-cta">
+                        <span>Join Waitlist</span>
+                        <span>→</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              {%- endfor -%}
+            {%- endif -%}
+          </div>
+        </div>
+
+        <!-- 3D Interactive Double Doors -->
+        <div class="wardrobe-doors-wrapper">
+          <!-- Left Door -->
+          <div class="wardrobe-door door-left" data-door="left">
+            <div class="door-face door-front">
+              <div class="door-panel-molding"></div>
+              <div class="door-handle door-handle-left">
+                <div class="handle-plate"></div>
+                <div class="handle-rod"></div>
+              </div>
+            </div>
+            <div class="door-face door-back">
+              <div class="door-mirror" aria-hidden="true"></div>
+            </div>
+          </div>
+
+          <!-- Right Door -->
+          <div class="wardrobe-door door-right" data-door="right">
+            <div class="door-face door-front">
+              <div class="door-panel-molding"></div>
+              <div class="door-handle door-handle-right">
+                <div class="handle-plate"></div>
+                <div class="handle-rod"></div>
+              </div>
+            </div>
+            <div class="door-face door-back">
+              <div class="door-mirror" aria-hidden="true"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cabinet Floor & Plinth -->
+        <div class="wardrobe-plinth">
+          <div class="plinth-brass-feet left"></div>
+          <div class="plinth-brass-feet right"></div>
+        </div>
+      </div>
+
+      <!-- Navigation Arrows -->
+      <button type="button" class="wardrobe-nav-btn nav-prev" aria-label="Previous outfit">
+        <span>‹</span>
+      </button>
+      <button type="button" class="wardrobe-nav-btn nav-next" aria-label="Next outfit">
+        <span>›</span>
+      </button>
+    </div>
+
+    <!-- Dots / Indicator Pagination -->
+    <div class="wardrobe-pagination" aria-label="Wardrobe pagination"></div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Wardrobe Carousel",
+  "tag": "section",
+  "class": "section-wardrobe-carousel",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Tag",
+      "default": "TIKKI BELLA • DROP 01"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "THE ATELIER WARDROBE"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Step inside Drop 01. Swipe along the rail to explore our private debut collection."
+    },
+    {
+      "type": "checkbox",
+      "id": "auto_open",
+      "label": "Automatically Open Doors When Scrolled Into View",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "auto_cycle",
+      "label": "Enable Auto Slide Cycling",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "cycle_speed",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "unit": "s",
+      "label": "Cycle Speed (seconds)",
+      "default": 4
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#f3f0e7"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#2a2529"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent Color",
+      "default": "#c59b27"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "look",
+      "name": "Outfit Look",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Outfit Image"
+        },
+        {
+          "type": "text",
+          "id": "tag",
+          "label": "Tag",
+          "default": "LOOK 01"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Outfit Name",
+          "default": "Partywear Outfit"
+        },
+        {
+          "type": "textarea",
+          "id": "details",
+          "label": "Outfit Details",
+          "default": "Luxury bespoke partywear design"
+        },
+        {
+          "type": "text",
+          "id": "cta_label",
+          "label": "Button Label",
+          "default": "Join Waitlist"
+        },
+        {
+          "type": "url",
+          "id": "cta_link",
+          "label": "Button Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Wardrobe Carousel",
+      "blocks": [
+        { "type": "look", "settings": { "tag": "LOOK 01", "title": "Golden Corset & Pearl Fringe Skirt", "details": "Sweetheart corset with intricate floral beading and pearl drop fringe." } },
+        { "type": "look", "settings": { "tag": "LOOK 02", "title": "Emerald Velvet Crystal Corset Set", "details": "Rich emerald velvet bustier with crystal straps and side-slit mini skirt." } },
+        { "type": "look", "settings": { "tag": "LOOK 03", "title": "Midnight Black Satin Bustier Dress", "details": "Sculpted boned corset dress with shimmering crystal rhinestone borders." } },
+        { "type": "look", "settings": { "tag": "LOOK 04", "title": "Metallic Ruby Draped Halter Dress", "details": "High-glamour liquid metallic silk with cowl draping and crystal collar." } },
+        { "type": "look", "settings": { "tag": "LOOK 05", "title": "Champagne Pleated Corset Set", "details": "Silky satin sweetheart top with sparkling crystal fringe pleated skirt." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

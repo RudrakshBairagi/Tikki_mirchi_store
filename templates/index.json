@@ -88,6 +88,79 @@
         "reflection_opacity": 25
       }
     },
+    "wardrobe_carousel": {
+      "type": "wardrobe-carousel",
+      "blocks": {
+        "look_1": {
+          "type": "look",
+          "settings": {
+            "tag": "LOOK 01",
+            "title": "Golden Corset & Pearl Fringe Skirt",
+            "details": "Sweetheart bustier with intricate floral embroidery and pearl drop fringe.",
+            "cta_label": "Join Waitlist",
+            "cta_link": "#waitlist"
+          }
+        },
+        "look_2": {
+          "type": "look",
+          "settings": {
+            "tag": "LOOK 02",
+            "title": "Emerald Velvet Crystal Corset Set",
+            "details": "Rich emerald velvet bustier with crystal straps and side-slit mini skirt.",
+            "cta_label": "Join Waitlist",
+            "cta_link": "#waitlist"
+          }
+        },
+        "look_3": {
+          "type": "look",
+          "settings": {
+            "tag": "LOOK 03",
+            "title": "Midnight Black Satin Bustier Dress",
+            "details": "Sculpted boned corset dress with shimmering crystal rhinestone borders.",
+            "cta_label": "Join Waitlist",
+            "cta_link": "#waitlist"
+          }
+        },
+        "look_4": {
+          "type": "look",
+          "settings": {
+            "tag": "LOOK 04",
+            "title": "Metallic Ruby Draped Halter Dress",
+            "details": "High-glamour liquid metallic silk with cowl draping and crystal collar.",
+            "cta_label": "Join Waitlist",
+            "cta_link": "#waitlist"
+          }
+        },
+        "look_5": {
+          "type": "look",
+          "settings": {
+            "tag": "LOOK 05",
+            "title": "Champagne Pleated Corset Set",
+            "details": "Silky satin sweetheart top with sparkling crystal fringe pleated skirt.",
+            "cta_label": "Join Waitlist",
+            "cta_link": "#waitlist"
+          }
+        }
+      },
+      "block_order": [
+        "look_1",
+        "look_2",
+        "look_3",
+        "look_4",
+        "look_5"
+      ],
+      "settings": {
+        "eyebrow": "TIKKI BELLA • DROP 01",
+        "heading": "THE ATELIER WARDROBE",
+        "subheading": "Step inside Drop 01. Swipe along the rail to explore our private debut collection.",
+        "auto_open": true,
+        "auto_cycle": true,
+        "cycle_speed": 4,
+        "bg_color": "#f3f0e7",
+        "text_color": "#2a2529",
+        "accent_color": "#c59b27"
+      }
+    },
     "image_banner": {
       "type": "image-banner",
       "blocks": {
@@ -158,6 +231,7 @@
   },
   "order": [
     "hero_3d_cylinder",
+    "wardrobe_carousel",
     "image_banner",
     "featured_collection"
   ]

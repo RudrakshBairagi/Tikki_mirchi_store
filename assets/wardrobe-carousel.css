@@ -1,0 +1,797 @@
+/* ==========================================================================
+   Tikki Bella — The Atelier Wardrobe Carousel
+   Luxury 3D Double-Door Armoire with Hanger Rail Outfit Carousel
+   ========================================================================== */
+
+.wardrobe-section {
+  position: relative;
+  width: 100%;
+  padding: 80px 24px 100px;
+  background-color: var(--wardrobe-bg, #f3f0e7);
+  color: var(--wardrobe-text, #2a2529);
+  overflow: hidden;
+  box-sizing: border-box;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Subtle ambient backdrop glow */
+.wardrobe-section::before {
+  content: '';
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.08) 0%, rgba(197, 155, 39, 0.03) 40%, transparent 70%);
+  filter: blur(70px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.wardrobe-container {
+  position: relative;
+  z-index: 2;
+  max-width: 1140px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Header & Typography */
+.wardrobe-header {
+  text-align: center;
+  max-width: 640px;
+  margin-bottom: 36px;
+}
+
+.wardrobe-tagline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--wardrobe-accent, #c59b27);
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.wardrobe-tag-dot {
+  font-size: 9px;
+  animation: ward-pulse 2.5s infinite ease-in-out;
+}
+
+@keyframes ward-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+.wardrobe-title {
+  margin: 0 0 14px;
+  font-size: clamp(2.4rem, 5.5vw, 4.4rem);
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--wardrobe-text, #2a2529);
+  font-weight: 400;
+}
+
+.wardrobe-subtitle {
+  margin: 0 auto;
+  font-size: clamp(13px, 1.6vw, 15px);
+  line-height: 1.5;
+  color: var(--wardrobe-text, #2a2529);
+  opacity: 0.75;
+  font-weight: 400;
+}
+
+/* Door Toggle Button */
+.wardrobe-controls-bar {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.wardrobe-door-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-radius: 999px;
+  background: rgba(42, 37, 41, 0.06);
+  border: 1px solid rgba(42, 37, 41, 0.15);
+  color: var(--wardrobe-text, #2a2529);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  user-select: none;
+}
+
+.wardrobe-door-toggle-btn:hover {
+  background: var(--wardrobe-text, #2a2529);
+  color: var(--wardrobe-bg, #f3f0e7);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.wardrobe-door-toggle-btn .door-toggle-icon {
+  font-size: 14px;
+  transition: transform 0.3s ease;
+}
+
+.wardrobe-door-toggle-btn:hover .door-toggle-icon {
+  transform: scale(1.15);
+}
+
+/* 3D Wardrobe Stage */
+.wardrobe-stage {
+  position: relative;
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  perspective: 1400px;
+  perspective-origin: 50% 45%;
+}
+
+/* The Armoire Cabinet Frame */
+.wardrobe-cabinet {
+  position: relative;
+  width: 100%;
+  height: 640px;
+  background: #181516;
+  border-radius: 12px;
+  box-shadow: 
+    0 30px 70px rgba(0, 0, 0, 0.35),
+    0 10px 25px rgba(0, 0, 0, 0.2),
+    inset 0 0 0 2px rgba(212, 175, 55, 0.25);
+  overflow: visible;
+  transform-style: preserve-3d;
+}
+
+/* Cabinet Top Crown */
+.wardrobe-crown {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 38px;
+  background: linear-gradient(to bottom, #2c2729 0%, #1c191a 100%);
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  border-bottom: 2px solid #363032;
+  z-index: 5;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+}
+
+.crown-brass-trim {
+  position: absolute;
+  bottom: 0;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #d4af37, #fef08a, #d4af37, transparent);
+  opacity: 0.8;
+}
+
+/* Spotlight Downlight */
+.wardrobe-spotlight {
+  position: absolute;
+  top: 38px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 350px;
+  background: radial-gradient(ellipse at top, rgba(254, 240, 138, 0.14) 0%, rgba(212, 175, 55, 0.04) 50%, transparent 75%);
+  pointer-events: none;
+  z-index: 4;
+}
+
+/* Clothes Hanging Rail */
+.wardrobe-rail {
+  position: absolute;
+  top: 48px;
+  left: 24px;
+  right: 24px;
+  height: 20px;
+  z-index: 12;
+  pointer-events: none;
+}
+
+.rail-bar {
+  position: absolute;
+  top: 6px;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: linear-gradient(to bottom, #ffffff 0%, #fef08a 25%, #d4af37 60%, #854d0e 90%, #d4af37 100%);
+  border-radius: 4px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.8), 0 0 10px rgba(212, 175, 55, 0.4);
+}
+
+.rail-bracket {
+  position: absolute;
+  top: -8px;
+  width: 12px;
+  height: 26px;
+  background: linear-gradient(to bottom, #fef08a, #854d0e);
+  border-radius: 3px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.6);
+}
+.rail-bracket.left { left: 8px; }
+.rail-bracket.right { right: 8px; }
+
+/* Wardrobe Interior & Carousel Track */
+.wardrobe-interior {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding-top: 55px;
+  padding-bottom: 24px;
+  box-sizing: border-box;
+  overflow: hidden;
+  z-index: 5;
+  touch-action: pan-y;
+  cursor: grab;
+}
+
+.wardrobe-interior:active {
+  cursor: grabbing;
+}
+
+.wardrobe-carousel-track {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+/* Outfit Card hanging from the rail */
+.wardrobe-outfit-card {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 290px;
+  height: 500px;
+  margin-left: -145px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.5s ease, filter 0.5s ease;
+  will-change: transform, opacity;
+  cursor: pointer;
+}
+
+/* Brass Hanger */
+.wardrobe-hanger {
+  position: relative;
+  width: 140px;
+  height: 42px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 14;
+  margin-bottom: -4px;
+  pointer-events: none;
+}
+
+.hanger-hook {
+  width: 16px;
+  height: 20px;
+  border: 3px solid #fef08a;
+  border-bottom: none;
+  border-top-left-radius: 9px;
+  border-top-right-radius: 9px;
+  box-shadow: 0 0 6px rgba(212, 175, 55, 0.6);
+  transform: translateY(-2px);
+}
+
+.hanger-body {
+  width: 100%;
+  height: 12px;
+  background: linear-gradient(90deg, #78350f 0%, #b45309 15%, #d4af37 35%, #fef08a 50%, #d4af37 65%, #b45309 85%, #78350f 100%);
+  border-radius: 6px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.6);
+  clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+  border-bottom: 2px solid #854d0e;
+}
+
+/* Outfit Card Visual Frame */
+.outfit-media-box {
+  position: relative;
+  width: 100%;
+  height: 430px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 20px 45px rgba(0,0,0,0.65), 0 2px 8px rgba(0,0,0,0.4);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #1f1b1d;
+  transition: box-shadow 0.35s ease, border-color 0.35s ease;
+}
+
+.outfit-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  filter: saturate(1.05) contrast(1.03);
+}
+
+.outfit-overlay-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(14, 12, 13, 0.95) 0%, rgba(14, 12, 13, 0.35) 45%, transparent 75%);
+  pointer-events: none;
+}
+
+/* Look Details Badge */
+.outfit-badge {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: #fff;
+  z-index: 2;
+  transform: translateY(4px);
+  transition: transform 0.3s ease;
+}
+
+.outfit-tag {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #d4af37;
+}
+
+.outfit-name {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+}
+
+.outfit-desc {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.outfit-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #fef08a;
+  text-decoration: none;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.outfit-cta:hover {
+  transform: translateX(4px);
+  color: #ffffff;
+}
+
+/* Card Depth Positioning in Carousel */
+.wardrobe-outfit-card.is-active {
+  transform: translateX(0) scale(1) translateZ(60px);
+  opacity: 1;
+  z-index: 10;
+  filter: none;
+}
+
+.wardrobe-outfit-card.is-active .outfit-media-box {
+  border-color: rgba(212, 175, 55, 0.6);
+  box-shadow: 0 25px 55px rgba(0,0,0,0.8), 0 0 25px rgba(212, 175, 55, 0.15);
+}
+
+.wardrobe-outfit-card.is-prev {
+  transform: translateX(-240px) scale(0.86) translateZ(10px);
+  opacity: 0.55;
+  z-index: 5;
+  filter: brightness(0.65) blur(0.5px);
+}
+
+.wardrobe-outfit-card.is-next {
+  transform: translateX(240px) scale(0.86) translateZ(10px);
+  opacity: 0.55;
+  z-index: 5;
+  filter: brightness(0.65) blur(0.5px);
+}
+
+.wardrobe-outfit-card.is-hidden {
+  transform: translateX(0) scale(0.65) translateZ(-80px);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* 3D Interactive Double Doors */
+.wardrobe-doors-wrapper {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 20;
+  transform-style: preserve-3d;
+}
+
+.wardrobe-door {
+  position: absolute;
+  top: 38px;
+  bottom: 22px;
+  width: 50%;
+  cursor: pointer;
+  pointer-events: auto;
+  transform-style: preserve-3d;
+  transition: transform 0.95s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.95s ease;
+  will-change: transform;
+}
+
+.door-left {
+  left: 0;
+  transform-origin: left center;
+  border-top-left-radius: 4px;
+}
+
+.door-right {
+  right: 0;
+  transform-origin: right center;
+  border-top-right-radius: 4px;
+}
+
+/* Door Faces (Front & Interior) */
+.door-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  box-sizing: border-box;
+}
+
+.door-front {
+  background: linear-gradient(135deg, #2f2a2c 0%, #1c191a 60%, #151314 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 0 35px rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Molded Panel on Front Door */
+.door-panel-molding {
+  position: absolute;
+  top: 24px;
+  bottom: 24px;
+  left: 20px;
+  right: 20px;
+  border: 2px solid rgba(212, 175, 55, 0.25);
+  box-shadow: inset 0 0 18px rgba(0,0,0,0.6), 0 0 8px rgba(0,0,0,0.5);
+  border-radius: 4px;
+}
+
+/* Door Back / Interior Mirror */
+.door-back {
+  transform: rotateY(180deg);
+  background: #141213;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.door-mirror {
+  position: absolute;
+  top: 20px;
+  bottom: 20px;
+  left: 18px;
+  right: 18px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.6);
+  border-radius: 4px;
+}
+
+/* Luxury Brass Handles */
+.door-handle {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 14px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+}
+
+.door-handle-left {
+  right: 16px;
+}
+
+.door-handle-right {
+  left: 16px;
+}
+
+.handle-plate {
+  position: absolute;
+  width: 8px;
+  height: 90px;
+  background: linear-gradient(to bottom, #d4af37, #854d0e);
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.7);
+}
+
+.handle-rod {
+  position: absolute;
+  width: 14px;
+  height: 60px;
+  background: linear-gradient(to right, #fef08a 0%, #d4af37 50%, #78350f 100%);
+  border-radius: 7px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.8), 0 0 8px rgba(212, 175, 55, 0.4);
+}
+
+/* Door OPEN State (revealing rotating outfits) */
+.wardrobe-cabinet.is-open .door-left {
+  transform: rotateY(-115deg);
+  box-shadow: -15px 15px 35px rgba(0,0,0,0.5);
+}
+
+.wardrobe-cabinet.is-open .door-right {
+  transform: rotateY(115deg);
+  box-shadow: 15px 15px 35px rgba(0,0,0,0.5);
+}
+
+/* Cabinet Plinth & Brass Feet */
+.wardrobe-plinth {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 22px;
+  background: #110f10;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  border-top: 1px solid #282425;
+  z-index: 5;
+}
+
+.plinth-brass-feet {
+  position: absolute;
+  bottom: -6px;
+  width: 32px;
+  height: 6px;
+  background: #d4af37;
+  border-radius: 2px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.7);
+}
+.plinth-brass-feet.left { left: 30px; }
+.plinth-brass-feet.right { right: 30px; }
+
+/* Navigation Arrows (< and >) */
+.wardrobe-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: rgba(28, 25, 26, 0.85);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  color: #fef08a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 30;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  transition: all 0.25s ease;
+  user-select: none;
+}
+
+.wardrobe-nav-btn:hover {
+  background: #d4af37;
+  color: #161415;
+  border-color: #fef08a;
+  transform: translateY(-50%) scale(1.08);
+  box-shadow: 0 10px 25px rgba(212, 175, 55, 0.4);
+}
+
+.nav-prev {
+  left: -23px;
+}
+
+.nav-next {
+  right: -23px;
+}
+
+/* Pagination Dots */
+.wardrobe-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 36px;
+}
+
+.wardrobe-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(42, 37, 41, 0.2);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.wardrobe-dot.is-active {
+  width: 28px;
+  border-radius: 999px;
+  background: var(--wardrobe-text, #2a2529);
+}
+
+/* Responsive Scaling for Tablets and Mobile */
+@media screen and (max-width: 990px) {
+  .wardrobe-stage {
+    max-width: 720px;
+  }
+
+  .wardrobe-cabinet {
+    height: 580px;
+  }
+
+  .wardrobe-outfit-card {
+    width: 250px;
+    height: 440px;
+    margin-left: -125px;
+  }
+
+  .outfit-media-box {
+    height: 390px;
+  }
+
+  .wardrobe-outfit-card.is-prev {
+    transform: translateX(-190px) scale(0.85);
+  }
+
+  .wardrobe-outfit-card.is-next {
+    transform: translateX(190px) scale(0.85);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .wardrobe-section {
+    padding: 60px 16px 80px;
+  }
+
+  .wardrobe-cabinet {
+    height: 520px;
+  }
+
+  .wardrobe-stage {
+    max-width: 100%;
+  }
+
+  .wardrobe-nav-btn {
+    width: 38px;
+    height: 38px;
+    font-size: 20px;
+  }
+  .nav-prev { left: 8px; }
+  .nav-next { right: 8px; }
+
+  .wardrobe-cabinet.is-open .door-left {
+    transform: rotateY(-130deg);
+  }
+
+  .wardrobe-cabinet.is-open .door-right {
+    transform: rotateY(130deg);
+  }
+
+  .wardrobe-outfit-card {
+    width: 220px;
+    height: 400px;
+    margin-left: -110px;
+  }
+
+  .outfit-media-box {
+    height: 350px;
+  }
+
+  .wardrobe-outfit-card.is-prev {
+    transform: translateX(-140px) scale(0.82);
+    opacity: 0.35;
+  }
+
+  .wardrobe-outfit-card.is-next {
+    transform: translateX(140px) scale(0.82);
+    opacity: 0.35;
+  }
+
+  .outfit-name {
+    font-size: 15px;
+  }
+  .outfit-desc {
+    display: none; /* Keep clean on small screens */
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .wardrobe-section {
+    padding: 44px 12px 64px;
+  }
+
+  .wardrobe-header {
+    margin-bottom: 24px;
+  }
+
+  .wardrobe-cabinet {
+    height: 480px;
+    border-radius: 8px;
+  }
+
+  .wardrobe-outfit-card {
+    width: 190px;
+    height: 360px;
+    margin-left: -95px;
+  }
+
+  .outfit-media-box {
+    height: 310px;
+  }
+
+  .wardrobe-hanger {
+    width: 100px;
+    height: 35px;
+  }
+
+  .wardrobe-outfit-card.is-prev {
+    transform: translateX(-105px) scale(0.8);
+    opacity: 0.25;
+  }
+
+  .wardrobe-outfit-card.is-next {
+    transform: translateX(105px) scale(0.8);
+    opacity: 0.25;
+  }
+
+  .outfit-badge {
+    padding: 14px 14px;
+  }
+
+  .outfit-name {
+    font-size: 13px;
+  }
+
+  .wardrobe-nav-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+  }
+  .nav-prev { left: 4px; }
+  .nav-next { right: 4px; }
+}
