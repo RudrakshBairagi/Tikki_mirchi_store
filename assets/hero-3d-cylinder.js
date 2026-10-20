@@ -1,7 +1,8 @@
 /**
- * Hero 3D Cylindrical Carousel Controller (Kai Marlow Style)
- * High-performance 3D spatial rotation engine with drag momentum,
- * dynamic spherical lighting, and smooth auto-spin.
+ * Hero 3D Cylindrical Carousel Controller (Kai Marlow Authentic Sliced Cylinder Engine)
+ * High-performance 3D spatial rotation engine using continuous multi-slice
+ * cylindrical geometry to eliminate polygonal straight edges, providing
+ * true continuous cylinder curvature, drag inertia, and unflattened 3D depth.
  */
 
 class Hero3dCylinderCarousel {
@@ -9,17 +10,32 @@ class Hero3dCylinderCarousel {
     this.container = container;
     this.viewport = container.querySelector('.hero-3d-viewport');
     this.cylinder = container.querySelector('.hero-3d-cylinder');
-    this.cards = Array.from(container.querySelectorAll('.hero-3d-card'));
     
-    if (!this.cylinder || this.cards.length === 0) return;
+    if (!this.cylinder) return;
 
     // Configuration from dataset
     this.baseSpeed = parseFloat(container.dataset.speed || '14'); // deg per second
-    this.tilt = parseFloat(container.dataset.tilt || '18');
-    this.dragSensitivity = parseFloat(container.dataset.dragSensitivity || '0.28');
+    this.tilt = parseFloat(container.dataset.tilt || '0');
+    this.dragSensitivity = parseFloat(container.dataset.dragSensitivity || '0.25');
     this.dragFriction = 0.92;
     this.dynamicLighting = container.dataset.lighting !== 'false';
-    this.gap = parseFloat(container.dataset.gap || '24');
+    this.gap = parseFloat(container.dataset.gap || '6');
+    this.slicesPerCard = 16; // 16 curved vertical slices per card = 80 facets total for silky-smooth true cylinder curvature
+
+    // Extract original cards data from DOM before building curved slices
+    const originalCards = Array.from(container.querySelectorAll('.hero-3d-card'));
+    if (originalCards.length === 0) return;
+
+    this.cardData = originalCards.map((card, idx) => {
+      const img = card.querySelector('img');
+      const link = card.querySelector('a');
+      return {
+        id: idx,
+        src: card.dataset.src || (img ? img.getAttribute('src') : '') || '',
+        alt: img ? (img.getAttribute('alt') || `Card ${idx + 1}`) : `Card ${idx + 1}`,
+        link: card.dataset.link || (link ? link.getAttribute('href') : '#') || '#'
+      };
+    });
 
     // Runtime state
     this.currentRotation = 0;
@@ -30,9 +46,11 @@ class Hero3dCylinderCarousel {
     this.startX = 0;
     this.lastX = 0;
     this.lastTime = 0;
-    this.radius = 450;
-    this.cardWidth = 220;
-    this.cardHeight = 320;
+    this.cardWidth = 340;
+    this.cardHeight = 230;
+    this.cardRadius = 4;
+    this.radius = 280;
+    this.slices = [];
     this.animationFrameId = null;
 
     this.init();
@@ -40,7 +58,7 @@ class Hero3dCylinderCarousel {
 
   init() {
     this.updateDimensions();
-    this.layoutCylinder();
+    this.buildCurvedCylinder();
     this.bindEvents();
     
     this.lastTimestamp = performance.now();
@@ -49,50 +67,113 @@ class Hero3dCylinderCarousel {
   }
 
   updateDimensions() {
-    // Read configured card dimensions from CSS custom properties or DOM
     const computedWidth = parseFloat(getComputedStyle(this.container).getPropertyValue('--card-width'));
     const computedHeight = parseFloat(getComputedStyle(this.container).getPropertyValue('--card-height'));
+    const computedRadius = parseFloat(getComputedStyle(this.container).getPropertyValue('--card-radius'));
+    
     if (computedWidth > 0) this.cardWidth = computedWidth;
     if (computedHeight > 0) this.cardHeight = computedHeight;
+    if (!isNaN(computedRadius)) this.cardRadius = computedRadius;
 
-    if (this.cards.length > 0) {
-      const rect = this.cards[0].getBoundingClientRect();
-      if (rect.width > 0) this.cardWidth = rect.width;
-      if (rect.height > 0) this.cardHeight = rect.height;
-    }
-
-    const n = Math.max(this.cards.length, 3);
-    const halfAngle = Math.PI / n;
-    // Exact polygon apothem formula: R = (width + gap) / (2 * tan(PI / n))
-    // Cards sit closely adjacent to each other with minimal hairline gap
-    this.radius = Math.round((this.cardWidth + this.gap) / (2 * Math.tan(halfAngle)));
+    const N = Math.max(this.cardData.length, 3);
+    // True circle circumference formula: C = N * (W + gap) => R = C / (2 * PI)
+    this.radius = Math.round((N * (this.cardWidth + this.gap)) / (2 * Math.PI));
     
-    // Set CSS custom property for reference
     this.container.style.setProperty('--cylinder-radius', `${this.radius}px`);
   }
 
-  layoutCylinder() {
-    const total = this.cards.length;
-    const angleStep = 360 / total;
+  buildCurvedCylinder() {
+    this.cylinder.innerHTML = '';
+    this.slices = [];
 
-    this.cards.forEach((card, index) => {
-      const baseAngle = index * angleStep;
-      card.dataset.baseAngle = baseAngle;
-      // Position card on cylinder circle
-      card.style.transform = `rotateY(${baseAngle}deg) translateZ(${this.radius}px)`;
+    const N = this.cardData.length;
+    const J = this.slicesPerCard;
+    const W = this.cardWidth;
+    const H = this.cardHeight;
+    const R = this.radius;
+    const angleStep = 360 / N;
+    const cardArc = (W / (W + this.gap)) * angleStep;
+    const sliceArc = cardArc / J;
+    const sliceRads = (sliceArc * Math.PI) / 180;
+    // Slight subpixel expansion (+0.6px) prevents hairline gaps on GPU rasterization
+    const sliceWidth = Math.max(1, 2 * R * Math.sin(sliceRads / 2) + 0.6);
+
+    this.cardData.forEach((card, t) => {
+      const cardStartAngle = t * angleStep - cardArc / 2;
+
+      for (let a = 0; a < J; a++) {
+        const sliceAngle = cardStartAngle + (a + 0.5) * sliceArc;
+        const bgX = (W / J) * a;
+        const isFirst = (a === 0);
+        const isLast = (a === J - 1);
+
+        // Slice anchor in 3D space
+        const slice = document.createElement('div');
+        slice.className = 'hero-3d-slice';
+        slice.style.position = 'absolute';
+        slice.style.top = '0';
+        slice.style.left = '50%';
+        slice.style.width = `${sliceWidth.toFixed(2)}px`;
+        slice.style.height = `${H}px`;
+        slice.style.marginLeft = `${(-sliceWidth / 2).toFixed(2)}px`;
+        slice.style.transformStyle = 'preserve-3d';
+        slice.style.transform = `rotateY(${sliceAngle.toFixed(4)}deg) translateZ(${R}px)`;
+        slice.style.willChange = 'transform';
+        slice.style.overflow = 'visible';
+        slice.style.userSelect = 'none';
+        slice.dataset.baseAngle = sliceAngle.toString();
+        slice.dataset.cardLink = card.link || '#';
+
+        // Slice image background
+        const sliceInner = document.createElement('div');
+        sliceInner.className = 'hero-3d-slice-inner';
+        sliceInner.style.position = 'absolute';
+        sliceInner.style.inset = '0';
+        sliceInner.style.backgroundImage = `url("${card.src}")`;
+        sliceInner.style.backgroundRepeat = 'no-repeat';
+        sliceInner.style.backgroundSize = `${W}px ${H}px`;
+        sliceInner.style.backgroundPosition = `-${bgX.toFixed(2)}px 0px`;
+        sliceInner.style.overflow = 'hidden';
+
+        if (isFirst && this.cardRadius > 0) {
+          sliceInner.style.borderTopLeftRadius = `${this.cardRadius}px`;
+          sliceInner.style.borderBottomLeftRadius = `${this.cardRadius}px`;
+        }
+        if (isLast && this.cardRadius > 0) {
+          sliceInner.style.borderTopRightRadius = `${this.cardRadius}px`;
+          sliceInner.style.borderBottomRightRadius = `${this.cardRadius}px`;
+        }
+
+        // Shading scrim overlay (darkens back and sides naturally without filter or z-index)
+        const sliceShade = document.createElement('div');
+        sliceShade.className = 'hero-3d-slice-shade';
+        sliceShade.style.position = 'absolute';
+        sliceShade.style.inset = '0';
+        sliceShade.style.backgroundColor = '#000000';
+        sliceShade.style.opacity = '0';
+        sliceShade.style.pointerEvents = 'none';
+        sliceInner.appendChild(sliceShade);
+
+        slice.appendChild(sliceInner);
+        this.cylinder.appendChild(slice);
+
+        this.slices.push({
+          element: slice,
+          shade: sliceShade,
+          baseAngle: sliceAngle
+        });
+      }
     });
 
     this.updateCardLighting(0);
   }
 
   bindEvents() {
-    // Window Resize handler
     window.addEventListener('resize', () => {
       this.updateDimensions();
-      this.layoutCylinder();
+      this.buildCurvedCylinder();
     }, { passive: true });
 
-    // Pointer events on cylinder container
     const target = this.viewport || this.cylinder;
 
     target.addEventListener('pointerdown', (e) => {
@@ -136,26 +217,18 @@ class Hero3dCylinderCarousel {
     target.addEventListener('pointerup', stopDrag);
     target.addEventListener('pointercancel', stopDrag);
 
-    // Prevent clicking links if the user was actively dragging
-    this.cards.forEach((card) => {
-      card.addEventListener('click', (e) => {
-        if (this.hasDragged) {
-          e.preventDefault();
-          e.stopPropagation();
+    // Prevent clicking links if actively dragging
+    this.cylinder.addEventListener('click', (e) => {
+      if (this.hasDragged) {
+        e.preventDefault();
+        e.stopPropagation();
+      } else {
+        const slice = e.target.closest('.hero-3d-slice');
+        if (slice && slice.dataset.cardLink && slice.dataset.cardLink !== '#') {
+          window.location.href = slice.dataset.cardLink;
         }
-      }, true);
-    });
-
-    // Optional subtle scroll acceleration
-    let lastScrollY = window.scrollY;
-    window.addEventListener('scroll', () => {
-      const currentScrollY = window.scrollY;
-      const scrollDiff = currentScrollY - lastScrollY;
-      lastScrollY = currentScrollY;
-      if (!this.isDragging) {
-        this.currentRotation += scrollDiff * 0.05;
       }
-    }, { passive: true });
+    }, true);
   }
 
   tick(timestamp) {
@@ -164,11 +237,9 @@ class Hero3dCylinderCarousel {
 
     if (!this.isDragging) {
       if (Math.abs(this.currentVelocity) > 0.01) {
-        // Coasting with inertia
         this.currentRotation += this.currentVelocity;
         this.currentVelocity *= this.dragFriction;
       } else {
-        // Standard continuous auto-rotation
         this.currentRotation += this.baseSpeed * dt;
       }
       this.applyRotation();
@@ -185,22 +256,14 @@ class Hero3dCylinderCarousel {
   }
 
   updateCardLighting(rotation) {
-    this.cards.forEach((card) => {
-      const baseAngle = parseFloat(card.dataset.baseAngle || '0');
-      // Relative angle to the camera (0 deg is dead center facing camera)
-      const relativeAngle = (((baseAngle + rotation) % 360) + 540) % 360 - 180;
+    this.slices.forEach((item) => {
+      const relativeAngle = (((item.baseAngle + rotation) % 360) + 540) % 360 - 180;
       const rad = (relativeAngle * Math.PI) / 180;
-      const cosFactor = Math.cos(rad); // 1 = front, -1 = back
+      const cosFactor = Math.cos(rad); // 1 = facing front, -1 = facing back
 
-      // Lighting shader equation
-      const brightness = 0.5 + 0.5 * cosFactor; // 0.0 to 1.0
-      const contrast = 0.85 + 0.25 * cosFactor;
-
-      card.style.filter = `brightness(${brightness.toFixed(3)}) contrast(${contrast.toFixed(3)})`;
-      
-      // Dynamic z-index for clean layer stacking
-      const zIndex = Math.round((cosFactor + 1) * 100);
-      card.style.zIndex = zIndex;
+      // Smooth cosine darkness scrim without filter or z-index (preserves pure GPU 3D depth)
+      const shade = Math.max(0, Math.min(0.55, 0.55 * (1 - cosFactor) / 2));
+      item.shade.style.opacity = shade.toFixed(3);
     });
   }
 

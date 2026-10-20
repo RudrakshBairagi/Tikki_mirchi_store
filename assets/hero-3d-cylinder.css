@@ -117,13 +117,13 @@
 /* Giant Editorial Brand Typography */
 .hero-3d-giant-title {
   position: absolute;
-  top: 26%;
+  top: 36%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 100%;
   text-align: center;
   font-family: 'Ragara', 'Italiana', Georgia, serif;
-  font-size: clamp(4.5rem, 16vw, 16rem);
+  font-size: clamp(4.6rem, 16.5vw, 16.5rem);
   line-height: 0.88;
   letter-spacing: -0.02em;
   color: var(--hero-title-color, rgba(245, 242, 235, 0.92));
@@ -150,11 +150,11 @@
   align-items: center;
   justify-content: center;
   perspective: var(--cylinder-perspective, 1000px);
-  perspective-origin: 50% 18%;
+  perspective-origin: 50% 28%;
   z-index: 4;
   overflow: visible;
   touch-action: pan-y;
-  margin-top: 85px;
+  margin-top: 50px;
 }
 
 /* Tilter (controls vertical isometric / tilt angle) */
@@ -185,7 +185,31 @@
   cursor: grabbing;
 }
 
-/* Individual 3D Card */
+/* Curved Cylinder Slices (Authentic Kai Marlow Sliced Drum) */
+.hero-3d-slice {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform-style: preserve-3d;
+  backface-visibility: visible;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: auto;
+}
+
+.hero-3d-slice-inner {
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  will-change: transform;
+}
+
+.hero-3d-curved-card-group {
+  cursor: pointer;
+  display: contents;
+}
+
+/* Individual 3D Card (Fallback & Semantic DOM) */
 .hero-3d-card {
   position: absolute;
   top: 0;

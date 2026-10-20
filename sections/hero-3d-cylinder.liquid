@@ -74,33 +74,31 @@
         <div class="hero-3d-cylinder">
           {%- if section.blocks.size > 0 -%}
             {%- for block in section.blocks -%}
-              <div class="hero-3d-card" {{ block.shopify_attributes }}>
+              {%- assign default_img_index = forloop.index0 | modulo: 5 | plus: 1 -%}
+              {%- capture fallback_name -%}cylinder-card-{{ default_img_index }}.jpg{%- endcapture -%}
+              {%- assign card_img_src = fallback_name | asset_url -%}
+              {%- if block.settings.image != blank -%}
+                {%- assign card_img_src = block.settings.image | image_url: width: 800 -%}
+              {%- endif -%}
+              <div
+                class="hero-3d-card"
+                data-src="{{ card_img_src }}"
+                data-link="{{ block.settings.link | default: '#' }}"
+                {{ block.shopify_attributes }}
+              >
                 <a
                   href="{{ block.settings.link | default: '#' }}"
                   class="hero-3d-card-inner"
                   aria-label="Card {{ forloop.index }}"
                 >
-                  {%- if block.settings.image != blank -%}
-                    <img
-                      src="{{ block.settings.image | image_url: width: 600 }}"
-                      alt="{{ block.settings.image.alt | default: 'Image Card' | escape }}"
-                      class="hero-3d-card-media"
-                      loading="lazy"
-                      width="300"
-                      height="400"
-                    >
-                  {%- else -%}
-                    {%- assign default_img_index = forloop.index0 | modulo: 5 | plus: 1 -%}
-                    {%- capture asset_name -%}cylinder-card-{{ default_img_index }}.jpg{%- endcapture -%}
-                    <img
-                      src="{{ asset_name | asset_url }}"
-                      alt="Card {{ forloop.index }}"
-                      class="hero-3d-card-media"
-                      loading="lazy"
-                      width="300"
-                      height="400"
-                    >
-                  {%- endif -%}
+                  <img
+                    src="{{ card_img_src }}"
+                    alt="{{ block.settings.image.alt | default: 'Card' | escape }}"
+                    class="hero-3d-card-media"
+                    loading="lazy"
+                    width="360"
+                    height="230"
+                  >
                 </a>
 
                 {%- if section.settings.enable_reflection -%}
