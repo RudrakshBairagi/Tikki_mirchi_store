@@ -1,235 +1,184 @@
 /**
- * Tikki Bella — The Atelier Wardrobe Carousel Controller
- * Manages 3D double doors, clothes rail carousel cycling,
- * touch gestures, and scroll reveal animations.
+ * THE MAGIC WARDROBE (ATELIER PORTAL) CONTROLLER
+ * Manages in-place outfit cycling, pointer/touch swipe, indicators, and tabs.
  */
 
-class WardrobeCarousel {
-  constructor(section) {
-    this.section = section;
-    this.cabinet = section.querySelector('.wardrobe-cabinet');
-    this.toggleBtn = section.querySelector('.wardrobe-door-toggle-btn');
-    this.toggleText = section.querySelector('.door-toggle-text');
-    this.doors = Array.from(section.querySelectorAll('.wardrobe-door'));
-    this.cards = Array.from(section.querySelectorAll('.wardrobe-outfit-card'));
-    this.interior = section.querySelector('.wardrobe-interior');
-    this.prevBtn = section.querySelector('.nav-prev');
-    this.nextBtn = section.querySelector('.nav-next');
-    this.pagination = section.querySelector('.wardrobe-pagination');
+class MagicWardrobe {
+  constructor(sectionEl) {
+    this.section = sectionEl;
+    this.stageInner = this.section.querySelector('.magic-wardrobe-stage-inner');
+    this.slides = Array.from(this.section.querySelectorAll('.magic-outfit-slide'));
+    this.tabs = Array.from(this.section.querySelectorAll('.magic-selector-tab'));
+    this.prevBtn = this.section.querySelector('.magic-nav-btn.nav-prev');
+    this.nextBtn = this.section.querySelector('.magic-nav-btn.nav-next');
+    
+    // Indicator elements
+    this.indicatorLabel = this.section.querySelector('.active-look-label');
+    this.indicatorName = this.section.querySelector('.active-look-name');
 
-    if (!this.cabinet || this.cards.length === 0) return;
-
-    this.autoOpen = section.dataset.autoOpen !== 'false';
-    this.autoCycle = section.dataset.autoCycle !== 'false';
-    this.cycleSpeed = (parseFloat(section.dataset.speed) || 4) * 1000;
-
-    this.isOpen = false;
-    this.hasAutoOpened = false;
     this.currentIndex = 0;
-    this.totalCards = this.cards.length;
-    this.cycleTimer = null;
+    this.totalSlides = this.slides.length;
+    if (this.totalSlides === 0) return;
 
-    // Drag/Touch interaction state
+    // Settings
+    this.autoCycleEnabled = this.section.dataset.autoCycle !== 'false';
+    this.speed = (parseFloat(this.section.dataset.speed) || 4) * 1000;
+    this.cycleTimer = null;
+    this.isPaused = false;
+    this.isIntersecting = false;
+
+    // Swipe tracking
     this.startX = 0;
-    this.currentX = 0;
-    this.isDragging = false;
-    this.hasDragged = false;
+    this.startY = 0;
+    this.isPointerDown = false;
 
     this.init();
   }
 
   init() {
-    this.buildPagination();
-    this.updateCardPositions();
     this.bindEvents();
-    this.setupScrollObserver();
+    this.setupIntersectionObserver();
+    this.updateIndicator(0);
 
-    if (this.autoCycle) {
-      this.startAutoCycle();
-    }
-  }
-
-  buildPagination() {
-    if (!this.pagination) return;
-    this.pagination.innerHTML = '';
-    this.dots = [];
-
-    for (let i = 0; i < this.totalCards; i++) {
-      const dot = document.createElement('button');
-      dot.className = `wardrobe-dot ${i === 0 ? 'is-active' : ''}`;
-      dot.setAttribute('aria-label', `Go to look ${i + 1}`);
-      dot.addEventListener('click', () => {
-        this.goTo(i);
-        this.resetAutoCycle();
-      });
-      this.pagination.appendChild(dot);
-      this.dots.push(dot);
+    if (this.autoCycleEnabled) {
+      this.startCycle();
     }
   }
 
   bindEvents() {
-    // Door Toggle Button
-    if (this.toggleBtn) {
-      this.toggleBtn.addEventListener('click', () => this.toggleDoors());
-    }
-
-    // Clicking on the doors themselves opens them
-    this.doors.forEach((door) => {
-      door.addEventListener('click', (e) => {
-        if (!this.isOpen) {
-          e.stopPropagation();
-          this.openDoors();
-        }
-      });
-    });
-
-    // Navigation arrows
+    // Nav Chevrons
     if (this.prevBtn) {
-      this.prevBtn.addEventListener('click', () => {
+      this.prevBtn.addEventListener('click', (e) => {
+        e.preventDefault();
         this.prev();
-        this.resetAutoCycle();
+        this.resetTimer();
       });
     }
 
     if (this.nextBtn) {
-      this.nextBtn.addEventListener('click', () => {
+      this.nextBtn.addEventListener('click', (e) => {
+        e.preventDefault();
         this.next();
-        this.resetAutoCycle();
+        this.resetTimer();
       });
     }
 
-    // Outfit Cards Click (clicking preview card brings it to center)
-    this.cards.forEach((card, idx) => {
-      card.addEventListener('click', (e) => {
-        if (this.hasDragged) return;
-        if (idx !== this.currentIndex) {
-          e.preventDefault();
-          this.goTo(idx);
-          this.resetAutoCycle();
+    // Selector Tabs
+    this.tabs.forEach((tab) => {
+      tab.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetIdx = parseInt(tab.dataset.index, 10);
+        if (!isNaN(targetIdx) && targetIdx !== this.currentIndex) {
+          this.goTo(targetIdx);
+          this.resetTimer();
         }
       });
     });
 
-    // Pause auto-cycle on hover
-    if (this.interior) {
-      this.interior.addEventListener('mouseenter', () => this.stopAutoCycle());
-      this.interior.addEventListener('mouseleave', () => {
-        if (this.autoCycle && this.isOpen) this.startAutoCycle();
+    // Hover Pause on Stage
+    if (this.stageInner) {
+      this.stageInner.addEventListener('mouseenter', () => {
+        this.isPaused = true;
       });
 
-      // Pointer / Touch Swipe Handling
-      this.interior.addEventListener('pointerdown', (e) => {
-        this.isDragging = true;
-        this.hasDragged = false;
+      this.stageInner.addEventListener('mouseleave', () => {
+        this.isPaused = false;
+      });
+
+      // Pointer / Swipe Handling
+      this.stageInner.addEventListener('pointerdown', (e) => {
+        this.isPointerDown = true;
         this.startX = e.clientX;
-        this.currentX = e.clientX;
-        try {
-          this.interior.setPointerCapture(e.pointerId);
-        } catch (_) {}
+        this.startY = e.clientY;
       });
 
-      this.interior.addEventListener('pointermove', (e) => {
-        if (!this.isDragging) return;
-        this.currentX = e.clientX;
-        if (Math.abs(this.currentX - this.startX) > 8) {
-          this.hasDragged = true;
-        }
-      });
+      this.stageInner.addEventListener('pointerup', (e) => {
+        if (!this.isPointerDown) return;
+        this.isPointerDown = false;
 
-      const handlePointerUp = (e) => {
-        if (!this.isDragging) return;
-        this.isDragging = false;
-        if (e.pointerId && this.interior.releasePointerCapture) {
-          try {
-            this.interior.releasePointerCapture(e.pointerId);
-          } catch (_) {}
-        }
+        const deltaX = e.clientX - this.startX;
+        const deltaY = e.clientY - this.startY;
 
-        const deltaX = this.currentX - this.startX;
-        if (Math.abs(deltaX) > 40) {
+        // Ensure horizontal swipe dominant
+        if (Math.abs(deltaX) > 40 && Math.abs(deltaX) > Math.abs(deltaY)) {
           if (deltaX < 0) {
             this.next();
           } else {
             this.prev();
           }
-          this.resetAutoCycle();
+          this.resetTimer();
         }
-      };
+      });
 
-      this.interior.addEventListener('pointerup', handlePointerUp);
-      this.interior.addEventListener('pointercancel', handlePointerUp);
+      this.stageInner.addEventListener('pointercancel', () => {
+        this.isPointerDown = false;
+      });
     }
 
-    // Keyboard navigation
-    this.section.addEventListener('keydown', (e) => {
+    // Keyboard Navigation
+    document.addEventListener('keydown', (e) => {
+      if (!this.isIntersecting) return;
       if (e.key === 'ArrowLeft') {
         this.prev();
-        this.resetAutoCycle();
+        this.resetTimer();
       } else if (e.key === 'ArrowRight') {
         this.next();
-        this.resetAutoCycle();
+        this.resetTimer();
       }
     });
   }
 
-  setupScrollObserver() {
-    if (!this.autoOpen || !('IntersectionObserver' in window)) {
-      this.openDoors();
+  setupIntersectionObserver() {
+    if (!('IntersectionObserver' in window)) {
+      this.isIntersecting = true;
       return;
     }
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting && !this.hasAutoOpened) {
-          this.hasAutoOpened = true;
-          // Smooth staggered reveal: open doors slightly after coming into view
-          setTimeout(() => {
-            this.openDoors();
-          }, 350);
-        }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          this.isIntersecting = entry.isIntersecting;
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    observer.observe(this.section);
+  }
+
+  goTo(newIndex) {
+    if (newIndex < 0) {
+      newIndex = this.totalSlides - 1;
+    } else if (newIndex >= this.totalSlides) {
+      newIndex = 0;
+    }
+
+    if (newIndex === this.currentIndex) return;
+
+    // Remove active from old slide
+    this.slides[this.currentIndex].classList.remove('is-active');
+    if (this.tabs[this.currentIndex]) {
+      this.tabs[this.currentIndex].classList.remove('is-active');
+      this.tabs[this.currentIndex].setAttribute('aria-selected', 'false');
+    }
+
+    // Add active to new slide
+    this.currentIndex = newIndex;
+    this.slides[this.currentIndex].classList.add('is-active');
+
+    if (this.tabs[this.currentIndex]) {
+      this.tabs[this.currentIndex].classList.add('is-active');
+      this.tabs[this.currentIndex].setAttribute('aria-selected', 'true');
+
+      // Scroll tab into view if horizontal overflow on mobile
+      this.tabs[this.currentIndex].scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'center'
       });
-    }, { threshold: 0.35 });
+    }
 
-    observer.observe(this.cabinet);
-  }
-
-  toggleDoors() {
-    if (this.isOpen) {
-      this.closeDoors();
-    } else {
-      this.openDoors();
-    }
-  }
-
-  openDoors() {
-    this.isOpen = true;
-    this.cabinet.classList.add('is-open');
-    if (this.toggleBtn) {
-      this.toggleBtn.setAttribute('aria-expanded', 'true');
-    }
-    if (this.toggleText) {
-      this.toggleText.textContent = 'Close Wardrobe';
-    }
-    if (this.autoCycle) {
-      this.startAutoCycle();
-    }
-  }
-
-  closeDoors() {
-    this.isOpen = false;
-    this.cabinet.classList.remove('is-open');
-    if (this.toggleBtn) {
-      this.toggleBtn.setAttribute('aria-expanded', 'false');
-    }
-    if (this.toggleText) {
-      this.toggleText.textContent = 'Open Wardrobe';
-    }
-    this.stopAutoCycle();
-  }
-
-  goTo(index) {
-    this.currentIndex = ((index % this.totalCards) + this.totalCards) % this.totalCards;
-    this.updateCardPositions();
+    this.updateIndicator(this.currentIndex);
   }
 
   next() {
@@ -240,69 +189,65 @@ class WardrobeCarousel {
     this.goTo(this.currentIndex - 1);
   }
 
-  updateCardPositions() {
-    const N = this.totalCards;
-    this.cards.forEach((card, idx) => {
-      // Calculate relative position to currentIndex with wrapping
-      let diff = (idx - this.currentIndex) % N;
-      if (diff > N / 2) diff -= N;
-      if (diff < -N / 2) diff += N;
+  updateIndicator(index) {
+    const activeSlide = this.slides[index];
+    if (!activeSlide) return;
 
-      card.classList.remove('is-active', 'is-prev', 'is-next', 'is-hidden');
+    const tag = activeSlide.dataset.tag || `LOOK 0${index + 1}`;
+    const title = activeSlide.dataset.title || 'Partywear Outfit';
 
-      if (diff === 0) {
-        card.classList.add('is-active');
-      } else if (diff === -1) {
-        card.classList.add('is-prev');
-      } else if (diff === 1) {
-        card.classList.add('is-next');
-      } else {
-        card.classList.add('is-hidden');
-      }
-    });
+    if (this.indicatorLabel) {
+      this.indicatorLabel.textContent = `${tag} OF 0${this.totalSlides}`;
+    }
 
-    // Update pagination dots
-    if (this.dots) {
-      this.dots.forEach((dot, idx) => {
-        dot.classList.toggle('is-active', idx === this.currentIndex);
-      });
+    if (this.indicatorName) {
+      this.indicatorName.textContent = title;
     }
   }
 
-  startAutoCycle() {
-    this.stopAutoCycle();
+  startCycle() {
+    this.stopCycle();
     this.cycleTimer = setInterval(() => {
-      if (this.isOpen) {
+      if (!this.isPaused && this.isIntersecting) {
         this.next();
       }
-    }, this.cycleSpeed);
+    }, this.speed);
   }
 
-  stopAutoCycle() {
+  stopCycle() {
     if (this.cycleTimer) {
       clearInterval(this.cycleTimer);
       this.cycleTimer = null;
     }
   }
 
-  resetAutoCycle() {
-    if (this.autoCycle && this.isOpen) {
-      this.startAutoCycle();
-    }
+  resetTimer() {
+    if (!this.autoCycleEnabled) return;
+    this.stopCycle();
+    this.startCycle();
   }
 }
 
-// Auto-initialize when DOM is ready
+// Initialize on DOM ready & Shopify Theme Editor events
 document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.wardrobe-section').forEach((section) => {
-    new WardrobeCarousel(section);
-  });
+  const sections = document.querySelectorAll('.magic-wardrobe-section');
+  sections.forEach((section) => new MagicWardrobe(section));
 });
 
-// Shopify Theme Editor Section Lifecycle Support
-document.addEventListener('shopify:section:load', (event) => {
-  const section = event.target.querySelector('.wardrobe-section');
-  if (section) {
-    new WardrobeCarousel(section);
-  }
-});
+if (window.Shopify && window.Shopify.designMode) {
+  document.addEventListener('shopify:section:load', (e) => {
+    const section = e.target.querySelector('.magic-wardrobe-section');
+    if (section) new MagicWardrobe(section);
+  });
+
+  document.addEventListener('shopify:block:select', (e) => {
+    const slide = e.target.closest('.magic-outfit-slide');
+    if (slide && slide.dataset.index) {
+      const wardrobeSection = slide.closest('.magic-wardrobe-section');
+      if (wardrobeSection) {
+        const instance = new MagicWardrobe(wardrobeSection);
+        instance.goTo(parseInt(slide.dataset.index, 10));
+      }
+    }
+  });
+}

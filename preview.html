@@ -176,259 +176,240 @@
     </div>
   </section>
 
-  <!-- Wardrobe Carousel Section (Demo 2) -->
+  <!-- Magic Wardrobe Section (Demo 2) -->
   <section
     id="Wardrobe-preview"
-    class="wardrobe-section"
-    data-auto-open="false"
+    class="magic-wardrobe-section"
     data-auto-cycle="true"
     data-speed="4"
     style="
       --wardrobe-bg: #f3f0e7;
       --wardrobe-text: #2a2529;
       --wardrobe-accent: #c59b27;
-      --wardrobe-cabinet-outer: #221f20;
-      --wardrobe-cabinet-inner: #161415;
-      --wardrobe-door-face: #2c2829;
-      --wardrobe-brass: #d4af37;
+      --wardrobe-dark: #1e1b1c;
+      --wardrobe-card-bg: rgba(255, 255, 255, 0.94);
     "
   >
-    <div class="wardrobe-container">
+    <div class="magic-wardrobe-container">
       <!-- Header / Editorial Labeling -->
-      <div class="wardrobe-header">
-        <div class="wardrobe-tagline">
-          <span class="wardrobe-tag-dot">✦</span>
-          <span>TIKKI BELLA • DROP 01</span>
+      <div class="magic-wardrobe-header">
+        <div class="magic-wardrobe-tagline">
+          <span class="magic-wardrobe-tag-dot">✦</span>
+          <span>TIKKI BELLA • THE MAGIC WARDROBE</span>
         </div>
-        <h2 class="wardrobe-title" style="font-family: 'Ragara', 'Italiana', Georgia, serif;">THE ATELIER WARDROBE</h2>
-        <p class="wardrobe-subtitle">Step inside our luxury partywear armoire. Open the doors to explore the curated looks of the season.</p>
+        <h2 class="magic-wardrobe-title" style="font-family: 'Ragara', 'Italiana', Georgia, serif;">THE ATELIER DRESSING ROOM</h2>
+        <p class="magic-wardrobe-subtitle">Step inside our private dressing room. Watch our debut partywear collection come to life.</p>
 
-        <!-- Door Toggle Control -->
-        <div class="wardrobe-controls-bar">
-          <button
-            type="button"
-            class="wardrobe-door-toggle-btn"
-            aria-expanded="false"
-            aria-label="Toggle wardrobe doors"
-          >
-            <span class="door-toggle-icon">🚪</span>
-            <span class="door-toggle-text">Open Wardrobe</span>
-          </button>
+        <!-- Dynamic Active Look Indicator -->
+        <div class="magic-active-indicator" aria-live="polite">
+          <span class="active-sparkle">✦</span>
+          <span class="active-look-label">LOOK 01 OF 05</span>
+          <span class="active-dot-separator">•</span>
+          <span class="active-look-name">Golden Corset & Pearl Fringe Skirt</span>
         </div>
       </div>
 
-      <!-- 3D Wardrobe Stage -->
-      <div class="wardrobe-stage">
-        <div class="wardrobe-cabinet">
-          <!-- Cabinet Crown / Top Molding -->
-          <div class="wardrobe-crown">
-            <div class="crown-brass-trim"></div>
-          </div>
+      <!-- The Magic Wardrobe Portal Stage -->
+      <div class="magic-wardrobe-stage">
+        <!-- Previous Arrow -->
+        <button type="button" class="magic-nav-btn nav-prev" aria-label="Previous outfit">
+          <span aria-hidden="true">‹</span>
+        </button>
 
-          <!-- Interior Spotlight Illumination -->
-          <div class="wardrobe-spotlight" aria-hidden="true"></div>
-
-          <!-- Clothes Hanging Rail -->
-          <div class="wardrobe-rail" aria-hidden="true">
-            <div class="rail-bar"></div>
-            <div class="rail-bracket left"></div>
-            <div class="rail-bracket right"></div>
-          </div>
-
-          <!-- Cycling Outfits Track -->
-          <div class="wardrobe-interior">
-            <div class="wardrobe-carousel-track">
-              <!-- Look 1: Golden Corset & Pearl Fringe (User's Look) -->
-              <div class="wardrobe-outfit-card is-active" data-index="0">
-                <div class="wardrobe-hanger" aria-hidden="true">
-                  <div class="hanger-hook"></div>
-                  <div class="hanger-body"></div>
-                </div>
-                <div class="outfit-media-box">
-                  <img
-                    src="assets/wardrobe-look-1.jpg"
-                    alt="Golden Corset & Pearl Fringe Skirt"
-                    class="outfit-image"
-                    loading="lazy"
-                    width="600"
-                    height="800"
-                  >
-                  <div class="outfit-overlay-scrim"></div>
-                  <div class="outfit-badge">
-                    <span class="outfit-tag">LOOK 01</span>
-                    <h3 class="outfit-name">Golden Corset & Pearl Fringe</h3>
-                    <p class="outfit-desc">Sweetheart corset with intricate floral beading and pearl drop fringe.</p>
-                    <a href="#waitlist" class="outfit-cta">
-                      <span>Join Waitlist</span>
-                      <span>→</span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Look 2: Emerald Velvet Set -->
-              <div class="wardrobe-outfit-card" data-index="1">
-                <div class="wardrobe-hanger" aria-hidden="true">
-                  <div class="hanger-hook"></div>
-                  <div class="hanger-body"></div>
-                </div>
-                <div class="outfit-media-box">
-                  <img
-                    src="assets/wardrobe-look-2.jpg"
-                    alt="Emerald Velvet Crystal Corset Set"
-                    class="outfit-image"
-                    loading="lazy"
-                    width="600"
-                    height="800"
-                  >
-                  <div class="outfit-overlay-scrim"></div>
-                  <div class="outfit-badge">
-                    <span class="outfit-tag">LOOK 02</span>
-                    <h3 class="outfit-name">Emerald Velvet Crystal Set</h3>
-                    <p class="outfit-desc">Rich emerald velvet bustier with crystal straps and side-slit mini skirt.</p>
-                    <a href="#waitlist" class="outfit-cta">
-                      <span>Join Waitlist</span>
-                      <span>→</span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Look 3: Midnight Black Bustier Dress -->
-              <div class="wardrobe-outfit-card" data-index="2">
-                <div class="wardrobe-hanger" aria-hidden="true">
-                  <div class="hanger-hook"></div>
-                  <div class="hanger-body"></div>
-                </div>
-                <div class="outfit-media-box">
-                  <img
-                    src="assets/wardrobe-look-3.jpg"
-                    alt="Midnight Black Satin Bustier Dress"
-                    class="outfit-image"
-                    loading="lazy"
-                    width="600"
-                    height="800"
-                  >
-                  <div class="outfit-overlay-scrim"></div>
-                  <div class="outfit-badge">
-                    <span class="outfit-tag">LOOK 03</span>
-                    <h3 class="outfit-name">Midnight Satin Bustier Dress</h3>
-                    <p class="outfit-desc">Sculpted boned corset dress with shimmering crystal rhinestone borders.</p>
-                    <a href="#waitlist" class="outfit-cta">
-                      <span>Join Waitlist</span>
-                      <span>→</span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Look 4: Metallic Ruby Draped Halter Dress -->
-              <div class="wardrobe-outfit-card" data-index="3">
-                <div class="wardrobe-hanger" aria-hidden="true">
-                  <div class="hanger-hook"></div>
-                  <div class="hanger-body"></div>
-                </div>
-                <div class="outfit-media-box">
-                  <img
-                    src="assets/wardrobe-look-4.jpg"
-                    alt="Metallic Ruby Draped Halter Dress"
-                    class="outfit-image"
-                    loading="lazy"
-                    width="600"
-                    height="800"
-                  >
-                  <div class="outfit-overlay-scrim"></div>
-                  <div class="outfit-badge">
-                    <span class="outfit-tag">LOOK 04</span>
-                    <h3 class="outfit-name">Metallic Ruby Draped Dress</h3>
-                    <p class="outfit-desc">High-glamour liquid metallic silk with cowl draping and crystal collar.</p>
-                    <a href="#waitlist" class="outfit-cta">
-                      <span>Join Waitlist</span>
-                      <span>→</span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Look 5: Champagne Pleated Corset Set -->
-              <div class="wardrobe-outfit-card" data-index="4">
-                <div class="wardrobe-hanger" aria-hidden="true">
-                  <div class="hanger-hook"></div>
-                  <div class="hanger-body"></div>
-                </div>
-                <div class="outfit-media-box">
-                  <img
-                    src="assets/wardrobe-look-5.jpg"
-                    alt="Champagne Pleated Corset Set"
-                    class="outfit-image"
-                    loading="lazy"
-                    width="600"
-                    height="800"
-                  >
-                  <div class="outfit-overlay-scrim"></div>
-                  <div class="outfit-badge">
-                    <span class="outfit-tag">LOOK 05</span>
-                    <h3 class="outfit-name">Champagne Pleated Corset Set</h3>
-                    <p class="outfit-desc">Silky satin sweetheart top with sparkling crystal fringe pleated skirt.</p>
-                    <a href="#waitlist" class="outfit-cta">
-                      <span>Join Waitlist</span>
-                      <span>→</span>
+        <!-- Central Wardrobe Frame with In-Place Cycling Outfits -->
+        <div class="magic-wardrobe-stage-inner">
+          <div class="magic-outfits-carousel">
+            <!-- Look 1 -->
+            <div
+              class="magic-outfit-slide is-active"
+              data-index="0"
+              data-tag="LOOK 01"
+              data-title="Golden Corset & Pearl Fringe Skirt"
+            >
+              <div class="magic-outfit-media">
+                <img
+                  src="assets/magic-wardrobe-look-1.jpg"
+                  alt="Golden Corset & Pearl Fringe Skirt"
+                  class="magic-outfit-img"
+                  loading="eager"
+                  width="768"
+                  height="1376"
+                >
+                <div class="magic-outfit-details-card">
+                  <div class="card-inner">
+                    <div class="card-top-row">
+                      <span class="card-tag">LOOK 01</span>
+                      <span class="card-badge">DROP 01 EXCLUSIVE</span>
+                    </div>
+                    <h3 class="card-title">Golden Corset & Pearl Fringe Skirt</h3>
+                    <p class="card-desc">Sweetheart boned corset with intricate floral beading and pearl drop fringe.</p>
+                    <a href="#waitlist" class="card-cta-btn">
+                      <span>Join The Waitlist</span>
+                      <span class="btn-arrow">→</span>
                     </a>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <!-- 3D Interactive Double Doors -->
-          <div class="wardrobe-doors-wrapper">
-            <!-- Left Door -->
-            <div class="wardrobe-door door-left" data-door="left">
-              <div class="door-face door-front">
-                <div class="door-panel-molding"></div>
-                <div class="door-handle door-handle-left">
-                  <div class="handle-plate"></div>
-                  <div class="handle-rod"></div>
+            <!-- Look 2 -->
+            <div
+              class="magic-outfit-slide"
+              data-index="1"
+              data-tag="LOOK 02"
+              data-title="Emerald Velvet Crystal Corset Set"
+            >
+              <div class="magic-outfit-media">
+                <img
+                  src="assets/magic-wardrobe-look-2.jpg"
+                  alt="Emerald Velvet Crystal Corset Set"
+                  class="magic-outfit-img"
+                  loading="lazy"
+                  width="768"
+                  height="1376"
+                >
+                <div class="magic-outfit-details-card">
+                  <div class="card-inner">
+                    <div class="card-top-row">
+                      <span class="card-tag">LOOK 02</span>
+                      <span class="card-badge">DROP 01 EXCLUSIVE</span>
+                    </div>
+                    <h3 class="card-title">Emerald Velvet Crystal Corset Set</h3>
+                    <p class="card-desc">Rich emerald velvet bustier with crystal straps and side-slit mini skirt.</p>
+                    <a href="#waitlist" class="card-cta-btn">
+                      <span>Join The Waitlist</span>
+                      <span class="btn-arrow">→</span>
+                    </a>
+                  </div>
                 </div>
-              </div>
-              <div class="door-face door-back">
-                <div class="door-mirror" aria-hidden="true"></div>
               </div>
             </div>
 
-            <!-- Right Door -->
-            <div class="wardrobe-door door-right" data-door="right">
-              <div class="door-face door-front">
-                <div class="door-panel-molding"></div>
-                <div class="door-handle door-handle-right">
-                  <div class="handle-plate"></div>
-                  <div class="handle-rod"></div>
+            <!-- Look 3 -->
+            <div
+              class="magic-outfit-slide"
+              data-index="2"
+              data-tag="LOOK 03"
+              data-title="Midnight Black Satin Bustier Dress"
+            >
+              <div class="magic-outfit-media">
+                <img
+                  src="assets/magic-wardrobe-look-3.jpg"
+                  alt="Midnight Black Satin Bustier Dress"
+                  class="magic-outfit-img"
+                  loading="lazy"
+                  width="768"
+                  height="1376"
+                >
+                <div class="magic-outfit-details-card">
+                  <div class="card-inner">
+                    <div class="card-top-row">
+                      <span class="card-tag">LOOK 03</span>
+                      <span class="card-badge">DROP 01 EXCLUSIVE</span>
+                    </div>
+                    <h3 class="card-title">Midnight Black Satin Bustier Dress</h3>
+                    <p class="card-desc">Sculpted boned corset dress with shimmering crystal rhinestone borders.</p>
+                    <a href="#waitlist" class="card-cta-btn">
+                      <span>Join The Waitlist</span>
+                      <span class="btn-arrow">→</span>
+                    </a>
+                  </div>
                 </div>
               </div>
-              <div class="door-face door-back">
-                <div class="door-mirror" aria-hidden="true"></div>
+            </div>
+
+            <!-- Look 4 -->
+            <div
+              class="magic-outfit-slide"
+              data-index="3"
+              data-tag="LOOK 04"
+              data-title="Metallic Ruby Draped Halter Dress"
+            >
+              <div class="magic-outfit-media">
+                <img
+                  src="assets/magic-wardrobe-look-4.jpg"
+                  alt="Metallic Ruby Draped Halter Dress"
+                  class="magic-outfit-img"
+                  loading="lazy"
+                  width="768"
+                  height="1376"
+                >
+                <div class="magic-outfit-details-card">
+                  <div class="card-inner">
+                    <div class="card-top-row">
+                      <span class="card-tag">LOOK 04</span>
+                      <span class="card-badge">DROP 01 EXCLUSIVE</span>
+                    </div>
+                    <h3 class="card-title">Metallic Ruby Draped Halter Dress</h3>
+                    <p class="card-desc">Liquid metallic ruby silk with cowl neck draping and crystal choker collar.</p>
+                    <a href="#waitlist" class="card-cta-btn">
+                      <span>Join The Waitlist</span>
+                      <span class="btn-arrow">→</span>
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
 
-          <!-- Cabinet Floor & Plinth -->
-          <div class="wardrobe-plinth">
-            <div class="plinth-brass-feet left"></div>
-            <div class="plinth-brass-feet right"></div>
+            <!-- Look 5 -->
+            <div
+              class="magic-outfit-slide"
+              data-index="4"
+              data-tag="LOOK 05"
+              data-title="Champagne Pleated Corset Set"
+            >
+              <div class="magic-outfit-media">
+                <img
+                  src="assets/magic-wardrobe-look-5.jpg"
+                  alt="Champagne Pleated Corset Set"
+                  class="magic-outfit-img"
+                  loading="lazy"
+                  width="768"
+                  height="1376"
+                >
+                <div class="magic-outfit-details-card">
+                  <div class="card-inner">
+                    <div class="card-top-row">
+                      <span class="card-tag">LOOK 05</span>
+                      <span class="card-badge">DROP 01 EXCLUSIVE</span>
+                    </div>
+                    <h3 class="card-title">Champagne Pleated Corset Set</h3>
+                    <p class="card-desc">Silky satin sweetheart top with sparkling crystal fringe pleated skirt.</p>
+                    <a href="#waitlist" class="card-cta-btn">
+                      <span>Join The Waitlist</span>
+                      <span class="btn-arrow">→</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        <!-- Navigation Arrows -->
-        <button type="button" class="wardrobe-nav-btn nav-prev" aria-label="Previous outfit">
-          <span>‹</span>
-        </button>
-        <button type="button" class="wardrobe-nav-btn nav-next" aria-label="Next outfit">
-          <span>›</span>
+        <!-- Next Arrow -->
+        <button type="button" class="magic-nav-btn nav-next" aria-label="Next outfit">
+          <span aria-hidden="true">›</span>
         </button>
       </div>
 
-      <!-- Dots / Indicator Pagination -->
-      <div class="wardrobe-pagination" aria-label="Wardrobe pagination"></div>
+      <!-- Bottom Look Switcher Tabs -->
+      <div class="magic-selector-bar" role="tablist" aria-label="Select outfit look">
+        <button type="button" class="magic-selector-tab is-active" data-index="0" role="tab" aria-selected="true">
+          <span class="tab-index">01</span><span class="tab-title">Golden Corset</span>
+        </button>
+        <button type="button" class="magic-selector-tab" data-index="1" role="tab" aria-selected="false">
+          <span class="tab-index">02</span><span class="tab-title">Emerald Velvet</span>
+        </button>
+        <button type="button" class="magic-selector-tab" data-index="2" role="tab" aria-selected="false">
+          <span class="tab-index">03</span><span class="tab-title">Midnight Satin</span>
+        </button>
+        <button type="button" class="magic-selector-tab" data-index="3" role="tab" aria-selected="false">
+          <span class="tab-index">04</span><span class="tab-title">Metallic Ruby</span>
+        </button>
+        <button type="button" class="magic-selector-tab" data-index="4" role="tab" aria-selected="false">
+          <span class="tab-index">05</span><span class="tab-title">Champagne Pleated</span>
+        </button>
+      </div>
     </div>
   </section>
 

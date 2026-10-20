@@ -150,10 +150,9 @@
         "look_5"
       ],
       "settings": {
-        "eyebrow": "TIKKI BELLA • DROP 01",
-        "heading": "THE ATELIER WARDROBE",
-        "subheading": "Step inside Drop 01. Swipe along the rail to explore our private debut collection.",
-        "auto_open": true,
+        "eyebrow": "TIKKI BELLA • THE MAGIC WARDROBE",
+        "heading": "THE ATELIER DRESSING ROOM",
+        "subheading": "Step inside our private dressing room. Watch our debut partywear collection come to life.",
         "auto_cycle": true,
         "cycle_speed": 4,
         "bg_color": "#f3f0e7",
