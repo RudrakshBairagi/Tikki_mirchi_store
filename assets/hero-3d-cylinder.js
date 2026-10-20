@@ -67,18 +67,50 @@ class Hero3dCylinderCarousel {
   }
 
   updateDimensions() {
+    const stageWidth = this.container.getBoundingClientRect().width || window.innerWidth;
+    
+    // Read user-defined base values from computed CSS
     const computedWidth = parseFloat(getComputedStyle(this.container).getPropertyValue('--card-width'));
     const computedHeight = parseFloat(getComputedStyle(this.container).getPropertyValue('--card-height'));
     const computedRadius = parseFloat(getComputedStyle(this.container).getPropertyValue('--card-radius'));
+    const computedGap = parseFloat(getComputedStyle(this.container).getPropertyValue('--card-gap'));
     
-    if (computedWidth > 0) this.cardWidth = computedWidth;
-    if (computedHeight > 0) this.cardHeight = computedHeight;
-    if (!isNaN(computedRadius)) this.cardRadius = computedRadius;
+    const baseWidth = (!isNaN(computedWidth) && computedWidth > 0) ? computedWidth : 220;
+    const baseHeight = (!isNaN(computedHeight) && computedHeight > 0) ? computedHeight : 260;
+    const baseRadius = (!isNaN(computedRadius) && computedRadius >= 0) ? computedRadius : 4;
+    const baseGap = (!isNaN(computedGap) && computedGap >= 0) ? computedGap : parseFloat(this.container.dataset.gap || '20');
+
+    const aspectRatio = baseHeight / baseWidth;
+
+    if (stageWidth <= 480) {
+      // Mobile screens (e.g. 360px - 430px)
+      // Scale card width so cylinder diameter comfortably occupies ~72% of width with generous side margins
+      this.cardWidth = Math.min(Math.round(stageWidth * 0.35), 140);
+      this.cardHeight = Math.round(this.cardWidth * aspectRatio);
+      this.gap = Math.min(baseGap, 12);
+      this.cardRadius = Math.min(baseRadius, 3);
+      this.dragSensitivity = 0.38;
+    } else if (stageWidth <= 768) {
+      // Tablet screens
+      this.cardWidth = Math.min(Math.round(stageWidth * 0.28), 170);
+      this.cardHeight = Math.round(this.cardWidth * aspectRatio);
+      this.gap = Math.min(baseGap, 16);
+      this.cardRadius = baseRadius;
+      this.dragSensitivity = 0.32;
+    } else {
+      // Desktop: preserve user Theme Editor settings exactly
+      this.cardWidth = baseWidth;
+      this.cardHeight = baseHeight;
+      this.gap = baseGap;
+      this.cardRadius = baseRadius;
+      this.dragSensitivity = parseFloat(this.container.dataset.dragSensitivity || '0.25');
+    }
 
     const N = Math.max(this.cardData.length, 3);
     // True circle circumference formula: C = N * (W + gap) => R = C / (2 * PI)
     this.radius = Math.round((N * (this.cardWidth + this.gap)) / (2 * Math.PI));
     
+    this.cylinder.style.height = `${this.cardHeight}px`;
     this.container.style.setProperty('--cylinder-radius', `${this.radius}px`);
   }
 
@@ -169,10 +201,18 @@ class Hero3dCylinderCarousel {
   }
 
   bindEvents() {
-    window.addEventListener('resize', () => {
-      this.updateDimensions();
-      this.buildCurvedCylinder();
-    }, { passive: true });
+    let resizeTimer;
+    const handleResize = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        this.updateDimensions();
+        this.buildCurvedCylinder();
+        this.applyRotation();
+      }, 120);
+    };
+
+    window.addEventListener('resize', handleResize, { passive: true });
+    window.addEventListener('orientationchange', handleResize, { passive: true });
 
     const target = this.viewport || this.cylinder;
 
@@ -184,7 +224,9 @@ class Hero3dCylinderCarousel {
       this.lastTime = performance.now();
       this.currentVelocity = 0;
       this.cylinder.classList.add('is-dragging');
-      target.setPointerCapture?.(e.pointerId);
+      try {
+        target.setPointerCapture(e.pointerId);
+      } catch (_) {}
     });
 
     target.addEventListener('pointermove', (e) => {

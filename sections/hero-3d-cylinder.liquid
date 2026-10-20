@@ -31,6 +31,7 @@
     --card-width: {{ section.settings.card_width }}px;
     --card-height: {{ section.settings.card_height }}px;
     --card-radius: {{ section.settings.card_radius }}px;
+    --card-gap: {{ section.settings.card_gap }}px;
     --reflection-opacity: {{ section.settings.reflection_opacity | divided_by: 100.0 }};
   }
 
@@ -51,11 +52,15 @@
   <!-- Top Meta Navigation Bar -->
   <div class="hero-3d-topbar">
     <div class="topbar-brand">{{ section.settings.topbar_left }}</div>
-    <div class="topbar-tag">{{ section.settings.topbar_center }}</div>
-    <div class="topbar-status">
-      <span class="status-dot"></span>
-      <span>{{ section.settings.topbar_right }}</span>
-    </div>
+    {%- if section.settings.topbar_center != blank -%}
+      <div class="topbar-tag">{{ section.settings.topbar_center }}</div>
+    {%- endif -%}
+    {%- if section.settings.topbar_right != blank -%}
+      <div class="topbar-status">
+        <span class="status-dot"></span>
+        <span>{{ section.settings.topbar_right }}</span>
+      </div>
+    {%- endif -%}
   </div>
 
   <!-- 3D Stage & Central Rotating Ribbon -->
