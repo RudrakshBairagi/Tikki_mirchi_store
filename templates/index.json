@@ -66,17 +66,17 @@
         "card_5"
       ],
       "settings": {
-        "heading": "TIKKI Bella",
-        "heading_accent": "",
         "show_cylinder": false,
-        "topbar_left": "TIKKI Bella",
+        "heading": "TEEKHI BELLA",
+        "heading_accent": "",
+        "topbar_left": "TEEKHI BELLA",
         "topbar_center": "",
         "topbar_right": "",
         "cta_label": "Join The Waitlist",
         "cta_link": "#waitlist",
-        "bg_color": "#FF78F0",
-        "text_color": "#F5EA5A",
-        "title_color": "#F5EA5A",
+        "bg_color": "#F8F8F6",
+        "text_color": "#2A2529",
+        "title_color": "#2A2529",
         "auto_rotate_speed": 14,
         "tilt_angle": -7,
         "perspective": 1100,
@@ -95,49 +95,61 @@
         "look_1": {
           "type": "garment",
           "settings": {
+            "product": "",
             "title": "Bordeaux Ruched Halter Dress",
             "tag": "NEW DROP",
-            "price": "$890"
+            "price": "$890",
+            "link": ""
           }
         },
         "look_2": {
           "type": "garment",
           "settings": {
+            "product": "",
             "title": "Heritage Tapestry Mirror Lehenga",
             "tag": "LOOK 02",
-            "price": "$1,890"
+            "price": "$1,890",
+            "link": ""
           }
         },
         "look_3": {
           "type": "garment",
           "settings": {
+            "product": "",
             "title": "Rose Quartz Embellished Ombré Gown",
             "tag": "LOOK 03",
-            "price": "$1,620"
+            "price": "$1,620",
+            "link": ""
           }
         },
         "look_4": {
           "type": "garment",
           "settings": {
+            "product": "",
             "title": "Midnight Botanical Flared Set",
             "tag": "LOOK 04",
-            "price": "$1,380"
+            "price": "$1,380",
+            "link": ""
           }
         },
         "look_5": {
           "type": "garment",
           "settings": {
+            "product": "",
             "title": "Peplum Floral Velvet Ensemble",
             "tag": "LOOK 05",
-            "price": "$1,540"
+            "price": "$1,540",
+            "link": ""
           }
         },
         "look_6": {
           "type": "garment",
           "settings": {
+            "product": "",
             "title": "Scarlet Blossom Twist-Knot Gown",
             "tag": "LOOK 06",
-            "price": "$1,290"
+            "price": "$1,290",
+            "link": ""
           }
         }
       },
@@ -150,15 +162,20 @@
         "look_6"
       ],
       "settings": {
-        "eyebrow": "HOUSE OF ROYALS • DROP 01",
-        "heading": "House of Royals",
-        "subheading": "Hover over any gown to slide and inspect couture details on our atelier rack.",
+        "eyebrow": "--------------------",
+        "heading": "YOUR DREAM RACK",
+        "subheading": "MAKE YOUR PICK",
         "bg_color": "#f8f8f6",
         "rail_color": "#7d858f",
         "hanger_color": "#6b727c",
-        "text_color": "#1a1819",
-        "accent_color": "#b38728",
+        "text_color": "#2A2529",
+        "accent_color": "#FF78F0",
+        "show_tuning_panel": true,
         "sway_intensity": 4,
+        "spring_speed": 5,
+        "damping_rate": 5,
+        "hit_force": 5,
+        "part_spread": 50,
         "item_width": 280,
         "enable_nudge": true,
         "enable_drag": true,
