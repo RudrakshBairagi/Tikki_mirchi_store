@@ -1,0 +1,248 @@
+{{ 'header-morph.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'header-morph.js' | asset_url }}" defer="defer"></script>
+
+{%- style -%}
+  @font-face {
+    font-family: 'Ragara';
+    src: url('{{ "Ragara.woff" | asset_url }}') format('woff'),
+         url('{{ "Ragara.otf" | asset_url }}') format('opentype'),
+         url('{{ "Ragara.ttf" | asset_url }}') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Ragara';
+    src: url('{{ "Ragara-Italic.woff" | asset_url }}') format('woff'),
+         url('{{ "Ragara-Italic.otf" | asset_url }}') format('opentype'),
+         url('{{ "Ragara-Italic.ttf" | asset_url }}') format('truetype');
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+  }
+
+  #LuxuryHeaderSection-{{ section.id }} {
+    --hero-bg: {{ section.settings.bg_color | default: '#FF78F0' }};
+    --hero-text: {{ section.settings.text_color | default: '#F5EA5A' }};
+    --hero-title-color: {{ section.settings.title_color | default: '#F5EA5A' }};
+    --docked-text-color: {{ section.settings.docked_text_color | default: '#161517' }};
+    --docked-bg-color: {{ section.settings.docked_bg_color | default: 'rgba(255, 255, 255, 0.96)' }};
+  }
+
+  #LuxuryHeaderSection-{{ section.id }} .hero-editorial-masthead {
+    background-color: var(--hero-bg) !important;
+  }
+
+  #LuxuryHeaderSection-{{ section.id }} .brand-morph-logo {
+    font-family: 'Ragara', 'Italiana', Georgia, serif;
+  }
+{%- endstyle -%}
+
+<div id="LuxuryHeaderSection-{{ section.id }}" class="luxury-header-section-wrapper">
+  <!-- ==========================================================================
+       1. LUXURY STICKY NAVIGATION BAR (SOPHIE & LUCIE INSPIRED)
+       ========================================================================== -->
+  <header id="LuxuryHeader" class="luxury-header">
+    <div class="luxury-header__inner">
+      <!-- Left: Menu Toggle & Desktop Navigation -->
+      <div class="luxury-header__left">
+        <button class="header-action-btn menu-toggle" aria-label="Open menu" type="button">
+          <span class="hamburger-icon" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
+          <span class="btn-label">MENU</span>
+        </button>
+        <nav class="desktop-nav" aria-label="Primary Navigation">
+          <a href="{{ section.settings.link_1_url | default: '#atelier' }}" class="nav-link">{{ section.settings.link_1_label | default: 'ATELIER' }}</a>
+          <a href="{{ section.settings.link_2_url | default: '#runway' }}" class="nav-link">{{ section.settings.link_2_label | default: 'RUNWAY' }}</a>
+          <a href="{{ section.settings.link_3_url | default: '#collections' }}" class="nav-link">{{ section.settings.link_3_label | default: 'COLLECTIONS' }}</a>
+        </nav>
+      </div>
+
+      <!-- Center: Morph Dock Anchor (Where logo scales and docks into on scroll) -->
+      <div class="luxury-header__center brand-morph-zone">
+        <a href="{{ routes.root_url }}" class="brand-morph-logo is-visible jump-in" id="BrandMorphLogo" aria-label="{{ section.settings.heading | default: 'TIKKI Bella' }}">
+          <span class="brand-wordmark">{{ section.settings.heading | default: 'TIKKI Bella' }}</span>
+        </a>
+      </div>
+
+      <!-- Right: High-Fashion Boutique Icons -->
+      <div class="luxury-header__right">
+        <!-- Search -->
+        <a href="{{ routes.search_url }}" class="header-action-btn" aria-label="Search" title="Search">
+          <svg class="header-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="7"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </a>
+
+        <!-- Wishlist -->
+        <button class="header-action-btn icon-wishlist" aria-label="Wishlist" title="Wishlist" type="button">
+          <svg class="header-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+          </svg>
+        </button>
+
+        <!-- Account -->
+        <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" class="header-action-btn icon-account" aria-label="Account" title="Account">
+          <svg class="header-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </a>
+
+        <!-- Shopping Bag / Cart with live badge -->
+        <a href="{{ routes.cart_url }}" class="header-action-btn cart-btn" aria-label="Shopping Bag" title="Shopping Bag">
+          <svg class="header-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          <span class="cart-count-badge">{{ cart.item_count | default: 0 }}</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       2. HERO RUNWAY MASTHEAD BACKDROP
+       ========================================================================== -->
+  <section class="hero-editorial-masthead">
+    <!-- Cursive Editorial Tagline positioned in hero above wordmark -->
+    <div class="hero-tagline-container">
+      <div class="brand-tagline">
+        {{ section.settings.tagline | default: 'Atelier Couture & Ready-to-Wear' }}
+      </div>
+    </div>
+
+    <!-- Sub-meta footer in hero runway -->
+    <div class="hero-editorial-footer">
+      <div class="footer-tag">{{ section.settings.submeta_left | default: 'SPRING / SUMMER ATELIER 2026' }}</div>
+      <div class="footer-status">
+        <span class="status-dot"></span>
+        <span>{{ section.settings.submeta_right | default: 'RUNWAY LIVE' }}</span>
+      </div>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Luxury Morphing Header",
+  "tag": "section",
+  "class": "section-luxury-header",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Brand Typography & Title"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Brand Title",
+      "default": "TIKKI Bella"
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Editorial Tagline (Cursive)",
+      "default": "Atelier Couture & Ready-to-Wear"
+    },
+    {
+      "type": "header",
+      "content": "Navigation Links"
+    },
+    {
+      "type": "text",
+      "id": "link_1_label",
+      "label": "Link 1 Label",
+      "default": "ATELIER"
+    },
+    {
+      "type": "url",
+      "id": "link_1_url",
+      "label": "Link 1 URL"
+    },
+    {
+      "type": "text",
+      "id": "link_2_label",
+      "label": "Link 2 Label",
+      "default": "RUNWAY"
+    },
+    {
+      "type": "url",
+      "id": "link_2_url",
+      "label": "Link 2 URL"
+    },
+    {
+      "type": "text",
+      "id": "link_3_label",
+      "label": "Link 3 Label",
+      "default": "COLLECTIONS"
+    },
+    {
+      "type": "url",
+      "id": "link_3_url",
+      "label": "Link 3 URL"
+    },
+    {
+      "type": "header",
+      "content": "Runway Sub-Meta"
+    },
+    {
+      "type": "text",
+      "id": "submeta_left",
+      "label": "Sub-meta Left",
+      "default": "SPRING / SUMMER ATELIER 2026"
+    },
+    {
+      "type": "text",
+      "id": "submeta_right",
+      "label": "Sub-meta Right",
+      "default": "RUNWAY LIVE"
+    },
+    {
+      "type": "header",
+      "content": "Colors & Styling"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Hero Background Color",
+      "default": "#FF78F0"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Hero Text & Icon Color",
+      "default": "#F5EA5A"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Hero Title Color",
+      "default": "#F5EA5A"
+    },
+    {
+      "type": "color",
+      "id": "docked_text_color",
+      "label": "Docked Navbar Text & Icon Color",
+      "default": "#161517"
+    },
+    {
+      "type": "color",
+      "id": "docked_bg_color",
+      "label": "Docked Navbar Background Color",
+      "default": "#ffffff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Luxury Morphing Header"
+    }
+  ]
+}
+{% endschema %}

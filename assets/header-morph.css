@@ -1,6 +1,6 @@
 /* ==========================================================================
-   TIKKI Bella — Luxury Morphing Header & Editorial Masthead
-   Inspired by Sophie & Lucie (Fluid Header-to-Hero Logo Transition)
+   TIKKI Bella — Luxury Morphing Header & Editorial Runway Masthead
+   Inspired by Sophie & Lucie (Precision Reverse-Engineered)
    ========================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Italiana&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
@@ -26,64 +26,70 @@
 }
 
 :root {
-  --header-height: 72px;
+  --luxury-header-height: 80px;
   --header-ease: cubic-bezier(0.5, 0, 0, 1);
   --header-duration: 0.8s;
   --brand-hero-color: #F5EA5A;
   --brand-docked-color: #161517;
-  --header-bg-docked: rgba(255, 255, 255, 0.94);
-  --header-border-docked: rgba(0, 0, 0, 0.07);
+  --header-bg-docked: rgba(255, 255, 255, 0.96);
+  --header-border-docked: rgba(0, 0, 0, 0.08);
 }
 
 /* ==========================================================================
-   Master Header Shell
+   Master Header Navigation Bar
+   (Explicit height & min-height avoids collisions with theme CSS)
    ========================================================================== */
 .luxury-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: var(--header-height);
-  z-index: 999;
-  box-sizing: border-box;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: var(--luxury-header-height, 80px) !important;
+  min-height: var(--luxury-header-height, 80px) !important;
+  z-index: 9999 !important;
+  box-sizing: border-box !important;
   background: transparent;
-  transition: background 0.45s ease, border-color 0.4s ease, box-shadow 0.45s ease;
+  display: flex !important;
+  align-items: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transition: background 0.4s ease, border-color 0.35s ease, box-shadow 0.4s ease;
   font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  pointer-events: none; /* Allows clicks to pass through empty regions to hero */
+  pointer-events: none; /* Allows clicks to pass through empty regions to the hero */
 }
 
 .luxury-header * {
   box-sizing: border-box;
 }
 
-/* Scrolled / Docked State Header Background */
+/* Scrolled / Docked State Header Bar */
 .luxury-header.scrolled-down {
-  background: var(--header-bg-docked);
+  background: var(--docked-bg-color, var(--header-bg-docked)) !important;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--header-border-docked);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.05);
 }
 
 .luxury-header__inner {
   position: relative;
   width: 100%;
-  height: 100%;
+  height: 100% !important;
   max-width: 1720px;
   margin: 0 auto;
-  padding: 0 32px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  padding: 0 44px;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
 }
 
 /* ==========================================================================
-   Left Navigation (Menu Toggle & Editorial Links)
+   Left Navigation (Menu Toggle & Desktop Links)
    ========================================================================== */
 .luxury-header__left {
   display: flex;
   align-items: center;
-  gap: 28px;
+  gap: 32px;
   z-index: 10;
   pointer-events: auto;
 }
@@ -91,19 +97,19 @@
 .header-action-btn {
   background: none;
   border: none;
-  padding: 8px 10px;
+  padding: 10px 8px;
   margin: 0;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  color: var(--brand-hero-color);
+  color: var(--hero-text, var(--brand-hero-color));
   text-decoration: none;
   transition: color 0.35s ease, transform 0.25s ease, opacity 0.25s ease;
 }
 
 .luxury-header.scrolled-down .header-action-btn {
-  color: var(--brand-docked-color);
+  color: var(--docked-text-color, var(--brand-docked-color)) !important;
 }
 
 .header-action-btn:hover {
@@ -111,9 +117,9 @@
   transform: translateY(-1px);
 }
 
-/* Hamburger Icon */
+/* Hamburger Menu Icon */
 .hamburger-icon {
-  width: 20px;
+  width: 22px;
   height: 14px;
   position: relative;
   display: flex;
@@ -130,12 +136,12 @@
 }
 
 .header-action-btn:hover .hamburger-icon span:nth-child(2) {
-  width: 70%;
+  width: 65%;
 }
 
 .btn-label {
   font-size: 11px;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.22em;
   font-weight: 600;
   text-transform: uppercase;
 }
@@ -143,10 +149,10 @@
 .desktop-nav {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 28px;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 960px) {
   .desktop-nav {
     display: none;
   }
@@ -154,10 +160,10 @@
 
 .nav-link {
   font-size: 11px;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.2em;
   font-weight: 500;
   text-transform: uppercase;
-  color: var(--brand-hero-color);
+  color: var(--hero-text, var(--brand-hero-color));
   text-decoration: none;
   position: relative;
   padding: 4px 0;
@@ -165,7 +171,7 @@
 }
 
 .luxury-header.scrolled-down .nav-link {
-  color: var(--brand-docked-color);
+  color: var(--docked-text-color, var(--brand-docked-color)) !important;
 }
 
 .nav-link::after {
@@ -184,42 +190,17 @@
 }
 
 /* ==========================================================================
-   Center Morph Zone (Tagline & Morphing Logo)
+   Center Morph Zone (Dock Target for the Brand Logo)
    ========================================================================== */
 .luxury-header__center.brand-morph-zone {
   position: absolute;
   left: 50%;
   top: 0;
   height: 100%;
-  width: auto;
   transform: translateX(-50%);
   display: flex;
   align-items: center;
   justify-content: center;
-  pointer-events: none;
-}
-
-/* Editorial Tagline ("Atelier Haute Couture") */
-.brand-tagline {
-  position: absolute;
-  top: 14px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-family: 'Italiana', Georgia, serif;
-  font-style: italic;
-  font-size: 13px;
-  letter-spacing: 0.16em;
-  white-space: nowrap;
-  color: var(--brand-hero-color);
-  opacity: 0.9;
-  pointer-events: auto;
-  transition: transform 0.5s var(--header-ease), opacity 0.35s ease, color 0.35s ease;
-}
-
-/* When Scrolled Down, Tagline Slides Up & Disappears */
-.luxury-header.scrolled-down .brand-tagline {
-  transform: translate(-50%, -36px);
-  opacity: 0;
   pointer-events: none;
 }
 
@@ -252,21 +233,21 @@
 
 /* --------------------------------------------------------------------------
    STATE A: Hero Masthead State (.jump-in)
-   Emerges down from the navigation line into the hero stage
+   Emerges down from the top navigation bar into the hero stage
    -------------------------------------------------------------------------- */
 .brand-morph-logo.jump-in {
   position: absolute;
   left: 50%;
   top: 100%;
-  margin-top: clamp(80px, 15vh, 160px);
+  margin-top: clamp(90px, 16vh, 160px);
   transform: translate(-50%, 0);
-  font-size: clamp(3.8rem, 13vw, 11rem);
+  font-size: clamp(3.6rem, 13vw, 10.5rem);
   letter-spacing: -0.02em;
-  color: var(--brand-hero-color);
+  color: var(--hero-title-color, var(--brand-hero-color));
   text-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
 }
 
-/* Initial Entrance Animation: As soon as you open the site, it descends out of the upper bar */
+/* Initial Entrance Animation on Page Open */
 .brand-morph-logo.animate-entrance {
   animation: logoEmergeDown 1.05s var(--header-ease) forwards;
 }
@@ -278,13 +259,13 @@
     transform: translate(-50%, -50%);
     font-size: 1.65rem;
     letter-spacing: 0.08em;
-    opacity: 0.1;
+    opacity: 0.15;
   }
   100% {
     top: 100%;
-    margin-top: clamp(80px, 15vh, 160px);
+    margin-top: clamp(90px, 16vh, 160px);
     transform: translate(-50%, 0);
-    font-size: clamp(3.8rem, 13vw, 11rem);
+    font-size: clamp(3.6rem, 13vw, 10.5rem);
     letter-spacing: -0.02em;
     opacity: 1;
   }
@@ -292,7 +273,7 @@
 
 /* --------------------------------------------------------------------------
    STATE B: Docked Sticky Navbar State (.merge-up)
-   Glides up into the center of the navigation bar
+   Glides up and docks into the center of the navigation bar
    -------------------------------------------------------------------------- */
 .brand-morph-logo.merge-up {
   position: absolute;
@@ -302,39 +283,39 @@
   transform: translate(-50%, -50%);
   font-size: 1.65rem;
   letter-spacing: 0.08em;
-  color: var(--brand-docked-color);
+  color: var(--docked-text-color, var(--brand-docked-color)) !important;
   text-shadow: none;
 }
 
-/* Subtle hover bounce when docked in header */
 .luxury-header.scrolled-down .brand-morph-logo.merge-up:hover {
   opacity: 0.8;
   transform: translate(-50%, -51%);
 }
 
 /* ==========================================================================
-   Right Actions (Icons: Search, Wishlist, Account, Cart)
+   Right Actions (Proper Boutique Icons)
    ========================================================================== */
 .luxury-header__right {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 18px;
   z-index: 10;
   pointer-events: auto;
 }
 
 .header-svg-icon {
-  width: 20px;
-  height: 20px;
+  width: 21px;
+  height: 21px;
   display: block;
-  transition: transform 0.25s ease, stroke 0.35s ease;
+  stroke: currentColor;
+  transition: transform 0.25s ease;
 }
 
 .header-action-btn:hover .header-svg-icon {
   transform: scale(1.1);
 }
 
-/* Cart Bag with Item Count Badge */
+/* Cart Bag with Live Item Count Badge */
 .header-action-btn.cart-btn {
   position: relative;
 }
@@ -342,12 +323,12 @@
 .cart-count-badge {
   position: absolute;
   top: 2px;
-  right: 2px;
+  right: 1px;
   min-width: 15px;
   height: 15px;
   padding: 0 4px;
   border-radius: 10px;
-  background-color: var(--brand-hero-color);
+  background-color: var(--hero-text, var(--brand-hero-color));
   color: #1a1819;
   font-size: 9px;
   font-weight: 700;
@@ -359,41 +340,54 @@
 }
 
 .luxury-header.scrolled-down .cart-count-badge {
-  background-color: var(--brand-docked-color);
+  background-color: var(--docked-text-color, var(--brand-docked-color)) !important;
   color: #ffffff;
 }
 
 /* ==========================================================================
-   Editorial Masthead Hero Runway Section
-   (Background Preserved, 3D Cylinder Removed)
+   Editorial Hero Runway Masthead Section
    ========================================================================== */
 .hero-editorial-masthead {
   position: relative;
   width: 100%;
-  min-height: 62vh;
-  min-height: 62dvh;
+  min-height: 64vh;
+  min-height: 64dvh;
   box-sizing: border-box;
-  background-color: var(--hero-bg, #FF78F0);
+  background-color: var(--hero-bg, #FF78F0) !important;
   color: var(--hero-text, #F5EA5A);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding-bottom: 40px;
+  padding-bottom: 36px;
   overflow: hidden;
 }
 
-/* Ambient glow effect */
-.hero-editorial-masthead::before {
-  content: '';
+/* Cursive Editorial Tagline positioned in hero with clean breathing room */
+.hero-tagline-container {
   position: absolute;
-  top: -15%;
+  top: clamp(70px, 11vh, 105px);
   left: 50%;
   transform: translateX(-50%);
-  width: 800px;
-  height: 500px;
-  background: radial-gradient(circle, rgba(245, 234, 90, 0.15) 0%, rgba(255, 120, 240, 0.05) 50%, transparent 75%);
-  filter: blur(70px);
+  width: 100%;
+  text-align: center;
+  z-index: 2;
   pointer-events: none;
+}
+
+.brand-tagline {
+  display: inline-block;
+  font-family: 'Italiana', Georgia, serif;
+  font-style: italic;
+  font-size: clamp(13px, 1.4vw, 17px);
+  letter-spacing: 0.16em;
+  color: var(--hero-text, var(--brand-hero-color));
+  opacity: 0.92;
+  transition: opacity 0.35s ease, transform 0.4s ease;
+}
+
+.luxury-header.scrolled-down ~ .hero-editorial-masthead .brand-tagline {
+  opacity: 0;
+  transform: translateY(-20px);
 }
 
 /* Sub-meta footer in hero stage */
@@ -403,20 +397,20 @@
   width: 100%;
   max-width: 1720px;
   margin: 0 auto;
-  padding: 0 36px;
+  padding: 0 44px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   font-size: 11px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--hero-text, #F5EA5A);
+  color: var(--hero-text, var(--brand-hero-color));
   opacity: 0.85;
   font-weight: 500;
 }
 
 .hero-editorial-footer .footer-tag {
-  opacity: 0.75;
+  opacity: 0.8;
 }
 
 .hero-editorial-footer .footer-status {
@@ -439,31 +433,36 @@
   50% { opacity: 0.4; transform: scale(0.85); }
 }
 
-/* Responsive adjustments */
+/* ==========================================================================
+   Responsive Breakpoints
+   ========================================================================== */
 @media (max-width: 768px) {
   :root {
-    --header-height: 60px;
+    --luxury-header-height: 68px;
   }
   .luxury-header__inner {
-    padding: 0 16px;
+    padding: 0 20px;
   }
-  .brand-tagline {
-    font-size: 11px;
-    top: 10px;
+  .hero-editorial-footer {
+    padding: 0 20px;
+  }
+  .icon-wishlist,
+  .icon-account {
+    display: none;
   }
   .brand-morph-logo.jump-in {
-    margin-top: clamp(60px, 12vh, 100px);
-    font-size: clamp(3rem, 15vw, 5.5rem);
+    margin-top: clamp(70px, 13vh, 110px);
+    font-size: clamp(2.8rem, 14vw, 5rem);
   }
   .brand-morph-logo.merge-up {
     font-size: 1.35rem;
   }
   .hero-editorial-masthead {
-    min-height: 50vh;
+    min-height: 52vh;
   }
 }
 
-/* Scoped Shopify Integration: Hide Dawn default header on index page when Luxury Header is active */
+/* Scoped Shopify Theme Override: Hide Dawn header on homepage so Luxury Header renders exclusively */
 body.template-index .header-wrapper,
 body.template-index #shopify-section-announcement-bar,
 body.template-index .announcement-bar-section {
