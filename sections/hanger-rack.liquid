@@ -66,28 +66,20 @@
       {%- if section.settings.subheading != blank -%}
         <p class="hanger-rack-subheading">{{ section.settings.subheading }}</p>
       {%- endif -%}
-
-      <div class="hanger-rack-controls-row">
-        <button type="button" class="hanger-sound-btn" aria-label="Toggle Atelier Sound Feedback">
-          <span class="sound-icon">🔊</span>
-          <span class="sound-text">SOUND ON</span>
-        </button>
-      </div>
     </div>
 
     <!-- The Boutique Rail & Clothes Rack Stage -->
     <div class="hanger-rack-stage" tabIndex="0" role="region" aria-label="Interactive Clothes Rack">
-      <!-- Fixed Overhead Rail Bar spanning across -->
-      <div class="hanger-rail-bar" aria-hidden="true">
-        <div class="rail-rod"><span class="rail-rod-core"></span></div>
-        <div class="rail-bracket bracket-left"><span class="bracket-cap"></span></div>
-        <div class="rail-bracket bracket-right"><span class="bracket-cap"></span></div>
-        <div class="rail-highlight"><span class="highlight-line"></span></div>
-      </div>
-
       <!-- Scrollable / Draggable Track of Hanging Garments -->
       <div class="hanger-rack-track-wrap">
         <div class="hanger-rack-track" id="HangerTrack-{{ section.id }}">
+          <!-- Physical Overhead Rail Bar travelling with the rack -->
+          <div class="hanger-rail-bar" aria-hidden="true">
+            <div class="rail-rod"><span class="rail-rod-core"></span></div>
+            <div class="rail-bracket bracket-left"><span class="bracket-cap"></span></div>
+            <div class="rail-bracket bracket-right"><span class="bracket-cap"></span></div>
+            <div class="rail-highlight"><span class="highlight-line"></span></div>
+          </div>
           {%- if section.blocks.size > 0 -%}
             {%- for block in section.blocks -%}
               {%- assign look_num = forloop.index -%}

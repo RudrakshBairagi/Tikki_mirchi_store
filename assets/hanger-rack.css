@@ -17,9 +17,9 @@
 
 .hanger-rack-container {
   width: 100%;
-  max-width: 1440px;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0;
   box-sizing: border-box;
 }
 
@@ -30,9 +30,11 @@
 .hanger-rack-header {
   text-align: center;
   max-width: 680px;
-  margin: 0 auto 50px auto;
+  margin: 0 auto 46px auto;
+  padding: 0 24px;
   position: relative;
   z-index: 2;
+  box-sizing: border-box;
 }
 
 .hanger-rack-eyebrow {
@@ -73,44 +75,6 @@
   max-width: 460px;
 }
 
-.hanger-rack-controls-row {
-  margin-top: 14px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.hanger-sound-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  background: rgba(26, 24, 25, 0.04);
-  border: 1px solid rgba(26, 24, 25, 0.12);
-  border-radius: 20px;
-  padding: 6px 14px;
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #1a1819;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  user-select: none;
-}
-
-.hanger-sound-btn:hover {
-  background: rgba(26, 24, 25, 0.09);
-  border-color: rgba(26, 24, 25, 0.25);
-  transform: translateY(-1px);
-}
-
-.hanger-sound-btn.is-muted {
-  opacity: 0.55;
-  background: transparent;
-  border-color: rgba(26, 24, 25, 0.1);
-}
-
 /* ==========================================================================
    Boutique Rail & Clothes Rack Stage
    ========================================================================== */
@@ -120,17 +84,56 @@
   width: 100%;
   margin-top: 20px;
   outline: none;
+  overflow: visible;
 }
 
-/* Fixed Overhead Rail Rod spanning horizontally */
+/* Scrollable / Draggable Track Container */
+.hanger-rack-track-wrap {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: visible;
+  padding-top: 14px; /* Space for hooks touching the rail */
+  padding-bottom: 40px;
+  cursor: grab;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+  perspective: 1200px;
+  -webkit-perspective: 1200px;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+.hanger-rack-track-wrap.is-dragging {
+  cursor: grabbing;
+  scroll-behavior: auto;
+}
+
+.hanger-rack-track-wrap::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.hanger-rack-track {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 28px;
+  width: max-content;
+  min-width: max-content;
+  /* Generous padding ensures garments NEVER clip against viewport edges */
+  padding: 0 clamp(110px, 14vw, 220px);
+  box-sizing: border-box;
+}
+
+/* The Physical Overhead Rail Bar travelling with the rack */
 .hanger-rail-bar,
 .hanger-rail-bar:empty {
   position: absolute;
-  top: 22px; /* Aligned through the upper hook curve */
-  left: 0;
-  right: 0;
+  top: 15px; /* Aligned through the upper hook curve */
+  left: clamp(36px, 5vw, 72px);
+  right: clamp(36px, 5vw, 72px);
   height: 6px;
-  z-index: 3;
+  z-index: 1; /* Sits behind wire hooks, garments render on top at z-index 5 */
   display: block !important;
   pointer-events: none;
 }
@@ -159,8 +162,8 @@
 .rail-highlight:empty {
   position: absolute;
   top: 1px;
-  left: 1%;
-  right: 1%;
+  left: 8px;
+  right: 8px;
   height: 1.5px;
   display: block !important;
   background: linear-gradient(
@@ -175,61 +178,37 @@
   opacity: 0.95;
 }
 
+/* Precision End Finials / Knobs */
 .rail-bracket,
 .rail-bracket:empty {
   position: absolute;
-  top: -5px;
-  width: 12px;
-  height: 16px;
-  background: linear-gradient(180deg, #6c747e 0%, #202428 100%);
-  border-radius: 2px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+  top: -6px;
+  width: 16px;
+  height: 18px;
+  background: linear-gradient(180deg, #7c848e 0%, #3a4048 55%, #181c20 100%);
+  border-radius: 4px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.45);
   display: block !important;
+  z-index: 4;
 }
 
 .rail-bracket.bracket-left {
-  left: 0;
+  left: -2px;
 }
 
 .rail-bracket.bracket-right {
-  right: 0;
+  right: -2px;
 }
 
-/* ==========================================================================
-   Scrollable / Draggable Track
-   ========================================================================== */
-
-.hanger-rack-track-wrap {
-  width: 100%;
-  overflow-x: auto;
-  overflow-y: visible;
-  padding-top: 10px; /* Space for hooks touching the rail */
-  padding-bottom: 40px;
-  cursor: grab;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE/Edge */
-  perspective: 1200px;
-  -webkit-perspective: 1200px;
-  scroll-behavior: smooth;
-}
-
-.hanger-rack-track-wrap.is-dragging {
-  cursor: grabbing;
-  scroll-behavior: auto;
-}
-
-.hanger-rack-track-wrap::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
-}
-
-.hanger-rack-track {
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 28px;
-  min-width: max-content;
-  padding: 0 40px;
-  box-sizing: border-box;
+.bracket-cap {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  right: 2px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.45);
+  border-radius: 2px;
+  display: block;
 }
 
 /* ==========================================================================

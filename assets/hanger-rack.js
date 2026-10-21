@@ -100,8 +100,17 @@ class HangerRack {
     this.bindTrackScrollMomentum();
     this.setupTuningPanel();
 
+    this.updateTrackAlignment();
+    window.addEventListener('resize', () => this.updateTrackAlignment(), { passive: true });
+
     // Initial wake to settle garments
     this.wakePhysics();
+  }
+
+  updateTrackAlignment() {
+    if (!this.track || !this.trackWrap) return;
+    const isOverflowing = this.track.scrollWidth > this.trackWrap.clientWidth + 2;
+    this.track.style.justifyContent = isOverflowing ? 'flex-start' : 'center';
   }
 
   /* --------------------------------------------------------------------------
@@ -225,8 +234,6 @@ class HangerRack {
     }
     if (this.isMuted) {
       this.stopRailSlideSound();
-    } else {
-      this.playDressSound();
     }
   }
 
