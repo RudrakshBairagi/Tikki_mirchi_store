@@ -88,6 +88,7 @@ class HangerRack {
   }
 
   init() {
+    this.setupAudio();
     this.setupFloatingCard();
     this.bindPointerVelocity();
     this.bindGarmentInteractions();
@@ -101,6 +102,131 @@ class HangerRack {
 
     // Initial wake to settle garments
     this.wakePhysics();
+  }
+
+  /* --------------------------------------------------------------------------
+     Atelier Audio Feedback Controller
+     - Sound 1 & 2: Natural cloth & hanger contact when browsing/touching dresses
+     - Sound 3: Metal sliding friction when scrolling or dragging along the metal rail bar
+     -------------------------------------------------------------------------- */
+  setupAudio() {
+    this.sound1Url = this.section.dataset.sound1 || 'assets/sound_1.mp3';
+    this.sound2Url = this.section.dataset.sound2 || 'assets/sound_2.mp3';
+    this.sound3Url = this.section.dataset.sound3 || 'assets/sound_3.mp3';
+
+    this.isMuted = false;
+    this.audioUnlocked = false;
+    this.lastDressSoundTime = 0;
+    this.dressSoundToggle = false;
+    this.railSoundStopTimeout = null;
+
+    try {
+      this.soundDress1 = new Audio(this.sound1Url);
+      this.soundDress1.preload = 'auto';
+      this.soundDress1.volume = 0.65;
+
+      this.soundDress2 = new Audio(this.sound2Url);
+      this.soundDress2.preload = 'auto';
+      this.soundDress2.volume = 0.65;
+
+      this.soundRail = new Audio(this.sound3Url);
+      this.soundRail.preload = 'auto';
+      this.soundRail.volume = 0.55;
+      this.soundRail.loop = true;
+    } catch (err) {
+      console.warn('Audio initialization warning:', err);
+    }
+
+    // Unlock browser audio context on first user gesture
+    const unlockAudio = () => {
+      if (this.audioUnlocked) return;
+      this.audioUnlocked = true;
+      [this.soundDress1, this.soundDress2, this.soundRail].forEach(audio => {
+        if (!audio) return;
+        try {
+          audio.load();
+        } catch (_) {}
+      });
+      window.removeEventListener('pointerdown', unlockAudio);
+      window.removeEventListener('keydown', unlockAudio);
+    };
+
+    window.addEventListener('pointerdown', unlockAudio, { passive: true, once: true });
+    window.addEventListener('keydown', unlockAudio, { passive: true, once: true });
+  }
+
+  playDressSound() {
+    if (this.isMuted) return;
+    const now = performance.now();
+    // Debounce rapid jitter under 70ms
+    if (now - this.lastDressSoundTime < 70) return;
+    this.lastDressSoundTime = now;
+
+    // Alternate between Sound 1 and Sound 2
+    this.dressSoundToggle = !this.dressSoundToggle;
+    const baseAudio = this.dressSoundToggle ? this.soundDress1 : this.soundDress2;
+    if (!baseAudio) return;
+
+    try {
+      // Use cloneNode for polyphonic playback (multiple dresses touched in sequence)
+      const audio = baseAudio.cloneNode(true);
+      audio.volume = 0.65;
+      audio.playbackRate = 0.97 + Math.random() * 0.06;
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {});
+      }
+    } catch (_) {
+      try {
+        baseAudio.currentTime = 0;
+        baseAudio.play().catch(() => {});
+      } catch (_) {}
+    }
+  }
+
+  startRailSlideSound() {
+    if (this.isMuted || !this.soundRail) return;
+
+    clearTimeout(this.railSoundStopTimeout);
+
+    if (this.soundRail.paused) {
+      try {
+        this.soundRail.currentTime = 0;
+        this.soundRail.volume = 0.55;
+        this.soundRail.loop = true;
+        const playPromise = this.soundRail.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {});
+        }
+      } catch (_) {}
+    }
+
+    // Auto-pause sound 3 when scrolling stops (160ms inactivity window)
+    this.railSoundStopTimeout = setTimeout(() => {
+      this.stopRailSlideSound();
+    }, 160);
+  }
+
+  stopRailSlideSound() {
+    if (!this.soundRail || this.soundRail.paused) return;
+    try {
+      let vol = this.soundRail.volume;
+      const step = 0.12;
+      const fadeInterval = setInterval(() => {
+        vol = Math.max(0, vol - step);
+        if (this.soundRail) this.soundRail.volume = vol;
+        if (vol <= 0.05) {
+          clearInterval(fadeInterval);
+          if (this.soundRail) {
+            this.soundRail.pause();
+            this.soundRail.currentTime = 0;
+            this.soundRail.volume = 0.55;
+          }
+        }
+      }, 18);
+    } catch (_) {
+      if (this.soundRail) this.soundRail.pause();
+    }
   }
 
   /* --------------------------------------------------------------------------
@@ -253,6 +379,11 @@ class HangerRack {
         this.setHovered(index, e);
       });
 
+      // Touch / mouse contact with dress
+      itemEl.addEventListener('pointerdown', () => {
+        this.playDressSound();
+      }, { passive: true });
+
       itemEl.addEventListener('pointerleave', (e) => {
         if (e.pointerType === 'touch') return;
         this.queueClearHover();
@@ -267,6 +398,8 @@ class HangerRack {
             e.stopPropagation();
             return;
           }
+
+          this.playDressSound();
 
           // On touch tap or click, activate this garment
           if (this.hoveredIndex !== index) {
@@ -294,6 +427,9 @@ class HangerRack {
     clearTimeout(this.leaveTimeout);
     if (this.hoveredIndex === activeIndex) return;
     this.hoveredIndex = activeIndex;
+
+    // Play Sound 1 or Sound 2 when browsing through or touching one of the dresses
+    this.playDressSound();
 
     const { spread, spreadStep, hitForce, swayFactor } = this.physicsConfig;
 
@@ -370,6 +506,11 @@ class HangerRack {
       const delta = currentScroll - lastScroll;
       lastScroll = currentScroll;
 
+      // Play Sound 3 when scrolling through the metal bar
+      if (Math.abs(delta) > 1) {
+        this.startRailSlideSound();
+      }
+
       if (this.isDragging) return;
 
       const { swayFactor } = this.physicsConfig;
@@ -400,8 +541,10 @@ class HangerRack {
       const x = e.pageX - wrap.offsetLeft;
       const walk = (x - this.startX) * 1.2;
 
-      if (Math.abs(walk) > 5) {
+      if (Math.abs(walk) > 3) {
         this.hasMovedSignificantly = true;
+        // Play Sound 3 when sliding along the metal bar
+        this.startRailSlideSound();
       }
       wrap.scrollLeft = this.scrollLeft - walk;
 
@@ -420,6 +563,7 @@ class HangerRack {
       if (!this.isDragging) return;
       this.isDragging = false;
       wrap.classList.remove('is-dragging');
+      this.stopRailSlideSound();
 
       setTimeout(() => {
         this.hasMovedSignificantly = false;
@@ -460,6 +604,7 @@ class HangerRack {
           <button class="preset-btn is-active" data-preset="celestine" type="button">✨ Celestine</button>
           <button class="preset-btn" data-preset="calm" type="button">🕊️ Calm</button>
           <button class="preset-btn" data-preset="dynamic" type="button">⚡ Dynamic</button>
+          <button class="preset-btn" id="tuning-sound-btn" type="button" title="Toggle audio feedback">🔊 Sound: ON</button>
         </div>
 
         <div class="tuning-slider-group">
@@ -632,6 +777,19 @@ class HangerRack {
         setTimeout(() => { btn.textContent = orig; }, 1500);
       });
     });
+
+    const soundBtn = panel.querySelector('#tuning-sound-btn');
+    if (soundBtn) {
+      soundBtn.addEventListener('click', () => {
+        this.isMuted = !this.isMuted;
+        soundBtn.textContent = this.isMuted ? '🔇 Sound: OFF' : '🔊 Sound: ON';
+        if (this.isMuted) {
+          this.stopRailSlideSound();
+        } else {
+          this.playDressSound();
+        }
+      });
+    }
 
     updateUI();
   }

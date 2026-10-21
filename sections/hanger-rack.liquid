@@ -42,6 +42,9 @@
   data-show-tuning="{% if section.settings.show_tuning_panel != false %}true{% else %}false{% endif %}"
   data-nudge="{% if section.settings.enable_nudge %}true{% else %}false{% endif %}"
   data-drag="{% if section.settings.enable_drag %}true{% else %}false{% endif %}"
+  data-sound-1="{{ 'sound_1.mp3' | asset_url }}"
+  data-sound-2="{{ 'sound_2.mp3' | asset_url }}"
+  data-sound-3="{{ 'sound_3.mp3' | asset_url }}"
   aria-label="{{ section.settings.heading | default: 'House of Royals Runway Rack' }}"
 >
   <div class="hanger-rack-container">
