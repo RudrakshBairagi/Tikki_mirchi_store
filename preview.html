@@ -10,7 +10,7 @@
     body {
       margin: 0;
       padding: 0;
-      background: #0b0b0c;
+      background: #f8f8f6;
       overflow-x: hidden;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     }
@@ -23,32 +23,21 @@
        ========================================================================== -->
   <header id="LuxuryHeader" class="luxury-header">
     <div class="luxury-header__inner">
-      <!-- Left Navigation & Menu -->
-      <div class="luxury-header__left">
-        <button class="header-action-btn menu-toggle" aria-label="Open menu">
-          <span class="hamburger-icon">
-            <span></span>
-            <span></span>
-            <span></span>
-          </span>
-          <span class="btn-label">MENU</span>
-        </button>
-        <nav class="desktop-nav">
-          <a href="#atelier" class="nav-link">ATELIER</a>
-          <a href="#runway" class="nav-link">RUNWAY</a>
-          <a href="#collections" class="nav-link">COLLECTIONS</a>
-        </nav>
-      </div>
-
-      <!-- Center Morphing Brand Zone -->
-      <div class="luxury-header__center brand-morph-zone">
-        <!-- Morphing Brand Wordmark: Drops down into hero on load, merges back to navbar on scroll -->
+      <!-- Left: Morph Dock Anchor (Brand Logo) -->
+      <div class="luxury-header__left brand-morph-zone">
         <a href="/" class="brand-morph-logo is-visible jump-in" id="BrandMorphLogo">
           <span class="brand-wordmark">TIKKI Bella</span>
         </a>
       </div>
 
-      <!-- Right Action Icons (Proper High-Fashion Boutique Icons) -->
+      <!-- Center: Desktop Navigation -->
+      <nav class="desktop-nav">
+        <a href="#atelier" class="nav-link">ATELIER</a>
+        <a href="#runway" class="nav-link">RUNWAY</a>
+        <a href="#collections" class="nav-link">COLLECTIONS</a>
+      </nav>
+
+      <!-- Right Action Icons + Menu Toggle -->
       <div class="luxury-header__right">
         <!-- Search -->
         <button class="header-action-btn" aria-label="Search" title="Search">
@@ -79,34 +68,34 @@
           </svg>
           <span class="cart-count-badge">0</span>
         </a>
+        <!-- Menu Toggle -->
+        <button class="header-action-btn menu-toggle" aria-label="Open menu">
+          <span class="hamburger-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
+          <span class="btn-label">MENU</span>
+        </button>
       </div>
     </div>
   </header>
 
   <!-- ==========================================================================
-       EDITORIAL BRAND MASTHEAD (RUNWAY BACKDROP STAGE)
+       EDITORIAL BRAND MASTHEAD (CLEAN STAGE)
        ========================================================================== -->
   <section
     id="HeroMasthead-preview"
     class="hero-editorial-masthead"
     style="
-      --hero-bg: #FF78F0;
-      --hero-text: #F5EA5A;
-      --hero-title-color: #F5EA5A;
+      --hero-bg: transparent;
+      --hero-text: #161517;
+      --hero-title-color: #161517;
     "
   >
-    <!-- Cursive Editorial Tagline in Hero Runway -->
+    <!-- Cursive Editorial Tagline in Hero -->
     <div class="hero-tagline-container">
       <div class="brand-tagline">Atelier Couture &amp; Ready-to-Wear</div>
-    </div>
-
-    <!-- Editorial Stage Sub-Meta Footer -->
-    <div class="hero-editorial-footer">
-      <div class="footer-tag">SPRING / SUMMER ATELIER 2026</div>
-      <div class="footer-status">
-        <span class="status-dot"></span>
-        <span>RUNWAY LIVE</span>
-      </div>
     </div>
   </section>
 
