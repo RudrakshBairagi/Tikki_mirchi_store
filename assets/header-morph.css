@@ -29,7 +29,7 @@
   --luxury-header-height: 80px;
   --header-ease: cubic-bezier(0.5, 0, 0, 1);
   --header-duration: 0.8s;
-  --brand-hero-color: #F5EA5A;
+  --brand-hero-color: #161517;
   --brand-docked-color: #161517;
   --header-bg-docked: rgba(255, 255, 255, 0.96);
   --header-border-docked: rgba(0, 0, 0, 0.08);
@@ -77,79 +77,123 @@
   height: 100% !important;
   max-width: 1720px;
   margin: 0 auto;
-  padding: 0 44px;
+  padding: 0 clamp(20px, 3.5vw, 44px);
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
 }
 
 /* ==========================================================================
-   Left Navigation (Menu Toggle & Desktop Links)
+   Left Zone: Morph Dock Anchor (Brand Logo)
    ========================================================================== */
-.luxury-header__left {
+.luxury-header__left.brand-morph-zone {
+  position: relative;
+  height: 100%;
   display: flex;
   align-items: center;
-  gap: 32px;
-  z-index: 10;
+  z-index: 20;
   pointer-events: auto;
 }
 
-.header-action-btn {
-  background: none;
-  border: none;
-  padding: 10px 8px;
-  margin: 0;
+/* The Brand Wordmark */
+.brand-morph-logo {
+  text-decoration: none;
+  pointer-events: auto;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  color: var(--hero-text, var(--brand-hero-color));
-  text-decoration: none;
-  transition: color 0.35s ease, transform 0.25s ease, opacity 0.25s ease;
+  white-space: nowrap;
+  font-family: 'Ragara', 'Italiana', Georgia, serif;
+  transform-origin: top left;
+  transition: 
+    top var(--header-duration) var(--header-ease),
+    margin-top var(--header-duration) var(--header-ease),
+    transform var(--header-duration) var(--header-ease),
+    font-size var(--header-duration) var(--header-ease),
+    letter-spacing var(--header-duration) var(--header-ease),
+    color 0.4s ease,
+    opacity 0.4s ease;
 }
 
-.luxury-header.scrolled-down .header-action-btn {
-  color: var(--docked-text-color, var(--brand-docked-color)) !important;
-}
-
-.header-action-btn:hover {
-  opacity: 0.75;
-  transform: translateY(-1px);
-}
-
-/* Hamburger Menu Icon */
-.hamburger-icon {
-  width: 22px;
-  height: 14px;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.hamburger-icon span {
+.brand-morph-logo .brand-wordmark {
   display: block;
-  width: 100%;
-  height: 1.5px;
-  background-color: currentColor;
-  transition: transform 0.3s ease, width 0.3s ease;
+  line-height: 0.86;
+  text-transform: none;
 }
 
-.header-action-btn:hover .hamburger-icon span:nth-child(2) {
-  width: 65%;
+/* --------------------------------------------------------------------------
+   STATE A: Hero Masthead State (.jump-in)
+   Emerges down from the top-left navigation bar into the hero stage
+   -------------------------------------------------------------------------- */
+.brand-morph-logo.jump-in {
+  position: absolute;
+  left: clamp(20px, 3.5vw, 44px);
+  top: 100%;
+  margin-top: clamp(25px, 4.5vh, 45px);
+  transform: translateY(0);
+  font-size: clamp(3.2rem, 9.5vw, 7.5rem);
+  letter-spacing: -0.02em;
+  color: var(--hero-title-color, var(--brand-hero-color));
+  text-shadow: none;
 }
 
-.btn-label {
-  font-size: 11px;
-  letter-spacing: 0.22em;
-  font-weight: 600;
-  text-transform: uppercase;
+/* Initial Entrance Animation on Page Open */
+.brand-morph-logo.animate-entrance {
+  animation: logoEmergeDown 1.05s var(--header-ease) forwards;
 }
 
+@keyframes logoEmergeDown {
+  0% {
+    top: 50%;
+    margin-top: 0;
+    transform: translateY(-50%);
+    font-size: clamp(1.4rem, 2.2vw, 1.85rem);
+    letter-spacing: 0.04em;
+    opacity: 0.15;
+  }
+  100% {
+    top: 100%;
+    margin-top: clamp(25px, 4.5vh, 45px);
+    transform: translateY(0);
+    font-size: clamp(3.2rem, 9.5vw, 7.5rem);
+    letter-spacing: -0.02em;
+    opacity: 1;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   STATE B: Docked Sticky Navbar State (.merge-up)
+   Glides back up and docks into the top-left of the navigation bar
+   -------------------------------------------------------------------------- */
+.brand-morph-logo.merge-up {
+  position: absolute;
+  left: clamp(20px, 3.5vw, 44px);
+  top: 50%;
+  margin-top: 0;
+  transform: translateY(-50%);
+  font-size: clamp(1.4rem, 2.2vw, 1.85rem);
+  letter-spacing: 0.04em;
+  color: var(--docked-text-color, var(--brand-docked-color)) !important;
+  text-shadow: none;
+}
+
+.luxury-header.scrolled-down .brand-morph-logo.merge-up:hover {
+  opacity: 0.8;
+  transform: translateY(-53%);
+}
+
+/* ==========================================================================
+   Center Navigation (Desktop Links)
+   ========================================================================== */
 .desktop-nav {
   display: flex;
   align-items: center;
-  gap: 28px;
+  gap: 32px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  pointer-events: auto;
 }
 
 @media (max-width: 960px) {
@@ -190,117 +234,37 @@
 }
 
 /* ==========================================================================
-   Center Morph Zone (Dock Target for the Brand Logo)
-   ========================================================================== */
-.luxury-header__center.brand-morph-zone {
-  position: absolute;
-  left: 50%;
-  top: 0;
-  height: 100%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-}
-
-/* The Central Brand Wordmark */
-.brand-morph-logo {
-  text-decoration: none;
-  pointer-events: auto;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  white-space: nowrap;
-  font-family: 'Ragara', 'Italiana', Georgia, serif;
-  transform-origin: center center;
-  transition: 
-    top var(--header-duration) var(--header-ease),
-    margin-top var(--header-duration) var(--header-ease),
-    transform var(--header-duration) var(--header-ease),
-    font-size var(--header-duration) var(--header-ease),
-    letter-spacing var(--header-duration) var(--header-ease),
-    color 0.4s ease,
-    opacity 0.4s ease;
-}
-
-.brand-morph-logo .brand-wordmark {
-  display: block;
-  line-height: 0.86;
-  text-transform: none;
-}
-
-/* --------------------------------------------------------------------------
-   STATE A: Hero Masthead State (.jump-in)
-   Emerges down from the top navigation bar into the hero stage
-   -------------------------------------------------------------------------- */
-.brand-morph-logo.jump-in {
-  position: absolute;
-  left: 50%;
-  top: 100%;
-  margin-top: clamp(90px, 16vh, 160px);
-  transform: translate(-50%, 0);
-  font-size: clamp(3.6rem, 13vw, 10.5rem);
-  letter-spacing: -0.02em;
-  color: var(--hero-title-color, var(--brand-hero-color));
-  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
-}
-
-/* Initial Entrance Animation on Page Open */
-.brand-morph-logo.animate-entrance {
-  animation: logoEmergeDown 1.05s var(--header-ease) forwards;
-}
-
-@keyframes logoEmergeDown {
-  0% {
-    top: 50%;
-    margin-top: 0;
-    transform: translate(-50%, -50%);
-    font-size: 1.65rem;
-    letter-spacing: 0.08em;
-    opacity: 0.15;
-  }
-  100% {
-    top: 100%;
-    margin-top: clamp(90px, 16vh, 160px);
-    transform: translate(-50%, 0);
-    font-size: clamp(3.6rem, 13vw, 10.5rem);
-    letter-spacing: -0.02em;
-    opacity: 1;
-  }
-}
-
-/* --------------------------------------------------------------------------
-   STATE B: Docked Sticky Navbar State (.merge-up)
-   Glides up and docks into the center of the navigation bar
-   -------------------------------------------------------------------------- */
-.brand-morph-logo.merge-up {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  margin-top: 0;
-  transform: translate(-50%, -50%);
-  font-size: 1.65rem;
-  letter-spacing: 0.08em;
-  color: var(--docked-text-color, var(--brand-docked-color)) !important;
-  text-shadow: none;
-}
-
-.luxury-header.scrolled-down .brand-morph-logo.merge-up:hover {
-  opacity: 0.8;
-  transform: translate(-50%, -51%);
-}
-
-/* ==========================================================================
-   Right Actions (Proper Boutique Icons)
+   Right Actions (Proper Boutique Icons + Menu Toggle)
    ========================================================================== */
 .luxury-header__right {
   display: flex;
   align-items: center;
   gap: 18px;
-  z-index: 10;
+  z-index: 20;
   pointer-events: auto;
+}
+
+.header-action-btn {
+  background: none;
+  border: none;
+  padding: 10px 8px;
+  margin: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--hero-text, var(--brand-hero-color));
+  text-decoration: none;
+  transition: color 0.35s ease, transform 0.25s ease, opacity 0.25s ease;
+}
+
+.luxury-header.scrolled-down .header-action-btn {
+  color: var(--docked-text-color, var(--brand-docked-color)) !important;
+}
+
+.header-action-btn:hover {
+  opacity: 0.75;
+  transform: translateY(-1px);
 }
 
 .header-svg-icon {
@@ -312,7 +276,36 @@
 }
 
 .header-action-btn:hover .header-svg-icon {
-  transform: scale(1.1);
+  transform: scale(1.08);
+}
+
+/* Hamburger Menu Icon */
+.hamburger-icon {
+  width: 20px;
+  height: 13px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.hamburger-icon span {
+  display: block;
+  width: 100%;
+  height: 1.5px;
+  background-color: currentColor;
+  transition: transform 0.3s ease, width 0.3s ease;
+}
+
+.header-action-btn:hover .hamburger-icon span:nth-child(2) {
+  width: 65%;
+}
+
+.btn-label {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  font-weight: 600;
+  text-transform: uppercase;
 }
 
 /* Cart Bag with Live Item Count Badge */
@@ -328,8 +321,8 @@
   height: 15px;
   padding: 0 4px;
   border-radius: 10px;
-  background-color: var(--hero-text, var(--brand-hero-color));
-  color: #1a1819;
+  background-color: var(--docked-text-color, #161517);
+  color: #ffffff;
   font-size: 9px;
   font-weight: 700;
   display: flex;
@@ -339,37 +332,30 @@
   transition: background-color 0.35s ease, color 0.35s ease;
 }
 
-.luxury-header.scrolled-down .cart-count-badge {
-  background-color: var(--docked-text-color, var(--brand-docked-color)) !important;
-  color: #ffffff;
-}
-
 /* ==========================================================================
-   Editorial Hero Runway Masthead Section
+   Editorial Hero Masthead Section (Clean Stage, No Glowing Runway)
    ========================================================================== */
 .hero-editorial-masthead {
   position: relative;
   width: 100%;
-  min-height: 64vh;
-  min-height: 64dvh;
+  min-height: clamp(230px, 33vh, 320px);
   box-sizing: border-box;
-  background-color: var(--hero-bg, #FF78F0) !important;
-  color: var(--hero-text, #F5EA5A);
+  background-color: transparent !important;
+  color: var(--hero-text, #161517);
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  padding-bottom: 36px;
+  justify-content: flex-start;
+  padding: 0 clamp(20px, 3.5vw, 44px);
   overflow: hidden;
 }
 
-/* Cursive Editorial Tagline positioned in hero with clean breathing room */
+/* Cursive Editorial Tagline positioned in hero top-left */
 .hero-tagline-container {
   position: absolute;
-  top: clamp(70px, 11vh, 105px);
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  text-align: center;
+  top: clamp(72px, 10.5vh, 96px);
+  left: clamp(20px, 3.5vw, 44px);
+  width: auto;
+  text-align: left;
   z-index: 2;
   pointer-events: none;
 }
@@ -378,59 +364,16 @@
   display: inline-block;
   font-family: 'Italiana', Georgia, serif;
   font-style: italic;
-  font-size: clamp(13px, 1.4vw, 17px);
+  font-size: clamp(13px, 1.35vw, 16px);
   letter-spacing: 0.16em;
   color: var(--hero-text, var(--brand-hero-color));
-  opacity: 0.92;
+  opacity: 0.85;
   transition: opacity 0.35s ease, transform 0.4s ease;
 }
 
 .luxury-header.scrolled-down ~ .hero-editorial-masthead .brand-tagline {
   opacity: 0;
-  transform: translateY(-20px);
-}
-
-/* Sub-meta footer in hero stage */
-.hero-editorial-footer {
-  position: relative;
-  z-index: 5;
-  width: 100%;
-  max-width: 1720px;
-  margin: 0 auto;
-  padding: 0 44px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--hero-text, var(--brand-hero-color));
-  opacity: 0.85;
-  font-weight: 500;
-}
-
-.hero-editorial-footer .footer-tag {
-  opacity: 0.8;
-}
-
-.hero-editorial-footer .footer-status {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.hero-editorial-footer .status-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #34d399;
-  box-shadow: 0 0 10px #34d399;
-  animation: pulse-dot 2s infinite ease-in-out;
-}
-
-@keyframes pulse-dot {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.4; transform: scale(0.85); }
+  transform: translateY(-12px);
 }
 
 /* ==========================================================================
@@ -441,24 +384,28 @@
     --luxury-header-height: 68px;
   }
   .luxury-header__inner {
-    padding: 0 20px;
-  }
-  .hero-editorial-footer {
-    padding: 0 20px;
+    padding: 0 18px;
   }
   .icon-wishlist,
   .icon-account {
     display: none;
   }
   .brand-morph-logo.jump-in {
-    margin-top: clamp(70px, 13vh, 110px);
-    font-size: clamp(2.8rem, 14vw, 5rem);
+    left: 18px;
+    margin-top: clamp(18px, 3.5vh, 32px);
+    font-size: clamp(2.4rem, 11vw, 4.2rem);
   }
   .brand-morph-logo.merge-up {
+    left: 18px;
     font-size: 1.35rem;
   }
+  .hero-tagline-container {
+    left: 18px;
+    top: 68px;
+  }
   .hero-editorial-masthead {
-    min-height: 52vh;
+    min-height: 220px;
+    padding: 0 18px;
   }
 }
 

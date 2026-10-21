@@ -9,28 +9,9 @@
  */
 {
   "sections": {
-    "luxury_header": {
-      "type": "luxury-header",
-      "settings": {
-        "heading": "TIKKI Bella",
-        "tagline": "Atelier Couture & Ready-to-Wear",
-        "link_1_label": "STuff",
-        "link_1_url": "#atelier",
-        "link_2_label": "RUNWAY",
-        "link_2_url": "#runway",
-        "link_3_label": "COLLECTIONS",
-        "link_3_url": "#collections",
-        "submeta_left": "",
-        "submeta_right": "",
-        "bg_color": "#F8F8F6",
-        "text_color": "#2A2529",
-        "title_color": "#2A2529",
-        "docked_text_color": "#161517",
-        "docked_bg_color": "#ffffff"
-      }
-    },
     "hero_3d_cylinder": {
       "type": "hero-3d-cylinder",
+      "disabled": true,
       "blocks": {
         "card_1": {
           "type": "card",
@@ -85,7 +66,6 @@
         "card_4",
         "card_5"
       ],
-      "disabled": true,
       "settings": {
         "show_cylinder": false,
         "heading": "TEEKHI BELLA",
@@ -95,9 +75,9 @@
         "topbar_right": "",
         "cta_label": "Join The Waitlist",
         "cta_link": "#waitlist",
-        "bg_color": "#f8f8f6",
-        "text_color": "#2a2529",
-        "title_color": "#2a2529",
+        "bg_color": "#F8F8F6",
+        "text_color": "#2A2529",
+        "title_color": "#2A2529",
         "auto_rotate_speed": 14,
         "tilt_angle": -7,
         "perspective": 1100,
@@ -189,8 +169,8 @@
         "bg_color": "#f8f8f6",
         "rail_color": "#7d858f",
         "hanger_color": "#6b727c",
-        "text_color": "#2a2529",
-        "accent_color": "#ff78f0",
+        "text_color": "#2A2529",
+        "accent_color": "#FF78F0",
         "show_tuning_panel": true,
         "sway_intensity": 4,
         "spring_speed": 5,
@@ -202,6 +182,24 @@
         "enable_drag": true,
         "padding_top": 60,
         "padding_bottom": 80
+      }
+    },
+    "luxury_header": {
+      "type": "luxury-header",
+      "settings": {
+        "heading": "TIKKI Bella",
+        "tagline": "Atelier Couture & Ready-to-Wear",
+        "link_1_label": "ATELIER",
+        "link_1_url": "#atelier",
+        "link_2_label": "RUNWAY",
+        "link_2_url": "#runway",
+        "link_3_label": "COLLECTIONS",
+        "link_3_url": "#collections",
+        "bg_color": "transparent",
+        "text_color": "#161517",
+        "title_color": "#161517",
+        "docked_text_color": "#161517",
+        "docked_bg_color": "#ffffff"
       }
     }
   },

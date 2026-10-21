@@ -23,9 +23,9 @@
   }
 
   #LuxuryHeaderSection-{{ section.id }} {
-    --hero-bg: {{ section.settings.bg_color | default: '#FF78F0' }};
-    --hero-text: {{ section.settings.text_color | default: '#F5EA5A' }};
-    --hero-title-color: {{ section.settings.title_color | default: '#F5EA5A' }};
+    --hero-bg: {{ section.settings.bg_color | default: 'transparent' }};
+    --hero-text: {{ section.settings.text_color | default: '#161517' }};
+    --hero-title-color: {{ section.settings.title_color | default: '#161517' }};
     --docked-text-color: {{ section.settings.docked_text_color | default: '#161517' }};
     --docked-bg-color: {{ section.settings.docked_bg_color | default: 'rgba(255, 255, 255, 0.96)' }};
   }
@@ -45,31 +45,21 @@
        ========================================================================== -->
   <header id="LuxuryHeader" class="luxury-header">
     <div class="luxury-header__inner">
-      <!-- Left: Menu Toggle & Desktop Navigation -->
-      <div class="luxury-header__left">
-        <button class="header-action-btn menu-toggle" aria-label="Open menu" type="button">
-          <span class="hamburger-icon" aria-hidden="true">
-            <span></span>
-            <span></span>
-            <span></span>
-          </span>
-          <span class="btn-label">MENU</span>
-        </button>
-        <nav class="desktop-nav" aria-label="Primary Navigation">
-          <a href="{{ section.settings.link_1_url | default: '#atelier' }}" class="nav-link">{{ section.settings.link_1_label | default: 'ATELIER' }}</a>
-          <a href="{{ section.settings.link_2_url | default: '#runway' }}" class="nav-link">{{ section.settings.link_2_label | default: 'RUNWAY' }}</a>
-          <a href="{{ section.settings.link_3_url | default: '#collections' }}" class="nav-link">{{ section.settings.link_3_label | default: 'COLLECTIONS' }}</a>
-        </nav>
-      </div>
-
-      <!-- Center: Morph Dock Anchor (Where logo scales and docks into on scroll) -->
-      <div class="luxury-header__center brand-morph-zone">
+      <!-- Left: Morph Dock Anchor (Where logo scales and docks into on scroll) -->
+      <div class="luxury-header__left brand-morph-zone">
         <a href="{{ routes.root_url }}" class="brand-morph-logo is-visible jump-in" id="BrandMorphLogo" aria-label="{{ section.settings.heading | default: 'TIKKI Bella' }}">
           <span class="brand-wordmark">{{ section.settings.heading | default: 'TIKKI Bella' }}</span>
         </a>
       </div>
 
-      <!-- Right: High-Fashion Boutique Icons -->
+      <!-- Center: Desktop Navigation -->
+      <nav class="desktop-nav" aria-label="Primary Navigation">
+        <a href="{{ section.settings.link_1_url | default: '#atelier' }}" class="nav-link">{{ section.settings.link_1_label | default: 'ATELIER' }}</a>
+        <a href="{{ section.settings.link_2_url | default: '#runway' }}" class="nav-link">{{ section.settings.link_2_label | default: 'RUNWAY' }}</a>
+        <a href="{{ section.settings.link_3_url | default: '#collections' }}" class="nav-link">{{ section.settings.link_3_label | default: 'COLLECTIONS' }}</a>
+      </nav>
+
+      <!-- Right: High-Fashion Boutique Icons + Menu -->
       <div class="luxury-header__right">
         <!-- Search -->
         <a href="{{ routes.search_url }}" class="header-action-btn" aria-label="Search" title="Search">
@@ -103,27 +93,28 @@
           </svg>
           <span class="cart-count-badge">{{ cart.item_count | default: 0 }}</span>
         </a>
+
+        <!-- Menu Toggle (Sophie & Lucie style) -->
+        <button class="header-action-btn menu-toggle" aria-label="Open menu" type="button">
+          <span class="hamburger-icon" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
+          <span class="btn-label">MENU</span>
+        </button>
       </div>
     </div>
   </header>
 
   <!-- ==========================================================================
-       2. HERO RUNWAY MASTHEAD BACKDROP
+       2. HERO MASTHEAD BACKDROP
        ========================================================================== -->
   <section class="hero-editorial-masthead">
     <!-- Cursive Editorial Tagline positioned in hero above wordmark -->
     <div class="hero-tagline-container">
       <div class="brand-tagline">
         {{ section.settings.tagline | default: 'Atelier Couture & Ready-to-Wear' }}
-      </div>
-    </div>
-
-    <!-- Sub-meta footer in hero runway -->
-    <div class="hero-editorial-footer">
-      <div class="footer-tag">{{ section.settings.submeta_left | default: 'SPRING / SUMMER ATELIER 2026' }}</div>
-      <div class="footer-status">
-        <span class="status-dot"></span>
-        <span>{{ section.settings.submeta_right | default: 'RUNWAY LIVE' }}</span>
       </div>
     </div>
   </section>
@@ -190,41 +181,25 @@
     },
     {
       "type": "header",
-      "content": "Runway Sub-Meta"
-    },
-    {
-      "type": "text",
-      "id": "submeta_left",
-      "label": "Sub-meta Left",
-      "default": "SPRING / SUMMER ATELIER 2026"
-    },
-    {
-      "type": "text",
-      "id": "submeta_right",
-      "label": "Sub-meta Right",
-      "default": "RUNWAY LIVE"
-    },
-    {
-      "type": "header",
       "content": "Colors & Styling"
     },
     {
       "type": "color",
       "id": "bg_color",
       "label": "Hero Background Color",
-      "default": "#FF78F0"
+      "default": "transparent"
     },
     {
       "type": "color",
       "id": "text_color",
       "label": "Hero Text & Icon Color",
-      "default": "#F5EA5A"
+      "default": "#161517"
     },
     {
       "type": "color",
       "id": "title_color",
       "label": "Hero Title Color",
-      "default": "#F5EA5A"
+      "default": "#161517"
     },
     {
       "type": "color",
