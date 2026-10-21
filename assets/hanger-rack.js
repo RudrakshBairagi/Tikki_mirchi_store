@@ -60,6 +60,9 @@ class HangerRack {
     this.startX = 0;
     this.scrollLeft = 0;
     this.hasMovedSignificantly = false;
+    this.isInitialCentering = false;
+    this.hasUserScrolled = false;
+    this.railFadeInterval = null;
 
     // Build garment physical models
     this.garments = this.itemEls.map((el, index) => {
@@ -101,10 +104,43 @@ class HangerRack {
     this.setupTuningPanel();
 
     this.updateTrackAlignment();
-    window.addEventListener('resize', () => this.updateTrackAlignment(), { passive: true });
+
+    // Start the rod and clothing rack from the middle
+    this.centerInitialPosition();
+    requestAnimationFrame(() => {
+      this.centerInitialPosition();
+    });
+
+    window.addEventListener('resize', () => {
+      this.updateTrackAlignment();
+    }, { passive: true });
+
+    window.addEventListener('load', () => {
+      if (!this.hasUserScrolled) {
+        this.centerInitialPosition();
+      }
+    }, { once: true });
 
     // Initial wake to settle garments
     this.wakePhysics();
+  }
+
+  centerInitialPosition() {
+    if (!this.trackWrap || !this.track) return;
+    const maxScroll = this.trackWrap.scrollWidth - this.trackWrap.clientWidth;
+    if (maxScroll > 0) {
+      this.isInitialCentering = true;
+      const prevBehavior = this.trackWrap.style.scrollBehavior;
+      this.trackWrap.style.scrollBehavior = 'auto';
+      this.trackWrap.scrollLeft = Math.round(maxScroll / 2);
+      this.scrollLeft = this.trackWrap.scrollLeft;
+      requestAnimationFrame(() => {
+        this.trackWrap.style.scrollBehavior = prevBehavior;
+        setTimeout(() => {
+          this.isInitialCentering = false;
+        }, 120);
+      });
+    }
   }
 
   updateTrackAlignment() {
@@ -191,32 +227,26 @@ class HangerRack {
       this.soundRail.loop = true;
     } catch (_) {}
 
-    // Unlock browser audio context on first user gesture anywhere
+    // Unlock browser audio context on first real user gesture anywhere
+    let hasUnlocked = false;
+    const gestureEvents = ['pointerdown', 'touchstart', 'click', 'keydown'];
     const unlock = () => {
+      if (hasUnlocked) return;
+      hasUnlocked = true;
+
+      gestureEvents.forEach(evt => {
+        window.removeEventListener(evt, unlock);
+      });
+
       if (this.audioCtx && this.audioCtx.state === 'suspended') {
         this.audioCtx.resume().catch(() => {});
       }
-      const allAudio = [...this.poolDress1, ...this.poolDress2, this.soundRail];
-      allAudio.forEach(a => {
-        if (!a) return;
-        try {
-          a.load();
-        } catch (_) {}
-      });
       this.audioUnlocked = true;
     };
 
-    ['pointerdown', 'touchstart', 'click', 'keydown', 'pointermove'].forEach(evt => {
-      window.addEventListener(evt, unlock, { passive: true, once: evt === 'pointermove' ? false : true });
+    gestureEvents.forEach(evt => {
+      window.addEventListener(evt, unlock, { passive: true, once: true });
     });
-
-    // Bind visible sound toggle button in header if present
-    this.soundToggleBtn = this.section.querySelector('.hanger-sound-btn');
-    if (this.soundToggleBtn) {
-      this.soundToggleBtn.addEventListener('click', () => {
-        this.toggleSound();
-      });
-    }
   }
 
   toggleSound() {
@@ -288,6 +318,7 @@ class HangerRack {
     if (this.isMuted) return;
 
     clearTimeout(this.railSoundStopTimeout);
+    clearInterval(this.railFadeInterval);
 
     if (this.isRailSoundActive) {
       this.railSoundStopTimeout = setTimeout(() => {
@@ -361,12 +392,14 @@ class HangerRack {
     // 2. HTML5 Audio fade out
     if (this.soundRail && !this.soundRail.paused) {
       try {
+        clearInterval(this.railFadeInterval);
         let vol = this.soundRail.volume;
-        const fadeInterval = setInterval(() => {
+        this.railFadeInterval = setInterval(() => {
           vol = Math.max(0, vol - 0.15);
           if (this.soundRail) this.soundRail.volume = vol;
           if (vol <= 0.05) {
-            clearInterval(fadeInterval);
+            clearInterval(this.railFadeInterval);
+            this.railFadeInterval = null;
             if (this.soundRail) {
               this.soundRail.pause();
               this.soundRail.currentTime = 0;
@@ -657,6 +690,9 @@ class HangerRack {
       const delta = currentScroll - lastScroll;
       lastScroll = currentScroll;
 
+      if (this.isInitialCentering) return;
+      this.hasUserScrolled = true;
+
       // Play Sound 3 when scrolling through the metal bar
       if (Math.abs(delta) > 1) {
         this.startRailSlideSound();
@@ -676,15 +712,6 @@ class HangerRack {
 
   bindRailDrag() {
     const wrap = this.trackWrap;
-
-    const onPointerDown = (e) => {
-      if (e.button !== 0 && e.pointerType === 'mouse') return;
-      this.isDragging = true;
-      this.hasMovedSignificantly = false;
-      this.startX = e.pageX - wrap.offsetLeft;
-      this.scrollLeft = wrap.scrollLeft;
-      wrap.classList.add('is-dragging');
-    };
 
     const onPointerMove = (e) => {
       if (!this.isDragging) return;
@@ -715,14 +742,25 @@ class HangerRack {
       this.isDragging = false;
       wrap.classList.remove('is-dragging');
       this.stopRailSlideSound();
+      window.removeEventListener('pointermove', onPointerMove);
 
       setTimeout(() => {
         this.hasMovedSignificantly = false;
       }, 50);
     };
 
+    const onPointerDown = (e) => {
+      if (e.button !== 0 && e.pointerType === 'mouse') return;
+      this.isDragging = true;
+      this.hasUserScrolled = true;
+      this.hasMovedSignificantly = false;
+      this.startX = e.pageX - wrap.offsetLeft;
+      this.scrollLeft = wrap.scrollLeft;
+      wrap.classList.add('is-dragging');
+      window.addEventListener('pointermove', onPointerMove, { passive: false });
+    };
+
     wrap.addEventListener('pointerdown', onPointerDown);
-    window.addEventListener('pointermove', onPointerMove, { passive: false });
     window.addEventListener('pointerup', onPointerUp);
     window.addEventListener('pointercancel', onPointerUp);
   }
