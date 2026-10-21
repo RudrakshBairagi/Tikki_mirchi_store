@@ -563,7 +563,7 @@
   }
 
   .hanger-rail-bar {
-    top: 20px;
+    top: 10px;
   }
 
   .hanger-item {
@@ -573,10 +573,11 @@
   .hanger-wire-wrapper {
     width: 125px;
     height: 65px;
+    margin-bottom: -28px;
   }
 
   .hanger-swing-tag {
-    top: 44px;
+    top: 48px;
     right: 2px;
   }
 
