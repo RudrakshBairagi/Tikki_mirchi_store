@@ -1,0 +1,759 @@
+/**
+ * HOUSE OF ROYALS — ATELIER CLOTHES HANGER RACK
+ * GPU-accelerated pendulum sway, rail physics, boutique shadows, and typography.
+ */
+
+.hanger-rack-section {
+  position: relative;
+  width: 100%;
+  background: var(--rack-bg, #f7f6f2);
+  color: var(--rack-text-color, #1a1819);
+  padding-top: var(--rack-padding-top, 60px);
+  padding-bottom: var(--rack-padding-bottom, 80px);
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.hanger-rack-container {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 24px;
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   Header: Minimalist Atelier Editorial
+   ========================================================================== */
+
+.hanger-rack-header {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 50px auto;
+  position: relative;
+  z-index: 2;
+}
+
+.hanger-rack-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--rack-accent-color, #b38728);
+  margin-bottom: 12px;
+}
+
+.rack-eyebrow-sparkle {
+  font-size: 9px;
+  opacity: 0.8;
+}
+
+.hanger-rack-title {
+  margin: 0 0 14px 0;
+  font-family: 'Ragara', 'Italiana', Georgia, 'Times New Roman', serif;
+  font-size: clamp(34px, 4.5vw, 54px);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  line-height: 1.1;
+  color: var(--rack-text-color, #1a1819);
+}
+
+.hanger-rack-subheading {
+  margin: 0 auto;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgba(26, 24, 25, 0.65);
+  font-weight: 400;
+  max-width: 460px;
+}
+
+/* ==========================================================================
+   Boutique Rail & Clothes Rack Stage
+   ========================================================================== */
+
+.hanger-rack-stage {
+  position: relative;
+  width: 100%;
+  margin-top: 20px;
+  outline: none;
+}
+
+/* Fixed Overhead Rail Rod spanning horizontally */
+.hanger-rail-bar {
+  position: absolute;
+  top: 26px; /* Passes cleanly through the wire hook loops */
+  left: 0;
+  right: 0;
+  height: 2.5px;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.rail-rod {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2.5px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.9) 0%,
+    var(--rack-rail-color, #7d858f) 40%,
+    rgba(40, 44, 50, 0.75) 100%
+  );
+  border-radius: 1px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.rail-highlight {
+  position: absolute;
+  top: 0;
+  left: 5%;
+  right: 5%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.95), transparent);
+}
+
+.rail-bracket {
+  display: none; /* Keep rail razor-thin and clean as in reference reel */
+}
+
+/* ==========================================================================
+   Scrollable / Draggable Track
+   ========================================================================== */
+
+.hanger-rack-track-wrap {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: visible;
+  padding-top: 10px; /* Space for hooks touching the rail */
+  padding-bottom: 40px;
+  cursor: grab;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+  perspective: 1200px;
+  -webkit-perspective: 1200px;
+  scroll-behavior: smooth;
+}
+
+.hanger-rack-track-wrap.is-dragging {
+  cursor: grabbing;
+  scroll-behavior: auto;
+}
+
+.hanger-rack-track-wrap::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.hanger-rack-track {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 28px;
+  min-width: max-content;
+  padding: 0 40px;
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   Hanger Item (The Physics Unit - Enlarged Scale)
+   ========================================================================== */
+
+.hanger-item {
+  position: relative;
+  width: var(--rack-item-width, 280px);
+  flex: 0 0 auto;
+  /* CRITICAL: Anchor all rotation and scale at top center (the hook contact point) */
+  transform-origin: 50% 0px;
+  -webkit-transform-origin: 50% 0px;
+  will-change: transform;
+  transform: translateX(var(--part-shift, 0px));
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), z-index 0.2s;
+  z-index: var(--rack-z, 1);
+}
+
+.hanger-assembly {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform-origin: 50% 0px;
+  -webkit-transform-origin: 50% 0px;
+  will-change: transform;
+  transition: filter 0.4s ease;
+}
+
+/* ==========================================================================
+   Wire Hanger SVG (Scaled for Bigger Garment)
+   ========================================================================== */
+
+.hanger-wire-wrapper {
+  position: relative;
+  width: 195px;
+  height: 102px;
+  color: var(--rack-hanger-color, #686f78);
+  margin-bottom: -24px; /* Sits seamlessly behind/over the halter straps */
+  z-index: 4;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.12));
+}
+
+.hanger-wire-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.hanger-wire-svg .hook-curve {
+  transition: stroke 0.3s ease;
+}
+
+/* ==========================================================================
+   Garment Cutout Silhouette & Shadow (Enlarged)
+   ========================================================================== */
+
+.hanger-garment-wrap {
+  position: relative;
+  width: 100%;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  transform: translateZ(0);
+}
+
+.hanger-garment-img {
+  width: 100%;
+  height: auto;
+  max-height: 720px;
+  object-fit: contain;
+  display: block;
+  pointer-events: none;
+  filter: drop-shadow(0 16px 28px rgba(25, 20, 22, 0.14));
+  transition: filter 0.4s ease;
+}
+
+/* Dynamic soft atelier wall shadow */
+.hanger-garment-shadow {
+  position: absolute;
+  bottom: -15px;
+  left: 15%;
+  right: 15%;
+  height: 20px;
+  background: radial-gradient(ellipse at center, rgba(30, 25, 28, 0.18) 0%, transparent 70%);
+  filter: blur(8px);
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+/* ==========================================================================
+   Delicate Swing Price Tag (Reveals gracefully on hover)
+   ========================================================================== */
+
+.hanger-swing-tag {
+  position: absolute;
+  top: 60px;
+  right: -8px;
+  z-index: 6;
+  pointer-events: none;
+  transform-origin: 50% 0px;
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.hanger-item.is-hovered .hanger-swing-tag {
+  opacity: 1;
+  transform: translateY(0) rotateZ(2deg);
+}
+
+.tag-thread {
+  width: 1px;
+  height: 20px;
+  background: rgba(120, 115, 110, 0.55);
+  margin: 0 auto;
+}
+
+.tag-body {
+  background: rgba(255, 255, 255, 0.97);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 4px;
+  padding: 6px 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 95px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.tag-code {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--rack-accent-color, #b38728);
+  text-transform: uppercase;
+}
+
+.tag-name {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  color: #1f1d1d;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 110px;
+}
+
+.tag-price {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 9.5px;
+  font-weight: 500;
+  color: #6c6660;
+}
+
+/* Transparent click hitbox */
+.hanger-action-hitbox {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 8;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+/* ==========================================================================
+   Active Hover & Dynamic Physics Classes
+   ========================================================================== */
+
+/* Active outfit elevation (NO scale popping - stays stable & dignified) */
+.hanger-item.is-popped-out {
+  z-index: 40 !important;
+}
+
+.hanger-item.is-popped-out .hanger-assembly {
+  filter: drop-shadow(0 20px 32px rgba(18, 14, 16, 0.18));
+  transition: filter 0.6s ease;
+}
+
+.hanger-item.is-popped-out .hanger-garment-img {
+  filter: drop-shadow(0 18px 30px rgba(22, 16, 20, 0.18)) brightness(1.01);
+  transform: none; /* No scale popping! Perfectly calm and steady */
+  transition: filter 0.6s ease;
+}
+
+.hanger-item.is-popped-out .hanger-wire-wrapper {
+  color: #1a1c20;
+  transform: none;
+  transition: color 0.5s ease;
+}
+
+.hanger-item.is-popped-out .hanger-garment-shadow {
+  transform: translateY(2px);
+  opacity: 0.75;
+  transition: opacity 0.6s ease;
+}
+
+/* Floating Detail Card (Atelier Pop-Up beside hovered garment) */
+.hanger-floating-card {
+  position: absolute;
+  z-index: 55;
+  width: 250px;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 6px;
+  padding: 16px 18px 14px;
+  box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.04);
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition: opacity 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-sizing: border-box;
+}
+
+.hanger-floating-card.is-active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.floating-card-tag {
+  display: inline-block;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--rack-accent-color, #b38728);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.floating-card-title {
+  margin: 0 0 8px 0;
+  font-family: 'Ragara', 'Italiana', Georgia, serif;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.25;
+  color: #1a1819;
+}
+
+.floating-card-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.floating-card-price {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #1a1819;
+}
+
+.floating-card-badge {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: #f4efe6;
+  color: #8c6820;
+  padding: 2px 7px;
+  border-radius: 3px;
+}
+
+.floating-card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #1a1819;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(26, 24, 25, 0.3);
+  padding-bottom: 2px;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.floating-card-link:hover {
+  color: var(--rack-accent-color, #b38728);
+  border-color: var(--rack-accent-color, #b38728);
+}
+
+/* ==========================================================================
+   Bottom Interaction Hint
+   ========================================================================== */
+
+.hanger-rack-hint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 24px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(26, 24, 25, 0.4);
+}
+
+.hint-icon {
+  font-size: 14px;
+  animation: hintPulse 2.4s infinite ease-in-out;
+}
+
+@keyframes hintPulse {
+  0%, 100% { transform: translateX(0); opacity: 0.4; }
+  50% { transform: translateX(4px); opacity: 0.9; }
+}
+
+/* ==========================================================================
+   Mobile & Responsive Adjustments
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .hanger-rack-section {
+    padding-top: 40px;
+    padding-bottom: 50px;
+  }
+
+  .hanger-rack-title {
+    font-size: 32px;
+  }
+
+  .hanger-rack-subheading {
+    font-size: 13px;
+  }
+
+  .hanger-rack-track {
+    justify-content: flex-start;
+    padding: 0 20px;
+    gap: 14px;
+  }
+
+  .hanger-rail-bar {
+    top: 20px;
+  }
+
+  .hanger-item {
+    width: 160px;
+  }
+
+  .hanger-wire-wrapper {
+    width: 125px;
+    height: 65px;
+  }
+
+  .hanger-swing-tag {
+    top: 44px;
+    right: 2px;
+  }
+
+  .tag-body {
+    padding: 4px 8px;
+    min-width: 75px;
+  }
+}
+
+/* ==========================================================================
+   Live Hanger Physics Studio (Floating Widget)
+   ========================================================================== */
+
+.hanger-tuning-studio {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 99999;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  user-select: none;
+}
+
+.tuning-toggle-btn {
+  background: rgba(22, 20, 24, 0.92);
+  color: #f7f6f2;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+}
+
+.tuning-toggle-btn:hover {
+  transform: translateY(-2px);
+  background: #111;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.45);
+}
+
+.hanger-tuning-studio:not(.is-collapsed) .tuning-toggle-btn {
+  display: none;
+}
+
+.tuning-panel-body {
+  width: 320px;
+  background: rgba(18, 16, 20, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 16px;
+  padding: 18px 20px 16px;
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  color: #f5f2eb;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  animation: studio-pop 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes studio-pop {
+  from { opacity: 0; transform: translateY(14px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.hanger-tuning-studio.is-collapsed .tuning-panel-body {
+  display: none;
+}
+
+.tuning-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.tuning-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #b38728;
+}
+
+.tuning-desc {
+  font-size: 11px;
+  color: rgba(245, 242, 235, 0.6);
+  margin-top: 2px;
+}
+
+.tuning-close-btn {
+  background: none;
+  border: none;
+  color: rgba(245, 242, 235, 0.6);
+  font-size: 14px;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: color 0.2s;
+}
+
+.tuning-close-btn:hover {
+  color: #fff;
+}
+
+.tuning-presets {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.preset-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ddd;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 6px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.preset-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.preset-btn.is-active {
+  background: #b38728;
+  color: #1a1819;
+  border-color: #b38728;
+  font-weight: 700;
+}
+
+.tuning-slider-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tuning-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tuning-label-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+}
+
+.tuning-label {
+  color: rgba(245, 242, 235, 0.75);
+}
+
+.tuning-val {
+  color: #b38728;
+  font-family: monospace;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.tuning-row input[type="range"] {
+  width: 100%;
+  height: 5px;
+  accent-color: #b38728;
+  cursor: pointer;
+}
+
+.tuning-footer {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.tuning-btn-secondary,
+.tuning-btn-primary {
+  flex: 1;
+  padding: 7px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.tuning-btn-secondary {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #ccc;
+}
+
+.tuning-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.tuning-btn-primary {
+  background: rgba(179, 135, 40, 0.25);
+  border: 1px solid #b38728;
+  color: #f7e2a9;
+}
+
+.tuning-btn-primary:hover {
+  background: #b38728;
+  color: #161208;
+}

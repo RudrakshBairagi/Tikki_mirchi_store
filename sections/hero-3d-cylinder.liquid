@@ -42,7 +42,7 @@
 
 <section
   id="Hero3D-{{ section.id }}"
-  class="hero-3d-section"
+  class="hero-3d-section{% unless section.settings.show_cylinder %} hero-3d-section--minimal{% endunless %}"
   data-speed="{{ section.settings.auto_rotate_speed }}"
   data-tilt="{{ section.settings.tilt_angle }}"
   data-gap="{{ section.settings.card_gap }}"
@@ -73,105 +73,109 @@
       {%- endif -%}
     </h1>
 
-    <!-- 3D Viewport -->
-    <div class="hero-3d-viewport">
-      <div class="hero-3d-tilter">
-        <div class="hero-3d-cylinder">
-          {%- if section.blocks.size > 0 -%}
-            {%- for block in section.blocks -%}
-              {%- assign default_img_index = forloop.index0 | modulo: 5 | plus: 1 -%}
-              {%- capture fallback_name -%}cylinder-card-{{ default_img_index }}.jpg{%- endcapture -%}
-              {%- assign card_img_src = fallback_name | asset_url -%}
-              {%- if block.settings.image != blank -%}
-                {%- assign card_img_src = block.settings.image | image_url: width: 800 -%}
-              {%- endif -%}
-              <div
-                class="hero-3d-card"
-                data-src="{{ card_img_src }}"
-                data-link="{{ block.settings.link | default: '#' }}"
-                {{ block.shopify_attributes }}
-              >
-                <a
-                  href="{{ block.settings.link | default: '#' }}"
-                  class="hero-3d-card-inner"
-                  aria-label="Card {{ forloop.index }}"
+    {%- if section.settings.show_cylinder -%}
+      <!-- 3D Viewport -->
+      <div class="hero-3d-viewport">
+        <div class="hero-3d-tilter">
+          <div class="hero-3d-cylinder">
+            {%- if section.blocks.size > 0 -%}
+              {%- for block in section.blocks -%}
+                {%- assign default_img_index = forloop.index0 | modulo: 5 | plus: 1 -%}
+                {%- capture fallback_name -%}cylinder-card-{{ default_img_index }}.jpg{%- endcapture -%}
+                {%- assign card_img_src = fallback_name | asset_url -%}
+                {%- if block.settings.image != blank -%}
+                  {%- assign card_img_src = block.settings.image | image_url: width: 800 -%}
+                {%- endif -%}
+                <div
+                  class="hero-3d-card"
+                  data-src="{{ card_img_src }}"
+                  data-link="{{ block.settings.link | default: '#' }}"
+                  {{ block.shopify_attributes }}
                 >
-                  <img
-                    src="{{ card_img_src }}"
-                    alt="{{ block.settings.image.alt | default: 'Card' | escape }}"
-                    class="hero-3d-card-media"
-                    loading="lazy"
-                    width="360"
-                    height="230"
+                  <a
+                    href="{{ block.settings.link | default: '#' }}"
+                    class="hero-3d-card-inner"
+                    aria-label="Card {{ forloop.index }}"
                   >
-                </a>
+                    <img
+                      src="{{ card_img_src }}"
+                      alt="{{ block.settings.image.alt | default: 'Card' | escape }}"
+                      class="hero-3d-card-media"
+                      loading="lazy"
+                      width="360"
+                      height="230"
+                    >
+                  </a>
 
-                {%- if section.settings.enable_reflection -%}
-                  <div class="hero-3d-reflection" aria-hidden="true">
-                    {%- if block.settings.image != blank -%}
-                      <img
-                        src="{{ block.settings.image | image_url: width: 600 }}"
-                        alt=""
-                        loading="lazy"
-                        width="300"
-                        height="400"
-                      >
-                    {%- else -%}
-                      <img
-                        src="{{ asset_name | asset_url }}"
-                        alt=""
-                        loading="lazy"
-                        width="300"
-                        height="400"
-                      >
-                    {%- endif -%}
-                  </div>
-                {%- endif -%}
-              </div>
-            {%- endfor -%}
-          {%- else -%}
-            <!-- Fallback 5 Clean Cards with user pictures -->
-            {%- for i in (1..5) -%}
-              {%- capture fallback_name -%}cylinder-card-{{ i }}.jpg{%- endcapture -%}
-              <div class="hero-3d-card">
-                <a href="/collections/all" class="hero-3d-card-inner" aria-label="Card {{ i }}">
-                  <img
-                    src="{{ fallback_name | asset_url }}"
-                    alt="Card {{ i }}"
-                    class="hero-3d-card-media"
-                    loading="lazy"
-                    width="300"
-                    height="400"
-                  >
-                </a>
+                  {%- if section.settings.enable_reflection -%}
+                    <div class="hero-3d-reflection" aria-hidden="true">
+                      {%- if block.settings.image != blank -%}
+                        <img
+                          src="{{ block.settings.image | image_url: width: 600 }}"
+                          alt=""
+                          loading="lazy"
+                          width="300"
+                          height="400"
+                        >
+                      {%- else -%}
+                        <img
+                          src="{{ asset_name | asset_url }}"
+                          alt=""
+                          loading="lazy"
+                          width="300"
+                          height="400"
+                        >
+                      {%- endif -%}
+                    </div>
+                  {%- endif -%}
+                </div>
+              {%- endfor -%}
+            {%- else -%}
+              <!-- Fallback 5 Clean Cards with user pictures -->
+              {%- for i in (1..5) -%}
+                {%- capture fallback_name -%}cylinder-card-{{ i }}.jpg{%- endcapture -%}
+                <div class="hero-3d-card">
+                  <a href="/collections/all" class="hero-3d-card-inner" aria-label="Card {{ i }}">
+                    <img
+                      src="{{ fallback_name | asset_url }}"
+                      alt="Card {{ i }}"
+                      class="hero-3d-card-media"
+                      loading="lazy"
+                      width="300"
+                      height="400"
+                    >
+                  </a>
 
-                {%- if section.settings.enable_reflection -%}
-                  <div class="hero-3d-reflection" aria-hidden="true">
-                    <img src="{{ fallback_name | asset_url }}" alt="" loading="lazy" width="300" height="400">
-                  </div>
-                {%- endif -%}
-              </div>
-            {%- endfor -%}
-          {%- endif -%}
+                  {%- if section.settings.enable_reflection -%}
+                    <div class="hero-3d-reflection" aria-hidden="true">
+                      <img src="{{ fallback_name | asset_url }}" alt="" loading="lazy" width="300" height="400">
+                    </div>
+                  {%- endif -%}
+                </div>
+              {%- endfor -%}
+            {%- endif -%}
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-
-  <!-- Bottom Interaction & Navigation Bar -->
-  <div class="hero-3d-bottombar">
-    <div class="hero-3d-interaction-hint">
-      <span class="hint-icon">✦</span>
-      <span>Drag or swipe to rotate</span>
-    </div>
-
-    {%- if section.settings.cta_label != blank -%}
-      <a href="{{ section.settings.cta_link | default: '/collections/all' }}" class="hero-3d-cta">
-        <span>{{ section.settings.cta_label }}</span>
-        <span>→</span>
-      </a>
     {%- endif -%}
   </div>
+
+  {%- if section.settings.show_cylinder -%}
+    <!-- Bottom Interaction & Navigation Bar -->
+    <div class="hero-3d-bottombar">
+      <div class="hero-3d-interaction-hint">
+        <span class="hint-icon">✦</span>
+        <span>Drag or swipe to rotate</span>
+      </div>
+
+      {%- if section.settings.cta_label != blank -%}
+        <a href="{{ section.settings.cta_link | default: '/collections/all' }}" class="hero-3d-cta">
+          <span>{{ section.settings.cta_label }}</span>
+          <span>→</span>
+        </a>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
 </section>
 
 {% schema %}
@@ -180,6 +184,12 @@
   "tag": "section",
   "class": "section-hero-3d-cylinder",
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_cylinder",
+      "label": "Show Rotating 3D Cylinder",
+      "default": false
+    },
     {
       "type": "header",
       "content": "Typography & Branding"

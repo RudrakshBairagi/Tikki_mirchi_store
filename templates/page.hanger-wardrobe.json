@@ -1,0 +1,84 @@
+{
+  "sections": {
+    "main_hanger_rack": {
+      "type": "hanger-rack",
+      "blocks": {
+        "look_1": {
+          "type": "garment",
+          "settings": {
+            "title": "Ivory Mirror Bustier & Saree Gown",
+            "tag": "LOOK 01",
+            "price": "$1,450"
+          }
+        },
+        "look_2": {
+          "type": "garment",
+          "settings": {
+            "title": "Heritage Tapestry Mirror Lehenga",
+            "tag": "LOOK 02",
+            "price": "$1,890"
+          }
+        },
+        "look_3": {
+          "type": "garment",
+          "settings": {
+            "title": "Rose Quartz Embellished Ombré Gown",
+            "tag": "LOOK 03",
+            "price": "$1,620"
+          }
+        },
+        "look_4": {
+          "type": "garment",
+          "settings": {
+            "title": "Midnight Botanical Flared Set",
+            "tag": "LOOK 04",
+            "price": "$1,380"
+          }
+        },
+        "look_5": {
+          "type": "garment",
+          "settings": {
+            "title": "Peplum Floral Velvet Ensemble",
+            "tag": "LOOK 05",
+            "price": "$1,540"
+          }
+        },
+        "look_6": {
+          "type": "garment",
+          "settings": {
+            "title": "Scarlet Blossom Twist-Knot Gown",
+            "tag": "LOOK 06",
+            "price": "$1,290"
+          }
+        }
+      },
+      "block_order": [
+        "look_1",
+        "look_2",
+        "look_3",
+        "look_4",
+        "look_5",
+        "look_6"
+      ],
+      "settings": {
+        "eyebrow": "HOUSE OF ROYALS • COUTURE COLLECTION",
+        "heading": "House of Royals",
+        "subheading": "Hover across our atelier rail to sway and inspect each handcrafted couture piece.",
+        "bg_color": "#f8f8f6",
+        "rail_color": "#7d858f",
+        "hanger_color": "#6b727c",
+        "text_color": "#1a1819",
+        "accent_color": "#b38728",
+        "sway_intensity": 6,
+        "item_width": 195,
+        "enable_nudge": true,
+        "enable_drag": true,
+        "padding_top": 80,
+        "padding_bottom": 100
+      }
+    }
+  },
+  "order": [
+    "main_hanger_rack"
+  ]
+}

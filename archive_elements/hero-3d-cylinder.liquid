@@ -1,0 +1,458 @@
+{{ 'hero-3d-cylinder.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'hero-3d-cylinder.js' | asset_url }}" defer="defer"></script>
+
+{%- style -%}
+  @font-face {
+    font-family: 'Ragara';
+    src: url('{{ "Ragara.woff" | asset_url }}') format('woff'),
+         url('{{ "Ragara.otf" | asset_url }}') format('opentype'),
+         url('{{ "Ragara.ttf" | asset_url }}') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Ragara';
+    src: url('{{ "Ragara-Italic.woff" | asset_url }}') format('woff'),
+         url('{{ "Ragara-Italic.otf" | asset_url }}') format('opentype'),
+         url('{{ "Ragara-Italic.ttf" | asset_url }}') format('truetype');
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+  }
+
+  #Hero3D-{{ section.id }} {
+    --hero-bg: {{ section.settings.bg_color }};
+    --hero-text: {{ section.settings.text_color }};
+    --hero-title-color: {{ section.settings.title_color }};
+    --cylinder-tilt: {{ section.settings.tilt_angle }}deg;
+    --cylinder-perspective: {{ section.settings.perspective }}px;
+    --card-width: {{ section.settings.card_width }}px;
+    --card-height: {{ section.settings.card_height }}px;
+    --card-radius: {{ section.settings.card_radius }}px;
+    --card-gap: {{ section.settings.card_gap }}px;
+    --reflection-opacity: {{ section.settings.reflection_opacity | divided_by: 100.0 }};
+  }
+
+  #Hero3D-{{ section.id }} .hero-3d-giant-title {
+    font-family: 'Ragara', 'Italiana', Georgia, serif;
+  }
+{%- endstyle -%}
+
+<section
+  id="Hero3D-{{ section.id }}"
+  class="hero-3d-section"
+  data-speed="{{ section.settings.auto_rotate_speed }}"
+  data-tilt="{{ section.settings.tilt_angle }}"
+  data-gap="{{ section.settings.card_gap }}"
+  data-lighting="{% if section.settings.enable_lighting %}true{% else %}false{% endif %}"
+  data-reflection="{% if section.settings.enable_reflection %}true{% else %}false{% endif %}"
+>
+  <!-- Top Meta Navigation Bar -->
+  <div class="hero-3d-topbar">
+    <div class="topbar-brand">{{ section.settings.topbar_left }}</div>
+    {%- if section.settings.topbar_center != blank -%}
+      <div class="topbar-tag">{{ section.settings.topbar_center }}</div>
+    {%- endif -%}
+    {%- if section.settings.topbar_right != blank -%}
+      <div class="topbar-status">
+        <span class="status-dot"></span>
+        <span>{{ section.settings.topbar_right }}</span>
+      </div>
+    {%- endif -%}
+  </div>
+
+  <!-- 3D Stage & Central Rotating Ribbon -->
+  <div class="hero-3d-stage">
+    <!-- Giant Editorial Background Headline -->
+    <h1 class="hero-3d-giant-title">
+      {{ section.settings.heading }}
+      {%- if section.settings.heading_accent != blank -%}
+        <span class="title-accent">{{ section.settings.heading_accent }}</span>
+      {%- endif -%}
+    </h1>
+
+    <!-- 3D Viewport -->
+    <div class="hero-3d-viewport">
+      <div class="hero-3d-tilter">
+        <div class="hero-3d-cylinder">
+          {%- if section.blocks.size > 0 -%}
+            {%- for block in section.blocks -%}
+              {%- assign default_img_index = forloop.index0 | modulo: 5 | plus: 1 -%}
+              {%- capture fallback_name -%}cylinder-card-{{ default_img_index }}.jpg{%- endcapture -%}
+              {%- assign card_img_src = fallback_name | asset_url -%}
+              {%- if block.settings.image != blank -%}
+                {%- assign card_img_src = block.settings.image | image_url: width: 800 -%}
+              {%- endif -%}
+              <div
+                class="hero-3d-card"
+                data-src="{{ card_img_src }}"
+                data-link="{{ block.settings.link | default: '#' }}"
+                {{ block.shopify_attributes }}
+              >
+                <a
+                  href="{{ block.settings.link | default: '#' }}"
+                  class="hero-3d-card-inner"
+                  aria-label="Card {{ forloop.index }}"
+                >
+                  <img
+                    src="{{ card_img_src }}"
+                    alt="{{ block.settings.image.alt | default: 'Card' | escape }}"
+                    class="hero-3d-card-media"
+                    loading="lazy"
+                    width="360"
+                    height="230"
+                  >
+                </a>
+
+                {%- if section.settings.enable_reflection -%}
+                  <div class="hero-3d-reflection" aria-hidden="true">
+                    {%- if block.settings.image != blank -%}
+                      <img
+                        src="{{ block.settings.image | image_url: width: 600 }}"
+                        alt=""
+                        loading="lazy"
+                        width="300"
+                        height="400"
+                      >
+                    {%- else -%}
+                      <img
+                        src="{{ asset_name | asset_url }}"
+                        alt=""
+                        loading="lazy"
+                        width="300"
+                        height="400"
+                      >
+                    {%- endif -%}
+                  </div>
+                {%- endif -%}
+              </div>
+            {%- endfor -%}
+          {%- else -%}
+            <!-- Fallback 5 Clean Cards with user pictures -->
+            {%- for i in (1..5) -%}
+              {%- capture fallback_name -%}cylinder-card-{{ i }}.jpg{%- endcapture -%}
+              <div class="hero-3d-card">
+                <a href="/collections/all" class="hero-3d-card-inner" aria-label="Card {{ i }}">
+                  <img
+                    src="{{ fallback_name | asset_url }}"
+                    alt="Card {{ i }}"
+                    class="hero-3d-card-media"
+                    loading="lazy"
+                    width="300"
+                    height="400"
+                  >
+                </a>
+
+                {%- if section.settings.enable_reflection -%}
+                  <div class="hero-3d-reflection" aria-hidden="true">
+                    <img src="{{ fallback_name | asset_url }}" alt="" loading="lazy" width="300" height="400">
+                  </div>
+                {%- endif -%}
+              </div>
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Interaction & Navigation Bar -->
+  <div class="hero-3d-bottombar">
+    <div class="hero-3d-interaction-hint">
+      <span class="hint-icon">✦</span>
+      <span>Drag or swipe to rotate</span>
+    </div>
+
+    {%- if section.settings.cta_label != blank -%}
+      <a href="{{ section.settings.cta_link | default: '/collections/all' }}" class="hero-3d-cta">
+        <span>{{ section.settings.cta_label }}</span>
+        <span>→</span>
+      </a>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "3D Cylinder Hero",
+  "tag": "section",
+  "class": "section-hero-3d-cylinder",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Typography & Branding"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Giant Background Title",
+      "default": "TIKKI MIRCHI"
+    },
+    {
+      "type": "text",
+      "id": "heading_accent",
+      "label": "Title Accent (Italic)"
+    },
+    {
+      "type": "text",
+      "id": "topbar_left",
+      "label": "Top Bar Left",
+      "default": "TIKKI MIRCHI"
+    },
+    {
+      "type": "text",
+      "id": "topbar_center",
+      "label": "Top Bar Center",
+      "default": "ARTISANAL PANTRY • COLLECTION 2026"
+    },
+    {
+      "type": "text",
+      "id": "topbar_right",
+      "label": "Top Bar Right",
+      "default": "ALL NATURAL"
+    },
+    {
+      "type": "header",
+      "content": "Call To Action"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "CTA Button Label",
+      "default": "Explore Collection"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "CTA Button Link"
+    },
+    {
+      "type": "header",
+      "content": "Color Scheme"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#0b0b0c"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#f5f2eb"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Giant Title Color",
+      "default": "#f5f2eb"
+    },
+    {
+      "type": "header",
+      "content": "3D Physics & Visuals"
+    },
+    {
+      "type": "range",
+      "id": "auto_rotate_speed",
+      "min": -30,
+      "max": 30,
+      "step": 2,
+      "unit": "°/s",
+      "label": "Auto-Rotation Speed",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "tilt_angle",
+      "min": -30,
+      "max": 35,
+      "step": 1,
+      "unit": "°",
+      "label": "Camera Tilt Angle",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "perspective",
+      "min": 600,
+      "max": 1800,
+      "step": 50,
+      "unit": "px",
+      "label": "3D Perspective Depth",
+      "default": 1100
+    },
+    {
+      "type": "range",
+      "id": "card_width",
+      "min": 180,
+      "max": 480,
+      "step": 10,
+      "unit": "px",
+      "label": "Card Width (Desktop)",
+      "default": 360
+    },
+    {
+      "type": "range",
+      "id": "card_height",
+      "min": 160,
+      "max": 400,
+      "step": 10,
+      "unit": "px",
+      "label": "Card Height (Desktop)",
+      "default": 230
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Card Corner Radius",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "card_gap",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Card Separation Gap",
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_lighting",
+      "label": "Enable Dynamic 3D Lighting & Shadows",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_reflection",
+      "label": "Enable Mirror Floor Reflection",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "reflection_opacity",
+      "min": 5,
+      "max": 60,
+      "step": 5,
+      "unit": "%",
+      "label": "Floor Reflection Opacity",
+      "default": 25
+    }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Image Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Special Reserve"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle",
+          "default": "Organic Harvest"
+        },
+        {
+          "type": "text",
+          "id": "tag",
+          "label": "Tag",
+          "default": "Edition 01"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "3D Cylinder Hero (Kai Marlow)",
+      "blocks": [
+        {
+          "type": "card",
+          "settings": {
+            "title": "Kashmiri Saffron",
+            "subtitle": "Artisanal Harvest",
+            "tag": "Pure Grade A"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "title": "Fiery Guntur Chilli",
+            "subtitle": "Sun-Dried Spice",
+            "tag": "Signature Heat"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "title": "Roasted Cardamom",
+            "subtitle": "Cold Smoked Pods",
+            "tag": "Rare Pods"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "title": "Golden Turmeric",
+            "subtitle": "Single Origin",
+            "tag": "Potent Curcumin"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "title": "Crispy Tikki Blend",
+            "subtitle": "Chef Reserve",
+            "tag": "Street & Soul"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "title": "Tellicherry Peppercorn",
+            "subtitle": "Black Pepper Pods",
+            "tag": "Bold Crunch"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "title": "Star Anise Infusion",
+            "subtitle": "Fragrant Botanicals",
+            "tag": "Whole Spice"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "title": "Smoked Mirchi Oil",
+            "subtitle": "Cold Pressed Extract",
+            "tag": "Infused Reserve"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

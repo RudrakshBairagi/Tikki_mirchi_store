@@ -3,91 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tikki Mirchi — 3D Cylindrical Carousel Preview</title>
+  <title>TIKKI Bella — Atelier Runway & Dress Rack</title>
   <link rel="stylesheet" href="assets/hero-3d-cylinder.css">
-  <link rel="stylesheet" href="assets/wardrobe-carousel.css">
+  <link rel="stylesheet" href="assets/hanger-rack.css?v=studio">
   <style>
     body {
       margin: 0;
       padding: 0;
       background: #0b0b0c;
       overflow-x: hidden;
-    }
-
-    /* Floating control bar for live experimentation */
-    .preview-floating-panel {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      background: rgba(18, 18, 20, 0.85);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      padding: 16px 20px;
-      border-radius: 16px;
-      z-index: 9999;
-      color: #f5f2eb;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 12px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      min-width: 240px;
-    }
-
-    .preview-floating-panel h4 {
-      margin: 0;
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      color: #f59e0b;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .control-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .control-row label {
-      color: rgba(245, 242, 235, 0.7);
-    }
-
-    .control-row input[type="range"] {
-      cursor: pointer;
-      width: 110px;
-      accent-color: #f59e0b;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     }
   </style>
 </head>
 <body>
 
-  <!-- 3D Cylindrical Hero Section -->
+  <!-- Editorial Brand Masthead (Background Preserved, Rotating Cylinder Removed) -->
   <section
     id="Hero3D-preview"
-    class="hero-3d-section"
-    data-speed="14"
-    data-tilt="-7"
-    data-gap="30"
-    data-lighting="true"
-    data-reflection="false"
+    class="hero-3d-section hero-3d-section--minimal"
     style="
-      --hero-bg: #f3f0e7;
-      --hero-text: #2a2529;
-      --hero-title-color: #2a2529;
-      --cylinder-tilt: -7deg;
-      --cylinder-perspective: 1100px;
-      --card-width: 220px;
-      --card-height: 260px;
-      --card-radius: 4px;
-      --card-gap: 30px;
-      --reflection-opacity: 0;
+      --hero-bg: #FF78F0;
+      --hero-text: #F5EA5A;
+      --hero-title-color: #F5EA5A;
     "
   >
     <!-- Top Meta Navigation Bar -->
@@ -95,364 +33,256 @@
       <div class="topbar-brand">TIKKI Bella</div>
     </div>
 
-    <!-- 3D Stage & Central Rotating Ribbon -->
+    <!-- Editorial Brand Title -->
     <div class="hero-3d-stage">
-      <!-- Giant Editorial Background Headline -->
       <h1 class="hero-3d-giant-title">
         TIKKI Bella
       </h1>
-
-      <!-- 3D Viewport -->
-      <div class="hero-3d-viewport">
-        <div class="hero-3d-tilter">
-          <div class="hero-3d-cylinder">
-            
-            <!-- Card 1 -->
-            <div class="hero-3d-card">
-              <a href="#" class="hero-3d-card-inner" aria-label="Card 1">
-                <img src="assets/cylinder-card-1.jpg" alt="Card 1" class="hero-3d-card-media" width="300" height="400">
-              </a>
-              <div class="hero-3d-reflection" aria-hidden="true">
-                <img src="assets/cylinder-card-1.jpg" alt="" width="300" height="400">
-              </div>
-            </div>
-
-            <!-- Card 2 -->
-            <div class="hero-3d-card">
-              <a href="#" class="hero-3d-card-inner" aria-label="Card 2">
-                <img src="assets/cylinder-card-2.jpg" alt="Card 2" class="hero-3d-card-media" width="300" height="400">
-              </a>
-              <div class="hero-3d-reflection" aria-hidden="true">
-                <img src="assets/cylinder-card-2.jpg" alt="" width="300" height="400">
-              </div>
-            </div>
-
-            <!-- Card 3 -->
-            <div class="hero-3d-card">
-              <a href="#" class="hero-3d-card-inner" aria-label="Card 3">
-                <img src="assets/cylinder-card-3.jpg" alt="Card 3" class="hero-3d-card-media" width="300" height="400">
-              </a>
-              <div class="hero-3d-reflection" aria-hidden="true">
-                <img src="assets/cylinder-card-3.jpg" alt="" width="300" height="400">
-              </div>
-            </div>
-
-            <!-- Card 4 -->
-            <div class="hero-3d-card">
-              <a href="#" class="hero-3d-card-inner" aria-label="Card 4">
-                <img src="assets/cylinder-card-4.jpg" alt="Card 4" class="hero-3d-card-media" width="300" height="400">
-              </a>
-              <div class="hero-3d-reflection" aria-hidden="true">
-                <img src="assets/cylinder-card-4.jpg" alt="" width="300" height="400">
-              </div>
-            </div>
-
-            <!-- Card 5 -->
-            <div class="hero-3d-card">
-              <a href="#" class="hero-3d-card-inner" aria-label="Card 5">
-                <img src="assets/cylinder-card-5.jpg" alt="Card 5" class="hero-3d-card-media" width="300" height="400">
-              </a>
-              <div class="hero-3d-reflection" aria-hidden="true">
-                <img src="assets/cylinder-card-5.jpg" alt="" width="300" height="400">
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Bottom Interaction & Navigation Bar -->
-    <div class="hero-3d-bottombar">
-      <div class="hero-3d-interaction-hint">
-        <span class="hint-icon">✦</span>
-        <span>Drag or swipe to rotate</span>
-      </div>
-
-      <a href="#" class="hero-3d-cta">
-        <span>Explore Collection</span>
-        <span>→</span>
-      </a>
     </div>
   </section>
 
-  <!-- Magic Wardrobe Section (Demo 2) -->
+  <!-- ==========================================================================
+       HOUSE OF ROYALS — CLOTHES HANGER RACK (ATELIER RUNWAY)
+       ========================================================================== -->
   <section
-    id="Wardrobe-preview"
-    class="magic-wardrobe-section"
-    data-auto-cycle="true"
-    data-speed="4"
+    id="HangerRack-preview"
+    class="hanger-rack-section"
+    data-sway-intensity="4"
+    data-nudge="true"
+    data-drag="true"
     style="
-      --wardrobe-bg: #f3f0e7;
-      --wardrobe-text: #2a2529;
-      --wardrobe-accent: #c59b27;
-      --wardrobe-dark: #1e1b1c;
-      --wardrobe-card-bg: rgba(255, 255, 255, 0.94);
+      --rack-bg: #f8f8f6;
+      --rack-rail-color: #7d858f;
+      --rack-hanger-color: #6b727c;
+      --rack-text-color: #1a1819;
+      --rack-accent-color: #b38728;
+      --rack-item-width: 280px;
+      --rack-padding-top: 70px;
+      --rack-padding-bottom: 90px;
     "
   >
-    <div class="magic-wardrobe-container">
-      <!-- Header / Editorial Labeling -->
-      <div class="magic-wardrobe-header">
-        <div class="magic-wardrobe-tagline">
-          <span class="magic-wardrobe-tag-dot">✦</span>
-          <span>TIKKI BELLA • THE MAGIC WARDROBE</span>
+    <div class="hanger-rack-container">
+      <div class="hanger-rack-header">
+        <div class="hanger-rack-eyebrow">
+          <span class="rack-eyebrow-sparkle">✦</span>
+          <span>HOUSE OF ROYALS • DROP 01</span>
+          <span class="rack-eyebrow-sparkle">✦</span>
         </div>
-        <h2 class="magic-wardrobe-title" style="font-family: 'Ragara', 'Italiana', Georgia, serif;">THE ATELIER DRESSING ROOM</h2>
-        <p class="magic-wardrobe-subtitle">Step inside our private dressing room. Watch our debut partywear collection come to life.</p>
-
-        <!-- Dynamic Active Look Indicator -->
-        <div class="magic-active-indicator" aria-live="polite">
-          <span class="active-sparkle">✦</span>
-          <span class="active-look-label">LOOK 01 OF 05</span>
-          <span class="active-dot-separator">•</span>
-          <span class="active-look-name">Golden Corset & Pearl Fringe Skirt</span>
-        </div>
+        <h2 class="hanger-rack-title">House of Royals</h2>
+        <p class="hanger-rack-subheading">Hover over any gown to slide and inspect couture details on our bespoke atelier rail.</p>
       </div>
 
-      <!-- The Magic Wardrobe Portal Stage -->
-      <div class="magic-wardrobe-stage">
-        <!-- Previous Arrow -->
-        <button type="button" class="magic-nav-btn nav-prev" aria-label="Previous outfit">
-          <span aria-hidden="true">‹</span>
-        </button>
+      <div class="hanger-rack-stage" tabindex="0">
+        <!-- Overhead Rail Bar -->
+        <div class="hanger-rail-bar" aria-hidden="true">
+          <div class="rail-rod"></div>
+          <div class="rail-bracket bracket-left"></div>
+          <div class="rail-bracket bracket-right"></div>
+          <div class="rail-highlight"></div>
+        </div>
 
-        <!-- Central Wardrobe Frame with In-Place Cycling Outfits -->
-        <div class="magic-wardrobe-stage-inner">
-          <div class="magic-outfits-carousel">
+        <!-- Draggable Track -->
+        <div class="hanger-rack-track-wrap">
+          <div class="hanger-rack-track">
+            
             <!-- Look 1 -->
-            <div
-              class="magic-outfit-slide is-active"
-              data-index="0"
-              data-tag="LOOK 01"
-              data-title="Golden Corset & Pearl Fringe Skirt"
-            >
-              <div class="magic-outfit-media">
-                <img
-                  src="assets/magic-wardrobe-look-1.jpg"
-                  alt="Golden Corset & Pearl Fringe Skirt"
-                  class="magic-outfit-img"
-                  loading="eager"
-                  width="768"
-                  height="1376"
-                >
-                <div class="magic-outfit-details-card">
-                  <div class="card-inner">
-                    <div class="card-top-row">
-                      <span class="card-tag">LOOK 01</span>
-                      <span class="card-badge">DROP 01 EXCLUSIVE</span>
-                    </div>
-                    <h3 class="card-title">Golden Corset & Pearl Fringe Skirt</h3>
-                    <p class="card-desc">Sweetheart boned corset with intricate floral beading and pearl drop fringe.</p>
-                    <a href="#waitlist" class="card-cta-btn">
-                      <span>Join The Waitlist</span>
-                      <span class="btn-arrow">→</span>
-                    </a>
+            <div class="hanger-item" data-index="0" data-title="Bordeaux Ruched Halter Dress" data-price="$890" data-tag="NEW ARRIVAL">
+              <div class="hanger-assembly">
+                <div class="hanger-wire-wrapper" aria-hidden="true">
+                  <svg class="hanger-wire-svg" viewBox="0 0 160 84" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M 80 4 C 70 4, 63 11, 63 20 C 63 29, 74 34, 80 39 L 80 47" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" class="hook-curve" />
+                    <path d="M 80 4 C 84 4, 86 6, 86 8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
+                    <path d="M 12 76 L 80 47 L 148 76" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M 15 76 L 145 76" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                    <rect x="36" y="73" width="7" height="10" rx="1.5" fill="currentColor" opacity="0.85" />
+                    <rect x="117" y="73" width="7" height="10" rx="1.5" fill="currentColor" opacity="0.85" />
+                  </svg>
+                </div>
+                <div class="hanger-garment-wrap">
+                  <img src="assets/shopping.png" alt="Bordeaux Ruched Halter Dress" class="hanger-garment-img" width="534" height="1200">
+                  <div class="hanger-garment-shadow" aria-hidden="true"></div>
+                </div>
+                <div class="hanger-swing-tag" aria-hidden="true">
+                  <div class="tag-thread"></div>
+                  <div class="tag-body">
+                    <span class="tag-code">NEW DROP</span>
+                    <span class="tag-name">Bordeaux Halter</span>
+                    <span class="tag-price">$890</span>
                   </div>
                 </div>
+                <button type="button" class="hanger-action-hitbox" aria-label="Inspect Look 1">
+                  <span class="sr-only">Inspect Look 1</span>
+                </button>
               </div>
             </div>
 
             <!-- Look 2 -->
-            <div
-              class="magic-outfit-slide"
-              data-index="1"
-              data-tag="LOOK 02"
-              data-title="Emerald Velvet Crystal Corset Set"
-            >
-              <div class="magic-outfit-media">
-                <img
-                  src="assets/magic-wardrobe-look-2.jpg"
-                  alt="Emerald Velvet Crystal Corset Set"
-                  class="magic-outfit-img"
-                  loading="lazy"
-                  width="768"
-                  height="1376"
-                >
-                <div class="magic-outfit-details-card">
-                  <div class="card-inner">
-                    <div class="card-top-row">
-                      <span class="card-tag">LOOK 02</span>
-                      <span class="card-badge">DROP 01 EXCLUSIVE</span>
-                    </div>
-                    <h3 class="card-title">Emerald Velvet Crystal Corset Set</h3>
-                    <p class="card-desc">Rich emerald velvet bustier with crystal straps and side-slit mini skirt.</p>
-                    <a href="#waitlist" class="card-cta-btn">
-                      <span>Join The Waitlist</span>
-                      <span class="btn-arrow">→</span>
-                    </a>
+            <div class="hanger-item" data-index="1" data-title="Bordeaux Ruched Halter Dress — Edition 02" data-price="$890" data-tag="LOOK 02">
+              <div class="hanger-assembly">
+                <div class="hanger-wire-wrapper" aria-hidden="true">
+                  <svg class="hanger-wire-svg" viewBox="0 0 160 84" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M 80 4 C 70 4, 63 11, 63 20 C 63 29, 74 34, 80 39 L 80 47" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" class="hook-curve" />
+                    <path d="M 80 4 C 84 4, 86 6, 86 8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
+                    <path d="M 12 76 L 80 47 L 148 76" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M 15 76 L 145 76" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                    <rect x="36" y="73" width="7" height="10" rx="1.5" fill="currentColor" opacity="0.85" />
+                    <rect x="117" y="73" width="7" height="10" rx="1.5" fill="currentColor" opacity="0.85" />
+                  </svg>
+                </div>
+                <div class="hanger-garment-wrap">
+                  <img src="assets/shopping.png" alt="Bordeaux Ruched Halter Dress" class="hanger-garment-img" width="534" height="1200">
+                  <div class="hanger-garment-shadow" aria-hidden="true"></div>
+                </div>
+                <div class="hanger-swing-tag" aria-hidden="true">
+                  <div class="tag-thread"></div>
+                  <div class="tag-body">
+                    <span class="tag-code">LOOK 02</span>
+                    <span class="tag-name">Bordeaux Halter</span>
+                    <span class="tag-price">$890</span>
                   </div>
                 </div>
+                <button type="button" class="hanger-action-hitbox" aria-label="Inspect Look 2">
+                  <span class="sr-only">Inspect Look 2</span>
+                </button>
               </div>
             </div>
 
             <!-- Look 3 -->
-            <div
-              class="magic-outfit-slide"
-              data-index="2"
-              data-tag="LOOK 03"
-              data-title="Midnight Black Satin Bustier Dress"
-            >
-              <div class="magic-outfit-media">
-                <img
-                  src="assets/magic-wardrobe-look-3.jpg"
-                  alt="Midnight Black Satin Bustier Dress"
-                  class="magic-outfit-img"
-                  loading="lazy"
-                  width="768"
-                  height="1376"
-                >
-                <div class="magic-outfit-details-card">
-                  <div class="card-inner">
-                    <div class="card-top-row">
-                      <span class="card-tag">LOOK 03</span>
-                      <span class="card-badge">DROP 01 EXCLUSIVE</span>
-                    </div>
-                    <h3 class="card-title">Midnight Black Satin Bustier Dress</h3>
-                    <p class="card-desc">Sculpted boned corset dress with shimmering crystal rhinestone borders.</p>
-                    <a href="#waitlist" class="card-cta-btn">
-                      <span>Join The Waitlist</span>
-                      <span class="btn-arrow">→</span>
-                    </a>
+            <div class="hanger-item" data-index="2" data-title="Bordeaux Ruched Halter Dress — Edition 03" data-price="$890" data-tag="LOOK 03">
+              <div class="hanger-assembly">
+                <div class="hanger-wire-wrapper" aria-hidden="true">
+                  <svg class="hanger-wire-svg" viewBox="0 0 160 84" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M 80 4 C 70 4, 63 11, 63 20 C 63 29, 74 34, 80 39 L 80 47" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" class="hook-curve" />
+                    <path d="M 80 4 C 84 4, 86 6, 86 8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
+                    <path d="M 12 76 L 80 47 L 148 76" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M 15 76 L 145 76" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                    <rect x="36" y="73" width="7" height="10" rx="1.5" fill="currentColor" opacity="0.85" />
+                    <rect x="117" y="73" width="7" height="10" rx="1.5" fill="currentColor" opacity="0.85" />
+                  </svg>
+                </div>
+                <div class="hanger-garment-wrap">
+                  <img src="assets/shopping.png" alt="Bordeaux Ruched Halter Dress" class="hanger-garment-img" width="534" height="1200">
+                  <div class="hanger-garment-shadow" aria-hidden="true"></div>
+                </div>
+                <div class="hanger-swing-tag" aria-hidden="true">
+                  <div class="tag-thread"></div>
+                  <div class="tag-body">
+                    <span class="tag-code">LOOK 03</span>
+                    <span class="tag-name">Bordeaux Halter</span>
+                    <span class="tag-price">$890</span>
                   </div>
                 </div>
+                <button type="button" class="hanger-action-hitbox" aria-label="Inspect Look 3">
+                  <span class="sr-only">Inspect Look 3</span>
+                </button>
               </div>
             </div>
 
             <!-- Look 4 -->
-            <div
-              class="magic-outfit-slide"
-              data-index="3"
-              data-tag="LOOK 04"
-              data-title="Metallic Ruby Draped Halter Dress"
-            >
-              <div class="magic-outfit-media">
-                <img
-                  src="assets/magic-wardrobe-look-4.jpg"
-                  alt="Metallic Ruby Draped Halter Dress"
-                  class="magic-outfit-img"
-                  loading="lazy"
-                  width="768"
-                  height="1376"
-                >
-                <div class="magic-outfit-details-card">
-                  <div class="card-inner">
-                    <div class="card-top-row">
-                      <span class="card-tag">LOOK 04</span>
-                      <span class="card-badge">DROP 01 EXCLUSIVE</span>
-                    </div>
-                    <h3 class="card-title">Metallic Ruby Draped Halter Dress</h3>
-                    <p class="card-desc">Liquid metallic ruby silk with cowl neck draping and crystal choker collar.</p>
-                    <a href="#waitlist" class="card-cta-btn">
-                      <span>Join The Waitlist</span>
-                      <span class="btn-arrow">→</span>
-                    </a>
+            <div class="hanger-item" data-index="3" data-title="Bordeaux Ruched Halter Dress — Edition 04" data-price="$890" data-tag="LOOK 04">
+              <div class="hanger-assembly">
+                <div class="hanger-wire-wrapper" aria-hidden="true">
+                  <svg class="hanger-wire-svg" viewBox="0 0 160 84" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M 80 4 C 70 4, 63 11, 63 20 C 63 29, 74 34, 80 39 L 80 47" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" class="hook-curve" />
+                    <path d="M 80 4 C 84 4, 86 6, 86 8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
+                    <path d="M 12 76 L 80 47 L 148 76" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M 15 76 L 145 76" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                    <rect x="36" y="73" width="7" height="10" rx="1.5" fill="currentColor" opacity="0.85" />
+                    <rect x="117" y="73" width="7" height="10" rx="1.5" fill="currentColor" opacity="0.85" />
+                  </svg>
+                </div>
+                <div class="hanger-garment-wrap">
+                  <img src="assets/shopping.png" alt="Bordeaux Ruched Halter Dress" class="hanger-garment-img" width="534" height="1200">
+                  <div class="hanger-garment-shadow" aria-hidden="true"></div>
+                </div>
+                <div class="hanger-swing-tag" aria-hidden="true">
+                  <div class="tag-thread"></div>
+                  <div class="tag-body">
+                    <span class="tag-code">LOOK 04</span>
+                    <span class="tag-name">Bordeaux Halter</span>
+                    <span class="tag-price">$890</span>
                   </div>
                 </div>
+                <button type="button" class="hanger-action-hitbox" aria-label="Inspect Look 4">
+                  <span class="sr-only">Inspect Look 4</span>
+                </button>
               </div>
             </div>
 
             <!-- Look 5 -->
-            <div
-              class="magic-outfit-slide"
-              data-index="4"
-              data-tag="LOOK 05"
-              data-title="Champagne Pleated Corset Set"
-            >
-              <div class="magic-outfit-media">
-                <img
-                  src="assets/magic-wardrobe-look-5.jpg"
-                  alt="Champagne Pleated Corset Set"
-                  class="magic-outfit-img"
-                  loading="lazy"
-                  width="768"
-                  height="1376"
-                >
-                <div class="magic-outfit-details-card">
-                  <div class="card-inner">
-                    <div class="card-top-row">
-                      <span class="card-tag">LOOK 05</span>
-                      <span class="card-badge">DROP 01 EXCLUSIVE</span>
-                    </div>
-                    <h3 class="card-title">Champagne Pleated Corset Set</h3>
-                    <p class="card-desc">Silky satin sweetheart top with sparkling crystal fringe pleated skirt.</p>
-                    <a href="#waitlist" class="card-cta-btn">
-                      <span>Join The Waitlist</span>
-                      <span class="btn-arrow">→</span>
-                    </a>
+            <div class="hanger-item" data-index="4" data-title="Bordeaux Ruched Halter Dress — Edition 05" data-price="$890" data-tag="LOOK 05">
+              <div class="hanger-assembly">
+                <div class="hanger-wire-wrapper" aria-hidden="true">
+                  <svg class="hanger-wire-svg" viewBox="0 0 160 84" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M 80 4 C 70 4, 63 11, 63 20 C 63 29, 74 34, 80 39 L 80 47" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" class="hook-curve" />
+                    <path d="M 80 4 C 84 4, 86 6, 86 8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
+                    <path d="M 12 76 L 80 47 L 148 76" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M 15 76 L 145 76" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                    <rect x="36" y="73" width="7" height="10" rx="1.5" fill="currentColor" opacity="0.85" />
+                    <rect x="117" y="73" width="7" height="10" rx="1.5" fill="currentColor" opacity="0.85" />
+                  </svg>
+                </div>
+                <div class="hanger-garment-wrap">
+                  <img src="assets/shopping.png" alt="Bordeaux Ruched Halter Dress" class="hanger-garment-img" width="534" height="1200">
+                  <div class="hanger-garment-shadow" aria-hidden="true"></div>
+                </div>
+                <div class="hanger-swing-tag" aria-hidden="true">
+                  <div class="tag-thread"></div>
+                  <div class="tag-body">
+                    <span class="tag-code">LOOK 05</span>
+                    <span class="tag-name">Bordeaux Halter</span>
+                    <span class="tag-price">$890</span>
                   </div>
                 </div>
+                <button type="button" class="hanger-action-hitbox" aria-label="Inspect Look 5">
+                  <span class="sr-only">Inspect Look 5</span>
+                </button>
               </div>
             </div>
+
+            <!-- Look 6 -->
+            <div class="hanger-item" data-index="5" data-title="Bordeaux Ruched Halter Dress — Edition 06" data-price="$890" data-tag="LOOK 06">
+              <div class="hanger-assembly">
+                <div class="hanger-wire-wrapper" aria-hidden="true">
+                  <svg class="hanger-wire-svg" viewBox="0 0 160 84" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M 80 4 C 70 4, 63 11, 63 20 C 63 29, 74 34, 80 39 L 80 47" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" class="hook-curve" />
+                    <path d="M 80 4 C 84 4, 86 6, 86 8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
+                    <path d="M 12 76 L 80 47 L 148 76" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M 15 76 L 145 76" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                    <rect x="36" y="73" width="7" height="10" rx="1.5" fill="currentColor" opacity="0.85" />
+                    <rect x="117" y="73" width="7" height="10" rx="1.5" fill="currentColor" opacity="0.85" />
+                  </svg>
+                </div>
+                <div class="hanger-garment-wrap">
+                  <img src="assets/shopping.png" alt="Bordeaux Ruched Halter Dress" class="hanger-garment-img" width="534" height="1200">
+                  <div class="hanger-garment-shadow" aria-hidden="true"></div>
+                </div>
+                <div class="hanger-swing-tag" aria-hidden="true">
+                  <div class="tag-thread"></div>
+                  <div class="tag-body">
+                    <span class="tag-code">LOOK 06</span>
+                    <span class="tag-name">Bordeaux Halter</span>
+                    <span class="tag-price">$890</span>
+                  </div>
+                </div>
+                <button type="button" class="hanger-action-hitbox" aria-label="Inspect Look 6">
+                  <span class="sr-only">Inspect Look 6</span>
+                </button>
+              </div>
+            </div>
+
           </div>
         </div>
 
-        <!-- Next Arrow -->
-        <button type="button" class="magic-nav-btn nav-next" aria-label="Next outfit">
-          <span aria-hidden="true">›</span>
-        </button>
-      </div>
-
-      <!-- Bottom Look Switcher Tabs -->
-      <div class="magic-selector-bar" role="tablist" aria-label="Select outfit look">
-        <button type="button" class="magic-selector-tab is-active" data-index="0" role="tab" aria-selected="true">
-          <span class="tab-index">01</span><span class="tab-title">Golden Corset</span>
-        </button>
-        <button type="button" class="magic-selector-tab" data-index="1" role="tab" aria-selected="false">
-          <span class="tab-index">02</span><span class="tab-title">Emerald Velvet</span>
-        </button>
-        <button type="button" class="magic-selector-tab" data-index="2" role="tab" aria-selected="false">
-          <span class="tab-index">03</span><span class="tab-title">Midnight Satin</span>
-        </button>
-        <button type="button" class="magic-selector-tab" data-index="3" role="tab" aria-selected="false">
-          <span class="tab-index">04</span><span class="tab-title">Metallic Ruby</span>
-        </button>
-        <button type="button" class="magic-selector-tab" data-index="4" role="tab" aria-selected="false">
-          <span class="tab-index">05</span><span class="tab-title">Champagne Pleated</span>
-        </button>
+        <div class="hanger-rack-hint" aria-hidden="true">
+          <span class="hint-icon">⟵</span>
+          <span class="hint-text">Hover over gowns to sway • Drag to slide along rail</span>
+          <span class="hint-icon">⟶</span>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Interactive Controls Panel (For Live Testing) -->
-  <div class="preview-floating-panel">
-    <h4>3D Controls <span>⚙</span></h4>
-    <div class="control-row">
-      <label for="tiltSlider">Tilt Angle</label>
-      <input type="range" id="tiltSlider" min="-20" max="40" value="18">
-    </div>
-    <div class="control-row">
-      <label for="speedSlider">Speed</label>
-      <input type="range" id="speedSlider" min="-40" max="40" value="14">
-    </div>
-    <div class="control-row">
-      <label for="depthSlider">Perspective</label>
-      <input type="range" id="depthSlider" min="600" max="2000" value="1100">
-    </div>
-  </div>
-
-  <script src="assets/hero-3d-cylinder.js"></script>
-  <script src="assets/wardrobe-carousel.js"></script>
-  <script>
-    // Live adjustment sliders for preview
-    const section = document.getElementById('Hero3D-preview');
-    const tilter = document.querySelector('.hero-3d-tilter');
-    const viewport = document.querySelector('.hero-3d-viewport');
-
-    document.getElementById('tiltSlider').addEventListener('input', (e) => {
-      tilter.style.transform = `rotateX(${e.target.value}deg)`;
-    });
-
-    document.getElementById('depthSlider').addEventListener('input', (e) => {
-      viewport.style.perspective = `${e.target.value}px`;
-    });
-
-    document.getElementById('speedSlider').addEventListener('input', (e) => {
-      // Find carousel instance
-      const carousel = document.querySelector('.hero-3d-section');
-      if (carousel) {
-        carousel.dataset.speed = e.target.value;
-      }
-    });
-  </script>
+  <script src="assets/hanger-rack.js?v=studio"></script>
 </body>
 </html>

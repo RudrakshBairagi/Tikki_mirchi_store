@@ -1,0 +1,663 @@
+/**
+ * HOUSE OF ROYALS — ATELIER CLOTHES HANGER RACK CONTROLLER
+ * Faithful recreation of the Celestine by Ritika physics engine:
+ * 1. Continuous harmonic oscillator physics (underdamped pendulum with natural inertia & decay).
+ * 2. Clothes parting / spreading: When an outfit is hovered, the middle outfit pops out
+ *    forward, while left and right outfits smoothly slide aside along the rail.
+ * 3. After the cursor moves away, oscillation persists and gracefully dulls down to rest.
+ * 4. Momentum transfer on cursor sweep, rail pan/drag, and secondary swing tag physics.
+ */
+
+class HangerRack {
+  constructor(sectionEl) {
+    this.section = sectionEl;
+    this.stage = this.section.querySelector('.hanger-rack-stage');
+    this.trackWrap = this.section.querySelector('.hanger-rack-track-wrap');
+    this.track = this.section.querySelector('.hanger-rack-track');
+    this.itemEls = Array.from(this.section.querySelectorAll('.hanger-item'));
+
+    if (!this.track || this.itemEls.length === 0) return;
+
+    // Config from dataset & Live Studio
+    const rawSway = parseFloat(this.section.dataset.swayIntensity);
+    const rawSpring = parseFloat(this.section.dataset.springSpeed);
+    const rawDamping = parseFloat(this.section.dataset.dampingRate);
+    const rawHit = parseFloat(this.section.dataset.hitForce);
+    const rawSpread = parseFloat(this.section.dataset.partSpread);
+
+    // Initial defaults (Celestine by Ritika exact values)
+    let saved = null;
+    try {
+      const stored = localStorage.getItem('tm_hanger_physics');
+      if (stored) saved = JSON.parse(stored);
+    } catch (_) {}
+
+    this.physicsConfig = {
+      springK: (saved && saved.springK) || (!isNaN(rawSpring) ? 0.002 + (rawSpring - 1) * (0.020 / 9) : 0.011),
+      damping: (saved && saved.damping) || (!isNaN(rawDamping) ? 0.020 + (rawDamping - 1) * (0.060 / 9) : 0.055),
+      hitForce: (saved && saved.hitForce !== undefined) ? saved.hitForce : (!isNaN(rawHit) ? rawHit * 0.0019 : 0.0095),
+      spread: (saved && saved.spread) || (!isNaN(rawSpread) ? rawSpread : 50),
+      spreadStep: 12,
+      swayFactor: (saved && saved.swayFactor) || (!isNaN(rawSway) ? 0.4 + (rawSway - 1) * (1.6 / 9) : 1.0)
+    };
+
+    this.showTuningPanel = this.section.dataset.showTuning !== 'false';
+    this.nudgeEnabled = this.section.dataset.nudge !== 'false';
+    this.dragEnabled = this.section.dataset.drag !== 'false';
+
+    // Hover & interaction state
+    this.hoveredIndex = -1;
+    this.leaveTimeout = null;
+    this.rafId = null;
+
+    // Cursor velocity tracker
+    this.lastPointerX = 0;
+    this.pointerVelocityX = 0;
+    this.lastPointerTime = performance.now();
+
+    // Drag / Pan state
+    this.isDragging = false;
+    this.startX = 0;
+    this.scrollLeft = 0;
+    this.hasMovedSignificantly = false;
+
+    // Build garment physical models
+    this.garments = this.itemEls.map((el, index) => {
+      const assembly = el.querySelector('.hanger-assembly');
+      const tag = el.querySelector('.hanger-swing-tag');
+
+      return {
+        el,
+        assembly,
+        tag,
+        index,
+        title: el.dataset.title || `Look 0${index + 1}`,
+        price: el.dataset.price || '$890',
+        tagText: el.dataset.tag || `LOOK 0${index + 1}`,
+        link: el.querySelector('a')?.getAttribute('href') || '#',
+
+        // Persistent physical simulation state (natural initial organic resting variance)
+        angle: (Math.random() - 0.5) * 0.01,
+        vel: 0,
+        tagAngle: 0,
+        tagVel: 0
+      };
+    });
+
+    this.init();
+  }
+
+  init() {
+    this.setupFloatingCard();
+    this.bindPointerVelocity();
+    this.bindGarmentInteractions();
+
+    if (this.dragEnabled) {
+      this.bindRailDrag();
+    }
+
+    this.bindTrackScrollMomentum();
+    this.setupTuningPanel();
+
+    // Initial wake to settle garments
+    this.wakePhysics();
+  }
+
+  /* --------------------------------------------------------------------------
+     1. Atelier Floating Detail Card (Pops out beside hovered outfit)
+     -------------------------------------------------------------------------- */
+  setupFloatingCard() {
+    let card = this.stage.querySelector('.hanger-floating-card');
+    if (!card) {
+      card = document.createElement('div');
+      card.className = 'hanger-floating-card';
+      card.setAttribute('aria-hidden', 'true');
+      card.innerHTML = `
+        <span class="floating-card-tag">NEW DROP</span>
+        <h3 class="floating-card-title">Bordeaux Halter</h3>
+        <div class="floating-card-row">
+          <span class="floating-card-price">$890</span>
+          <span class="floating-card-badge">Atelier Exclusive</span>
+        </div>
+        <a href="#" class="floating-card-link">
+          <span>Inspect Piece</span>
+          <span class="card-arrow">→</span>
+        </a>
+      `;
+      this.stage.appendChild(card);
+    }
+
+    this.card = card;
+    this.cardTag = card.querySelector('.floating-card-tag');
+    this.cardTitle = card.querySelector('.floating-card-title');
+    this.cardPrice = card.querySelector('.floating-card-price');
+    this.cardLink = card.querySelector('.floating-card-link');
+  }
+
+  showFloatingCard(g) {
+    if (!this.card || !g) return;
+
+    this.cardTag.textContent = g.tagText || 'EXCLUSIVE';
+    this.cardTitle.textContent = g.title || 'Couture Piece';
+    this.cardPrice.textContent = g.price || '';
+    if (g.link && g.link !== '#') {
+      this.cardLink.href = g.link;
+      this.cardLink.style.display = 'inline-flex';
+    } else {
+      this.cardLink.href = '#';
+    }
+
+    // Smart positioning relative to stage and garment
+    const gRect = g.el.getBoundingClientRect();
+    const stageRect = this.stage.getBoundingClientRect();
+    const cardWidth = 250;
+
+    // Prefer placing to the right of the dress; if close to edge, place to the left
+    let left = gRect.right - stageRect.left + 14;
+    if (left + cardWidth > stageRect.width - 24) {
+      left = gRect.left - stageRect.left - cardWidth - 14;
+    }
+    left = Math.max(16, Math.min(stageRect.width - cardWidth - 16, left));
+
+    const top = Math.max(50, Math.min(stageRect.height - 180, gRect.top - stageRect.top + 80));
+
+    this.card.style.left = `${left.toFixed(1)}px`;
+    this.card.style.top = `${top.toFixed(1)}px`;
+    this.card.classList.add('is-active');
+  }
+
+  hideFloatingCard() {
+    if (this.card) {
+      this.card.classList.remove('is-active');
+    }
+  }
+
+  /* --------------------------------------------------------------------------
+     2. Cursor Velocity Tracking
+     -------------------------------------------------------------------------- */
+  bindPointerVelocity() {
+    this.section.addEventListener('pointermove', (e) => {
+      const now = performance.now();
+      const dt = Math.max(now - this.lastPointerTime, 10);
+      const dx = e.clientX - this.lastPointerX;
+
+      this.pointerVelocityX = (dx / dt) * 16.6; // normalized velocity
+      this.lastPointerX = e.clientX;
+      this.lastPointerTime = now;
+    }, { passive: true });
+  }
+
+  /* --------------------------------------------------------------------------
+     3. Celestine Continuous Damped Harmonic Oscillator Physics Engine
+     -------------------------------------------------------------------------- */
+  wakePhysics() {
+    if (this.rafId) return;
+
+    const step = () => {
+      let isStillOscillating = false;
+
+      const { springK, damping } = this.physicsConfig;
+
+      for (const g of this.garments) {
+        // Torque = -springK * angle - damping * velocity
+        const torque = -springK * g.angle - damping * g.vel;
+        g.vel += torque;
+        g.angle += g.vel;
+
+        // Has the garment settled yet?
+        if (Math.abs(g.angle) > 0.0001 || Math.abs(g.vel) > 0.0001) {
+          isStillOscillating = true;
+        }
+
+        // Apply rotation to assembly (hook anchored at 50% 0px)
+        const angleDeg = g.angle * (180 / Math.PI);
+        if (g.assembly) {
+          g.assembly.style.transform = `rotateZ(${angleDeg.toFixed(3)}deg)`;
+        }
+
+        // Tag physics (Celestine constants: yt=0.005, wt=0.06, Et=0.045)
+        if (g.tag) {
+          const tagTorque = -0.005 * g.tagAngle - 0.06 * g.tagVel - g.vel * 0.045;
+          g.tagVel += tagTorque;
+          g.tagAngle += g.tagVel;
+
+          if (Math.abs(g.tagAngle) > 0.0001 || Math.abs(g.tagVel) > 0.0001) {
+            isStillOscillating = true;
+          }
+
+          const tagDeg = g.tagAngle * (180 / Math.PI);
+          g.tag.style.transform = `rotateZ(${tagDeg.toFixed(2)}deg)`;
+        }
+      }
+
+      // Keep running continuously until all clothes gently come to rest
+      if (isStillOscillating) {
+        this.rafId = requestAnimationFrame(step);
+      } else {
+        this.rafId = null;
+      }
+    };
+
+    this.rafId = requestAnimationFrame(step);
+  }
+
+  /* --------------------------------------------------------------------------
+     4. Garment Parting, Pop-Out & Tactile "Hit" Physics
+     -------------------------------------------------------------------------- */
+  bindGarmentInteractions() {
+    this.garments.forEach((g, index) => {
+      const itemEl = g.el;
+
+      itemEl.addEventListener('pointerenter', (e) => {
+        if (this.isDragging || e.pointerType === 'touch') return;
+        this.setHovered(index, e);
+      });
+
+      itemEl.addEventListener('pointerleave', (e) => {
+        if (e.pointerType === 'touch') return;
+        this.queueClearHover();
+      });
+
+      // Hitbox click handling & touch tap support
+      const hitbox = itemEl.querySelector('.hanger-action-hitbox');
+      if (hitbox) {
+        hitbox.addEventListener('click', (e) => {
+          if (this.hasMovedSignificantly) {
+            e.preventDefault();
+            e.stopPropagation();
+            return;
+          }
+
+          // On touch tap or click, activate this garment
+          if (this.hoveredIndex !== index) {
+            this.setHovered(index, e);
+          }
+        });
+      }
+    });
+
+    // When pointer leaves the entire track or section
+    this.trackWrap.addEventListener('pointerleave', (e) => {
+      if (e.pointerType === 'touch') return;
+      this.queueClearHover();
+    });
+
+    // Touch tap outside dismisses active state
+    this.section.addEventListener('pointerdown', (e) => {
+      if (e.pointerType === 'touch' && !e.target.closest('.hanger-item') && !e.target.closest('.hanger-floating-card')) {
+        this.queueClearHover();
+      }
+    });
+  }
+
+  setHovered(activeIndex, e) {
+    clearTimeout(this.leaveTimeout);
+    if (this.hoveredIndex === activeIndex) return;
+    this.hoveredIndex = activeIndex;
+
+    const { spread, spreadStep, hitForce, swayFactor } = this.physicsConfig;
+
+    // Directional sweep velocity from cursor entry
+    const sweepX = (e && e.movementX) ? e.movementX : (Math.random() > 0.5 ? 4 : -4);
+    const clampedSweep = Math.max(-12, Math.min(12, sweepX));
+
+    this.garments.forEach((g, idx) => {
+      if (idx === activeIndex) {
+        // 1. Hovered outfit takes center stage
+        g.el.style.setProperty('--part-shift', '0px');
+        g.el.style.setProperty('--rack-z', '40');
+        g.el.classList.add('is-popped-out');
+        g.el.classList.add('is-hovered');
+
+        // Hovered outfit receives crisp directional entry impulse
+        g.vel += clampedSweep * 0.0016 * swayFactor;
+        g.vel = Math.max(-0.016, Math.min(0.016, g.vel));
+      } else {
+        // 2. Left and right outfits part along the rail and "HIT" one another!
+        const dist = Math.abs(idx - activeIndex);
+        const direction = idx < activeIndex ? -1 : 1;
+        const shiftPx = direction * Math.max(0, spread - (dist - 1) * spreadStep);
+
+        g.el.style.setProperty('--part-shift', `${shiftPx.toFixed(1)}px`);
+        g.el.style.setProperty('--rack-z', `${Math.max(1, 20 - dist)}`);
+        g.el.classList.remove('is-popped-out');
+        g.el.classList.remove('is-hovered');
+
+        // Tactile contact bump to neighbors
+        if (dist === 1) {
+          g.vel += direction * hitForce * swayFactor; // Immediate neighbor tactile hit
+        } else if (dist === 2) {
+          g.vel += direction * (hitForce * 0.38) * swayFactor; // Secondary ripple wave to next dress
+        }
+
+        // Strict safety clamp: prevents garments from ever flying off screen
+        g.vel = Math.max(-0.018, Math.min(0.018, g.vel));
+      }
+    });
+
+    this.showFloatingCard(this.garments[activeIndex]);
+    this.wakePhysics();
+  }
+
+  queueClearHover() {
+    clearTimeout(this.leaveTimeout);
+    // Celestine exact 160ms unhover debounce
+    this.leaveTimeout = setTimeout(() => {
+      this.hoveredIndex = -1;
+
+      // Smoothly slide all parted clothes back to original resting rail slots
+      this.garments.forEach((g) => {
+        g.el.style.setProperty('--part-shift', '0px');
+        g.el.style.setProperty('--rack-z', '1');
+        g.el.classList.remove('is-popped-out');
+        g.el.classList.remove('is-hovered');
+      });
+
+      this.hideFloatingCard();
+
+      // Physics loop continues naturally: clothes sway and damp down to rest
+    }, 160);
+  }
+
+  /* --------------------------------------------------------------------------
+     5. Rail Horizontal Drag & Scroll Momentum (Celestine formulas)
+     -------------------------------------------------------------------------- */
+  bindTrackScrollMomentum() {
+    let lastScroll = this.trackWrap.scrollLeft;
+
+    this.trackWrap.addEventListener('scroll', () => {
+      const currentScroll = this.trackWrap.scrollLeft;
+      const delta = currentScroll - lastScroll;
+      lastScroll = currentScroll;
+
+      if (this.isDragging) return;
+
+      const { swayFactor } = this.physicsConfig;
+      const clamped = Math.max(-30, Math.min(30, delta));
+      for (const g of this.garments) {
+        g.vel += -clamped * 0.00018 * swayFactor;
+        g.vel = Math.max(-0.015, Math.min(0.015, g.vel));
+      }
+      this.wakePhysics();
+    }, { passive: true });
+  }
+
+  bindRailDrag() {
+    const wrap = this.trackWrap;
+
+    const onPointerDown = (e) => {
+      if (e.button !== 0 && e.pointerType === 'mouse') return;
+      this.isDragging = true;
+      this.hasMovedSignificantly = false;
+      this.startX = e.pageX - wrap.offsetLeft;
+      this.scrollLeft = wrap.scrollLeft;
+      wrap.classList.add('is-dragging');
+    };
+
+    const onPointerMove = (e) => {
+      if (!this.isDragging) return;
+      e.preventDefault();
+      const x = e.pageX - wrap.offsetLeft;
+      const walk = (x - this.startX) * 1.2;
+
+      if (Math.abs(walk) > 5) {
+        this.hasMovedSignificantly = true;
+      }
+      wrap.scrollLeft = this.scrollLeft - walk;
+
+      // Transfer drag velocity to garments
+      if (Math.abs(e.movementX) > 2) {
+        const { swayFactor } = this.physicsConfig;
+        for (const g of this.garments) {
+          g.vel += -Math.sign(e.movementX) * Math.min(Math.abs(e.movementX) * 0.0002, 0.004) * swayFactor;
+          g.vel = Math.max(-0.015, Math.min(0.015, g.vel));
+        }
+        this.wakePhysics();
+      }
+    };
+
+    const onPointerUp = () => {
+      if (!this.isDragging) return;
+      this.isDragging = false;
+      wrap.classList.remove('is-dragging');
+
+      setTimeout(() => {
+        this.hasMovedSignificantly = false;
+      }, 50);
+    };
+
+    wrap.addEventListener('pointerdown', onPointerDown);
+    window.addEventListener('pointermove', onPointerMove, { passive: false });
+    window.addEventListener('pointerup', onPointerUp);
+    window.addEventListener('pointercancel', onPointerUp);
+  }
+
+  /* --------------------------------------------------------------------------
+     6. Live Interactive Physics Studio Floating Panel
+     -------------------------------------------------------------------------- */
+  setupTuningPanel() {
+    if (!this.showTuningPanel && !window.location.search.includes('tune')) return;
+    if (document.querySelector('.hanger-tuning-studio')) return;
+
+    const panel = document.createElement('div');
+    panel.className = 'hanger-tuning-studio is-collapsed';
+    panel.innerHTML = `
+      <button class="tuning-toggle-btn" type="button" aria-label="Toggle Physics Studio">
+        <span class="tuning-icon">⚙️</span>
+        <span class="tuning-btn-text">Physics Studio</span>
+      </button>
+
+      <div class="tuning-panel-body">
+        <div class="tuning-header">
+          <div>
+            <div class="tuning-title">✦ HANGER PHYSICS STUDIO</div>
+            <div class="tuning-desc">Live sway speed, contact hit & damping controls</div>
+          </div>
+          <button class="tuning-close-btn" type="button" title="Minimize">✕</button>
+        </div>
+
+        <div class="tuning-presets">
+          <button class="preset-btn is-active" data-preset="celestine" type="button">✨ Celestine</button>
+          <button class="preset-btn" data-preset="calm" type="button">🕊️ Calm</button>
+          <button class="preset-btn" data-preset="dynamic" type="button">⚡ Dynamic</button>
+        </div>
+
+        <div class="tuning-slider-group">
+          <div class="tuning-row">
+            <div class="tuning-label-wrap">
+              <span class="tuning-label">Swing Speed (Stiffness)</span>
+              <span class="tuning-val" id="val-spring">${this.physicsConfig.springK.toFixed(3)}</span>
+            </div>
+            <input type="range" id="slider-spring" min="0.002" max="0.024" step="0.001" value="${this.physicsConfig.springK.toFixed(3)}">
+          </div>
+
+          <div class="tuning-row">
+            <div class="tuning-label-wrap">
+              <span class="tuning-label">Air Damping (Settle Rate)</span>
+              <span class="tuning-val" id="val-damping">${this.physicsConfig.damping.toFixed(3)}</span>
+            </div>
+            <input type="range" id="slider-damping" min="0.015" max="0.090" step="0.005" value="${this.physicsConfig.damping.toFixed(3)}">
+          </div>
+
+          <div class="tuning-row">
+            <div class="tuning-label-wrap">
+              <span class="tuning-label">Neighbor Hit Force</span>
+              <span class="tuning-val" id="val-hit">${this.physicsConfig.hitForce.toFixed(4)}</span>
+            </div>
+            <input type="range" id="slider-hit" min="0.000" max="0.018" step="0.001" value="${this.physicsConfig.hitForce.toFixed(4)}">
+          </div>
+
+          <div class="tuning-row">
+            <div class="tuning-label-wrap">
+              <span class="tuning-label">Rail Parting Spread</span>
+              <span class="tuning-val" id="val-spread">${this.physicsConfig.spread}px</span>
+            </div>
+            <input type="range" id="slider-spread" min="20" max="80" step="2" value="${this.physicsConfig.spread}">
+          </div>
+
+          <div class="tuning-row">
+            <div class="tuning-label-wrap">
+              <span class="tuning-label">Sway Sensitivity</span>
+              <span class="tuning-val" id="val-sway">${this.physicsConfig.swayFactor.toFixed(1)}x</span>
+            </div>
+            <input type="range" id="slider-sway" min="0.2" max="2.4" step="0.1" value="${this.physicsConfig.swayFactor.toFixed(1)}">
+          </div>
+        </div>
+
+        <div class="tuning-footer">
+          <button class="tuning-btn-secondary" id="tuning-reset" type="button">Reset Defaults</button>
+          <button class="tuning-btn-primary" id="tuning-copy" type="button">Copy JSON</button>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(panel);
+
+    // Bind events
+    const toggleBtn = panel.querySelector('.tuning-toggle-btn');
+    const closeBtn = panel.querySelector('.tuning-close-btn');
+
+    toggleBtn.addEventListener('click', () => {
+      panel.classList.toggle('is-collapsed');
+    });
+    closeBtn.addEventListener('click', () => {
+      panel.classList.add('is-collapsed');
+    });
+
+    const springSlider = panel.querySelector('#slider-spring');
+    const dampingSlider = panel.querySelector('#slider-damping');
+    const hitSlider = panel.querySelector('#slider-hit');
+    const spreadSlider = panel.querySelector('#slider-spread');
+    const swaySlider = panel.querySelector('#slider-sway');
+
+    const valSpring = panel.querySelector('#val-spring');
+    const valDamping = panel.querySelector('#val-damping');
+    const valHit = panel.querySelector('#val-hit');
+    const valSpread = panel.querySelector('#val-spread');
+    const valSway = panel.querySelector('#val-sway');
+
+    const presetBtns = panel.querySelectorAll('.preset-btn');
+
+    const presets = {
+      celestine: { springK: 0.011, damping: 0.055, hitForce: 0.0095, spread: 50, swayFactor: 1.0 },
+      calm: { springK: 0.003, damping: 0.025, hitForce: 0.0030, spread: 36, swayFactor: 0.6 },
+      dynamic: { springK: 0.018, damping: 0.045, hitForce: 0.0140, spread: 60, swayFactor: 1.3 }
+    };
+
+    const updateUI = () => {
+      springSlider.value = this.physicsConfig.springK;
+      valSpring.textContent = this.physicsConfig.springK.toFixed(3);
+
+      dampingSlider.value = this.physicsConfig.damping;
+      valDamping.textContent = this.physicsConfig.damping.toFixed(3);
+
+      hitSlider.value = this.physicsConfig.hitForce;
+      valHit.textContent = this.physicsConfig.hitForce.toFixed(4);
+
+      spreadSlider.value = this.physicsConfig.spread;
+      valSpread.textContent = `${this.physicsConfig.spread}px`;
+
+      swaySlider.value = this.physicsConfig.swayFactor;
+      valSway.textContent = `${this.physicsConfig.swayFactor.toFixed(1)}x`;
+
+      try {
+        localStorage.setItem('tm_hanger_physics', JSON.stringify(this.physicsConfig));
+      } catch (_) {}
+    };
+
+    springSlider.addEventListener('input', (e) => {
+      this.physicsConfig.springK = parseFloat(e.target.value);
+      valSpring.textContent = this.physicsConfig.springK.toFixed(3);
+      presetBtns.forEach(b => b.classList.remove('is-active'));
+      this.wakePhysics();
+      updateUI();
+    });
+
+    dampingSlider.addEventListener('input', (e) => {
+      this.physicsConfig.damping = parseFloat(e.target.value);
+      valDamping.textContent = this.physicsConfig.damping.toFixed(3);
+      presetBtns.forEach(b => b.classList.remove('is-active'));
+      this.wakePhysics();
+      updateUI();
+    });
+
+    hitSlider.addEventListener('input', (e) => {
+      this.physicsConfig.hitForce = parseFloat(e.target.value);
+      valHit.textContent = this.physicsConfig.hitForce.toFixed(4);
+      presetBtns.forEach(b => b.classList.remove('is-active'));
+      updateUI();
+    });
+
+    spreadSlider.addEventListener('input', (e) => {
+      this.physicsConfig.spread = parseInt(e.target.value, 10);
+      valSpread.textContent = `${this.physicsConfig.spread}px`;
+      presetBtns.forEach(b => b.classList.remove('is-active'));
+      updateUI();
+    });
+
+    swaySlider.addEventListener('input', (e) => {
+      this.physicsConfig.swayFactor = parseFloat(e.target.value);
+      valSway.textContent = `${this.physicsConfig.swayFactor.toFixed(1)}x`;
+      presetBtns.forEach(b => b.classList.remove('is-active'));
+      updateUI();
+    });
+
+    presetBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        presetBtns.forEach(b => b.classList.remove('is-active'));
+        btn.classList.add('is-active');
+        const p = presets[btn.dataset.preset];
+        if (p) {
+          Object.assign(this.physicsConfig, p);
+          updateUI();
+          this.wakePhysics();
+        }
+      });
+    });
+
+    panel.querySelector('#tuning-reset').addEventListener('click', () => {
+      Object.assign(this.physicsConfig, presets.celestine);
+      presetBtns.forEach(b => b.classList.remove('is-active'));
+      panel.querySelector('[data-preset="celestine"]')?.classList.add('is-active');
+      updateUI();
+      this.wakePhysics();
+    });
+
+    panel.querySelector('#tuning-copy').addEventListener('click', (e) => {
+      const text = JSON.stringify(this.physicsConfig, null, 2);
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = e.target;
+        const orig = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(() => { btn.textContent = orig; }, 1500);
+      });
+    });
+
+    updateUI();
+  }
+}
+
+// Automatic Initialization for Shopify Themes
+function initHangerRacks() {
+  document.querySelectorAll('.hanger-rack-section').forEach((section) => {
+    if (!section.dataset.initialized) {
+      new HangerRack(section);
+      section.dataset.initialized = 'true';
+    }
+  });
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initHangerRacks);
+} else {
+  initHangerRacks();
+}
+
+// Shopify Theme Editor Support
+document.addEventListener('shopify:section:load', (event) => {
+  const section = event.target.querySelector('.hanger-rack-section');
+  if (section) {
+    new HangerRack(section);
+    section.dataset.initialized = 'true';
+  }
+});

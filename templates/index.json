@@ -68,6 +68,7 @@
       "settings": {
         "heading": "TIKKI Bella",
         "heading_accent": "",
+        "show_cylinder": false,
         "topbar_left": "TIKKI Bella",
         "topbar_center": "",
         "topbar_right": "",
@@ -88,57 +89,55 @@
         "reflection_opacity": 25
       }
     },
-    "wardrobe_carousel": {
-      "type": "wardrobe-carousel",
+    "hanger_rack": {
+      "type": "hanger-rack",
       "blocks": {
         "look_1": {
-          "type": "look",
+          "type": "garment",
           "settings": {
-            "tag": "LOOK 01",
-            "title": "Golden Corset & Pearl Fringe Skirt",
-            "details": "Sweetheart bustier with intricate floral embroidery and pearl drop fringe.",
-            "cta_label": "Join Waitlist",
-            "cta_link": "#waitlist"
+            "title": "Bordeaux Ruched Halter Dress",
+            "tag": "NEW DROP",
+            "price": "$890"
           }
         },
         "look_2": {
-          "type": "look",
+          "type": "garment",
           "settings": {
+            "title": "Heritage Tapestry Mirror Lehenga",
             "tag": "LOOK 02",
-            "title": "Emerald Velvet Crystal Corset Set",
-            "details": "Rich emerald velvet bustier with crystal straps and side-slit mini skirt.",
-            "cta_label": "Join Waitlist",
-            "cta_link": "#waitlist"
+            "price": "$1,890"
           }
         },
         "look_3": {
-          "type": "look",
+          "type": "garment",
           "settings": {
+            "title": "Rose Quartz Embellished Ombré Gown",
             "tag": "LOOK 03",
-            "title": "Midnight Black Satin Bustier Dress",
-            "details": "Sculpted boned corset dress with shimmering crystal rhinestone borders.",
-            "cta_label": "Join Waitlist",
-            "cta_link": "#waitlist"
+            "price": "$1,620"
           }
         },
         "look_4": {
-          "type": "look",
+          "type": "garment",
           "settings": {
+            "title": "Midnight Botanical Flared Set",
             "tag": "LOOK 04",
-            "title": "Metallic Ruby Draped Halter Dress",
-            "details": "High-glamour liquid metallic silk with cowl draping and crystal collar.",
-            "cta_label": "Join Waitlist",
-            "cta_link": "#waitlist"
+            "price": "$1,380"
           }
         },
         "look_5": {
-          "type": "look",
+          "type": "garment",
           "settings": {
+            "title": "Peplum Floral Velvet Ensemble",
             "tag": "LOOK 05",
-            "title": "Champagne Pleated Corset Set",
-            "details": "Silky satin sweetheart top with sparkling crystal fringe pleated skirt.",
-            "cta_label": "Join Waitlist",
-            "cta_link": "#waitlist"
+            "price": "$1,540"
+          }
+        },
+        "look_6": {
+          "type": "garment",
+          "settings": {
+            "title": "Scarlet Blossom Twist-Knot Gown",
+            "tag": "LOOK 06",
+            "price": "$1,290"
           }
         }
       },
@@ -147,91 +146,29 @@
         "look_2",
         "look_3",
         "look_4",
-        "look_5"
+        "look_5",
+        "look_6"
       ],
       "settings": {
-        "eyebrow": "TIKKI BELLA • THE MAGIC WARDROBE",
-        "heading": "THE ATELIER DRESSING ROOM",
-        "subheading": "Step inside our private dressing room. Watch our debut partywear collection come to life.",
-        "auto_cycle": true,
-        "cycle_speed": 4,
-        "bg_color": "#f3f0e7",
-        "text_color": "#2a2529",
-        "accent_color": "#c59b27"
-      }
-    },
-    "image_banner": {
-      "type": "image-banner",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "Browse our latest products",
-            "heading_size": "h0"
-          }
-        },
-        "button": {
-          "type": "buttons",
-          "settings": {
-            "button_label_1": "Shop all",
-            "button_link_1": "shopify://collections/all",
-            "button_style_secondary_1": true,
-            "button_label_2": "",
-            "button_link_2": "",
-            "button_style_secondary_2": false
-          }
-        }
-      },
-      "block_order": [
-        "heading",
-        "button"
-      ],
-      "settings": {
-        "image_overlay_opacity": 40,
-        "image_height": "large",
-        "image_behavior": "none",
-        "desktop_content_position": "bottom-center",
-        "desktop_content_alignment": "center",
-        "show_text_box": false,
-        "color_scheme": "scheme-3",
-        "stack_images_on_mobile": false,
-        "mobile_content_alignment": "center",
-        "show_text_below": false
-      }
-    },
-    "featured_collection": {
-      "type": "featured-collection",
-      "settings": {
-        "collection": "all",
-        "products_to_show": 8,
-        "title": "Featured products",
-        "heading_size": "h2",
-        "description": "",
-        "show_description": false,
-        "description_style": "body",
-        "columns_desktop": 4,
-        "enable_desktop_slider": false,
-        "full_width": false,
-        "show_view_all": true,
-        "view_all_style": "solid",
-        "color_scheme": "scheme-1",
-        "image_ratio": "adapt",
-        "image_shape": "default",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "quick_add": "none",
-        "columns_mobile": "2",
-        "swipe_on_mobile": false,
-        "padding_top": 44,
-        "padding_bottom": 36
+        "eyebrow": "HOUSE OF ROYALS • DROP 01",
+        "heading": "House of Royals",
+        "subheading": "Hover over any gown to slide and inspect couture details on our atelier rack.",
+        "bg_color": "#f8f8f6",
+        "rail_color": "#7d858f",
+        "hanger_color": "#6b727c",
+        "text_color": "#1a1819",
+        "accent_color": "#b38728",
+        "sway_intensity": 4,
+        "item_width": 280,
+        "enable_nudge": true,
+        "enable_drag": true,
+        "padding_top": 60,
+        "padding_bottom": 80
       }
     }
   },
   "order": [
     "hero_3d_cylinder",
-    "wardrobe_carousel",
-    "image_banner",
-    "featured_collection"
+    "hanger_rack"
   ]
 }

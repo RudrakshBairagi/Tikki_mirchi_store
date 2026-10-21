@@ -1,0 +1,445 @@
+{{ 'hanger-rack.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'hanger-rack.js' | asset_url }}" defer="defer"></script>
+
+{%- style -%}
+  #HangerRack-{{ section.id }} {
+    --rack-bg: {{ section.settings.bg_color | default: '#f7f6f2' }};
+    --rack-rail-color: {{ section.settings.rail_color | default: '#7a818b' }};
+    --rack-hanger-color: {{ section.settings.hanger_color | default: '#686f78' }};
+    --rack-text-color: {{ section.settings.text_color | default: '#1a1819' }};
+    --rack-accent-color: {{ section.settings.accent_color | default: '#b38728' }};
+    --rack-sway-factor: {{ section.settings.sway_intensity | default: 4 }};
+    --rack-item-width: {{ section.settings.item_width | default: 280 }}px;
+    --rack-padding-top: {{ section.settings.padding_top | default: 60 }}px;
+    --rack-padding-bottom: {{ section.settings.padding_bottom | default: 80 }}px;
+  }
+{%- endstyle -%}
+
+<section
+  id="HangerRack-{{ section.id }}"
+  class="hanger-rack-section"
+  data-sway-intensity="{{ section.settings.sway_intensity | default: 4 }}"
+  data-spring-speed="{{ section.settings.spring_speed | default: 5 }}"
+  data-damping-rate="{{ section.settings.damping_rate | default: 5 }}"
+  data-hit-force="{{ section.settings.hit_force | default: 5 }}"
+  data-part-spread="{{ section.settings.part_spread | default: 50 }}"
+  data-show-tuning="{% if section.settings.show_tuning_panel != false %}true{% else %}false{% endif %}"
+  data-nudge="{% if section.settings.enable_nudge %}true{% else %}false{% endif %}"
+  data-drag="{% if section.settings.enable_drag %}true{% else %}false{% endif %}"
+  aria-label="{{ section.settings.heading | default: 'House of Royals Runway Rack' }}"
+>
+  <div class="hanger-rack-container">
+    <!-- Header: Editorial & Minimalist -->
+    <div class="hanger-rack-header">
+      {%- if section.settings.eyebrow != blank -%}
+        <div class="hanger-rack-eyebrow">
+          <span class="rack-eyebrow-sparkle">✦</span>
+          <span>{{ section.settings.eyebrow }}</span>
+          <span class="rack-eyebrow-sparkle">✦</span>
+        </div>
+      {%- endif -%}
+
+      <h2 class="hanger-rack-title">{{ section.settings.heading | default: 'House of Royals' }}</h2>
+
+      {%- if section.settings.subheading != blank -%}
+        <p class="hanger-rack-subheading">{{ section.settings.subheading }}</p>
+      {%- endif -%}
+    </div>
+
+    <!-- The Boutique Rail & Clothes Rack Stage -->
+    <div class="hanger-rack-stage" tabIndex="0" role="region" aria-label="Interactive Clothes Rack">
+      <!-- Fixed Overhead Rail Bar spanning across -->
+      <div class="hanger-rail-bar" aria-hidden="true">
+        <div class="rail-rod"></div>
+        <div class="rail-bracket bracket-left"></div>
+        <div class="rail-bracket bracket-right"></div>
+        <div class="rail-highlight"></div>
+      </div>
+
+      <!-- Scrollable / Draggable Track of Hanging Garments -->
+      <div class="hanger-rack-track-wrap">
+        <div class="hanger-rack-track" id="HangerTrack-{{ section.id }}">
+          {%- if section.blocks.size > 0 -%}
+            {%- for block in section.blocks -%}
+              {%- assign look_num = forloop.index -%}
+              {%- assign dress_src = 'shopping.png' | asset_url -%}
+              {%- if block.settings.custom_image != blank -%}
+                {%- assign dress_src = block.settings.custom_image | image_url: width: 800 -%}
+              {%- elsif block.settings.product != blank and block.settings.product.featured_image != blank -%}
+                {%- assign dress_src = block.settings.product.featured_image | image_url: width: 800 -%}
+              {%- endif -%}
+
+              {%- assign dress_title = block.settings.title -%}
+              {%- if dress_title == blank and block.settings.product != blank -%}
+                {%- assign dress_title = block.settings.product.title -%}
+              {%- endif -%}
+              {%- if dress_title == blank -%}
+                {%- assign dress_title = 'Atelier Look ' | append: look_num -%}
+              {%- endif -%}
+
+              {%- assign dress_price = block.settings.price -%}
+              {%- if dress_price == blank and block.settings.product != blank -%}
+                {%- assign dress_price = block.settings.product.price | money -%}
+              {%- endif -%}
+
+              {%- assign dress_link = block.settings.link -%}
+              {%- if dress_link == blank and block.settings.product != blank -%}
+                {%- assign dress_link = block.settings.product.url -%}
+              {%- endif -%}
+
+              <!-- Individual Hanging Garment Unit -->
+              <div
+                class="hanger-item"
+                data-index="{{ forloop.index0 }}"
+                data-title="{{ dress_title | escape }}"
+                data-price="{{ dress_price | escape }}"
+                data-tag="{{ block.settings.tag | default: 'LOOK ' | append: look_num }}"
+                {{ block.shopify_attributes }}
+              >
+                <!-- Whole Assembly that Pivots around top hook contact point -->
+                <div class="hanger-assembly">
+                  <!-- Wire Hanger Hook & Shoulders SVG -->
+                  <div class="hanger-wire-wrapper" aria-hidden="true">
+                    <svg
+                      class="hanger-wire-svg"
+                      viewBox="0 0 160 84"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <!-- Top Curved Wire Hook (rests on the rail) -->
+                      <path
+                        d="M 80 4 C 70 4, 63 11, 63 20 C 63 29, 74 34, 80 39 L 80 47"
+                        stroke="currentColor"
+                        stroke-width="2.4"
+                        stroke-linecap="round"
+                        class="hook-curve"
+                      />
+                      <!-- Hook Lip Accent -->
+                      <path
+                        d="M 80 4 C 84 4, 86 6, 86 8"
+                        stroke="currentColor"
+                        stroke-width="2.2"
+                        stroke-linecap="round"
+                      />
+                      <!-- Minimalist Wire Shoulders -->
+                      <path
+                        d="M 12 76 L 80 47 L 148 76"
+                        stroke="currentColor"
+                        stroke-width="2.4"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <!-- Bottom Horizontal Crossbar -->
+                      <path
+                        d="M 15 76 L 145 76"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                      />
+                      <!-- Little clips/pegs for skirts/straps -->
+                      <rect x="36" y="73" width="7" height="10" rx="1.5" fill="currentColor" opacity="0.85" />
+                      <rect x="117" y="73" width="7" height="10" rx="1.5" fill="currentColor" opacity="0.85" />
+                    </svg>
+                  </div>
+
+                  <!-- Hanging Garment Silhouette (Transparent Cutout) -->
+                  <div class="hanger-garment-wrap">
+                    <img
+                      src="{{ dress_src }}"
+                      alt="{{ dress_title | escape }}"
+                      class="hanger-garment-img"
+                      loading="{% if forloop.index <= 4 %}eager{% else %}lazy{% endif %}"
+                      width="360"
+                      height="700"
+                    >
+                    <!-- Soft Dynamic Drop Shadow on the Atelier Wall -->
+                    <div class="hanger-garment-shadow" aria-hidden="true"></div>
+                  </div>
+
+                  <!-- Delicate Swing Price Tag dangling from the hanger -->
+                  <div class="hanger-swing-tag" aria-hidden="true">
+                    <div class="tag-thread"></div>
+                    <div class="tag-body">
+                      <span class="tag-code">{{ block.settings.tag | default: 'LOOK ' | append: look_num }}</span>
+                      <span class="tag-name">{{ dress_title }}</span>
+                      {%- if dress_price != blank -%}
+                        <span class="tag-price">{{ dress_price }}</span>
+                      {%- endif -%}
+                    </div>
+                  </div>
+
+                  <!-- Interactive Action Overlay Button / Link -->
+                  {%- if dress_link != blank -%}
+                    <a href="{{ dress_link }}" class="hanger-action-hitbox" aria-label="View {{ dress_title | escape }}">
+                      <span class="sr-only">View {{ dress_title }}</span>
+                    </a>
+                  {%- else -%}
+                    <button type="button" class="hanger-action-hitbox" aria-label="Inspect {{ dress_title | escape }}">
+                      <span class="sr-only">Inspect {{ dress_title }}</span>
+                    </button>
+                  {%- endif -%}
+                </div>
+              </div>
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
+      </div>
+
+      <!-- Optional subtle ambient bottom hint -->
+      <div class="hanger-rack-hint" aria-hidden="true">
+        <span class="hint-icon">⟵</span>
+        <span class="hint-text">Hover to sway • Drag along the rack</span>
+        <span class="hint-icon">⟶</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Clothes Hanger Rack",
+  "tag": "section",
+  "class": "section-hanger-rack",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Tagline",
+      "default": "HOUSE OF ROYALS • DROP 01"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "House of Royals"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Hover over any gown to slide and inspect couture details on our atelier rack."
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#f8f8f6"
+    },
+    {
+      "type": "color",
+      "id": "rail_color",
+      "label": "Rail Color",
+      "default": "#7d858f"
+    },
+    {
+      "type": "color",
+      "id": "hanger_color",
+      "label": "Hanger Color",
+      "default": "#6b727c"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#1a1819"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent Color",
+      "default": "#b38728"
+    },
+    {
+      "type": "header",
+      "content": "Physics & Interactive Studio Controls"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tuning_panel",
+      "label": "Enable Live Physics Studio Floating Panel",
+      "default": true,
+      "info": "Displays floating studio in bottom right allowing live testing of speeds, bumps, and damping."
+    },
+    {
+      "type": "range",
+      "id": "sway_intensity",
+      "label": "Sway Sensitivity",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "spring_speed",
+      "label": "Swing Speed / Stiffness (Calm to Snappy)",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "range",
+      "id": "damping_rate",
+      "label": "Air Resistance / Settle Duration (Linger to Fast)",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "range",
+      "id": "hit_force",
+      "label": "Neighbor Contact Bump Force",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "range",
+      "id": "part_spread",
+      "label": "Rail Parting Distance (px)",
+      "min": 20,
+      "max": 80,
+      "step": 2,
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "item_width",
+      "label": "Garment Width (px)",
+      "min": 180,
+      "max": 420,
+      "step": 10,
+      "default": 280
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_nudge",
+      "label": "Nudge Adjacent Clothes (Boutique Shuffling)",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_drag",
+      "label": "Enable Mouse Drag & Touch Swipe",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top Padding (px)",
+      "min": 20,
+      "max": 120,
+      "step": 5,
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom Padding (px)",
+      "min": 20,
+      "max": 120,
+      "step": 5,
+      "default": 80
+    }
+  ],
+  "blocks": [
+    {
+      "type": "garment",
+      "name": "Hanging Garment",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "custom_image",
+          "label": "Custom Cutout Image (PNG)"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Select Product (Optional)"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Couture Gown"
+        },
+        {
+          "type": "text",
+          "id": "tag",
+          "label": "Tag",
+          "default": "LOOK 01"
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "Price Display",
+          "default": "$1,450"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Clothes Hanger Rack",
+      "blocks": [
+        {
+          "type": "garment",
+          "settings": {
+            "title": "Ivory Mirror Bustier & Saree Gown",
+            "tag": "LOOK 01",
+            "price": "$1,450"
+          }
+        },
+        {
+          "type": "garment",
+          "settings": {
+            "title": "Heritage Tapestry Mirror Lehenga",
+            "tag": "LOOK 02",
+            "price": "$1,890"
+          }
+        },
+        {
+          "type": "garment",
+          "settings": {
+            "title": "Rose Quartz Embellished Ombré Gown",
+            "tag": "LOOK 03",
+            "price": "$1,620"
+          }
+        },
+        {
+          "type": "garment",
+          "settings": {
+            "title": "Midnight Botanical Flared Set",
+            "tag": "LOOK 04",
+            "price": "$1,380"
+          }
+        },
+        {
+          "type": "garment",
+          "settings": {
+            "title": "Peplum Floral Velvet Ensemble",
+            "tag": "LOOK 05",
+            "price": "$1,540"
+          }
+        },
+        {
+          "type": "garment",
+          "settings": {
+            "title": "Scarlet Blossom Twist-Knot Gown",
+            "tag": "LOOK 06",
+            "price": "$1,290"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

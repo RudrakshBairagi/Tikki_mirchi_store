@@ -1,0 +1,503 @@
+/* ==========================================================================
+   THE MAGIC WARDROBE (ATELIER PORTAL) LOOKBOOK
+   Inspired by editorial fashion transformation reels ("Meu guarda roupa mágico")
+   ========================================================================== */
+
+.magic-wardrobe-section {
+  position: relative;
+  background-color: var(--wardrobe-bg, #f3f0e7);
+  color: var(--wardrobe-text, #2a2529);
+  padding: 80px 24px 90px;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.magic-wardrobe-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* --------------------------------------------------------------------------
+   Editorial Header
+   -------------------------------------------------------------------------- */
+.magic-wardrobe-header {
+  text-align: center;
+  max-width: 680px;
+  margin-bottom: 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.magic-wardrobe-tagline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--wardrobe-accent, #c59b27);
+}
+
+.magic-wardrobe-tag-dot {
+  font-size: 10px;
+  color: var(--wardrobe-accent, #c59b27);
+}
+
+.magic-wardrobe-title {
+  font-size: clamp(30px, 4.5vw, 56px);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: 0.03em;
+  margin: 0;
+  color: var(--wardrobe-text, #2a2529);
+  text-transform: uppercase;
+}
+
+.magic-wardrobe-subtitle {
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(42, 37, 41, 0.72);
+  margin: 0;
+  max-width: 540px;
+}
+
+/* Active Look Indicator Pill */
+.magic-active-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 8px 18px;
+  border-radius: 999px;
+  margin-top: 6px;
+  font-size: 12px;
+  color: #2a2529;
+  box-shadow: 0 4px 14px rgba(42, 37, 41, 0.05);
+  transition: all 0.3s ease;
+}
+
+.active-sparkle {
+  color: var(--wardrobe-accent, #c59b27);
+  font-size: 11px;
+}
+
+.active-look-label {
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--wardrobe-accent, #c59b27);
+}
+
+.active-dot-separator {
+  color: rgba(42, 37, 41, 0.3);
+}
+
+.active-look-name {
+  font-weight: 600;
+  color: #2a2529;
+}
+
+/* --------------------------------------------------------------------------
+   The Magic Wardrobe Stage
+   -------------------------------------------------------------------------- */
+.magic-wardrobe-stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 860px;
+  margin: 0 auto;
+  gap: 28px;
+}
+
+.magic-wardrobe-stage-inner {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  aspect-ratio: 768 / 1376;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow:
+    0 24px 60px -12px rgba(42, 37, 41, 0.18),
+    0 0 0 1px rgba(0, 0, 0, 0.04);
+  background: #faf8f5;
+  user-select: none;
+  touch-action: pan-y;
+  cursor: grab;
+}
+
+.magic-wardrobe-stage-inner:active {
+  cursor: grabbing;
+}
+
+/* Outfits Carousel Container */
+.magic-outfits-carousel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* Outfit Slide Layering */
+.magic-outfit-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.985);
+  transition:
+    opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0.65s;
+  z-index: 1;
+}
+
+.magic-outfit-slide.is-active {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+  z-index: 2;
+}
+
+.magic-outfit-media {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.magic-outfit-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+
+/* Overlay Frame (for custom uploaded photos) */
+.magic-frame-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* --------------------------------------------------------------------------
+   Floating Outfit Details & CTA Card
+   -------------------------------------------------------------------------- */
+.magic-outfit-details-card {
+  position: absolute;
+  bottom: 20px;
+  left: 18px;
+  right: 18px;
+  z-index: 10;
+  pointer-events: auto;
+}
+
+.magic-outfit-details-card .card-inner {
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  border-radius: 16px;
+  padding: 16px 20px;
+  box-shadow:
+    0 16px 36px -8px rgba(0, 0, 0, 0.16),
+    0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transform: translateY(0);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.magic-outfit-slide.is-active .magic-outfit-details-card .card-inner {
+  animation: magicCardEntrance 0.6s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+}
+
+@keyframes magicCardEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.card-tag {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--wardrobe-accent, #c59b27);
+  text-transform: uppercase;
+}
+
+.card-badge {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: rgba(212, 175, 55, 0.14);
+  color: #997300;
+  padding: 3px 8px;
+  border-radius: 999px;
+}
+
+.card-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e1b1c;
+  margin: 0;
+  line-height: 1.25;
+}
+
+.card-desc {
+  font-size: 12px;
+  line-height: 1.45;
+  color: rgba(30, 27, 28, 0.7);
+  margin: 0;
+}
+
+.card-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #1e1b1c;
+  color: #f3f0e7;
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  margin-top: 4px;
+  transition: all 0.28s ease;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+}
+
+.card-cta-btn:hover {
+  background: var(--wardrobe-accent, #c59b27);
+  color: #1e1b1c;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(197, 155, 39, 0.35);
+}
+
+.btn-arrow {
+  transition: transform 0.25s ease;
+}
+
+.card-cta-btn:hover .btn-arrow {
+  transform: translateX(3px);
+}
+
+/* --------------------------------------------------------------------------
+   Navigation Arrows
+   -------------------------------------------------------------------------- */
+.magic-nav-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  color: #2a2529;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(42, 37, 41, 0.1);
+  transition: all 0.25s cubic-bezier(0.2, 0.9, 0.3, 1);
+  flex-shrink: 0;
+  z-index: 12;
+}
+
+.magic-nav-btn:hover {
+  background: #1e1b1c;
+  color: #f3f0e7;
+  border-color: #1e1b1c;
+  transform: scale(1.08);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
+}
+
+.magic-nav-btn:active {
+  transform: scale(0.96);
+}
+
+/* --------------------------------------------------------------------------
+   Bottom Look Switcher Tabs
+   -------------------------------------------------------------------------- */
+.magic-selector-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 36px;
+  flex-wrap: wrap;
+  max-width: 800px;
+}
+
+.magic-selector-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(42, 37, 41, 0.12);
+  color: #2a2529;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.magic-selector-tab .tab-index {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--wardrobe-accent, #c59b27);
+  letter-spacing: 0.05em;
+}
+
+.magic-selector-tab:hover {
+  background: #ffffff;
+  border-color: rgba(212, 175, 55, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.magic-selector-tab.is-active {
+  background: #1e1b1c;
+  border-color: #1e1b1c;
+  color: #f3f0e7;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+}
+
+.magic-selector-tab.is-active .tab-index {
+  color: #f5ea5a;
+}
+
+/* --------------------------------------------------------------------------
+   Responsive Breakpoints
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  .magic-wardrobe-section {
+    padding: 50px 16px 60px;
+  }
+
+  .magic-wardrobe-header {
+    margin-bottom: 24px;
+    gap: 8px;
+  }
+
+  .magic-wardrobe-stage {
+    gap: 0;
+    max-width: 100%;
+    padding: 0 8px;
+  }
+
+  .magic-wardrobe-stage-inner {
+    max-width: 360px;
+    border-radius: 16px;
+  }
+
+  .magic-nav-btn {
+    position: absolute;
+    top: 45%;
+    transform: translateY(-50%);
+    width: 38px;
+    height: 38px;
+    font-size: 20px;
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+    z-index: 15;
+  }
+
+  .magic-nav-btn.nav-prev {
+    left: 4px;
+  }
+
+  .magic-nav-btn.nav-next {
+    right: 4px;
+  }
+
+  .magic-outfit-details-card {
+    bottom: 14px;
+    left: 12px;
+    right: 12px;
+  }
+
+  .magic-outfit-details-card .card-inner {
+    padding: 12px 14px;
+    gap: 6px;
+    border-radius: 12px;
+  }
+
+  .card-title {
+    font-size: 14px;
+  }
+
+  .card-desc {
+    display: none; /* Keep clean on small mobile */
+  }
+
+  .card-cta-btn {
+    padding: 8px 16px;
+    font-size: 10px;
+  }
+
+  .magic-selector-bar {
+    gap: 6px;
+    margin-top: 24px;
+    overflow-x: auto;
+    width: 100%;
+    justify-content: flex-start;
+    padding-bottom: 8px;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap;
+  }
+
+  .magic-selector-tab {
+    padding: 8px 14px;
+    font-size: 11px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+}
+
+@media (max-width: 400px) {
+  .magic-wardrobe-stage-inner {
+    max-width: 320px;
+  }
+
+  .magic-active-indicator {
+    padding: 6px 14px;
+    font-size: 11px;
+  }
+}
