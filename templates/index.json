@@ -12,7 +12,7 @@
     "luxury_header": {
       "type": "luxury-header",
       "settings": {
-        "heading": "TIKKI Bella",
+        "heading": "Teekhi Bella",
         "tagline": ".",
         "link_1_label": "ATELIER",
         "link_1_url": "#atelier",
@@ -182,7 +182,7 @@
       ],
       "settings": {
         "eyebrow": "--------------------",
-        "heading": "YOUR DREAM RACK",
+        "heading": "Your Dream Rack",
         "subheading": "MAKE YOUR PICK",
         "bg_color": "#f8f8f6",
         "rail_color": "#7d858f",
