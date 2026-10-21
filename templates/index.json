@@ -20,7 +20,7 @@
         "link_2_url": "#runway",
         "link_3_label": "COLLECTIONS",
         "link_3_url": "#collections",
-        "bg_color": "rgba(0,0,0,0)",
+        "bg_color": "#F8F8F6",
         "text_color": "#161517",
         "title_color": "#161517",
         "docked_text_color": "#161517",
