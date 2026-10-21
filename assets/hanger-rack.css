@@ -85,22 +85,26 @@
 }
 
 /* Fixed Overhead Rail Rod spanning horizontally */
-.hanger-rail-bar {
+.hanger-rail-bar,
+.hanger-rail-bar:empty {
   position: absolute;
   top: 22px; /* Aligned through the upper hook curve */
   left: 0;
   right: 0;
   height: 6px;
   z-index: 3;
+  display: block !important;
   pointer-events: none;
 }
 
-.rail-rod {
+.rail-rod,
+.rail-rod:empty {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   height: 6px;
+  display: block !important;
   background: #3e444c;
   background: linear-gradient(
     180deg,
@@ -113,12 +117,14 @@
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.28), 0 1px 3px rgba(0, 0, 0, 0.18);
 }
 
-.rail-highlight {
+.rail-highlight,
+.rail-highlight:empty {
   position: absolute;
   top: 1px;
   left: 1%;
   right: 1%;
   height: 1.5px;
+  display: block !important;
   background: linear-gradient(
     90deg,
     transparent 0%,
@@ -131,7 +137,8 @@
   opacity: 0.95;
 }
 
-.rail-bracket {
+.rail-bracket,
+.rail-bracket:empty {
   position: absolute;
   top: -5px;
   width: 12px;
@@ -139,7 +146,7 @@
   background: linear-gradient(180deg, #6c747e 0%, #202428 100%);
   border-radius: 2px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
-  display: block;
+  display: block !important;
 }
 
 .rail-bracket.bracket-left {
@@ -266,12 +273,14 @@
 }
 
 /* Dynamic soft atelier wall shadow */
-.hanger-garment-shadow {
+.hanger-garment-shadow,
+.hanger-garment-shadow:empty {
   position: absolute;
   bottom: -15px;
   left: 15%;
   right: 15%;
   height: 20px;
+  display: block !important;
   background: radial-gradient(ellipse at center, rgba(30, 25, 28, 0.18) 0%, transparent 70%);
   filter: blur(8px);
   pointer-events: none;
@@ -299,9 +308,11 @@
   transform: translateY(0) rotateZ(2deg);
 }
 
-.tag-thread {
+.tag-thread,
+.tag-thread:empty {
   width: 1px;
   height: 20px;
+  display: block !important;
   background: rgba(120, 115, 110, 0.55);
   margin: 0 auto;
 }

@@ -13,6 +13,22 @@
     --rack-padding-top: {{ section.settings.padding_top | default: 60 }}px;
     --rack-padding-bottom: {{ section.settings.padding_bottom | default: 80 }}px;
   }
+
+  /* Critical display overrides ensuring Shopify base.css (div:empty { display:none }) never hides rail rod elements */
+  #HangerRack-{{ section.id }} .hanger-rail-bar,
+  #HangerRack-{{ section.id }} .hanger-rail-bar:empty,
+  #HangerRack-{{ section.id }} .rail-rod,
+  #HangerRack-{{ section.id }} .rail-rod:empty,
+  #HangerRack-{{ section.id }} .rail-highlight,
+  #HangerRack-{{ section.id }} .rail-highlight:empty,
+  #HangerRack-{{ section.id }} .rail-bracket,
+  #HangerRack-{{ section.id }} .rail-bracket:empty,
+  #HangerRack-{{ section.id }} .hanger-garment-shadow,
+  #HangerRack-{{ section.id }} .hanger-garment-shadow:empty,
+  #HangerRack-{{ section.id }} .tag-thread,
+  #HangerRack-{{ section.id }} .tag-thread:empty {
+    display: block !important;
+  }
 {%- endstyle -%}
 
 <section
@@ -50,10 +66,10 @@
     <div class="hanger-rack-stage" tabIndex="0" role="region" aria-label="Interactive Clothes Rack">
       <!-- Fixed Overhead Rail Bar spanning across -->
       <div class="hanger-rail-bar" aria-hidden="true">
-        <div class="rail-rod"></div>
-        <div class="rail-bracket bracket-left"></div>
-        <div class="rail-bracket bracket-right"></div>
-        <div class="rail-highlight"></div>
+        <div class="rail-rod"><span class="rail-rod-core"></span></div>
+        <div class="rail-bracket bracket-left"><span class="bracket-cap"></span></div>
+        <div class="rail-bracket bracket-right"><span class="bracket-cap"></span></div>
+        <div class="rail-highlight"><span class="highlight-line"></span></div>
       </div>
 
       <!-- Scrollable / Draggable Track of Hanging Garments -->
@@ -153,12 +169,12 @@
                       height="700"
                     >
                     <!-- Soft Dynamic Drop Shadow on the Atelier Wall -->
-                    <div class="hanger-garment-shadow" aria-hidden="true"></div>
+                    <div class="hanger-garment-shadow" aria-hidden="true"><span></span></div>
                   </div>
 
                   <!-- Delicate Swing Price Tag dangling from the hanger -->
                   <div class="hanger-swing-tag" aria-hidden="true">
-                    <div class="tag-thread"></div>
+                    <div class="tag-thread"><span></span></div>
                     <div class="tag-body">
                       <span class="tag-code">{{ block.settings.tag | default: 'LOOK ' | append: look_num }}</span>
                       <span class="tag-name">{{ dress_title }}</span>
