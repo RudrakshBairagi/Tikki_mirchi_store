@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main_hanger_rack": {
@@ -70,7 +79,7 @@
         "text_color": "#1a1819",
         "accent_color": "#b38728",
         "sway_intensity": 6,
-        "item_width": 195,
+        "item_width": 280,
         "enable_nudge": true,
         "enable_drag": true,
         "padding_top": 80,
