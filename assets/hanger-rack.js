@@ -41,7 +41,7 @@ class HangerRack {
       swayFactor: (saved && saved.swayFactor) || (!isNaN(rawSway) ? 0.4 + (rawSway - 1) * (1.6 / 9) : 1.0)
     };
 
-    this.showTuningPanel = this.section.dataset.showTuning !== 'false';
+    this.showTuningPanel = false;
     this.nudgeEnabled = this.section.dataset.nudge !== 'false';
     this.dragEnabled = this.section.dataset.drag !== 'false';
 
@@ -92,7 +92,6 @@ class HangerRack {
 
   init() {
     this.setupAudio();
-    this.setupFloatingCard();
     this.bindPointerVelocity();
     this.bindGarmentInteractions();
 
@@ -101,7 +100,6 @@ class HangerRack {
     }
 
     this.bindTrackScrollMomentum();
-    this.setupTuningPanel();
 
     this.updateTrackAlignment();
 
@@ -413,73 +411,18 @@ class HangerRack {
     }
   }
 
-  /* --------------------------------------------------------------------------
-     1. Atelier Floating Detail Card (Pops out beside hovered outfit)
+  /* -------------------------------------------------------------      1. Atelier Floating Detail Card (Disabled: user prefers small boutique tag only)
      -------------------------------------------------------------------------- */
   setupFloatingCard() {
-    let card = this.stage.querySelector('.hanger-floating-card');
-    if (!card) {
-      card = document.createElement('div');
-      card.className = 'hanger-floating-card';
-      card.setAttribute('aria-hidden', 'true');
-      card.innerHTML = `
-        <span class="floating-card-tag">NEW DROP</span>
-        <h3 class="floating-card-title">Bordeaux Halter</h3>
-        <div class="floating-card-row">
-          <span class="floating-card-price">$890</span>
-          <span class="floating-card-badge">Atelier Exclusive</span>
-        </div>
-        <a href="#" class="floating-card-link">
-          <span>Inspect Piece</span>
-          <span class="card-arrow">→</span>
-        </a>
-      `;
-      this.stage.appendChild(card);
-    }
-
-    this.card = card;
-    this.cardTag = card.querySelector('.floating-card-tag');
-    this.cardTitle = card.querySelector('.floating-card-title');
-    this.cardPrice = card.querySelector('.floating-card-price');
-    this.cardLink = card.querySelector('.floating-card-link');
+    // Disabled: User only wants the small swing price tag on the garment
   }
 
-  showFloatingCard(g) {
-    if (!this.card || !g) return;
-
-    this.cardTag.textContent = g.tagText || 'EXCLUSIVE';
-    this.cardTitle.textContent = g.title || 'Couture Piece';
-    this.cardPrice.textContent = g.price || '';
-    if (g.link && g.link !== '#') {
-      this.cardLink.href = g.link;
-      this.cardLink.style.display = 'inline-flex';
-    } else {
-      this.cardLink.href = '#';
-    }
-
-    // Smart positioning relative to stage and garment
-    const gRect = g.el.getBoundingClientRect();
-    const stageRect = this.stage.getBoundingClientRect();
-    const cardWidth = 250;
-
-    // Prefer placing to the right of the dress; if close to edge, place to the left
-    let left = gRect.right - stageRect.left + 14;
-    if (left + cardWidth > stageRect.width - 24) {
-      left = gRect.left - stageRect.left - cardWidth - 14;
-    }
-    left = Math.max(16, Math.min(stageRect.width - cardWidth - 16, left));
-
-    const top = Math.max(50, Math.min(stageRect.height - 180, gRect.top - stageRect.top + 80));
-
-    this.card.style.left = `${left.toFixed(1)}px`;
-    this.card.style.top = `${top.toFixed(1)}px`;
-    this.card.classList.add('is-active');
+  showFloatingCard() {
+    // Disabled: User only wants the small swing price tag on the garment
   }
 
   hideFloatingCard() {
-    if (this.card) {
-      this.card.classList.remove('is-active');
-    }
+    // Disabled
   }
 
   /* --------------------------------------------------------------------------
@@ -769,7 +712,7 @@ class HangerRack {
      6. Live Interactive Physics Studio Floating Panel
      -------------------------------------------------------------------------- */
   setupTuningPanel() {
-    if (!this.showTuningPanel && !window.location.search.includes('tune')) return;
+    return; // Disabled: Physics Studio icon removed
     if (document.querySelector('.hanger-tuning-studio')) return;
 
     const panel = document.createElement('div');

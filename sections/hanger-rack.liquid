@@ -39,7 +39,7 @@
   data-damping-rate="{{ section.settings.damping_rate | default: 5 }}"
   data-hit-force="{{ section.settings.hit_force | default: 5 }}"
   data-part-spread="{{ section.settings.part_spread | default: 50 }}"
-  data-show-tuning="{% if section.settings.show_tuning_panel != false %}true{% else %}false{% endif %}"
+  data-show-tuning="{% if section.settings.show_tuning_panel == true %}true{% else %}false{% endif %}"
   data-nudge="{% if section.settings.enable_nudge %}true{% else %}false{% endif %}"
   data-drag="{% if section.settings.enable_drag %}true{% else %}false{% endif %}"
   data-sound-1="{{ 'sound_1.mp3' | asset_url }}"
@@ -275,7 +275,7 @@
       "type": "checkbox",
       "id": "show_tuning_panel",
       "label": "Enable Live Physics Studio Floating Panel",
-      "default": true,
+      "default": false,
       "info": "Displays floating studio in bottom right allowing live testing of speeds, bumps, and damping."
     },
     {
