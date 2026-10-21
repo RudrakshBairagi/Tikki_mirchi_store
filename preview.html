@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TIKKI Bella — Atelier Runway & Dress Rack</title>
-  <link rel="stylesheet" href="assets/hero-3d-cylinder.css">
+  <link rel="stylesheet" href="assets/header-morph.css">
   <link rel="stylesheet" href="assets/hanger-rack.css?v=studio">
   <style>
     body {
@@ -18,26 +18,93 @@
 </head>
 <body>
 
-  <!-- Editorial Brand Masthead (Background Preserved, Rotating Cylinder Removed) -->
+  <!-- ==========================================================================
+       TIKKI BELLA — LUXURY MORPHING HEADER (SOPHIE & LUCIE INSPIRED)
+       ========================================================================== -->
+  <header id="LuxuryHeader" class="luxury-header">
+    <div class="luxury-header__inner">
+      <!-- Left Navigation & Menu -->
+      <div class="luxury-header__left">
+        <button class="header-action-btn menu-toggle" aria-label="Open menu">
+          <span class="hamburger-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
+          <span class="btn-label">MENU</span>
+        </button>
+        <nav class="desktop-nav">
+          <a href="#atelier" class="nav-link">ATELIER</a>
+          <a href="#runway" class="nav-link">RUNWAY</a>
+          <a href="#collections" class="nav-link">COLLECTIONS</a>
+        </nav>
+      </div>
+
+      <!-- Center Morphing Brand Zone -->
+      <div class="luxury-header__center brand-morph-zone">
+        <!-- Cursive Editorial Tagline (Visible at top, fades out on scroll) -->
+        <div class="brand-tagline">Atelier Couture &amp; Ready-to-Wear</div>
+
+        <!-- Morphing Brand Wordmark: Drops down into hero on load, merges back to navbar on scroll -->
+        <a href="/" class="brand-morph-logo is-visible jump-in" id="BrandMorphLogo">
+          <span class="brand-wordmark">TIKKI Bella</span>
+        </a>
+      </div>
+
+      <!-- Right Action Icons (Proper High-Fashion Boutique Icons) -->
+      <div class="luxury-header__right">
+        <!-- Search -->
+        <button class="header-action-btn" aria-label="Search" title="Search">
+          <svg class="header-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="7"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+        <!-- Wishlist -->
+        <button class="header-action-btn" aria-label="Wishlist" title="Wishlist">
+          <svg class="header-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+          </svg>
+        </button>
+        <!-- Account -->
+        <a href="#account" class="header-action-btn" aria-label="Account" title="Account">
+          <svg class="header-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </a>
+        <!-- Shopping Bag / Cart with live badge -->
+        <a href="#cart" class="header-action-btn cart-btn" aria-label="Shopping Bag" title="Shopping Bag">
+          <svg class="header-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          <span class="cart-count-badge">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       EDITORIAL BRAND MASTHEAD (RUNWAY BACKDROP STAGE)
+       ========================================================================== -->
   <section
-    id="Hero3D-preview"
-    class="hero-3d-section hero-3d-section--minimal"
+    id="HeroMasthead-preview"
+    class="hero-editorial-masthead"
     style="
       --hero-bg: #FF78F0;
       --hero-text: #F5EA5A;
       --hero-title-color: #F5EA5A;
     "
   >
-    <!-- Top Meta Navigation Bar -->
-    <div class="hero-3d-topbar">
-      <div class="topbar-brand">TIKKI Bella</div>
-    </div>
-
-    <!-- Editorial Brand Title -->
-    <div class="hero-3d-stage">
-      <h1 class="hero-3d-giant-title">
-        TIKKI Bella
-      </h1>
+    <!-- Editorial Stage Sub-Meta Footer -->
+    <div class="hero-editorial-footer">
+      <div class="footer-tag">SPRING / SUMMER ATELIER 2026</div>
+      <div class="footer-status">
+        <span class="status-dot"></span>
+        <span>RUNWAY LIVE</span>
+      </div>
     </div>
   </section>
 
@@ -283,6 +350,7 @@
     </div>
   </section>
 
+  <script src="assets/header-morph.js"></script>
   <script src="assets/hanger-rack.js?v=studio"></script>
 </body>
 </html>

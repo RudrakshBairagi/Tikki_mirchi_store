@@ -1,5 +1,5 @@
-{{ 'hero-3d-cylinder.css' | asset_url | stylesheet_tag }}
-<script src="{{ 'hero-3d-cylinder.js' | asset_url }}" defer="defer"></script>
+{{ 'header-morph.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'header-morph.js' | asset_url }}" defer="defer"></script>
 
 {%- style -%}
   @font-face {
@@ -22,161 +22,114 @@
     font-display: swap;
   }
 
-  #Hero3D-{{ section.id }} {
-    --hero-bg: {{ section.settings.bg_color }};
-    --hero-text: {{ section.settings.text_color }};
-    --hero-title-color: {{ section.settings.title_color }};
-    --cylinder-tilt: {{ section.settings.tilt_angle }}deg;
-    --cylinder-perspective: {{ section.settings.perspective }}px;
-    --card-width: {{ section.settings.card_width }}px;
-    --card-height: {{ section.settings.card_height }}px;
-    --card-radius: {{ section.settings.card_radius }}px;
-    --card-gap: {{ section.settings.card_gap }}px;
-    --reflection-opacity: {{ section.settings.reflection_opacity | divided_by: 100.0 }};
+  #HeroMasthead-{{ section.id }} {
+    --hero-bg: {{ section.settings.bg_color | default: '#FF78F0' }};
+    --hero-text: {{ section.settings.text_color | default: '#F5EA5A' }};
+    --hero-title-color: {{ section.settings.title_color | default: '#F5EA5A' }};
   }
 
-  #Hero3D-{{ section.id }} .hero-3d-giant-title {
+  .brand-morph-logo {
     font-family: 'Ragara', 'Italiana', Georgia, serif;
   }
 {%- endstyle -%}
 
+<!-- ==========================================================================
+     TIKKI BELLA — LUXURY MORPHING HEADER (SOPHIE & LUCIE INSPIRED)
+     ========================================================================== -->
+<header id="LuxuryHeader" class="luxury-header">
+  <div class="luxury-header__inner">
+    <!-- Left Navigation & Menu Toggle -->
+    <div class="luxury-header__left">
+      <button class="header-action-btn menu-toggle" aria-label="Open menu" type="button">
+        <span class="hamburger-icon">
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+        <span class="btn-label">MENU</span>
+      </button>
+      <nav class="desktop-nav">
+        <a href="#atelier" class="nav-link">ATELIER</a>
+        <a href="#runway" class="nav-link">RUNWAY</a>
+        <a href="#collections" class="nav-link">COLLECTIONS</a>
+      </nav>
+    </div>
+
+    <!-- Center Morphing Brand Zone -->
+    <div class="luxury-header__center brand-morph-zone">
+      <!-- Cursive Editorial Tagline (Visible at top, fades out on scroll) -->
+      <div class="brand-tagline">
+        {%- if section.settings.topbar_center != blank -%}
+          {{ section.settings.topbar_center }}
+        {%- else -%}
+          Atelier Couture &amp; Ready-to-Wear
+        {%- endif -%}
+      </div>
+
+      <!-- Morphing Brand Wordmark: Drops down into hero on load, merges back to navbar on scroll -->
+      <a href="{{ routes.root_url }}" class="brand-morph-logo is-visible jump-in" id="BrandMorphLogo">
+        <span class="brand-wordmark">{{ section.settings.heading | default: 'TIKKI Bella' }}</span>
+      </a>
+    </div>
+
+    <!-- Right Action Icons (Proper High-Fashion Boutique Icons) -->
+    <div class="luxury-header__right">
+      <!-- Search -->
+      <a href="{{ routes.search_url }}" class="header-action-btn" aria-label="Search" title="Search">
+        <svg class="header-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="7"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </a>
+      <!-- Wishlist -->
+      <button class="header-action-btn" aria-label="Wishlist" title="Wishlist" type="button">
+        <svg class="header-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+        </svg>
+      </button>
+      <!-- Account -->
+      <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" class="header-action-btn" aria-label="Account" title="Account">
+        <svg class="header-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+      </a>
+      <!-- Shopping Bag / Cart with live badge -->
+      <a href="{{ routes.cart_url }}" class="header-action-btn cart-btn" aria-label="Shopping Bag" title="Shopping Bag">
+        <svg class="header-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <path d="M16 10a4 4 0 0 1-8 0"></path>
+        </svg>
+        <span class="cart-count-badge">{{ cart.item_count | default: 0 }}</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- ==========================================================================
+     EDITORIAL BRAND MASTHEAD (RUNWAY BACKDROP STAGE)
+     ========================================================================== -->
 <section
-  id="Hero3D-{{ section.id }}"
-  class="hero-3d-section{% unless section.settings.show_cylinder %} hero-3d-section--minimal{% endunless %}"
-  data-speed="{{ section.settings.auto_rotate_speed }}"
-  data-tilt="{{ section.settings.tilt_angle }}"
-  data-gap="{{ section.settings.card_gap }}"
-  data-lighting="{% if section.settings.enable_lighting %}true{% else %}false{% endif %}"
-  data-reflection="{% if section.settings.enable_reflection %}true{% else %}false{% endif %}"
+  id="HeroMasthead-{{ section.id }}"
+  class="hero-editorial-masthead"
 >
-  <!-- Top Meta Navigation Bar -->
-  <div class="hero-3d-topbar">
-    <div class="topbar-brand">{{ section.settings.topbar_left }}</div>
-    {%- if section.settings.topbar_center != blank -%}
-      <div class="topbar-tag">{{ section.settings.topbar_center }}</div>
-    {%- endif -%}
-    {%- if section.settings.topbar_right != blank -%}
-      <div class="topbar-status">
-        <span class="status-dot"></span>
-        <span>{{ section.settings.topbar_right }}</span>
-      </div>
-    {%- endif -%}
-  </div>
-
-  <!-- 3D Stage & Central Rotating Ribbon -->
-  <div class="hero-3d-stage">
-    <!-- Giant Editorial Background Headline -->
-    <h1 class="hero-3d-giant-title">
-      {{ section.settings.heading }}
-      {%- if section.settings.heading_accent != blank -%}
-        <span class="title-accent">{{ section.settings.heading_accent }}</span>
-      {%- endif -%}
-    </h1>
-
-    {%- if section.settings.show_cylinder -%}
-      <!-- 3D Viewport -->
-      <div class="hero-3d-viewport">
-        <div class="hero-3d-tilter">
-          <div class="hero-3d-cylinder">
-            {%- if section.blocks.size > 0 -%}
-              {%- for block in section.blocks -%}
-                {%- assign default_img_index = forloop.index0 | modulo: 5 | plus: 1 -%}
-                {%- capture fallback_name -%}cylinder-card-{{ default_img_index }}.jpg{%- endcapture -%}
-                {%- assign card_img_src = fallback_name | asset_url -%}
-                {%- if block.settings.image != blank -%}
-                  {%- assign card_img_src = block.settings.image | image_url: width: 800 -%}
-                {%- endif -%}
-                <div
-                  class="hero-3d-card"
-                  data-src="{{ card_img_src }}"
-                  data-link="{{ block.settings.link | default: '#' }}"
-                  {{ block.shopify_attributes }}
-                >
-                  <a
-                    href="{{ block.settings.link | default: '#' }}"
-                    class="hero-3d-card-inner"
-                    aria-label="Card {{ forloop.index }}"
-                  >
-                    <img
-                      src="{{ card_img_src }}"
-                      alt="{{ block.settings.image.alt | default: 'Card' | escape }}"
-                      class="hero-3d-card-media"
-                      loading="lazy"
-                      width="360"
-                      height="230"
-                    >
-                  </a>
-
-                  {%- if section.settings.enable_reflection -%}
-                    <div class="hero-3d-reflection" aria-hidden="true">
-                      {%- if block.settings.image != blank -%}
-                        <img
-                          src="{{ block.settings.image | image_url: width: 600 }}"
-                          alt=""
-                          loading="lazy"
-                          width="300"
-                          height="400"
-                        >
-                      {%- else -%}
-                        <img
-                          src="{{ asset_name | asset_url }}"
-                          alt=""
-                          loading="lazy"
-                          width="300"
-                          height="400"
-                        >
-                      {%- endif -%}
-                    </div>
-                  {%- endif -%}
-                </div>
-              {%- endfor -%}
-            {%- else -%}
-              <!-- Fallback 5 Clean Cards with user pictures -->
-              {%- for i in (1..5) -%}
-                {%- capture fallback_name -%}cylinder-card-{{ i }}.jpg{%- endcapture -%}
-                <div class="hero-3d-card">
-                  <a href="/collections/all" class="hero-3d-card-inner" aria-label="Card {{ i }}">
-                    <img
-                      src="{{ fallback_name | asset_url }}"
-                      alt="Card {{ i }}"
-                      class="hero-3d-card-media"
-                      loading="lazy"
-                      width="300"
-                      height="400"
-                    >
-                  </a>
-
-                  {%- if section.settings.enable_reflection -%}
-                    <div class="hero-3d-reflection" aria-hidden="true">
-                      <img src="{{ fallback_name | asset_url }}" alt="" loading="lazy" width="300" height="400">
-                    </div>
-                  {%- endif -%}
-                </div>
-              {%- endfor -%}
-            {%- endif -%}
-          </div>
-        </div>
-      </div>
-    {%- endif -%}
-  </div>
-
-  {%- if section.settings.show_cylinder -%}
-    <!-- Bottom Interaction & Navigation Bar -->
-    <div class="hero-3d-bottombar">
-      <div class="hero-3d-interaction-hint">
-        <span class="hint-icon">✦</span>
-        <span>Drag or swipe to rotate</span>
-      </div>
-
-      {%- if section.settings.cta_label != blank -%}
-        <a href="{{ section.settings.cta_link | default: '/collections/all' }}" class="hero-3d-cta">
-          <span>{{ section.settings.cta_label }}</span>
-          <span>→</span>
-        </a>
+  <!-- Editorial Stage Sub-Meta Footer -->
+  <div class="hero-editorial-footer">
+    <div class="footer-tag">
+      {%- if section.settings.topbar_left != blank -%}
+        {{ section.settings.topbar_left }}
+      {%- else -%}
+        SPRING / SUMMER ATELIER 2026
       {%- endif -%}
     </div>
-  {%- endif -%}
+    <div class="footer-status">
+      <span class="status-dot"></span>
+      <span>{{ section.settings.topbar_right | default: 'RUNWAY LIVE' }}</span>
+    </div>
+  </div>
 </section>
+
 
 {% schema %}
 {
