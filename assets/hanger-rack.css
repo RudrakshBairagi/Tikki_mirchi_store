@@ -87,10 +87,10 @@
 /* Fixed Overhead Rail Rod spanning horizontally */
 .hanger-rail-bar {
   position: absolute;
-  top: 26px; /* Passes cleanly through the wire hook loops */
+  top: 22px; /* Aligned through the upper hook curve */
   left: 0;
   right: 0;
-  height: 2.5px;
+  height: 6px;
   z-index: 3;
   pointer-events: none;
 }
@@ -100,28 +100,54 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 2.5px;
+  height: 6px;
+  background: #3e444c;
   background: linear-gradient(
     180deg,
-    rgba(255, 255, 255, 0.9) 0%,
-    var(--rack-rail-color, #7d858f) 40%,
-    rgba(40, 44, 50, 0.75) 100%
+    #8c949e 0%,
+    #4a5058 40%,
+    #25292e 80%,
+    #121417 100%
   );
-  border-radius: 1px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  border-radius: 3px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.28), 0 1px 3px rgba(0, 0, 0, 0.18);
 }
 
 .rail-highlight {
   position: absolute;
-  top: 0;
-  left: 5%;
-  right: 5%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.95), transparent);
+  top: 1px;
+  left: 1%;
+  right: 1%;
+  height: 1.5px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.85) 15%,
+    rgba(255, 255, 255, 1) 50%,
+    rgba(255, 255, 255, 0.85) 85%,
+    transparent 100%
+  );
+  border-radius: 1px;
+  opacity: 0.95;
 }
 
 .rail-bracket {
-  display: none; /* Keep rail razor-thin and clean as in reference reel */
+  position: absolute;
+  top: -5px;
+  width: 12px;
+  height: 16px;
+  background: linear-gradient(180deg, #6c747e 0%, #202428 100%);
+  border-radius: 2px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+  display: block;
+}
+
+.rail-bracket.bracket-left {
+  left: 0;
+}
+
+.rail-bracket.bracket-right {
+  right: 0;
 }
 
 /* ==========================================================================
