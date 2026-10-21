@@ -37,7 +37,7 @@
 
     const initialY = window.pageYOffset || document.documentElement.scrollTop;
 
-    if (initialY > THRESHOLD) {
+    if (initialY > THRESHOLD || window.location.search.includes('docked=true')) {
       // User reloaded or navigated when already scrolled down
       isDocked = true;
       header.classList.add('scrolled-down');

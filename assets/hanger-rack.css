@@ -232,8 +232,8 @@
   width: 195px;
   height: 102px;
   color: var(--rack-hanger-color, #686f78);
-  margin-bottom: -24px; /* Sits seamlessly behind/over the halter straps */
-  z-index: 4;
+  margin-bottom: -46px; /* Hanger shoulders slide seamlessly inside and behind the garment */
+  z-index: 2;
   pointer-events: none;
   filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.12));
 }
@@ -255,7 +255,7 @@
 .hanger-garment-wrap {
   position: relative;
   width: 100%;
-  z-index: 2;
+  z-index: 5; /* Cloth layer renders ON TOP of the hanger */
   display: flex;
   justify-content: center;
   transform: translateZ(0);

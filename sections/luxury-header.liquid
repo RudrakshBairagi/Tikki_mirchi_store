@@ -45,21 +45,34 @@
        ========================================================================== -->
   <header id="LuxuryHeader" class="luxury-header">
     <div class="luxury-header__inner">
-      <!-- Left: Morph Dock Anchor (Where logo scales and docks into on scroll) -->
-      <div class="luxury-header__left brand-morph-zone">
+      <!-- Left: Menu Toggle + Desktop Navigation Links -->
+      <div class="luxury-header__left">
+        <!-- Menu Toggle (Sophie & Lucie style) -->
+        <button class="header-action-btn menu-toggle" aria-label="Open menu" type="button">
+          <span class="hamburger-icon" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
+          <span class="btn-label">MENU</span>
+        </button>
+
+        <!-- Desktop Navigation -->
+        <nav class="desktop-nav" aria-label="Primary Navigation">
+          <a href="{{ section.settings.link_1_url | default: '#atelier' }}" class="nav-link">{{ section.settings.link_1_label | default: 'ATELIER' }}</a>
+          <a href="{{ section.settings.link_2_url | default: '#runway' }}" class="nav-link">{{ section.settings.link_2_label | default: 'RUNWAY' }}</a>
+          <a href="{{ section.settings.link_3_url | default: '#collections' }}" class="nav-link">{{ section.settings.link_3_label | default: 'COLLECTIONS' }}</a>
+        </nav>
+      </div>
+
+      <!-- Center: Morph Dock Anchor (Brand Logo Centered in Middle) -->
+      <div class="luxury-header__center brand-morph-zone">
         <a href="{{ routes.root_url }}" class="brand-morph-logo is-visible jump-in" id="BrandMorphLogo" aria-label="{{ section.settings.heading | default: 'TIKKI Bella' }}">
           <span class="brand-wordmark">{{ section.settings.heading | default: 'TIKKI Bella' }}</span>
         </a>
       </div>
 
-      <!-- Center: Desktop Navigation -->
-      <nav class="desktop-nav" aria-label="Primary Navigation">
-        <a href="{{ section.settings.link_1_url | default: '#atelier' }}" class="nav-link">{{ section.settings.link_1_label | default: 'ATELIER' }}</a>
-        <a href="{{ section.settings.link_2_url | default: '#runway' }}" class="nav-link">{{ section.settings.link_2_label | default: 'RUNWAY' }}</a>
-        <a href="{{ section.settings.link_3_url | default: '#collections' }}" class="nav-link">{{ section.settings.link_3_label | default: 'COLLECTIONS' }}</a>
-      </nav>
-
-      <!-- Right: High-Fashion Boutique Icons + Menu -->
+      <!-- Right: High-Fashion Boutique Icons -->
       <div class="luxury-header__right">
         <!-- Search -->
         <a href="{{ routes.search_url }}" class="header-action-btn" aria-label="Search" title="Search">
@@ -93,16 +106,6 @@
           </svg>
           <span class="cart-count-badge">{{ cart.item_count | default: 0 }}</span>
         </a>
-
-        <!-- Menu Toggle (Sophie & Lucie style) -->
-        <button class="header-action-btn menu-toggle" aria-label="Open menu" type="button">
-          <span class="hamburger-icon" aria-hidden="true">
-            <span></span>
-            <span></span>
-            <span></span>
-          </span>
-          <span class="btn-label">MENU</span>
-        </button>
       </div>
     </div>
   </header>
