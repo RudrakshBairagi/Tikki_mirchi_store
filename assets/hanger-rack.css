@@ -73,6 +73,44 @@
   max-width: 460px;
 }
 
+.hanger-rack-controls-row {
+  margin-top: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hanger-sound-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(26, 24, 25, 0.04);
+  border: 1px solid rgba(26, 24, 25, 0.12);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #1a1819;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  user-select: none;
+}
+
+.hanger-sound-btn:hover {
+  background: rgba(26, 24, 25, 0.09);
+  border-color: rgba(26, 24, 25, 0.25);
+  transform: translateY(-1px);
+}
+
+.hanger-sound-btn.is-muted {
+  opacity: 0.55;
+  background: transparent;
+  border-color: rgba(26, 24, 25, 0.1);
+}
+
 /* ==========================================================================
    Boutique Rail & Clothes Rack Stage
    ========================================================================== */

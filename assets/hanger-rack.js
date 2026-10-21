@@ -110,122 +110,266 @@ class HangerRack {
      - Sound 3: Metal sliding friction when scrolling or dragging along the metal rail bar
      -------------------------------------------------------------------------- */
   setupAudio() {
-    this.sound1Url = this.section.dataset.sound1 || 'assets/sound_1.mp3';
-    this.sound2Url = this.section.dataset.sound2 || 'assets/sound_2.mp3';
-    this.sound3Url = this.section.dataset.sound3 || 'assets/sound_3.mp3';
+    const getSoundUrl = (key, fallback) => {
+      const val = this.section.getAttribute(`data-sound-${key}`) ||
+                  this.section.getAttribute(`data-sound${key}`) ||
+                  this.section.dataset[`sound-${key}`] ||
+                  this.section.dataset[`sound${key}`] ||
+                  this.section.dataset[`sound_${key}`];
+      if (val && val.trim() !== '') return val.trim();
+      return fallback;
+    };
+
+    this.sound1Url = getSoundUrl(1, 'assets/sound_1.mp3');
+    this.sound2Url = getSoundUrl(2, 'assets/sound_2.mp3');
+    this.sound3Url = getSoundUrl(3, 'assets/sound_3.mp3');
 
     this.isMuted = false;
     this.audioUnlocked = false;
     this.lastDressSoundTime = 0;
     this.dressSoundToggle = false;
     this.railSoundStopTimeout = null;
+    this.isRailSoundActive = false;
+
+    // 1. Web Audio API Engine (Zero-latency polyphony)
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    this.audioCtx = AudioContextClass ? new AudioContextClass() : null;
+    this.audioBuffers = { 1: null, 2: null, 3: null };
+
+    const loadBuffer = (key, url) => {
+      if (!this.audioCtx) return;
+      fetch(url)
+        .then(res => {
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          return res.arrayBuffer();
+        })
+        .then(arrayBuffer => this.audioCtx.decodeAudioData(arrayBuffer))
+        .then(decoded => {
+          this.audioBuffers[key] = decoded;
+        })
+        .catch(() => {
+          // Fallback to HTML5 audio pool handled automatically
+        });
+    };
+
+    loadBuffer(1, this.sound1Url);
+    loadBuffer(2, this.sound2Url);
+    loadBuffer(3, this.sound3Url);
+
+    // 2. HTML5 Audio Pool (Robust Fallback)
+    const createPool = (url, size = 4, volume = 0.65) => {
+      const pool = [];
+      for (let i = 0; i < size; i++) {
+        try {
+          const a = new Audio(url);
+          a.preload = 'auto';
+          a.volume = volume;
+          pool.push(a);
+        } catch (_) {}
+      }
+      return pool;
+    };
+
+    this.poolDress1 = createPool(this.sound1Url, 4, 0.65);
+    this.poolDress2 = createPool(this.sound2Url, 4, 0.65);
+    this.poolIndex1 = 0;
+    this.poolIndex2 = 0;
 
     try {
-      this.soundDress1 = new Audio(this.sound1Url);
-      this.soundDress1.preload = 'auto';
-      this.soundDress1.volume = 0.65;
-
-      this.soundDress2 = new Audio(this.sound2Url);
-      this.soundDress2.preload = 'auto';
-      this.soundDress2.volume = 0.65;
-
       this.soundRail = new Audio(this.sound3Url);
       this.soundRail.preload = 'auto';
       this.soundRail.volume = 0.55;
       this.soundRail.loop = true;
-    } catch (err) {
-      console.warn('Audio initialization warning:', err);
-    }
+    } catch (_) {}
 
-    // Unlock browser audio context on first user gesture
-    const unlockAudio = () => {
-      if (this.audioUnlocked) return;
-      this.audioUnlocked = true;
-      [this.soundDress1, this.soundDress2, this.soundRail].forEach(audio => {
-        if (!audio) return;
+    // Unlock browser audio context on first user gesture anywhere
+    const unlock = () => {
+      if (this.audioCtx && this.audioCtx.state === 'suspended') {
+        this.audioCtx.resume().catch(() => {});
+      }
+      const allAudio = [...this.poolDress1, ...this.poolDress2, this.soundRail];
+      allAudio.forEach(a => {
+        if (!a) return;
         try {
-          audio.load();
+          a.load();
         } catch (_) {}
       });
-      window.removeEventListener('pointerdown', unlockAudio);
-      window.removeEventListener('keydown', unlockAudio);
+      this.audioUnlocked = true;
     };
 
-    window.addEventListener('pointerdown', unlockAudio, { passive: true, once: true });
-    window.addEventListener('keydown', unlockAudio, { passive: true, once: true });
+    ['pointerdown', 'touchstart', 'click', 'keydown', 'pointermove'].forEach(evt => {
+      window.addEventListener(evt, unlock, { passive: true, once: evt === 'pointermove' ? false : true });
+    });
+
+    // Bind visible sound toggle button in header if present
+    this.soundToggleBtn = this.section.querySelector('.hanger-sound-btn');
+    if (this.soundToggleBtn) {
+      this.soundToggleBtn.addEventListener('click', () => {
+        this.toggleSound();
+      });
+    }
+  }
+
+  toggleSound() {
+    this.isMuted = !this.isMuted;
+    if (this.soundToggleBtn) {
+      const icon = this.soundToggleBtn.querySelector('.sound-icon');
+      const text = this.soundToggleBtn.querySelector('.sound-text');
+      if (icon) icon.textContent = this.isMuted ? '🔇' : '🔊';
+      if (text) text.textContent = this.isMuted ? 'SOUND OFF' : 'SOUND ON';
+      this.soundToggleBtn.classList.toggle('is-muted', this.isMuted);
+    }
+    const studioSoundBtn = document.querySelector('#tuning-sound-btn');
+    if (studioSoundBtn) {
+      studioSoundBtn.textContent = this.isMuted ? '🔇 Sound: OFF' : '🔊 Sound: ON';
+    }
+    if (this.isMuted) {
+      this.stopRailSlideSound();
+    } else {
+      this.playDressSound();
+    }
   }
 
   playDressSound() {
     if (this.isMuted) return;
     const now = performance.now();
-    // Debounce rapid jitter under 70ms
-    if (now - this.lastDressSoundTime < 70) return;
+    if (now - this.lastDressSoundTime < 60) return;
     this.lastDressSoundTime = now;
 
     // Alternate between Sound 1 and Sound 2
     this.dressSoundToggle = !this.dressSoundToggle;
-    const baseAudio = this.dressSoundToggle ? this.soundDress1 : this.soundDress2;
-    if (!baseAudio) return;
+    const soundKey = this.dressSoundToggle ? 1 : 2;
 
-    try {
-      // Use cloneNode for polyphonic playback (multiple dresses touched in sequence)
-      const audio = baseAudio.cloneNode(true);
-      audio.volume = 0.65;
-      audio.playbackRate = 0.97 + Math.random() * 0.06;
-      const playPromise = audio.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(() => {});
-      }
-    } catch (_) {
+    // 1. Web Audio API (Zero latency, full polyphony)
+    if (this.audioCtx && this.audioBuffers[soundKey]) {
       try {
-        baseAudio.currentTime = 0;
-        baseAudio.play().catch(() => {});
+        if (this.audioCtx.state === 'suspended') {
+          this.audioCtx.resume().catch(() => {});
+        }
+        const source = this.audioCtx.createBufferSource();
+        source.buffer = this.audioBuffers[soundKey];
+        source.playbackRate.value = 0.97 + Math.random() * 0.06;
+
+        const gainNode = this.audioCtx.createGain();
+        gainNode.gain.value = 0.65;
+
+        source.connect(gainNode);
+        gainNode.connect(this.audioCtx.destination);
+        source.start(0);
+        return;
       } catch (_) {}
+    }
+
+    // 2. HTML5 Audio Pool Fallback
+    const pool = soundKey === 1 ? this.poolDress1 : this.poolDress2;
+    if (pool && pool.length > 0) {
+      const idx = soundKey === 1 ? (this.poolIndex1++ % pool.length) : (this.poolIndex2++ % pool.length);
+      const audio = pool[idx];
+      if (audio) {
+        try {
+          audio.currentTime = 0;
+          audio.volume = 0.65;
+          audio.playbackRate = 0.97 + Math.random() * 0.06;
+          const p = audio.play();
+          if (p && p.catch) p.catch(() => {});
+        } catch (_) {}
+      }
     }
   }
 
   startRailSlideSound() {
-    if (this.isMuted || !this.soundRail) return;
+    if (this.isMuted) return;
 
     clearTimeout(this.railSoundStopTimeout);
 
-    if (this.soundRail.paused) {
+    if (this.isRailSoundActive) {
+      this.railSoundStopTimeout = setTimeout(() => {
+        this.stopRailSlideSound();
+      }, 160);
+      return;
+    }
+
+    this.isRailSoundActive = true;
+
+    // 1. Web Audio Looping BufferSource
+    if (this.audioCtx && this.audioBuffers[3]) {
+      try {
+        if (this.audioCtx.state === 'suspended') {
+          this.audioCtx.resume().catch(() => {});
+        }
+        this.railWebSource = this.audioCtx.createBufferSource();
+        this.railWebSource.buffer = this.audioBuffers[3];
+        this.railWebSource.loop = true;
+
+        this.railWebGain = this.audioCtx.createGain();
+        this.railWebGain.gain.setValueAtTime(0.01, this.audioCtx.currentTime);
+        this.railWebGain.gain.linearRampToValueAtTime(0.55, this.audioCtx.currentTime + 0.04);
+
+        this.railWebSource.connect(this.railWebGain);
+        this.railWebGain.connect(this.audioCtx.destination);
+        this.railWebSource.start(0);
+
+        this.railSoundStopTimeout = setTimeout(() => {
+          this.stopRailSlideSound();
+        }, 160);
+        return;
+      } catch (_) {}
+    }
+
+    // 2. HTML5 Audio Fallback
+    if (this.soundRail) {
       try {
         this.soundRail.currentTime = 0;
         this.soundRail.volume = 0.55;
         this.soundRail.loop = true;
-        const playPromise = this.soundRail.play();
-        if (playPromise !== undefined) {
-          playPromise.catch(() => {});
-        }
+        const p = this.soundRail.play();
+        if (p && p.catch) p.catch(() => {});
       } catch (_) {}
     }
 
-    // Auto-pause sound 3 when scrolling stops (160ms inactivity window)
     this.railSoundStopTimeout = setTimeout(() => {
       this.stopRailSlideSound();
     }, 160);
   }
 
   stopRailSlideSound() {
-    if (!this.soundRail || this.soundRail.paused) return;
-    try {
-      let vol = this.soundRail.volume;
-      const step = 0.12;
-      const fadeInterval = setInterval(() => {
-        vol = Math.max(0, vol - step);
-        if (this.soundRail) this.soundRail.volume = vol;
-        if (vol <= 0.05) {
-          clearInterval(fadeInterval);
-          if (this.soundRail) {
-            this.soundRail.pause();
-            this.soundRail.currentTime = 0;
-            this.soundRail.volume = 0.55;
+    if (!this.isRailSoundActive) return;
+    this.isRailSoundActive = false;
+
+    // 1. Web Audio fade out
+    if (this.railWebSource && this.railWebGain && this.audioCtx) {
+      try {
+        const ct = this.audioCtx.currentTime;
+        this.railWebGain.gain.setValueAtTime(this.railWebGain.gain.value, ct);
+        this.railWebGain.gain.linearRampToValueAtTime(0.001, ct + 0.06);
+        const src = this.railWebSource;
+        setTimeout(() => {
+          try { src.stop(); src.disconnect(); } catch (_) {}
+        }, 70);
+        this.railWebSource = null;
+        this.railWebGain = null;
+      } catch (_) {}
+    }
+
+    // 2. HTML5 Audio fade out
+    if (this.soundRail && !this.soundRail.paused) {
+      try {
+        let vol = this.soundRail.volume;
+        const fadeInterval = setInterval(() => {
+          vol = Math.max(0, vol - 0.15);
+          if (this.soundRail) this.soundRail.volume = vol;
+          if (vol <= 0.05) {
+            clearInterval(fadeInterval);
+            if (this.soundRail) {
+              this.soundRail.pause();
+              this.soundRail.currentTime = 0;
+              this.soundRail.volume = 0.55;
+            }
           }
-        }
-      }, 18);
-    } catch (_) {
-      if (this.soundRail) this.soundRail.pause();
+        }, 16);
+      } catch (_) {
+        if (this.soundRail) this.soundRail.pause();
+      }
     }
   }
 

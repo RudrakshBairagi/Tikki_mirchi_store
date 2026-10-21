@@ -45,6 +45,9 @@
   data-sound-1="{{ 'sound_1.mp3' | asset_url }}"
   data-sound-2="{{ 'sound_2.mp3' | asset_url }}"
   data-sound-3="{{ 'sound_3.mp3' | asset_url }}"
+  data-sound1="{{ 'sound_1.mp3' | asset_url }}"
+  data-sound2="{{ 'sound_2.mp3' | asset_url }}"
+  data-sound3="{{ 'sound_3.mp3' | asset_url }}"
   aria-label="{{ section.settings.heading | default: 'House of Royals Runway Rack' }}"
 >
   <div class="hanger-rack-container">
@@ -63,6 +66,13 @@
       {%- if section.settings.subheading != blank -%}
         <p class="hanger-rack-subheading">{{ section.settings.subheading }}</p>
       {%- endif -%}
+
+      <div class="hanger-rack-controls-row">
+        <button type="button" class="hanger-sound-btn" aria-label="Toggle Atelier Sound Feedback">
+          <span class="sound-icon">🔊</span>
+          <span class="sound-text">SOUND ON</span>
+        </button>
+      </div>
     </div>
 
     <!-- The Boutique Rail & Clothes Rack Stage -->
