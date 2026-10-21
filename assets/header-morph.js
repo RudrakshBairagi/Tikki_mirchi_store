@@ -58,6 +58,7 @@
 
       if (scrollY > THRESHOLD && !isDocked) {
         isDocked = true;
+        logo.classList.remove('animate-entrance');
         header.classList.add('scrolled-down');
         logo.classList.remove('jump-in');
         logo.classList.add('merge-up');

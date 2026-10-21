@@ -178,6 +178,7 @@
   letter-spacing: 0.04em;
   color: var(--docked-text-color, var(--brand-docked-color)) !important;
   opacity: 1 !important;
+  animation: none !important;
   text-shadow: none;
 }
 
