@@ -31,6 +31,9 @@
   --header-duration: 0.8s;
   --brand-hero-color: #161517;
   --brand-docked-color: #161517;
+  --docked-text-color: #161517;
+  --hero-text: #161517;
+  --hero-title-color: #161517;
   --header-bg-docked: rgba(255, 255, 255, 0.96);
   --header-border-docked: rgba(0, 0, 0, 0.08);
 }
@@ -174,6 +177,7 @@
   font-size: clamp(1.4rem, 2.2vw, 1.85rem);
   letter-spacing: 0.04em;
   color: var(--docked-text-color, var(--brand-docked-color)) !important;
+  opacity: 1 !important;
   text-shadow: none;
 }
 
