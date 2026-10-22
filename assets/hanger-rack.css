@@ -413,18 +413,20 @@
 .hanger-floating-card {
   position: absolute;
   z-index: 100;
-  width: 250px;
-  background: rgba(255, 255, 255, 0.98);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  width: max-content;
+  min-width: 170px;
+  max-width: 240px;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
   border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 6px;
-  padding: 16px 18px 14px;
-  box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.04);
+  border-radius: 8px;
+  padding: 14px 18px 13px;
+  box-shadow: 0 18px 40px -10px rgba(26, 24, 25, 0.16), 0 3px 12px rgba(0, 0, 0, 0.04);
   opacity: 0;
   transform: translateY(8px);
   pointer-events: none;
-  transition: opacity 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: opacity 0.32s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.32s cubic-bezier(0.2, 0.8, 0.2, 1);
   box-sizing: border-box;
   text-align: left;
 }
@@ -435,67 +437,32 @@
   pointer-events: auto !important;
 }
 
-.floating-card-tag {
-  display: inline-block;
-  font-family: var(--rack-tag-font, 'Plus Jakarta Sans', sans-serif);
-  font-size: 8.5px;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  color: var(--rack-accent-color, #b38728);
-  text-transform: uppercase;
-  margin-bottom: 6px;
-}
-
 .floating-card-title {
-  margin: 0 0 8px 0;
+  margin: 0 0 10px 0;
   font-family: var(--rack-title-font, 'Ragara', 'Italiana', Georgia, serif);
   font-size: 17px;
   font-weight: 400;
   line-height: 1.25;
   color: #1a1819;
+  letter-spacing: 0.015em;
   white-space: normal;
-}
-
-.floating-card-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.floating-card-price {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 13.5px;
-  font-weight: 600;
-  color: #1a1819;
-}
-
-.floating-card-badge {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  background: #f4efe6;
-  color: #8c6820;
-  padding: 2px 7px;
-  border-radius: 3px;
+  word-break: break-word;
 }
 
 .floating-card-link {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 11px;
+  gap: 7px;
+  font-family: var(--rack-eyebrow-font, 'Plus Jakarta Sans', sans-serif);
+  font-size: 10.5px;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: #1a1819;
   text-decoration: none;
-  border-bottom: 1px solid rgba(26, 24, 25, 0.3);
+  border-bottom: 1px solid rgba(26, 24, 25, 0.28);
   padding-bottom: 2px;
-  transition: color 0.2s, border-color 0.2s;
+  transition: color 0.22s ease, border-color 0.22s ease;
 }
 
 .floating-card-link:hover {
@@ -505,6 +472,7 @@
 
 .card-arrow {
   display: inline-block;
+  font-size: 12px;
   transition: transform 0.25s ease;
 }
 
@@ -964,12 +932,18 @@
 
 @media (max-width: 640px) {
   .hanger-floating-card {
-    width: 210px;
-    padding: 12px 14px 10px;
+    min-width: 140px;
+    max-width: 200px;
+    padding: 12px 15px 11px;
+    border-radius: 7px;
   }
   .floating-card-title {
     font-size: 15px;
-    margin: 0 0 6px 0;
+    margin: 0 0 8px 0;
+  }
+  .floating-card-link {
+    font-size: 9.5px;
+    gap: 5px;
   }
   .rack-waitlist-btn {
     padding: 12px 26px;

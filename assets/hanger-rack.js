@@ -425,12 +425,7 @@ class HangerRack {
       card.className = 'hanger-floating-card';
       card.setAttribute('aria-hidden', 'true');
       card.innerHTML = `
-        <span class="floating-card-tag">LOOK 01 • ATELIER</span>
         <h3 class="floating-card-title">Couture Piece</h3>
-        <div class="floating-card-row">
-          <span class="floating-card-price">₹85,000</span>
-          <span class="floating-card-badge">Atelier Exclusive</span>
-        </div>
         <a href="/pages/waitlist" class="floating-card-link">
           <span>Inspect Piece</span>
           <span class="card-arrow">→</span>
@@ -440,10 +435,7 @@ class HangerRack {
     }
 
     this.card = card;
-    this.cardTag = card.querySelector('.floating-card-tag');
     this.cardTitle = card.querySelector('.floating-card-title');
-    this.cardPrice = card.querySelector('.floating-card-price');
-    this.cardBadge = card.querySelector('.floating-card-badge');
     this.cardLink = card.querySelector('.floating-card-link');
 
     this.card.addEventListener('pointerenter', () => {
@@ -458,16 +450,14 @@ class HangerRack {
   showFloatingCard(g) {
     if (!this.card || !g) return;
 
-    this.cardTag.textContent = g.tagText ? `${g.tagText} • BESPOKE` : 'EXCLUSIVE DROP';
     this.cardTitle.textContent = g.title || 'Couture Piece';
-    this.cardPrice.textContent = g.price || '';
     const defaultWaitlist = (window.location.pathname.endsWith('.html') || window.location.protocol === 'file:') ? 'waitlist.html' : '/pages/waitlist';
     this.cardLink.href = (g.link && g.link !== '#' && g.link !== '') ? g.link : defaultWaitlist;
 
     // Smart positioning relative to stage and garment
     const gRect = g.el.getBoundingClientRect();
     const stageRect = this.stage.getBoundingClientRect();
-    const cardWidth = (this.card && this.card.offsetWidth) || (window.innerWidth <= 640 ? 210 : 250);
+    const cardWidth = (this.card && this.card.offsetWidth) || (window.innerWidth <= 640 ? 180 : 220);
 
     // Prefer placing to the right of the dress; if close to edge, place to the left
     let left = gRect.right - stageRect.left + 14;
@@ -476,7 +466,7 @@ class HangerRack {
     }
     left = Math.max(16, Math.min(stageRect.width - cardWidth - 16, left));
 
-    const top = Math.max(40, Math.min(stageRect.height - 180, gRect.top - stageRect.top + 70));
+    const top = Math.max(40, Math.min(stageRect.height - 150, gRect.top - stageRect.top + 70));
 
     this.card.style.left = `${left.toFixed(1)}px`;
     this.card.style.top = `${top.toFixed(1)}px`;
