@@ -18,6 +18,9 @@ class HangerRack {
 
     if (!this.track || this.itemEls.length === 0) return;
 
+    this.section._hangerRack = this;
+    window._hangerRack = this;
+
     // Config from dataset & Live Studio
     const rawSway = parseFloat(this.section.dataset.swayIntensity);
     const rawSpring = parseFloat(this.section.dataset.springSpeed);
@@ -564,10 +567,15 @@ class HangerRack {
     this.garments.forEach((g, index) => {
       const itemEl = g.el;
 
-      itemEl.addEventListener('pointerenter', (e) => {
-        if (this.isDragging || e.pointerType === 'touch') return;
+      // Mouse and pointer hover detection
+      const handleEnter = (e) => {
+        if (this.isDragging || (e && e.pointerType === 'touch')) return;
         this.setHovered(index, e);
-      });
+      };
+
+      itemEl.addEventListener('pointerenter', handleEnter);
+      itemEl.addEventListener('mouseenter', handleEnter);
+      itemEl.addEventListener('pointermove', handleEnter);
 
       // Touch / mouse contact with dress
       itemEl.addEventListener('pointerdown', () => {
@@ -575,13 +583,18 @@ class HangerRack {
       }, { passive: true });
 
       itemEl.addEventListener('pointerleave', (e) => {
-        if (e.pointerType === 'touch') return;
+        if (e && e.pointerType === 'touch') return;
+        this.queueClearHover();
+      });
+      itemEl.addEventListener('mouseleave', () => {
         this.queueClearHover();
       });
 
       // Hitbox click handling & touch tap support
       const hitbox = itemEl.querySelector('.hanger-action-hitbox');
       if (hitbox) {
+        hitbox.addEventListener('pointerenter', handleEnter);
+        hitbox.addEventListener('mouseenter', handleEnter);
         hitbox.addEventListener('click', (e) => {
           if (this.hasMovedSignificantly) {
             e.preventDefault();
