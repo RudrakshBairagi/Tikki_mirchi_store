@@ -93,7 +93,7 @@
   overflow-x: auto;
   overflow-y: visible;
   padding-top: 14px; /* Space for hooks touching the rail */
-  padding-bottom: 40px;
+  padding-bottom: 95px;
   cursor: grab;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE/Edge */
@@ -217,15 +217,17 @@
 
 .hanger-item {
   position: relative;
-  width: var(--rack-item-width, 280px);
+  width: var(--rack-item-width, 170px);
   flex: 0 0 auto;
-  /* CRITICAL: Anchor all rotation and scale at top center (the hook contact point) */
+  /* Anchor rotation at top center (the hook contact point) */
   transform-origin: 50% 0px;
   -webkit-transform-origin: 50% 0px;
   will-change: transform;
   transform: translateX(var(--part-shift, 0px));
   transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), z-index 0.2s;
   z-index: var(--rack-z, 1);
+  perspective: 1000px;
+  -webkit-perspective: 1000px;
 }
 
 .hanger-assembly {
@@ -237,22 +239,32 @@
   transform-origin: 50% 0px;
   -webkit-transform-origin: 50% 0px;
   will-change: transform;
-  transition: filter 0.4s ease;
+  transition: filter 0.45s ease;
 }
 
 /* ==========================================================================
-   Wire Hanger SVG (Scaled for Bigger Garment)
+   Wire Hanger SVG (Perspectival Hanger for Side & Front Views)
    ========================================================================== */
 
 .hanger-wire-wrapper {
   position: relative;
-  width: 195px;
-  height: 102px;
+  width: 145px;
+  height: 90px;
   color: var(--rack-hanger-color, #686f78);
-  margin-bottom: -46px; /* Hanger shoulders slide seamlessly inside and behind the garment */
+  margin-bottom: -40px; /* Hanger shoulders slide inside dress neckline */
   z-index: 2;
   pointer-events: none;
-  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.12));
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.14));
+  transform-origin: 50% 12px;
+  transform: scaleX(0.78) rotateY(-18deg);
+  transition: transform 0.52s cubic-bezier(0.2, 0.8, 0.2, 1), color 0.4s ease, width 0.5s ease;
+}
+
+.hanger-item.is-hovered .hanger-wire-wrapper,
+.hanger-item.is-popped-out .hanger-wire-wrapper {
+  width: 195px;
+  color: #1a1c20;
+  transform: scaleX(1) rotateY(0deg);
 }
 
 .hanger-wire-svg {
@@ -266,63 +278,233 @@
 }
 
 /* ==========================================================================
-   Garment Cutout Silhouette & Shadow (Enlarged)
+   Garment Cutout Silhouette: 3D Side-to-Front Pivot Engine
    ========================================================================== */
 
 .hanger-garment-wrap {
   position: relative;
   width: 100%;
-  z-index: 5; /* Cloth layer renders ON TOP of the hanger */
+  z-index: 5; /* Cloth layer renders ON TOP of the hanger shoulders */
   display: flex;
   justify-content: center;
-  transform: translateZ(0);
+  align-items: flex-start;
+  perspective: 1000px;
+  -webkit-perspective: 1000px;
+}
+
+.hanger-garment-inner {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  transform-origin: 50% 12px;
+  /* Resting 3D boutique angle for side-profile garment */
+  transform: rotateY(-22deg);
+  transition: transform 0.52s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.5s ease;
+}
+
+.hanger-item.is-hovered .hanger-garment-inner,
+.hanger-item.is-popped-out .hanger-garment-inner {
+  /* Forward 3D pivot on hover, revealing front profile */
+  transform: rotateY(0deg) scale(1.04);
+  filter: drop-shadow(0 22px 38px rgba(18, 14, 18, 0.2));
 }
 
 .hanger-garment-img {
-  width: 100%;
-  height: auto;
-  max-height: 720px;
+  height: clamp(380px, 48vh, 520px);
+  width: auto;
+  max-width: none;
   object-fit: contain;
   display: block;
   pointer-events: none;
-  filter: drop-shadow(0 16px 28px rgba(25, 20, 22, 0.14));
-  transition: filter 0.4s ease;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  will-change: opacity, transform;
+}
+
+/* Side profile image (default visible at rest) */
+.garment-side-img {
+  position: relative;
+  opacity: 1;
+  transform: rotateY(0deg);
+  filter: drop-shadow(0 14px 26px rgba(25, 20, 22, 0.16));
+  transition: opacity 0.42s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.4s ease;
+}
+
+/* Front profile image (revealed seamlessly on hover) */
+.garment-front-img {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%) rotateY(35deg);
+  opacity: 0;
+  filter: drop-shadow(0 20px 34px rgba(22, 16, 20, 0.22));
+  transition: opacity 0.42s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.52s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.4s ease;
+}
+
+/* Smooth turnover states */
+.hanger-item.is-hovered .garment-side-img,
+.hanger-item.is-popped-out .garment-side-img {
+  opacity: 0;
+  transform: rotateY(-35deg);
+}
+
+.hanger-item.is-hovered .garment-front-img,
+.hanger-item.is-popped-out .garment-front-img {
+  opacity: 1;
+  transform: translateX(-50%) rotateY(0deg);
 }
 
 /* Dynamic soft atelier wall shadow */
 .hanger-garment-shadow,
 .hanger-garment-shadow:empty {
   position: absolute;
-  bottom: -15px;
-  left: 15%;
-  right: 15%;
-  height: 20px;
+  bottom: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 135px;
+  height: 18px;
   display: block !important;
-  background: radial-gradient(ellipse at center, rgba(30, 25, 28, 0.18) 0%, transparent 70%);
-  filter: blur(8px);
+  background: radial-gradient(ellipse at center, rgba(30, 25, 28, 0.22) 0%, transparent 70%);
+  filter: blur(7px);
   pointer-events: none;
-  transition: opacity 0.4s ease;
+  transition: width 0.5s ease, opacity 0.5s ease, transform 0.5s ease;
+}
+
+.hanger-item.is-hovered .hanger-garment-shadow,
+.hanger-item.is-popped-out .hanger-garment-shadow {
+  width: 220px;
+  opacity: 0.85;
+  transform: translateX(-50%) translateY(4px);
 }
 
 /* ==========================================================================
-   Delicate Swing Price Tag (Reveals gracefully on hover)
+   Floating Boutique Product Card (Reveals beneath the active front profile)
+   ========================================================================== */
+
+.hanger-floating-card {
+  position: absolute;
+  bottom: -48px;
+  left: 50%;
+  transform: translateX(-50%) translateY(16px);
+  z-index: 60;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  border-radius: 12px;
+  padding: 14px 18px 16px 18px;
+  box-shadow: 0 18px 42px rgba(20, 16, 22, 0.16), 0 2px 6px rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  text-align: center;
+  min-width: 210px;
+  max-width: 260px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.hanger-item.is-hovered .hanger-floating-card,
+.hanger-item.is-popped-out .hanger-floating-card {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+.floating-card-badge {
+  display: inline-block;
+  font-family: var(--rack-tag-font, 'Plus Jakarta Sans', sans-serif);
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--rack-accent-color, #b38728);
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+
+.floating-card-title {
+  margin: 0 0 6px 0;
+  font-family: var(--rack-title-font, 'Ragara', 'Italiana', Georgia, serif);
+  font-size: 15.5px;
+  font-weight: 400;
+  line-height: 1.25;
+  color: #1a1819;
+  white-space: normal;
+}
+
+.floating-card-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 11px;
+}
+
+.floating-card-price {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #1a1819;
+}
+
+.floating-card-availability {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 8.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: #f5efe3;
+  color: #8a6a24;
+  padding: 2px 7px;
+  border-radius: 999px;
+}
+
+.floating-card-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 8px 14px;
+  background: #1a1819;
+  color: #f8f8f6;
+  border-radius: 6px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  box-sizing: border-box;
+  transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
+}
+
+.floating-card-cta:hover {
+  background: #b38728;
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(179, 135, 40, 0.35);
+}
+
+.floating-card-cta-sparkle {
+  color: #d4af37;
+  font-size: 10px;
+  transition: transform 0.25s ease;
+}
+
+.floating-card-cta:hover .floating-card-cta-sparkle {
+  transform: rotate(45deg);
+  color: #ffffff;
+}
+
+/* ==========================================================================
+   Delicate Swing Price Tag (Dangling from the hanger wire)
    ========================================================================== */
 
 .hanger-swing-tag {
-  position: absolute;
-  top: 60px;
-  right: -8px;
-  z-index: 6;
-  pointer-events: none;
-  transform-origin: 50% 0px;
-  opacity: 0;
-  transform: translateY(-6px);
-  transition: opacity 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.hanger-item.is-hovered .hanger-swing-tag {
-  opacity: 1;
-  transform: translateY(0) rotateZ(2deg);
+  display: none !important;
 }
 
 .tag-thread,
@@ -375,13 +557,13 @@
   color: #6c6660;
 }
 
-/* Transparent click hitbox */
+/* Transparent click hitbox (covers dress silhouette) */
 .hanger-action-hitbox {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: calc(100% - 50px);
   z-index: 8;
   cursor: pointer;
   background: transparent;
@@ -401,114 +583,13 @@
   border: 0;
 }
 
-/* ==========================================================================
-   Active Hover & Dynamic Physics Classes
-   ========================================================================== */
-
-/* Active outfit elevation (NO scale popping - stays stable & dignified) */
+/* Active outfit elevation */
 .hanger-item.is-popped-out {
-  z-index: 40 !important;
+  z-index: 45 !important;
 }
 
 .hanger-item.is-popped-out .hanger-assembly {
   filter: drop-shadow(0 20px 32px rgba(18, 14, 16, 0.18));
-  transition: filter 0.6s ease;
-}
-
-.hanger-item.is-popped-out .hanger-garment-img {
-  filter: drop-shadow(0 18px 30px rgba(22, 16, 20, 0.18)) brightness(1.01);
-  transform: none; /* No scale popping! Perfectly calm and steady */
-  transition: filter 0.6s ease;
-}
-
-.hanger-item.is-popped-out .hanger-wire-wrapper {
-  color: #1a1c20;
-  transform: none;
-  transition: color 0.5s ease;
-}
-
-.hanger-item.is-popped-out .hanger-garment-shadow {
-  transform: translateY(2px);
-  opacity: 0.75;
-  transition: opacity 0.6s ease;
-}
-
-/* Floating Detail Card (Disabled: only small boutique tag displays) */
-.hanger-floating-card {
-  display: none !important;
-}
-
-.hanger-floating-card.is-active {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-}
-
-.floating-card-tag {
-  display: inline-block;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 8.5px;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  color: var(--rack-accent-color, #b38728);
-  text-transform: uppercase;
-  margin-bottom: 6px;
-}
-
-.floating-card-title {
-  margin: 0 0 8px 0;
-  font-family: 'Ragara', 'Italiana', Georgia, serif;
-  font-size: 17px;
-  font-weight: 400;
-  line-height: 1.25;
-  color: #1a1819;
-}
-
-.floating-card-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.floating-card-price {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 13.5px;
-  font-weight: 600;
-  color: #1a1819;
-}
-
-.floating-card-badge {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  background: #f4efe6;
-  color: #8c6820;
-  padding: 2px 7px;
-  border-radius: 3px;
-}
-
-.floating-card-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #1a1819;
-  text-decoration: none;
-  border-bottom: 1px solid rgba(26, 24, 25, 0.3);
-  padding-bottom: 2px;
-  transition: color 0.2s, border-color 0.2s;
-}
-
-.floating-card-link:hover {
-  color: var(--rack-accent-color, #b38728);
-  border-color: var(--rack-accent-color, #b38728);
 }
 
 /* ==========================================================================

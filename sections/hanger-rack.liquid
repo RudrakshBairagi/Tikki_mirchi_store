@@ -19,9 +19,9 @@
     --rack-text-color: {{ section.settings.text_color | default: '#1a1819' }};
     --rack-accent-color: {{ section.settings.accent_color | default: '#b38728' }};
     --rack-sway-factor: {{ section.settings.sway_intensity | default: 4 }};
-    --rack-item-width: {{ section.settings.item_width | default: 280 }}px;
+    --rack-item-width: {{ section.settings.item_width | default: 170 }}px;
     --rack-padding-top: {{ section.settings.padding_top | default: 60 }}px;
-    --rack-padding-bottom: {{ section.settings.padding_bottom | default: 80 }}px;
+    --rack-padding-bottom: {{ section.settings.padding_bottom | default: 95 }}px;
 
     {%- if section.settings.heading_font_source == 'shopify' and section.settings.heading_font != blank -%}
       --rack-title-font: {{ section.settings.heading_font.family }}, {{ section.settings.heading_font.fallback_families }};
@@ -165,11 +165,20 @@
           {%- if section.blocks.size > 0 -%}
             {%- for block in section.blocks -%}
               {%- assign look_num = forloop.index -%}
-              {%- assign dress_src = 'shopping.png' | asset_url -%}
+              {%- assign fallback_idx = forloop.index0 | modulo: 6 | plus: 1 -%}
+              {%- assign default_front_file = 'hanger-look-' | append: fallback_idx | append: '.png' -%}
+              {%- assign default_side_file = 'hanger-look-' | append: fallback_idx | append: '-side.png' -%}
+
+              {%- assign dress_front_src = default_front_file | asset_url -%}
               {%- if block.settings.custom_image != blank -%}
-                {%- assign dress_src = block.settings.custom_image | image_url: width: 800 -%}
+                {%- assign dress_front_src = block.settings.custom_image | image_url: width: 800 -%}
               {%- elsif block.settings.product != blank and block.settings.product.featured_image != blank -%}
-                {%- assign dress_src = block.settings.product.featured_image | image_url: width: 800 -%}
+                {%- assign dress_front_src = block.settings.product.featured_image | image_url: width: 800 -%}
+              {%- endif -%}
+
+              {%- assign dress_side_src = default_side_file | asset_url -%}
+              {%- if block.settings.custom_side_image != blank -%}
+                {%- assign dress_side_src = block.settings.custom_side_image | image_url: width: 800 -%}
               {%- endif -%}
 
               {%- assign dress_title = block.settings.title -%}
@@ -185,8 +194,10 @@
                 {%- assign dress_price = block.settings.product.price | money -%}
               {%- endif -%}
 
-              {%- assign dress_link = block.settings.link -%}
-              {%- if dress_link == blank and block.settings.product != blank -%}
+              {%- assign dress_link = default_wl_link -%}
+              {%- if block.settings.link != blank -%}
+                {%- assign dress_link = block.settings.link -%}
+              {%- elsif block.settings.product != blank and block.settings.product.url != blank -%}
                 {%- assign dress_link = block.settings.product.url -%}
               {%- endif -%}
 
@@ -242,18 +253,46 @@
                     </svg>
                   </div>
 
-                  <!-- Hanging Garment Silhouette (Transparent Cutout) -->
+                  <!-- Hanging Garment Silhouette (Dual Side-to-Front 3D Pivot Engine) -->
                   <div class="hanger-garment-wrap">
-                    <img
-                      src="{{ dress_src }}"
-                      alt="{{ dress_title | escape }}"
-                      class="hanger-garment-img"
-                      loading="{% if forloop.index <= 4 %}eager{% else %}lazy{% endif %}"
-                      width="360"
-                      height="700"
-                    >
-                    <!-- Soft Dynamic Drop Shadow on the Atelier Wall -->
-                    <div class="hanger-garment-shadow" aria-hidden="true"><span></span></div>
+                    <div class="hanger-garment-inner">
+                      <!-- Side Profile (Default resting view on boutique rail) -->
+                      <img
+                        src="{{ dress_side_src }}"
+                        alt="{{ dress_title | escape }} — Side View"
+                        class="hanger-garment-img garment-side-img"
+                        loading="{% if forloop.index <= 4 %}eager{% else %}lazy{% endif %}"
+                        width="360"
+                        height="700"
+                      >
+                      <!-- Front Profile (Revealed on hover / tap) -->
+                      <img
+                        src="{{ dress_front_src }}"
+                        alt="{{ dress_title | escape }} — Front View"
+                        class="hanger-garment-img garment-front-img"
+                        loading="{% if forloop.index <= 4 %}eager{% else %}lazy{% endif %}"
+                        width="360"
+                        height="700"
+                      >
+                      <!-- Soft Dynamic Drop Shadow on the Atelier Wall -->
+                      <div class="hanger-garment-shadow" aria-hidden="true"><span></span></div>
+                    </div>
+                  </div>
+
+                  <!-- Floating Boutique Product Card (Reveals beneath the active front profile) -->
+                  <div class="hanger-floating-card">
+                    <span class="floating-card-badge">{{ block.settings.tag | default: 'LOOK ' | append: look_num }} • BESPOKE</span>
+                    <h4 class="floating-card-title">{{ dress_title }}</h4>
+                    <div class="floating-card-row">
+                      {%- if dress_price != blank -%}
+                        <span class="floating-card-price">{{ dress_price }}</span>
+                      {%- endif -%}
+                      <span class="floating-card-availability">Made to Measure</span>
+                    </div>
+                    <a href="{{ dress_link }}" class="floating-card-cta">
+                      <span>Reserve Look</span>
+                      <span class="floating-card-cta-sparkle">✦</span>
+                    </a>
                   </div>
 
                   <!-- Delicate Swing Price Tag dangling from the hanger -->
@@ -269,15 +308,9 @@
                   </div>
 
                   <!-- Interactive Action Overlay Button / Link -->
-                  {%- if dress_link != blank -%}
-                    <a href="{{ dress_link }}" class="hanger-action-hitbox" aria-label="View {{ dress_title | escape }}">
-                      <span class="sr-only">View {{ dress_title }}</span>
-                    </a>
-                  {%- else -%}
-                    <button type="button" class="hanger-action-hitbox" aria-label="Inspect {{ dress_title | escape }}">
-                      <span class="sr-only">Inspect {{ dress_title }}</span>
-                    </button>
-                  {%- endif -%}
+                  <a href="{{ dress_link }}" class="hanger-action-hitbox" aria-label="View {{ dress_title | escape }}">
+                    <span class="sr-only">View {{ dress_title }}</span>
+                  </a>
                 </div>
               </div>
             {%- endfor -%}
@@ -534,19 +567,19 @@
       "type": "range",
       "id": "part_spread",
       "label": "Rail Parting Distance (px)",
-      "min": 20,
-      "max": 80,
-      "step": 2,
-      "default": 50
+      "min": 40,
+      "max": 160,
+      "step": 5,
+      "default": 95
     },
     {
       "type": "range",
       "id": "item_width",
-      "label": "Garment Width (px)",
-      "min": 180,
-      "max": 420,
-      "step": 10,
-      "default": 280
+      "label": "Garment Rail Slot Width (px)",
+      "min": 130,
+      "max": 320,
+      "step": 5,
+      "default": 170
     },
     {
       "type": "checkbox",
@@ -576,7 +609,7 @@
       "min": 20,
       "max": 120,
       "step": 5,
-      "default": 80
+      "default": 95
     }
   ],
   "blocks": [
@@ -587,7 +620,12 @@
         {
           "type": "image_picker",
           "id": "custom_image",
-          "label": "Custom Cutout Image (PNG)"
+          "label": "Front Profile Cutout Image (PNG)"
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_side_image",
+          "label": "Side Profile Cutout Image (PNG)"
         },
         {
           "type": "product",
@@ -610,7 +648,7 @@
           "type": "text",
           "id": "price",
           "label": "Price Display",
-          "default": "$1,450"
+          "default": "₹74,500"
         },
         {
           "type": "url",
@@ -627,41 +665,41 @@
         {
           "type": "garment",
           "settings": {
-            "title": "Ivory Mirror Bustier & Saree Gown",
+            "title": "Archival Manuscript Corset Gown",
             "tag": "LOOK 01",
-            "price": "$1,450"
+            "price": "₹74,500"
           }
         },
         {
           "type": "garment",
           "settings": {
-            "title": "Heritage Tapestry Mirror Lehenga",
+            "title": "Heritage Mural Mirror Lehenga",
             "tag": "LOOK 02",
-            "price": "$1,890"
+            "price": "₹1,25,000"
           }
         },
         {
           "type": "garment",
           "settings": {
-            "title": "Rose Quartz Embellished Ombré Gown",
+            "title": "Rose-Coral Shimmer Saree Gown",
             "tag": "LOOK 03",
-            "price": "$1,620"
+            "price": "₹98,000"
           }
         },
         {
           "type": "garment",
           "settings": {
-            "title": "Midnight Botanical Flared Set",
+            "title": "Midnight Botanical Co-ord Set",
             "tag": "LOOK 04",
-            "price": "$1,380"
+            "price": "₹92,000"
           }
         },
         {
           "type": "garment",
           "settings": {
-            "title": "Peplum Floral Velvet Ensemble",
+            "title": "Bordeaux Peplum Halter Gown",
             "tag": "LOOK 05",
-            "price": "$1,540"
+            "price": "₹1,10,000"
           }
         },
         {
@@ -669,7 +707,7 @@
           "settings": {
             "title": "Scarlet Blossom Twist-Knot Gown",
             "tag": "LOOK 06",
-            "price": "$1,290"
+            "price": "₹86,500"
           }
         }
       ]

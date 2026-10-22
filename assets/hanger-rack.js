@@ -36,8 +36,8 @@ class HangerRack {
       springK: (saved && saved.springK) || (!isNaN(rawSpring) ? 0.002 + (rawSpring - 1) * (0.020 / 9) : 0.011),
       damping: (saved && saved.damping) || (!isNaN(rawDamping) ? 0.020 + (rawDamping - 1) * (0.060 / 9) : 0.055),
       hitForce: (saved && saved.hitForce !== undefined) ? saved.hitForce : (!isNaN(rawHit) ? rawHit * 0.0019 : 0.0095),
-      spread: (saved && saved.spread) || (!isNaN(rawSpread) ? rawSpread : 50),
-      spreadStep: 12,
+      spread: (saved && saved.spread && saved.spread >= 90) ? saved.spread : (!isNaN(rawSpread) && rawSpread >= 90 ? rawSpread : 110),
+      spreadStep: 32,
       swayFactor: (saved && saved.swayFactor) || (!isNaN(rawSway) ? 0.4 + (rawSway - 1) * (1.6 / 9) : 1.0)
     };
 
