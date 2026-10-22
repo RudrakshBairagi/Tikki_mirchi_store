@@ -1,58 +1,69 @@
-{%- if canonical_url contains 'waitlist' or request.path contains 'waitlist' -%}
-  <script>
-    document.title = "Waitlist — {{ shop.name }}";
-  </script>
+<script>
+  (function() {
+    var p = (window.location.pathname || '').toLowerCase();
+    var h = (window.location.href || '').toLowerCase();
+    if (p.indexOf('waitlist') !== -1 || h.indexOf('waitlist') !== -1) {
+      document.title = "Waitlist \u2014 {{ shop.name | escape }}";
+      document.documentElement.classList.add('is-waitlist-mode');
+    }
+  })();
+</script>
+
+<style type="text/css">
+  #waitlistAutoFallback {
+    display: none;
+  }
+  html.is-waitlist-mode #waitlistAutoFallback {
+    display: block !important;
+  }
+  html.is-waitlist-mode #standard404Markup,
+  html.is-waitlist-mode .header-group,
+  html.is-waitlist-mode .footer-group {
+    display: none !important;
+  }
+  .template-404 .title + * {
+    margin-top: 1rem;
+  }
+  @media screen and (min-width: 750px) {
+    .template-404 .title + * {
+      margin-top: 2rem;
+    }
+  }
+</style>
+
+<div id="waitlistAutoFallback">
   {%- render 'atelier-waitlist-content' -%}
-{%- else -%}
-  <div id="waitlistAutoFallback" style="display: none;">
-    {%- render 'atelier-waitlist-content' -%}
+</div>
+
+<div id="standard404Markup">
+  <div class="template-404 page-width page-margin center">
+    <p>
+      {{ 'templates.404.subtext' | t }}
+    </p>
+    <h1 class="title">
+      {{ 'templates.404.title' | t }}
+    </h1>
+    <a href="{{ routes.all_products_collection_url }}" class="button">
+      {{ 'general.continue_shopping' | t }}
+    </a>
   </div>
+</div>
 
-  <div id="standard404Markup">
-    <style type="text/css">
-      .template-404 .title + * {
-        margin-top: 1rem;
-      }
-
-      @media screen and (min-width: 750px) {
-        .template-404 .title + * {
-          margin-top: 2rem;
-        }
-      }
-    </style>
-
-    <div class="template-404 page-width page-margin center">
-      <p>
-        {{ 'templates.404.subtext' | t }}
-      </p>
-      <h1 class="title">
-        {{ 'templates.404.title' | t }}
-      </h1>
-      <a href="{{ routes.all_products_collection_url }}" class="button">
-        {{ 'general.continue_shopping' | t }}
-      </a>
-    </div>
-  </div>
-
-  <script>
-    (function() {
-      var fullUrl = (window.location.href || '').toLowerCase();
-      var path = (window.location.pathname || '').toLowerCase();
-      if (path.indexOf('waitlist') !== -1 || fullUrl.indexOf('waitlist') !== -1) {
-        document.title = "Waitlist — {{ shop.name | escape }}";
-        var wl = document.getElementById('waitlistAutoFallback');
-        var std = document.getElementById('standard404Markup');
-        if (wl) {
-          wl.style.display = 'block';
-        }
-        if (std) {
-          std.style.display = 'none';
-        }
-        var defaultHeaders = document.querySelectorAll('.header-wrapper, #shopify-section-announcement-bar, .announcement-bar-section, .header-group');
-        defaultHeaders.forEach(function(el) {
-          el.style.display = 'none';
-        });
-      }
-    })();
-  </script>
-{%- endif -%}
+<script>
+  (function() {
+    var p = (window.location.pathname || '').toLowerCase();
+    var h = (window.location.href || '').toLowerCase();
+    if (p.indexOf('waitlist') !== -1 || h.indexOf('waitlist') !== -1) {
+      document.title = "Waitlist \u2014 {{ shop.name | escape }}";
+      document.documentElement.classList.add('is-waitlist-mode');
+      var wl = document.getElementById('waitlistAutoFallback');
+      var std = document.getElementById('standard404Markup');
+      if (wl) wl.style.display = 'block';
+      if (std) std.style.display = 'none';
+      var headers = document.querySelectorAll('.header-wrapper, #shopify-section-announcement-bar, .announcement-bar-section, .header-group, .footer-group');
+      headers.forEach(function(el) {
+        el.style.display = 'none';
+      });
+    }
+  })();
+</script>

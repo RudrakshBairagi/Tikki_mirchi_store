@@ -26,6 +26,30 @@
       {%- endif -%}
     </title>
 
+    <script>
+      (function() {
+        var p = (window.location.pathname || '').toLowerCase();
+        var h = (window.location.href || '').toLowerCase();
+        if (p.indexOf('waitlist') !== -1 || h.indexOf('waitlist') !== -1) {
+          document.title = "Waitlist \u2014 {{ shop.name | escape }}";
+          document.documentElement.classList.add('is-waitlist-mode');
+        }
+      })();
+    </script>
+    <style>
+      html.is-waitlist-mode #standard404Markup,
+      html.is-waitlist-mode .header-group,
+      html.is-waitlist-mode .footer-group,
+      html.is-waitlist-mode #shopify-section-announcement-bar,
+      html.is-waitlist-mode .announcement-bar-section,
+      html.is-waitlist-mode .header-wrapper {
+        display: none !important;
+      }
+      html.is-waitlist-mode #waitlistAutoFallback {
+        display: block !important;
+      }
+    </style>
+
     {% if page_description %}
       <meta name="description" content="{{ page_description | escape }}">
     {% endif %}
