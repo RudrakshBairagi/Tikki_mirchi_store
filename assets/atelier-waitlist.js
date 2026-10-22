@@ -260,7 +260,8 @@
       form.style.display = 'none';
       if (successView) {
         successView.classList.add('is-visible');
-        successView.scrollIntoView({ behavior: 'smooth' });
+        const formCard = document.querySelector('.waitlist-form-card') || successView;
+        formCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     }
 
