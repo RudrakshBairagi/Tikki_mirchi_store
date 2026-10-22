@@ -119,6 +119,16 @@
   aria-label="{{ section.settings.heading | default: 'House of Royals Runway Rack' }}"
 >
   <div class="hanger-rack-container">
+    {%- if section.settings.show_waitlist_buttons != false -%}
+      <div class="rack-waitlist-btn-wrap-top">
+        <a href="{{ section.settings.waitlist_url | default: '/pages/waitlist' }}" class="rack-waitlist-btn" title="Join the exclusive atelier waitlist">
+          <span class="btn-sparkle">✦</span>
+          <span>{{ section.settings.waitlist_btn_text | default: 'Join the waitlist' }}</span>
+          <span class="btn-arrow">⟶</span>
+        </a>
+      </div>
+    {%- endif -%}
+
     <!-- Header: Editorial & Minimalist -->
     <div class="hanger-rack-header">
       {%- if section.settings.eyebrow != blank -%}
@@ -277,6 +287,16 @@
         <span class="hint-text">Hover to sway • Drag along the rack</span>
         <span class="hint-icon">⟶</span>
       </div>
+
+      {%- if section.settings.show_waitlist_buttons != false -%}
+        <div class="rack-waitlist-btn-wrap-bottom">
+          <a href="{{ section.settings.waitlist_url | default: '/pages/waitlist' }}" class="rack-waitlist-btn" title="Join the exclusive atelier waitlist">
+            <span class="btn-sparkle">✦</span>
+            <span>{{ section.settings.waitlist_btn_text | default: 'Join the waitlist' }}</span>
+            <span class="btn-arrow">⟶</span>
+          </a>
+        </div>
+      {%- endif -%}
     </div>
   </div>
 </section>
@@ -304,6 +324,29 @@
       "id": "subheading",
       "label": "Subheading",
       "default": "Hover over any gown to slide and inspect couture details on our atelier rack."
+    },
+    {
+      "type": "header",
+      "content": "Waitlist Call To Action"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_waitlist_buttons",
+      "label": "Show 'Join the waitlist' Buttons",
+      "default": true,
+      "info": "Displays waitlist buttons above and under the clothes rack."
+    },
+    {
+      "type": "text",
+      "id": "waitlist_btn_text",
+      "label": "Waitlist Button Label",
+      "default": "Join the waitlist"
+    },
+    {
+      "type": "url",
+      "id": "waitlist_url",
+      "label": "Waitlist Page Link",
+      "default": "/pages/waitlist"
     },
     {
       "type": "header",

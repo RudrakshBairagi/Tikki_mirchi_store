@@ -1,0 +1,447 @@
+{{ 'atelier-waitlist.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'atelier-waitlist.js' | asset_url }}" defer="defer"></script>
+
+<div class="waitlist-page" id="AtelierWaitlist-{{ section.id }}" style="--wl-bg: {{ section.settings.bg_color | default: '#ffffff' }};">
+  <main class="waitlist-main-wrap">
+    
+    <!-- Hero Header -->
+    <div class="waitlist-hero-header">
+      {%- if section.settings.eyebrow != blank -%}
+        <div class="waitlist-eyebrow">
+          <span>✦</span>
+          <span>{{ section.settings.eyebrow }}</span>
+          <span>✦</span>
+        </div>
+      {%- endif -%}
+      <h1 class="waitlist-title">{{ section.settings.title | default: 'Sign up to our waitlist!' }}</h1>
+      {%- if section.settings.subtitle != blank -%}
+        <p class="waitlist-subtitle">{{ section.settings.subtitle }}</p>
+      {%- endif -%}
+    </div>
+
+    <!-- Waitlist Form Card -->
+    <div class="waitlist-form-card">
+      {%- form 'contact', id: 'atelierWaitlistForm' -%}
+
+        {%- if form.posted_successfully? -%}
+          <div class="waitlist-success-view is-visible" style="display: block;">
+            <div class="success-badge">✦ Reservation Confirmed ✦</div>
+            <h2 class="success-title">You're on the exclusive waitlist!</h2>
+            <p class="success-msg">
+              Thank you for reserving. We have registered your inquiry and will email priority drop access directly to you.
+            </p>
+            <div class="success-actions">
+              <a href="{{ routes.root_url }}" class="success-rack-btn">
+                <span>⟵</span>
+                <span>Return to Home</span>
+              </a>
+            </div>
+          </div>
+        {%- else -%}
+
+          {%- if form.errors -%}
+            <div class="form-status form-status-list form__message" tabindex="-1" autofocus style="color:#d9534f; margin-bottom: 20px;">
+              {{ form.errors | default_errors }}
+            </div>
+          {%- endif -%}
+
+          <!-- Step 1: Client Information -->
+          <div class="form-section-title">
+            <span class="step-num">1</span>
+            <span>Your Information</span>
+          </div>
+
+          <div class="waitlist-fields-grid">
+            <!-- Full Name -->
+            <div class="form-input-wrap">
+              <label for="waitlistFullName">Full Name *</label>
+              <input
+                type="text"
+                id="waitlistFullName"
+                name="contact[name]"
+                value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+                placeholder="Enter your full name"
+                required
+              >
+            </div>
+
+            <!-- Email -->
+            <div class="form-input-wrap">
+              <label for="waitlistEmail">Email Address *</label>
+              <input
+                type="email"
+                id="waitlistEmail"
+                name="contact[email]"
+                value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+                placeholder="name@example.com"
+                required
+              >
+            </div>
+
+            <!-- Phone Number -->
+            <div class="form-input-wrap">
+              <label for="waitlistPhone">Phone Number *</label>
+              <input
+                type="tel"
+                id="waitlistPhone"
+                name="contact[phone]"
+                value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+                placeholder="+1 (555) 000-0000 (for private SMS VIP access)"
+                required
+              >
+            </div>
+
+            <!-- City & State -->
+            <div class="form-field-row">
+              <div class="form-input-wrap">
+                <label for="waitlistCity">City *</label>
+                <input
+                  type="text"
+                  id="waitlistCity"
+                  name="contact[city]"
+                  placeholder="e.g. New York / London / Mumbai"
+                  required
+                >
+              </div>
+              <div class="form-input-wrap">
+                <label for="waitlistState">State / Region *</label>
+                <input
+                  type="text"
+                  id="waitlistState"
+                  name="contact[state]"
+                  placeholder="e.g. NY / England / MH"
+                  required
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2: Select Dresses (5 Tiles) -->
+          <div class="waitlist-dresses-section">
+            <div class="dresses-section-header">
+              <div class="form-section-title">
+                <span class="step-num">2</span>
+                <span>Select Your Desired Runway Dresses</span>
+              </div>
+              <p class="dresses-helper-text">Click on any dress to select it, then choose your size below each gown.</p>
+            </div>
+
+            <!-- 5 Dresses Tiles Grid -->
+            <div class="dress-tiles-grid" id="dressTilesGrid">
+
+              <!-- Tile 1 -->
+              <div class="dress-tile-card is-selected" data-index="1" data-title="{{ section.settings.dress_1_title | default: 'Archival Manuscript Corset Gown' }}" data-img="{% if section.settings.dress_1_img != blank %}{{ section.settings.dress_1_img | image_url: width: 400 }}{% else %}{{ 'hanger-look-1.png' | asset_url }}{% endif %}">
+                <div class="dress-card-badge">Look 01</div>
+                <div class="dress-card-check">✓</div>
+                <div class="dress-card-img-wrap">
+                  <img src="{% if section.settings.dress_1_img != blank %}{{ section.settings.dress_1_img | image_url: width: 400 }}{% else %}{{ 'hanger-look-1.png' | asset_url }}{% endif %}" alt="{{ section.settings.dress_1_title | default: 'Look 01' }}" loading="lazy">
+                </div>
+                <div class="dress-card-info">
+                  <h3 class="dress-card-title">{{ section.settings.dress_1_title | default: 'Archival Manuscript Corset Gown' }}</h3>
+                  <div class="dress-card-price">{{ section.settings.dress_1_price | default: 'Edition 01 • $890' }}</div>
+                </div>
+                <div class="dress-size-wrap">
+                  <div class="dress-size-label"><span>Size:</span></div>
+                  <div class="dress-size-pills">
+                    <button type="button" class="size-pill" data-size="XS">XS</button>
+                    <button type="button" class="size-pill is-active" data-size="S">S</button>
+                    <button type="button" class="size-pill" data-size="M">M</button>
+                    <button type="button" class="size-pill" data-size="L">L</button>
+                    <button type="button" class="size-pill" data-size="XL">XL</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tile 2 -->
+              <div class="dress-tile-card" data-index="2" data-title="{{ section.settings.dress_2_title | default: 'Heritage Mural Mirror Lehenga' }}" data-img="{% if section.settings.dress_2_img != blank %}{{ section.settings.dress_2_img | image_url: width: 400 }}{% else %}{{ 'hanger-look-2.png' | asset_url }}{% endif %}">
+                <div class="dress-card-badge">Look 02</div>
+                <div class="dress-card-check">✓</div>
+                <div class="dress-card-img-wrap">
+                  <img src="{% if section.settings.dress_2_img != blank %}{{ section.settings.dress_2_img | image_url: width: 400 }}{% else %}{{ 'hanger-look-2.png' | asset_url }}{% endif %}" alt="{{ section.settings.dress_2_title | default: 'Look 02' }}" loading="lazy">
+                </div>
+                <div class="dress-card-info">
+                  <h3 class="dress-card-title">{{ section.settings.dress_2_title | default: 'Heritage Mural Mirror Lehenga' }}</h3>
+                  <div class="dress-card-price">{{ section.settings.dress_2_price | default: 'Edition 02 • $1,250' }}</div>
+                </div>
+                <div class="dress-size-wrap">
+                  <div class="dress-size-label"><span>Size:</span></div>
+                  <div class="dress-size-pills">
+                    <button type="button" class="size-pill" data-size="XS">XS</button>
+                    <button type="button" class="size-pill" data-size="S">S</button>
+                    <button type="button" class="size-pill is-active" data-size="M">M</button>
+                    <button type="button" class="size-pill" data-size="L">L</button>
+                    <button type="button" class="size-pill" data-size="XL">XL</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tile 3 -->
+              <div class="dress-tile-card" data-index="3" data-title="{{ section.settings.dress_3_title | default: 'Rose-Coral Shimmer Saree Gown' }}" data-img="{% if section.settings.dress_3_img != blank %}{{ section.settings.dress_3_img | image_url: width: 400 }}{% else %}{{ 'hanger-look-3.png' | asset_url }}{% endif %}">
+                <div class="dress-card-badge">Look 03</div>
+                <div class="dress-card-check">✓</div>
+                <div class="dress-card-img-wrap">
+                  <img src="{% if section.settings.dress_3_img != blank %}{{ section.settings.dress_3_img | image_url: width: 400 }}{% else %}{{ 'hanger-look-3.png' | asset_url }}{% endif %}" alt="{{ section.settings.dress_3_title | default: 'Look 03' }}" loading="lazy">
+                </div>
+                <div class="dress-card-info">
+                  <h3 class="dress-card-title">{{ section.settings.dress_3_title | default: 'Rose-Coral Shimmer Saree Gown' }}</h3>
+                  <div class="dress-card-price">{{ section.settings.dress_3_price | default: 'Edition 03 • $980' }}</div>
+                </div>
+                <div class="dress-size-wrap">
+                  <div class="dress-size-label"><span>Size:</span></div>
+                  <div class="dress-size-pills">
+                    <button type="button" class="size-pill" data-size="XS">XS</button>
+                    <button type="button" class="size-pill is-active" data-size="S">S</button>
+                    <button type="button" class="size-pill" data-size="M">M</button>
+                    <button type="button" class="size-pill" data-size="L">L</button>
+                    <button type="button" class="size-pill" data-size="XL">XL</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tile 4 -->
+              <div class="dress-tile-card" data-index="4" data-title="{{ section.settings.dress_4_title | default: 'Midnight Botanical Co-ord Set' }}" data-img="{% if section.settings.dress_4_img != blank %}{{ section.settings.dress_4_img | image_url: width: 400 }}{% else %}{{ 'hanger-look-4.png' | asset_url }}{% endif %}">
+                <div class="dress-card-badge">Look 04</div>
+                <div class="dress-card-check">✓</div>
+                <div class="dress-card-img-wrap">
+                  <img src="{% if section.settings.dress_4_img != blank %}{{ section.settings.dress_4_img | image_url: width: 400 }}{% else %}{{ 'hanger-look-4.png' | asset_url }}{% endif %}" alt="{{ section.settings.dress_4_title | default: 'Look 04' }}" loading="lazy">
+                </div>
+                <div class="dress-card-info">
+                  <h3 class="dress-card-title">{{ section.settings.dress_4_title | default: 'Midnight Botanical Co-ord Set' }}</h3>
+                  <div class="dress-card-price">{{ section.settings.dress_4_price | default: 'Edition 04 • $920' }}</div>
+                </div>
+                <div class="dress-size-wrap">
+                  <div class="dress-size-label"><span>Size:</span></div>
+                  <div class="dress-size-pills">
+                    <button type="button" class="size-pill" data-size="XS">XS</button>
+                    <button type="button" class="size-pill" data-size="S">S</button>
+                    <button type="button" class="size-pill is-active" data-size="M">M</button>
+                    <button type="button" class="size-pill" data-size="L">L</button>
+                    <button type="button" class="size-pill" data-size="XL">XL</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tile 5 -->
+              <div class="dress-tile-card" data-index="5" data-title="{{ section.settings.dress_5_title | default: 'Bordeaux Peplum Halter Gown' }}" data-img="{% if section.settings.dress_5_img != blank %}{{ section.settings.dress_5_img | image_url: width: 400 }}{% else %}{{ 'hanger-look-5.png' | asset_url }}{% endif %}">
+                <div class="dress-card-badge">Look 05</div>
+                <div class="dress-card-check">✓</div>
+                <div class="dress-card-img-wrap">
+                  <img src="{% if section.settings.dress_5_img != blank %}{{ section.settings.dress_5_img | image_url: width: 400 }}{% else %}{{ 'hanger-look-5.png' | asset_url }}{% endif %}" alt="{{ section.settings.dress_5_title | default: 'Look 05' }}" loading="lazy">
+                </div>
+                <div class="dress-card-info">
+                  <h3 class="dress-card-title">{{ section.settings.dress_5_title | default: 'Bordeaux Peplum Halter Gown' }}</h3>
+                  <div class="dress-card-price">{{ section.settings.dress_5_price | default: 'Edition 05 • $1,100' }}</div>
+                </div>
+                <div class="dress-size-wrap">
+                  <div class="dress-size-label"><span>Size:</span></div>
+                  <div class="dress-size-pills">
+                    <button type="button" class="size-pill" data-size="XS">XS</button>
+                    <button type="button" class="size-pill" data-size="S">S</button>
+                    <button type="button" class="size-pill is-active" data-size="M">M</button>
+                    <button type="button" class="size-pill" data-size="L">L</button>
+                    <button type="button" class="size-pill" data-size="XL">XL</button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Overall Size Selector -->
+          <div class="global-size-row">
+            <div class="global-size-desc">
+              <strong>Preferred Primary Size:</strong>
+              <span>Quickly sync sizing across all chosen pieces or tailor individually above</span>
+            </div>
+            <div class="global-size-select-box">
+              <select id="globalSizeSelect" aria-label="Global Size Selector">
+                <option value="S">Size S (US 2-4 / UK 8)</option>
+                <option value="XS">Size XS (US 0-2 / UK 6)</option>
+                <option value="M" selected>Size M (US 6-8 / UK 10)</option>
+                <option value="L">Size L (US 10-12 / UK 12)</option>
+                <option value="XL">Size XL (US 14 / UK 14)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Hidden summaries for Shopify contact form payload -->
+          <input type="hidden" id="selectedDressesSummary" name="contact[selected_dresses]" value="">
+          <input type="hidden" id="contactBodySummary" name="contact[body]" value="">
+
+          <!-- Submit Button -->
+          <div class="waitlist-submit-wrap">
+            <button type="submit" class="waitlist-submit-btn" id="waitlistSubmitBtn">
+              <span>Submit</span>
+            </button>
+            <p class="waitlist-disclaimer">
+              By signing up, you agree to receive private collection drops & VIP runway access. View our privacy policy and terms of service for more info.
+            </p>
+          </div>
+
+        {%- endif -%}
+
+      {%- endform -%}
+
+      <!-- Confirmation / Success View for client-side fallback -->
+      <div class="waitlist-success-view" id="waitlistSuccessView">
+        <div class="success-badge">✦ Reservation Confirmed ✦</div>
+        <h2 class="success-title">You're on the exclusive waitlist!</h2>
+        <p class="success-msg">
+          Thank you for joining. When our private atelier drop opens, your VIP access link and priority checkout code will be dispatched directly to your email and phone.
+        </p>
+        <div class="success-receipt-card" id="receiptDetails"></div>
+        <div class="success-actions">
+          <a href="{{ routes.root_url }}" class="success-rack-btn">
+            <span>⟵</span>
+            <span>Return to Runway Rack</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+{% schema %}
+{
+  "name": "Atelier Waitlist",
+  "tag": "section",
+  "class": "section-atelier-waitlist",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Summer Atelier 2026"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Sign up to our waitlist!"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Complete the form below to reserve your bespoke piece from our exclusive runway drop."
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Dress 1 (Look 01)"
+    },
+    {
+      "type": "image_picker",
+      "id": "dress_1_img",
+      "label": "Dress 1 Image"
+    },
+    {
+      "type": "text",
+      "id": "dress_1_title",
+      "label": "Dress 1 Title",
+      "default": "Archival Manuscript Corset Gown"
+    },
+    {
+      "type": "text",
+      "id": "dress_1_price",
+      "label": "Dress 1 Price",
+      "default": "Edition 01 • $890"
+    },
+    {
+      "type": "header",
+      "content": "Dress 2 (Look 02)"
+    },
+    {
+      "type": "image_picker",
+      "id": "dress_2_img",
+      "label": "Dress 2 Image"
+    },
+    {
+      "type": "text",
+      "id": "dress_2_title",
+      "label": "Dress 2 Title",
+      "default": "Heritage Mural Mirror Lehenga"
+    },
+    {
+      "type": "text",
+      "id": "dress_2_price",
+      "label": "Dress 2 Price",
+      "default": "Edition 02 • $1,250"
+    },
+    {
+      "type": "header",
+      "content": "Dress 3 (Look 03)"
+    },
+    {
+      "type": "image_picker",
+      "id": "dress_3_img",
+      "label": "Dress 3 Image"
+    },
+    {
+      "type": "text",
+      "id": "dress_3_title",
+      "label": "Dress 3 Title",
+      "default": "Rose-Coral Shimmer Saree Gown"
+    },
+    {
+      "type": "text",
+      "id": "dress_3_price",
+      "label": "Dress 3 Price",
+      "default": "Edition 03 • $980"
+    },
+    {
+      "type": "header",
+      "content": "Dress 4 (Look 04)"
+    },
+    {
+      "type": "image_picker",
+      "id": "dress_4_img",
+      "label": "Dress 4 Image"
+    },
+    {
+      "type": "text",
+      "id": "dress_4_title",
+      "label": "Dress 4 Title",
+      "default": "Midnight Botanical Co-ord Set"
+    },
+    {
+      "type": "text",
+      "id": "dress_4_price",
+      "label": "Dress 4 Price",
+      "default": "Edition 04 • $920"
+    },
+    {
+      "type": "header",
+      "content": "Dress 5 (Look 05)"
+    },
+    {
+      "type": "image_picker",
+      "id": "dress_5_img",
+      "label": "Dress 5 Image"
+    },
+    {
+      "type": "text",
+      "id": "dress_5_title",
+      "label": "Dress 5 Title",
+      "default": "Bordeaux Peplum Halter Gown"
+    },
+    {
+      "type": "text",
+      "id": "dress_5_price",
+      "label": "Dress 5 Price",
+      "default": "Edition 05 • $1,100"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Atelier Waitlist"
+    }
+  ]
+}
+{% endschema %}

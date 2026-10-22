@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Waitlist — TIKKI Bella</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Italiana&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/atelier-waitlist.css">
+  <style>
+    @font-face {
+      font-family: 'Ragara';
+      src: url('assets/Ragara.woff') format('woff'),
+           url('assets/Ragara.otf') format('opentype'),
+           url('assets/Ragara.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+  </style>
+</head>
+<body class="waitlist-page">
+
+  <!-- Minimalist Editorial Navigation Header -->
+  <header class="waitlist-navbar">
+    <a href="preview.html" class="waitlist-nav-back" title="Return to Runway Rack">
+      <span>⟵</span>
+      <span>Back to Runway Rack</span>
+    </a>
+
+    <a href="preview.html" class="waitlist-brand-logo">TIKKI BELLA</a>
+
+    <nav class="waitlist-nav-links">
+      <a href="preview.html" class="waitlist-nav-link">Home</a>
+      <a href="preview.html#HangerRack" class="waitlist-nav-link">Runway Rack</a>
+      <a href="waitlist.html" class="waitlist-nav-link is-active">Waitlist</a>
+    </nav>
+  </header>
+
+  <main class="waitlist-main-wrap">
+    <!-- Hero Header -->
+    <div class="waitlist-hero-header">
+      <div class="waitlist-eyebrow">
+        <span>✦</span>
+        <span>Summer Atelier 2026</span>
+        <span>✦</span>
+      </div>
+      <h1 class="waitlist-title">Sign up to our waitlist!</h1>
+      <p class="waitlist-subtitle">Complete the form below to reserve your bespoke piece from our exclusive runway drop. Limited private atelier production.</p>
+    </div>
+
+    <!-- Waitlist Form Card -->
+    <div class="waitlist-form-card">
+      <form id="atelierWaitlistForm" action="#" method="POST" novalidate>
+        
+        <!-- Step 1: Client Information -->
+        <div class="form-section-title">
+          <span class="step-num">1</span>
+          <span>Your Information</span>
+        </div>
+
+        <div class="waitlist-fields-grid">
+          <!-- Full Name -->
+          <div class="form-input-wrap">
+            <label for="waitlistFullName">Full Name *</label>
+            <input type="text" id="waitlistFullName" name="fullName" placeholder="Enter your full name" required>
+          </div>
+
+          <!-- Email -->
+          <div class="form-input-wrap">
+            <label for="waitlistEmail">Email Address *</label>
+            <input type="email" id="waitlistEmail" name="email" placeholder="name@example.com" required>
+          </div>
+
+          <!-- Phone Number -->
+          <div class="form-input-wrap">
+            <label for="waitlistPhone">Phone Number *</label>
+            <input type="tel" id="waitlistPhone" name="phone" placeholder="+1 (555) 000-0000 (for private SMS VIP access)" required>
+          </div>
+
+          <!-- City & State -->
+          <div class="form-field-row">
+            <div class="form-input-wrap">
+              <label for="waitlistCity">City *</label>
+              <input type="text" id="waitlistCity" name="city" placeholder="e.g. New York / London / Mumbai" required>
+            </div>
+            <div class="form-input-wrap">
+              <label for="waitlistState">State / Region *</label>
+              <input type="text" id="waitlistState" name="state" placeholder="e.g. NY / England / MH" required>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2: Select Dresses (5 Tiles) -->
+        <div class="waitlist-dresses-section">
+          <div class="dresses-section-header">
+            <div class="form-section-title">
+              <span class="step-num">2</span>
+              <span>Select Your Desired Runway Dresses</span>
+            </div>
+            <p class="dresses-helper-text">Click on any dress to select it, then choose your custom size below each gown.</p>
+          </div>
+
+          <!-- 5 Dresses Tiles Grid -->
+          <div class="dress-tiles-grid" id="dressTilesGrid">
+
+            <!-- Dress 1 -->
+            <div class="dress-tile-card is-selected" data-index="1" data-title="Archival Manuscript Corset Gown" data-img="assets/hanger-look-1.png">
+              <div class="dress-card-badge">Look 01</div>
+              <div class="dress-card-check">✓</div>
+              <div class="dress-card-img-wrap">
+                <img src="assets/hanger-look-1.png" alt="Archival Manuscript Corset Gown" loading="lazy">
+              </div>
+              <div class="dress-card-info">
+                <h3 class="dress-card-title">Archival Manuscript Corset Gown</h3>
+                <div class="dress-card-price">Edition 01 • $890</div>
+              </div>
+              <div class="dress-size-wrap">
+                <div class="dress-size-label">
+                  <span>Size:</span>
+                </div>
+                <div class="dress-size-pills">
+                  <button type="button" class="size-pill" data-size="XS">XS</button>
+                  <button type="button" class="size-pill is-active" data-size="S">S</button>
+                  <button type="button" class="size-pill" data-size="M">M</button>
+                  <button type="button" class="size-pill" data-size="L">L</button>
+                  <button type="button" class="size-pill" data-size="XL">XL</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dress 2 -->
+            <div class="dress-tile-card" data-index="2" data-title="Heritage Mural Mirror Lehenga" data-img="assets/hanger-look-2.png">
+              <div class="dress-card-badge">Look 02</div>
+              <div class="dress-card-check">✓</div>
+              <div class="dress-card-img-wrap">
+                <img src="assets/hanger-look-2.png" alt="Heritage Mural Mirror Lehenga" loading="lazy">
+              </div>
+              <div class="dress-card-info">
+                <h3 class="dress-card-title">Heritage Mural Mirror Lehenga</h3>
+                <div class="dress-card-price">Edition 02 • $1,250</div>
+              </div>
+              <div class="dress-size-wrap">
+                <div class="dress-size-label">
+                  <span>Size:</span>
+                </div>
+                <div class="dress-size-pills">
+                  <button type="button" class="size-pill" data-size="XS">XS</button>
+                  <button type="button" class="size-pill" data-size="S">S</button>
+                  <button type="button" class="size-pill is-active" data-size="M">M</button>
+                  <button type="button" class="size-pill" data-size="L">L</button>
+                  <button type="button" class="size-pill" data-size="XL">XL</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dress 3 -->
+            <div class="dress-tile-card" data-index="3" data-title="Rose-Coral Shimmer Saree Gown" data-img="assets/hanger-look-3.png">
+              <div class="dress-card-badge">Look 03</div>
+              <div class="dress-card-check">✓</div>
+              <div class="dress-card-img-wrap">
+                <img src="assets/hanger-look-3.png" alt="Rose-Coral Shimmer Saree Gown" loading="lazy">
+              </div>
+              <div class="dress-card-info">
+                <h3 class="dress-card-title">Rose-Coral Shimmer Saree Gown</h3>
+                <div class="dress-card-price">Edition 03 • $980</div>
+              </div>
+              <div class="dress-size-wrap">
+                <div class="dress-size-label">
+                  <span>Size:</span>
+                </div>
+                <div class="dress-size-pills">
+                  <button type="button" class="size-pill" data-size="XS">XS</button>
+                  <button type="button" class="size-pill is-active" data-size="S">S</button>
+                  <button type="button" class="size-pill" data-size="M">M</button>
+                  <button type="button" class="size-pill" data-size="L">L</button>
+                  <button type="button" class="size-pill" data-size="XL">XL</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dress 4 -->
+            <div class="dress-tile-card" data-index="4" data-title="Midnight Botanical Co-ord Set" data-img="assets/hanger-look-4.png">
+              <div class="dress-card-badge">Look 04</div>
+              <div class="dress-card-check">✓</div>
+              <div class="dress-card-img-wrap">
+                <img src="assets/hanger-look-4.png" alt="Midnight Botanical Co-ord Set" loading="lazy">
+              </div>
+              <div class="dress-card-info">
+                <h3 class="dress-card-title">Midnight Botanical Co-ord Set</h3>
+                <div class="dress-card-price">Edition 04 • $920</div>
+              </div>
+              <div class="dress-size-wrap">
+                <div class="dress-size-label">
+                  <span>Size:</span>
+                </div>
+                <div class="dress-size-pills">
+                  <button type="button" class="size-pill" data-size="XS">XS</button>
+                  <button type="button" class="size-pill" data-size="S">S</button>
+                  <button type="button" class="size-pill is-active" data-size="M">M</button>
+                  <button type="button" class="size-pill" data-size="L">L</button>
+                  <button type="button" class="size-pill" data-size="XL">XL</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dress 5 -->
+            <div class="dress-tile-card" data-index="5" data-title="Bordeaux Peplum Halter Gown" data-img="assets/hanger-look-5.png">
+              <div class="dress-card-badge">Look 05</div>
+              <div class="dress-card-check">✓</div>
+              <div class="dress-card-img-wrap">
+                <img src="assets/hanger-look-5.png" alt="Bordeaux Peplum Halter Gown" loading="lazy">
+              </div>
+              <div class="dress-card-info">
+                <h3 class="dress-card-title">Bordeaux Peplum Halter Gown</h3>
+                <div class="dress-card-price">Edition 05 • $1,100</div>
+              </div>
+              <div class="dress-size-wrap">
+                <div class="dress-size-label">
+                  <span>Size:</span>
+                </div>
+                <div class="dress-size-pills">
+                  <button type="button" class="size-pill" data-size="XS">XS</button>
+                  <button type="button" class="size-pill" data-size="S">S</button>
+                  <button type="button" class="size-pill is-active" data-size="M">M</button>
+                  <button type="button" class="size-pill" data-size="L">L</button>
+                  <button type="button" class="size-pill" data-size="XL">XL</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Optional: Primary / Default Sizing -->
+        <div class="global-size-row">
+          <div class="global-size-desc">
+            <strong>Preferred Primary Size:</strong>
+            <span>Quickly sync sizing across all chosen pieces or tailor individually above</span>
+          </div>
+          <div class="global-size-select-box">
+            <select id="globalSizeSelect" aria-label="Global Size Selector">
+              <option value="S">Size S (US 2-4 / UK 8)</option>
+              <option value="XS">Size XS (US 0-2 / UK 6)</option>
+              <option value="M" selected>Size M (US 6-8 / UK 10)</option>
+              <option value="L">Size L (US 10-12 / UK 12)</option>
+              <option value="XL">Size XL (US 14 / UK 14)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Hidden summaries for form serialization -->
+        <input type="hidden" id="selectedDressesSummary" name="selectedDressesSummary" value="">
+        <input type="hidden" id="contactBodySummary" name="contactBodySummary" value="">
+
+        <!-- Submit Button -->
+        <div class="waitlist-submit-wrap">
+          <button type="submit" class="waitlist-submit-btn" id="waitlistSubmitBtn">
+            <span>Submit</span>
+          </button>
+          <p class="waitlist-disclaimer">
+            By signing up, you agree to receive private collection drops & VIP runway access. View our <a href="#">privacy policy</a> and <a href="#">terms of service</a> for more info.
+          </p>
+        </div>
+
+      </form>
+
+      <!-- Confirmation / Success View -->
+      <div class="waitlist-success-view" id="waitlistSuccessView">
+        <div class="success-badge">✦ Reservation Confirmed ✦</div>
+        <h2 class="success-title">You're on the exclusive waitlist!</h2>
+        <p class="success-msg">
+          Thank you for joining. When our private atelier drop opens, your VIP access link and priority checkout code will be dispatched directly to your email and phone.
+        </p>
+
+        <div class="success-receipt-card" id="receiptDetails">
+          <!-- Populated dynamically via JS -->
+        </div>
+
+        <div class="success-actions">
+          <a href="preview.html" class="success-rack-btn">
+            <span>⟵</span>
+            <span>Return to Runway Rack</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="assets/atelier-waitlist.js"></script>
+</body>
+</html>

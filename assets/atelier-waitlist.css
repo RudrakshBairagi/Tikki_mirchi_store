@@ -1,0 +1,692 @@
+/**
+ * TIKKI BELLA — ATELIER WAITLIST
+ * Inspired by gigiaedit.com minimalist editorial aesthetic + Tikki Bella luxury couture.
+ */
+
+:root {
+  --wl-bg: #ffffff;
+  --wl-card-bg: #fdfdfc;
+  --wl-card-alt: #f7f6f2;
+  --wl-text-main: #141314;
+  --wl-text-muted: #6e6b6f;
+  --wl-border-light: #e5e3de;
+  --wl-border-focus: #141314;
+  --wl-accent-gold: #b38728;
+  --wl-accent-gold-light: #d4af37;
+  --wl-btn-bg: #202020;
+  --wl-btn-text: #ffffff;
+  --wl-font-serif: 'Ragara', 'Italiana', 'Playfair Display', Georgia, serif;
+  --wl-font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Page Wrapper */
+.waitlist-page {
+  min-height: 100vh;
+  background-color: var(--wl-bg);
+  color: var(--wl-text-main);
+  font-family: var(--wl-font-sans);
+  margin: 0;
+  padding: 0 0 100px 0;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Minimalist Editorial Header */
+.waitlist-navbar {
+  width: 100%;
+  padding: 28px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  background: #ffffff;
+  box-sizing: border-box;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.waitlist-nav-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: var(--wl-text-main);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.waitlist-nav-back:hover {
+  opacity: 0.7;
+  transform: translateX(-3px);
+}
+
+.waitlist-brand-logo {
+  font-family: var(--wl-font-serif);
+  font-size: 28px;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  color: var(--wl-text-main);
+  text-transform: uppercase;
+  font-weight: 400;
+}
+
+.waitlist-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.waitlist-nav-link {
+  text-decoration: none;
+  color: var(--wl-text-muted);
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  transition: color 0.2s ease;
+}
+
+.waitlist-nav-link.is-active,
+.waitlist-nav-link:hover {
+  color: var(--wl-text-main);
+  text-decoration: underline;
+  text-underline-offset: 6px;
+}
+
+/* Main Container */
+.waitlist-main-wrap {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 60px 24px 0 24px;
+  box-sizing: border-box;
+}
+
+/* Title & Subtitle */
+.waitlist-hero-header {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 46px auto;
+}
+
+.waitlist-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--wl-accent-gold);
+  margin-bottom: 12px;
+}
+
+.waitlist-title {
+  font-family: var(--wl-font-serif);
+  font-size: clamp(32px, 4.5vw, 48px);
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  line-height: 1.15;
+  margin: 0 0 14px 0;
+  color: var(--wl-text-main);
+}
+
+.waitlist-subtitle {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--wl-text-muted);
+  margin: 0;
+  font-weight: 400;
+}
+
+/* Form Container */
+.waitlist-form-card {
+  max-width: 820px;
+  margin: 0 auto;
+  background: #ffffff;
+  border: 1px solid var(--wl-border-light);
+  border-radius: 8px;
+  padding: 44px 48px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.03);
+  box-sizing: border-box;
+}
+
+@media (max-width: 640px) {
+  .waitlist-form-card {
+    padding: 28px 20px;
+    border: none;
+    box-shadow: none;
+  }
+  .waitlist-navbar {
+    padding: 20px;
+  }
+}
+
+/* Input Fields Group */
+.form-section-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--wl-text-main);
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.form-section-title span.step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--wl-text-main);
+  color: #fff;
+  font-size: 10px;
+}
+
+.waitlist-fields-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.form-field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 640px) {
+  .form-field-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-input-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.form-input-wrap label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--wl-text-main);
+  margin-bottom: 6px;
+}
+
+.form-input-wrap input,
+.form-input-wrap select,
+.form-input-wrap textarea {
+  width: 100%;
+  height: 52px;
+  padding: 0 18px;
+  border: 1px solid var(--wl-border-light);
+  border-radius: 4px;
+  font-family: var(--wl-font-sans);
+  font-size: 14px;
+  color: var(--wl-text-main);
+  background: #ffffff;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-input-wrap textarea {
+  height: 90px;
+  padding: 14px 18px;
+  resize: vertical;
+}
+
+.form-input-wrap input:focus,
+.form-input-wrap select:focus,
+.form-input-wrap textarea:focus {
+  border-color: var(--wl-border-focus);
+  box-shadow: 0 0 0 1px var(--wl-border-focus);
+}
+
+.form-input-wrap input::placeholder,
+.form-input-wrap textarea::placeholder {
+  color: #999491;
+  font-weight: 400;
+}
+
+/* ==========================================================================
+   5 Dress Selection Tiles
+   ========================================================================== */
+
+.waitlist-dresses-section {
+  margin-bottom: 36px;
+}
+
+.dresses-section-header {
+  margin-bottom: 18px;
+}
+
+.dresses-helper-text {
+  font-size: 13px;
+  color: var(--wl-text-muted);
+  margin-top: 4px;
+}
+
+.dress-tiles-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+}
+
+@media (max-width: 900px) {
+  .dress-tiles-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 580px) {
+  .dress-tiles-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+}
+
+/* Individual Dress Card */
+.dress-tile-card {
+  border: 1.5px solid var(--wl-border-light);
+  border-radius: 6px;
+  background: var(--wl-card-bg);
+  padding: 10px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.dress-tile-card:hover {
+  border-color: #999491;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+}
+
+.dress-tile-card.is-selected {
+  border-color: var(--wl-border-focus);
+  background: #ffffff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08), 0 0 0 1px var(--wl-border-focus);
+}
+
+.dress-card-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  padding: 3px 6px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 2px;
+  color: var(--wl-text-main);
+  text-transform: uppercase;
+  z-index: 2;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.dress-card-check {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1.5px solid var(--wl-border-light);
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: transparent;
+  transition: all 0.2s ease;
+  z-index: 2;
+}
+
+.dress-tile-card.is-selected .dress-card-check {
+  background: var(--wl-btn-bg);
+  border-color: var(--wl-btn-bg);
+  color: #ffffff;
+}
+
+.dress-card-img-wrap {
+  width: 100%;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--wl-card-alt);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 10px;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.dress-card-img-wrap img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.12));
+  transition: transform 0.3s ease;
+}
+
+.dress-tile-card:hover .dress-card-img-wrap img {
+  transform: scale(1.04);
+}
+
+.dress-card-info {
+  margin-bottom: 8px;
+}
+
+.dress-card-title {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--wl-text-main);
+  margin: 0 0 4px 0;
+  min-height: 32px;
+}
+
+.dress-card-price {
+  font-size: 11px;
+  color: var(--wl-text-muted);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+/* Size Selector inside / under Card */
+.dress-size-wrap {
+  border-top: 1px solid var(--wl-border-light);
+  padding-top: 8px;
+  margin-top: 4px;
+}
+
+.dress-size-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--wl-text-muted);
+  margin-bottom: 6px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.dress-size-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.size-pill {
+  flex: 1;
+  min-width: 24px;
+  height: 24px;
+  border-radius: 2px;
+  border: 1px solid var(--wl-border-light);
+  background: #ffffff;
+  color: var(--wl-text-main);
+  font-size: 10px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.15s ease;
+}
+
+.size-pill:hover {
+  border-color: var(--wl-text-main);
+}
+
+.size-pill.is-active {
+  background: var(--wl-text-main);
+  color: #ffffff;
+  border-color: var(--wl-text-main);
+}
+
+/* Global / Default Size Selector */
+.global-size-row {
+  background: var(--wl-card-alt);
+  border: 1px solid var(--wl-border-light);
+  border-radius: 6px;
+  padding: 16px 20px;
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+@media (max-width: 640px) {
+  .global-size-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.global-size-desc {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--wl-text-main);
+}
+
+.global-size-desc span {
+  display: block;
+  font-size: 11px;
+  color: var(--wl-text-muted);
+  margin-top: 2px;
+}
+
+.global-size-select-box select {
+  height: 42px;
+  padding: 0 16px;
+  border: 1px solid var(--wl-border-light);
+  border-radius: 4px;
+  background: #ffffff;
+  font-family: var(--wl-font-sans);
+  font-size: 13px;
+  color: var(--wl-text-main);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* Submit Action Button */
+.waitlist-submit-wrap {
+  margin-top: 32px;
+}
+
+.waitlist-submit-btn {
+  width: 100%;
+  height: 54px;
+  background: var(--wl-btn-bg);
+  color: var(--wl-btn-text);
+  border: none;
+  border-radius: 4px;
+  font-family: var(--wl-font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.25s ease;
+}
+
+.waitlist-submit-btn:hover {
+  background: #000000;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+}
+
+.waitlist-submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.waitlist-disclaimer {
+  text-align: center;
+  font-size: 11px;
+  line-height: 1.5;
+  color: #8c8986;
+  margin-top: 14px;
+}
+
+.waitlist-disclaimer a {
+  color: var(--wl-text-main);
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   Success State Modal / View
+   ========================================================================== */
+
+.waitlist-success-view {
+  display: none;
+  text-align: center;
+  padding: 30px 20px;
+  animation: fadeIn 0.4s ease;
+}
+
+.waitlist-success-view.is-visible {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.success-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--wl-accent-gold);
+  background: rgba(179, 135, 40, 0.08);
+  padding: 6px 16px;
+  border-radius: 40px;
+  margin-bottom: 20px;
+}
+
+.success-title {
+  font-family: var(--wl-font-serif);
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 400;
+  margin: 0 0 12px 0;
+  color: var(--wl-text-main);
+}
+
+.success-msg {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--wl-text-muted);
+  max-width: 520px;
+  margin: 0 auto 32px auto;
+}
+
+.success-receipt-card {
+  max-width: 540px;
+  margin: 0 auto 36px auto;
+  background: var(--wl-card-alt);
+  border: 1px solid var(--wl-border-light);
+  border-radius: 8px;
+  padding: 24px;
+  text-align: left;
+}
+
+.receipt-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--wl-border-light);
+  font-size: 13px;
+}
+
+.receipt-row:last-child {
+  border-bottom: none;
+}
+
+.receipt-label {
+  color: var(--wl-text-muted);
+  font-weight: 500;
+}
+
+.receipt-val {
+  font-weight: 600;
+  color: var(--wl-text-main);
+  text-align: right;
+}
+
+.receipt-dresses-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--wl-border-light);
+}
+
+.receipt-dress-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.receipt-dress-item img {
+  width: 36px;
+  height: 48px;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 3px;
+  border: 1px solid var(--wl-border-light);
+}
+
+.success-actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.success-rack-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  background: var(--wl-btn-bg);
+  color: #fff;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+}
+
+.success-rack-btn:hover {
+  background: #000;
+  transform: translateY(-1px);
+}
