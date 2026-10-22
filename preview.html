@@ -6,7 +6,7 @@
   <title>TIKKI Bella — Atelier Runway & Dress Rack</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Italiana&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Syne:wght@400;600;700;800&family=Montserrat:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Allura&family=Bellefair&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Castoro+Titling&family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Serif+Display:ital@0;1&family=Forum&family=Great+Vibes&family=Italiana&family=Italianno&family=Jost:ital,wght@0,400;0,500;0,600;1,400&family=Marcellus&family=Montserrat:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@400;500;600;700&family=Parisienne&family=Pinyon+Script&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Prata&family=Spectral:ital,wght@0,400;0,600;1,400&family=Syne:wght@400;600;700;800&family=Tenor+Sans&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/header-morph.css">
   <link rel="stylesheet" href="assets/hanger-rack.css?v=studio">
   <style>
@@ -18,6 +18,13 @@
       --rack-eyebrow-font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
       --rack-subheading-font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
       --rack-tag-font: 'Plus Jakarta Sans', sans-serif;
+
+      --header-logo-scale: 1;
+      --header-tagline-scale: 1;
+      --rack-heading-scale: 1;
+      --rack-subheading-scale: 1;
+      --header-logo-spacing: -0.02em;
+      --rack-title-spacing: 0.04em;
     }
 
     body {
@@ -28,82 +35,500 @@
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     }
 
-    /* Live Font Switcher Bar (Desktop Demo Only, Hidden on Mobile) */
-    .preview-font-bar {
+    /* ==========================================================================
+       ATELIER FONT STUDIO & INTERACTIVE FONT LIBRARY
+       ========================================================================== */
+    .font-studio-launcher {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 99999;
+      background: rgba(20, 18, 22, 0.94);
+      color: #f7f6f2;
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .font-studio-launcher:hover {
+      transform: translateY(-2px);
+      background: #0d0c0e;
+      border-color: rgba(212, 175, 55, 0.7);
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.6);
+    }
+
+    .font-studio-launcher .sparkle {
+      color: #d4af37;
+    }
+
+    .font-studio-launcher .badge {
+      background: rgba(212, 175, 55, 0.18);
+      color: #e5c365;
+      font-size: 9.5px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* Backdrop */
+    .font-studio-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      z-index: 999998;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+
+    .font-studio-backdrop.is-active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Slide-out Drawer */
+    .font-studio-drawer {
       position: fixed;
       top: 0;
-      left: 0;
       right: 0;
+      bottom: 0;
+      width: 440px;
+      max-width: 95vw;
+      background: rgba(18, 16, 21, 0.96);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border-left: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: -16px 0 50px rgba(0, 0, 0, 0.6);
       z-index: 999999;
-      background: rgba(22, 20, 24, 0.95);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-      color: #f7f6f2;
-      padding: 6px 16px;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
+      flex-direction: column;
+      transform: translateX(100%);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 11px;
-      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
-      transition: transform 0.3s ease;
+      color: #f7f6f2;
+      user-select: none;
     }
 
-    .preview-font-bar.is-collapsed {
-      transform: translateY(-100%);
+    .font-studio-drawer.is-open {
+      transform: translateX(0);
     }
 
-    .preview-font-bar-toggle {
-      position: fixed;
-      top: 10px;
-      right: 16px;
-      z-index: 1000000;
-      background: rgba(24, 22, 26, 0.88);
-      color: #d4af37;
-      border: 1px solid rgba(212, 175, 55, 0.3);
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 10.5px;
-      font-weight: 600;
-      cursor: pointer;
-      backdrop-filter: blur(10px);
+    /* Drawer Header */
+    .font-studio-header {
+      padding: 18px 22px 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       display: flex;
-      align-items: center;
-      gap: 5px;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
     }
 
-    .font-bar-group {
+    .font-studio-title {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #d4af37;
       display: flex;
       align-items: center;
       gap: 6px;
+      margin-bottom: 3px;
     }
 
-    .font-bar-label {
-      color: #bfa36a;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      font-size: 10px;
+    .font-studio-subtitle {
+      font-size: 11.5px;
+      color: rgba(245, 242, 235, 0.6);
+      line-height: 1.4;
     }
 
-    .font-bar-select {
-      background: #2b2830;
+    .font-studio-close {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #f7f6f2;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .font-studio-close:hover {
+      background: rgba(255, 255, 255, 0.18);
       color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 4px;
-      padding: 3px 8px;
+    }
+
+    /* Target Element Picker (Pills) */
+    .font-target-section {
+      padding: 12px 22px;
+      background: rgba(255, 255, 255, 0.02);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .font-section-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #bfa36a;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .font-target-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .target-pill {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: rgba(245, 242, 235, 0.85);
+      padding: 5px 11px;
+      border-radius: 999px;
       font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .target-pill:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+    }
+
+    .target-pill.is-active {
+      background: #d4af37;
+      color: #161418;
+      border-color: #d4af37;
+      font-weight: 700;
+    }
+
+    /* Live Search & Custom Font Input */
+    .font-search-wrap {
+      padding: 12px 22px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .font-search-input-box {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .font-search-input-box input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: #fff;
+      padding: 9px 12px 9px 34px;
+      border-radius: 8px;
+      font-size: 12px;
       outline: none;
+      font-family: inherit;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .font-search-input-box input:focus {
+      border-color: #d4af37;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .font-search-icon {
+      position: absolute;
+      left: 11px;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.4);
+      pointer-events: none;
+    }
+
+    /* Category Filter Tabs */
+    .font-category-tabs {
+      display: flex;
+      padding: 8px 22px 0;
+      gap: 12px;
+      overflow-x: auto;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      scrollbar-width: none;
+    }
+
+    .font-category-tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .font-cat-tab {
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: rgba(245, 242, 235, 0.55);
+      padding: 6px 4px 8px;
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .font-cat-tab:hover {
+      color: #fff;
+    }
+
+    .font-cat-tab.is-active {
+      color: #d4af37;
+      border-bottom-color: #d4af37;
+    }
+
+    /* Font Cards List (Scrollable Library) */
+    .font-cards-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 14px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .font-cards-list::-webkit-scrollbar {
+      width: 5px;
+    }
+    .font-cards-list::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .font-cards-list::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 99px;
+    }
+
+    .font-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 12px 14px;
+      cursor: pointer;
+      transition: all 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+      position: relative;
+    }
+
+    .font-card:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(212, 175, 55, 0.4);
+      transform: translateY(-1px);
+    }
+
+    .font-card.is-selected {
+      background: rgba(212, 175, 55, 0.12);
+      border-color: #d4af37;
+      box-shadow: 0 0 16px rgba(212, 175, 55, 0.2);
+    }
+
+    .font-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .font-card-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: #f7f6f2;
+    }
+
+    .font-card-badge {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.08);
+      color: rgba(245, 242, 235, 0.7);
+    }
+
+    .font-card.is-selected .font-card-badge {
+      background: #d4af37;
+      color: #121014;
+    }
+
+    .font-card-preview {
+      font-size: 20px;
+      color: #f5f2eb;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin: 4px 0 2px;
+      line-height: 1.25;
+    }
+
+    .font-card-action {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 6px;
+      font-size: 10px;
+      color: rgba(245, 242, 235, 0.45);
+    }
+
+    .font-card-btn {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #d4af37;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .font-card:hover .font-card-btn,
+    .font-card.is-selected .font-card-btn {
+      background: #d4af37;
+      color: #121014;
+      border-color: #d4af37;
+    }
+
+    /* 1-Click Combos */
+    .pairing-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 14px 16px;
+      cursor: pointer;
+      transition: all 0.22s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .pairing-card:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(212, 175, 55, 0.5);
+    }
+
+    .pairing-title {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #d4af37;
+    }
+
+    .pairing-desc {
+      font-size: 11px;
+      color: rgba(245, 242, 235, 0.6);
+      line-height: 1.35;
+    }
+
+    .pairing-preview {
+      font-size: 18px;
+      color: #fff;
+      margin-top: 4px;
+    }
+
+    /* Live Sliders / Fine-Tuning Drawer Footer */
+    .font-studio-footer {
+      padding: 14px 22px;
+      background: rgba(14, 12, 16, 0.98);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .font-slider-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 11px;
+    }
+
+    .font-slider-label {
+      color: rgba(245, 242, 235, 0.7);
+      width: 100px;
+      flex-shrink: 0;
+    }
+
+    .font-slider-val {
+      color: #d4af37;
+      font-weight: 600;
+      width: 40px;
+      text-align: right;
+    }
+
+    .font-slider-input {
+      flex: 1;
+      accent-color: #d4af37;
       cursor: pointer;
     }
 
-    @media (max-width: 900px) {
-      .preview-font-bar,
-      .preview-font-bar-toggle {
-        display: none !important;
-      }
+    .font-copy-btn {
+      width: 100%;
+      background: rgba(212, 175, 55, 0.16);
+      border: 1px solid rgba(212, 175, 55, 0.45);
+      color: #d4af37;
+      padding: 9px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      margin-top: 4px;
+    }
+
+    .font-copy-btn:hover {
+      background: #d4af37;
+      color: #121014;
+    }
+
+    /* Toast */
+    .font-toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: rgba(20, 18, 22, 0.95);
+      border: 1px solid rgba(212, 175, 55, 0.5);
+      color: #f7f6f2;
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(12px);
+      z-index: 1000001;
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+    }
+
+    .font-toast.is-shown {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
     }
   </style>
 </head>
@@ -429,86 +854,446 @@
     </div>
   </section>
 
-  <!-- Live Preview Font Toolbar (Desktop Demo) -->
-  <button type="button" class="preview-font-bar-toggle" id="fontBarToggle" title="Toggle Font Customizer">
-    <span>✦</span><span>Fonts</span>
+  <!-- Floating Launcher Button -->
+  <button type="button" class="font-studio-launcher" id="fontStudioLauncher" title="Open Atelier Font Studio">
+    <span class="sparkle">✦</span>
+    <span>Font Library</span>
+    <span class="badge">Hit & Try</span>
   </button>
-  
-  <aside class="preview-font-bar is-collapsed" id="previewFontBar" aria-label="Live Font Studio">
-    <div class="font-bar-group">
-      <span class="font-bar-label">Logo:</span>
-      <select class="font-bar-select" id="selectLogoFont">
-        <option value="'Ragara', 'Italiana', Georgia, serif">Ragara (Brand Default)</option>
-        <option value="'Playfair Display', serif">Playfair Display</option>
-        <option value="'Cormorant Garamond', serif">Cormorant Garamond</option>
-        <option value="'Italiana', serif">Italiana</option>
-        <option value="'Cinzel', serif">Cinzel</option>
-        <option value="'Bodoni Moda', serif">Bodoni Moda</option>
-        <option value="'Syne', sans-serif">Syne</option>
-        <option value="'Montserrat', sans-serif">Montserrat</option>
-      </select>
+
+  <!-- Backdrop -->
+  <div class="font-studio-backdrop" id="fontStudioBackdrop"></div>
+
+  <!-- Slide-out Drawer Panel -->
+  <aside class="font-studio-drawer" id="fontStudioDrawer" aria-label="Atelier Font Studio">
+    <!-- Header -->
+    <div class="font-studio-header">
+      <div>
+        <div class="font-studio-title">
+          <span>✦</span>
+          <span>Atelier Font Studio</span>
+        </div>
+        <div class="font-studio-subtitle">Hit & try curated couture fonts or search any Google font live</div>
+      </div>
+      <button type="button" class="font-studio-close" id="fontStudioClose" aria-label="Close Font Studio">✕</button>
     </div>
 
-    <div class="font-bar-group">
-      <span class="font-bar-label">Tagline:</span>
-      <select class="font-bar-select" id="selectTaglineFont">
-        <option value="'Italiana', Georgia, serif">Italiana (Brand Default)</option>
-        <option value="'Cormorant Garamond', serif">Cormorant Garamond</option>
-        <option value="'Playfair Display', serif">Playfair Display</option>
-        <option value="'Plus Jakarta Sans', sans-serif">Plus Jakarta Sans</option>
-      </select>
+    <!-- Target Element Switcher -->
+    <div class="font-target-section">
+      <span class="font-section-label">1. Choose part to style:</span>
+      <div class="font-target-pills" id="targetPills">
+        <button type="button" class="target-pill is-active" data-target="logo">🏷️ Brand Logo</button>
+        <button type="button" class="target-pill" data-target="rack">👑 Rack Heading</button>
+        <button type="button" class="target-pill" data-target="tagline">📜 Tagline</button>
+        <button type="button" class="target-pill" data-target="tag">👗 Swing Tags</button>
+        <button type="button" class="target-pill" data-target="nav">🧭 Navigation</button>
+      </div>
     </div>
 
-    <div class="font-bar-group">
-      <span class="font-bar-label">Rack Heading:</span>
-      <select class="font-bar-select" id="selectRackHeadingFont">
-        <option value="'Ragara', 'Italiana', Georgia, serif">Ragara (Brand Default)</option>
-        <option value="'Playfair Display', serif">Playfair Display</option>
-        <option value="'Cormorant Garamond', serif">Cormorant Garamond</option>
-        <option value="'Cinzel', serif">Cinzel</option>
-        <option value="'Bodoni Moda', serif">Bodoni Moda</option>
-        <option value="'Italiana', serif">Italiana</option>
-      </select>
+    <!-- Live Search & Custom Font Input -->
+    <div class="font-search-wrap">
+      <div class="font-search-input-box">
+        <span class="font-search-icon">🔍</span>
+        <input type="text" id="fontSearchInput" placeholder="Search or try ANY font (e.g. Cinzel, Oswald, Allura)...">
+      </div>
     </div>
 
-    <div class="font-bar-group">
-      <span class="font-bar-label">Nav & Tags:</span>
-      <select class="font-bar-select" id="selectNavFont">
-        <option value="'Plus Jakarta Sans', sans-serif">Plus Jakarta Sans (Default)</option>
-        <option value="'Montserrat', sans-serif">Montserrat</option>
-        <option value="-apple-system, BlinkMacSystemFont, sans-serif">System Sans</option>
-      </select>
+    <!-- Category Filter Tabs -->
+    <div class="font-category-tabs" id="categoryTabs">
+      <button type="button" class="font-cat-tab is-active" data-cat="all">All (30+)</button>
+      <button type="button" class="font-cat-tab" data-cat="runway">🌟 Curated</button>
+      <button type="button" class="font-cat-tab" data-cat="serif">🏛️ Serifs</button>
+      <button type="button" class="font-cat-tab" data-cat="script">🖋️ Cursive</button>
+      <button type="button" class="font-cat-tab" data-cat="sans">⚡ Modern Sans</button>
+      <button type="button" class="font-cat-tab" data-cat="pairings">⭐ 1-Click Pairings</button>
+    </div>
+
+    <!-- Scrollable Font Cards List -->
+    <div class="font-cards-list" id="fontCardsList"></div>
+
+    <!-- Fine-Tuning Drawer Footer -->
+    <div class="font-studio-footer">
+      <div class="font-slider-row">
+        <span class="font-slider-label">Font Scale</span>
+        <input type="range" class="font-slider-input" id="scaleSlider" min="70" max="150" step="2" value="100">
+        <span class="font-slider-val" id="scaleVal">100%</span>
+      </div>
+      <div class="font-slider-row">
+        <span class="font-slider-label">Letter Spacing</span>
+        <input type="range" class="font-slider-input" id="spacingSlider" min="-2" max="10" step="0.5" value="0">
+        <span class="font-slider-val" id="spacingVal">0px</span>
+      </div>
+      <button type="button" class="font-copy-btn" id="copySettingsBtn">
+        <span>📋</span>
+        <span id="copyBtnText">Copy Current Font Name</span>
+      </button>
     </div>
   </aside>
+
+  <!-- Toast Notification -->
+  <div class="font-toast" id="fontToast">✓ Font Applied</div>
 
   <script src="assets/header-morph.js"></script>
   <script src="assets/hanger-rack.js?v=studio"></script>
   <script>
     (function() {
-      const toggle = document.getElementById('fontBarToggle');
-      const bar = document.getElementById('previewFontBar');
-      if (toggle && bar) {
-        toggle.addEventListener('click', () => {
-          bar.classList.toggle('is-collapsed');
+      // 1. Atelier Curated Font Library Database
+      const fontLibrary = [
+        { name: "Ragara", family: "'Ragara', 'Italiana', Georgia, serif", category: "runway", badge: "Brand Couture", sample: "TIKKI Bella" },
+        { name: "Italiana", family: "'Italiana', Georgia, serif", category: "runway", badge: "Milano Editorial", sample: "TIKKI Bella" },
+        { name: "Playfair Display", family: "'Playfair Display', serif", category: "runway", badge: "Classic Luxury", sample: "TIKKI Bella" },
+        { name: "Cormorant Garamond", family: "'Cormorant Garamond', serif", category: "runway", badge: "Atelier Heritage", sample: "TIKKI Bella" },
+        { name: "Bodoni Moda", family: "'Bodoni Moda', serif", category: "runway", badge: "Vogue Vogue", sample: "TIKKI Bella" },
+        { name: "Cinzel", family: "'Cinzel', serif", category: "runway", badge: "Roman Imperial", sample: "TIKKI BELLA" },
+        { name: "Syne", family: "'Syne', sans-serif", category: "runway", badge: "Parisian Modern", sample: "TIKKI Bella" },
+        { name: "Tenor Sans", family: "'Tenor Sans', sans-serif", category: "runway", badge: "Sleek Minimal", sample: "TIKKI BELLA" },
+        
+        { name: "Prata", family: "'Prata', serif", category: "serif", badge: "Didone Elegance", sample: "TIKKI Bella" },
+        { name: "Marcellus", family: "'Marcellus', serif", category: "serif", badge: "Trajan Classical", sample: "TIKKI BELLA" },
+        { name: "Forum", family: "'Forum', serif", category: "serif", badge: "Renaissance", sample: "TIKKI Bella" },
+        { name: "DM Serif Display", family: "'DM Serif Display', serif", category: "serif", badge: "Sharp Editorial", sample: "TIKKI Bella" },
+        { name: "Castoro Titling", family: "'Castoro Titling', serif", category: "serif", badge: "Majestic Titling", sample: "TIKKI BELLA" },
+        { name: "Spectral", family: "'Spectral', serif", category: "serif", badge: "Literary Contrast", sample: "TIKKI Bella" },
+        { name: "Bellefair", family: "'Bellefair', serif", category: "serif", badge: "Slender Tall", sample: "TIKKI Bella" },
+        { name: "Cinzel Decorative", family: "'Cinzel Decorative', serif", category: "serif", badge: "Royal Swashes", sample: "TIKKI BELLA" },
+
+        { name: "Pinyon Script", family: "'Pinyon Script', cursive", category: "script", badge: "French Signature", sample: "Tikki Bella" },
+        { name: "Great Vibes", family: "'Great Vibes', cursive", category: "script", badge: "Fluid Calligraphy", sample: "Tikki Bella" },
+        { name: "Alex Brush", family: "'Alex Brush', cursive", category: "script", badge: "Modern Brush", sample: "Tikki Bella" },
+        { name: "Parisienne", family: "'Parisienne', cursive", category: "script", badge: "Parisian Romantic", sample: "Tikki Bella" },
+        { name: "Italianno", family: "'Italianno', cursive", category: "script", badge: "Slender Cursive", sample: "Tikki Bella" },
+        { name: "Allura", family: "'Allura', cursive", category: "script", badge: "Haute Couture", sample: "Tikki Bella" },
+
+        { name: "Plus Jakarta Sans", family: "'Plus Jakarta Sans', sans-serif", category: "sans", badge: "Clean Modern", sample: "TIKKI Bella" },
+        { name: "Montserrat", family: "'Montserrat', sans-serif", category: "sans", badge: "Architectural", sample: "TIKKI BELLA" },
+        { name: "Jost", family: "'Jost', sans-serif", category: "sans", badge: "Futura Inspired", sample: "TIKKI Bella" },
+        { name: "Outfit", family: "'Outfit', sans-serif", category: "sans", badge: "Contemporary", sample: "TIKKI Bella" }
+      ];
+
+      // Curated 1-Click Fashion Pairings
+      const fashionPairings = [
+        {
+          name: "✨ The Parisian Runway (Brand Default)",
+          desc: "Bespoke Ragara wordmark + Italiana cursive tagline + Plus Jakarta clean UI",
+          logo: "'Ragara', 'Italiana', Georgia, serif",
+          tagline: "'Italiana', Georgia, serif",
+          rack: "'Ragara', 'Italiana', Georgia, 'Times New Roman', serif",
+          tag: "'Plus Jakarta Sans', sans-serif",
+          nav: "'Plus Jakarta Sans', sans-serif"
+        },
+        {
+          name: "🖤 Vogue High Editorial",
+          desc: "Bodoni Moda sharp contrast logo + Pinyon Script signature tagline + Montserrat body",
+          logo: "'Bodoni Moda', serif",
+          tagline: "'Pinyon Script', cursive",
+          rack: "'Bodoni Moda', serif",
+          tag: "'Montserrat', sans-serif",
+          nav: "'Montserrat', sans-serif"
+        },
+        {
+          name: "👑 Imperial Royal Heritage",
+          desc: "Cinzel Roman imperial titles + Cormorant Garamond fine literature + Outfit clean details",
+          logo: "'Cinzel', serif",
+          tagline: "'Cormorant Garamond', serif",
+          rack: "'Cinzel', serif",
+          tag: "'Outfit', sans-serif",
+          nav: "'Outfit', sans-serif"
+        },
+        {
+          name: "⚡ Avant-Garde Atelier",
+          desc: "Syne high-fashion display logo + Italiana classic subheadings + Jost geometric UI",
+          logo: "'Syne', sans-serif",
+          tagline: "'Italiana', serif",
+          rack: "'Syne', sans-serif",
+          tag: "'Jost', sans-serif",
+          nav: "'Jost', sans-serif"
+        },
+        {
+          name: "🕊️ Romantic Couture",
+          desc: "Playfair Display classic luxury + Great Vibes calligraphy tagline + Plus Jakarta base",
+          logo: "'Playfair Display', serif",
+          tagline: "'Great Vibes', cursive",
+          rack: "'Playfair Display', serif",
+          tag: "'Plus Jakarta Sans', sans-serif",
+          nav: "'Plus Jakarta Sans', sans-serif"
+        },
+        {
+          name: "🏛️ Milano Minimalist",
+          desc: "Tenor Sans sleek proportion + Marcellus classical roman title + Plus Jakarta accents",
+          logo: "'Tenor Sans', sans-serif",
+          tagline: "'Marcellus', serif",
+          rack: "'Tenor Sans', sans-serif",
+          tag: "'Plus Jakarta Sans', sans-serif",
+          nav: "'Plus Jakarta Sans', sans-serif"
+        }
+      ];
+
+      // 2. State & Elements
+      let currentTarget = "logo"; // logo | rack | tagline | tag | nav
+      let currentCategory = "all";
+      let appliedFonts = {
+        logo: "'Ragara', 'Italiana', Georgia, serif",
+        tagline: "'Italiana', Georgia, serif",
+        rack: "'Ragara', 'Italiana', Georgia, 'Times New Roman', serif",
+        tag: "'Plus Jakarta Sans', sans-serif",
+        nav: "'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif"
+      };
+
+      const launcher = document.getElementById('fontStudioLauncher');
+      const drawer = document.getElementById('fontStudioDrawer');
+      const backdrop = document.getElementById('fontStudioBackdrop');
+      const closeBtn = document.getElementById('fontStudioClose');
+      const searchInput = document.getElementById('fontSearchInput');
+      const cardsList = document.getElementById('fontCardsList');
+      const targetPills = document.querySelectorAll('.target-pill');
+      const catTabs = document.querySelectorAll('.font-cat-tab');
+      const scaleSlider = document.getElementById('scaleSlider');
+      const scaleVal = document.getElementById('scaleVal');
+      const spacingSlider = document.getElementById('spacingSlider');
+      const spacingVal = document.getElementById('spacingVal');
+      const copyBtn = document.getElementById('copySettingsBtn');
+      const copyBtnText = document.getElementById('copyBtnText');
+      const toast = document.getElementById('fontToast');
+
+      const root = document.documentElement;
+
+      // 3. Drawer Toggle
+      function openDrawer() {
+        drawer.classList.add('is-open');
+        backdrop.classList.add('is-active');
+      }
+
+      function closeDrawer() {
+        drawer.classList.remove('is-open');
+        backdrop.classList.remove('is-active');
+      }
+
+      launcher?.addEventListener('click', openDrawer);
+      closeBtn?.addEventListener('click', closeDrawer);
+      backdrop?.addEventListener('click', closeDrawer);
+
+      // 4. Target Switching
+      targetPills.forEach(pill => {
+        pill.addEventListener('click', () => {
+          targetPills.forEach(p => p.classList.remove('is-active'));
+          pill.classList.add('is-active');
+          currentTarget = pill.dataset.target;
+          renderCards();
+        });
+      });
+
+      // 5. Category Switching
+      catTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          catTabs.forEach(t => t.classList.remove('is-active'));
+          tab.classList.add('is-active');
+          currentCategory = tab.dataset.cat;
+          renderCards();
+        });
+      });
+
+      // 6. Search Input
+      searchInput?.addEventListener('input', () => {
+        renderCards();
+      });
+
+      // 7. Dynamic Google Font Ingestion
+      function loadGoogleFont(fontName) {
+        const cleanName = fontName.trim().replace(/\s+/g, '+');
+        const linkId = `gfont-dynamic-${cleanName.toLowerCase()}`;
+        if (!document.getElementById(linkId)) {
+          const link = document.createElement('link');
+          link.id = linkId;
+          link.rel = 'stylesheet';
+          link.href = `https://fonts.googleapis.com/css2?family=${cleanName}:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap`;
+          document.head.appendChild(link);
+        }
+      }
+
+      // 8. Apply Font to Target
+      function applyFont(fontName, familyString) {
+        appliedFonts[currentTarget] = familyString;
+
+        switch(currentTarget) {
+          case 'logo':
+            root.style.setProperty('--header-logo-font', familyString);
+            break;
+          case 'rack':
+            root.style.setProperty('--rack-title-font', familyString);
+            break;
+          case 'tagline':
+            root.style.setProperty('--header-tagline-font', familyString);
+            break;
+          case 'tag':
+            root.style.setProperty('--rack-tag-font', familyString);
+            break;
+          case 'nav':
+            root.style.setProperty('--header-nav-font', familyString);
+            root.style.setProperty('--rack-eyebrow-font', familyString);
+            root.style.setProperty('--rack-subheading-font', familyString);
+            break;
+        }
+
+        showToast(`✓ Applied "${fontName}" to ${currentTarget.toUpperCase()}`);
+        renderCards();
+      }
+
+      // 9. Toast Helper
+      function showToast(msg) {
+        if (!toast) return;
+        toast.textContent = msg;
+        toast.classList.add('is-shown');
+        setTimeout(() => {
+          toast.classList.remove('is-shown');
+        }, 1800);
+      }
+
+      // 10. Render Font Cards List
+      function renderCards() {
+        if (!cardsList) return;
+        cardsList.innerHTML = '';
+
+        // If in Pairings Tab
+        if (currentCategory === 'pairings') {
+          fashionPairings.forEach(combo => {
+            const card = document.createElement('div');
+            card.className = 'pairing-card';
+            card.innerHTML = `
+              <div class="pairing-title">${combo.name}</div>
+              <div class="pairing-desc">${combo.desc}</div>
+              <div class="pairing-preview" style="font-family: ${combo.logo};">TIKKI Bella</div>
+            `;
+            card.addEventListener('click', () => {
+              root.style.setProperty('--header-logo-font', combo.logo);
+              root.style.setProperty('--header-tagline-font', combo.tagline);
+              root.style.setProperty('--rack-title-font', combo.rack);
+              root.style.setProperty('--rack-tag-font', combo.tag);
+              root.style.setProperty('--header-nav-font', combo.nav);
+              root.style.setProperty('--rack-eyebrow-font', combo.nav);
+              root.style.setProperty('--rack-subheading-font', combo.nav);
+
+              appliedFonts.logo = combo.logo;
+              appliedFonts.tagline = combo.tagline;
+              appliedFonts.rack = combo.rack;
+              appliedFonts.tag = combo.tag;
+              appliedFonts.nav = combo.nav;
+
+              showToast(`✓ Applied "${combo.name}" across all parts`);
+            });
+            cardsList.appendChild(card);
+          });
+          return;
+        }
+
+        const query = (searchInput?.value || '').trim().toLowerCase();
+
+        const filtered = fontLibrary.filter(f => {
+          const matchCat = (currentCategory === 'all') || (f.category === currentCategory);
+          const matchQuery = !query || f.name.toLowerCase().includes(query) || f.category.toLowerCase().includes(query);
+          return matchCat && matchQuery;
+        });
+
+        // If user typed something not in our library, offer dynamic Google Font load
+        if (query && !filtered.some(f => f.name.toLowerCase() === query)) {
+          const dynamicName = searchInput.value.trim();
+          const dynamicCard = document.createElement('div');
+          dynamicCard.className = 'font-card';
+          dynamicCard.innerHTML = `
+            <div class="font-card-top">
+              <span class="font-card-name">Try Google Font: "${dynamicName}"</span>
+              <span class="font-card-badge" style="background: #d4af37; color: #121014;">Custom Web Font</span>
+            </div>
+            <div class="font-card-preview" style="font-family: sans-serif;">TIKKI Bella</div>
+            <div class="font-card-action">
+              <span>Dynamic Google Font Fetch</span>
+              <button type="button" class="font-card-btn">Fetch & Try</button>
+            </div>
+          `;
+          dynamicCard.addEventListener('click', () => {
+            loadGoogleFont(dynamicName);
+            const familyStr = `'${dynamicName}', serif`;
+            setTimeout(() => {
+              applyFont(dynamicName, familyStr);
+            }, 100);
+          });
+          cardsList.appendChild(dynamicCard);
+        }
+
+        // Render filtered cards
+        filtered.forEach(font => {
+          const isSelected = appliedFonts[currentTarget] && appliedFonts[currentTarget].includes(font.name);
+          const card = document.createElement('div');
+          card.className = `font-card ${isSelected ? 'is-selected' : ''}`;
+
+          let sampleText = "TIKKI Bella";
+          if (currentTarget === 'rack') sampleText = "House of Royals";
+          if (currentTarget === 'tagline') sampleText = "Atelier Couture & Ready-to-Wear";
+          if (currentTarget === 'tag') sampleText = "LOOK 01 • $890";
+          if (currentTarget === 'nav') sampleText = "ATELIER • RUNWAY";
+
+          card.innerHTML = `
+            <div class="font-card-top">
+              <span class="font-card-name">${font.name}</span>
+              <span class="font-card-badge">${font.badge}</span>
+            </div>
+            <div class="font-card-preview" style="font-family: ${font.family};">${sampleText}</div>
+            <div class="font-card-action">
+              <span>${isSelected ? '✓ Current Active Font' : 'Click to preview'}</span>
+              <button type="button" class="font-card-btn">${isSelected ? 'Active' : 'Hit & Try'}</button>
+            </div>
+          `;
+
+          card.addEventListener('click', () => {
+            applyFont(font.name, font.family);
+          });
+
+          cardsList.appendChild(card);
         });
       }
 
-      const root = document.documentElement;
-      document.getElementById('selectLogoFont')?.addEventListener('change', (e) => {
-        root.style.setProperty('--header-logo-font', e.target.value);
+      // 11. Sliders Handling
+      scaleSlider?.addEventListener('input', (e) => {
+        const val = e.target.value;
+        scaleVal.textContent = `${val}%`;
+        const ratio = (val / 100).toFixed(2);
+        if (currentTarget === 'logo') {
+          root.style.setProperty('--header-logo-scale', ratio);
+        } else if (currentTarget === 'rack') {
+          root.style.setProperty('--rack-heading-scale', ratio);
+        } else if (currentTarget === 'tagline') {
+          root.style.setProperty('--header-tagline-scale', ratio);
+        }
       });
-      document.getElementById('selectTaglineFont')?.addEventListener('change', (e) => {
-        root.style.setProperty('--header-tagline-font', e.target.value);
+
+      spacingSlider?.addEventListener('input', (e) => {
+        const val = e.target.value;
+        spacingVal.textContent = `${val}px`;
+        const px = `${val}px`;
+        if (currentTarget === 'logo') {
+          root.style.setProperty('--header-logo-spacing', px);
+          const el = document.getElementById('BrandMorphLogo');
+          if (el) el.style.letterSpacing = px;
+        } else if (currentTarget === 'rack') {
+          root.style.setProperty('--rack-title-spacing', px);
+          const el = document.querySelector('.hanger-rack-title');
+          if (el) el.style.letterSpacing = px;
+        }
       });
-      document.getElementById('selectRackHeadingFont')?.addEventListener('change', (e) => {
-        root.style.setProperty('--rack-title-font', e.target.value);
+
+      // 12. Copy Current Font Setting
+      copyBtn?.addEventListener('click', () => {
+        const currentFam = appliedFonts[currentTarget] || 'Playfair Display';
+        navigator.clipboard.writeText(currentFam).then(() => {
+          copyBtnText.textContent = '✓ Copied to Clipboard!';
+          showToast(`Copied: ${currentFam}`);
+          setTimeout(() => {
+            copyBtnText.textContent = 'Copy Current Font Name';
+          }, 1800);
+        });
       });
-      document.getElementById('selectNavFont')?.addEventListener('change', (e) => {
-        root.style.setProperty('--header-nav-font', e.target.value);
-        root.style.setProperty('--rack-eyebrow-font', e.target.value);
-        root.style.setProperty('--rack-subheading-font', e.target.value);
-        root.style.setProperty('--rack-tag-font', e.target.value);
-      });
+
+      // Initial Render
+      renderCards();
     })();
   </script>
 </body>
