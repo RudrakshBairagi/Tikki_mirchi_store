@@ -117,7 +117,7 @@
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
-  gap: 28px;
+  gap: 12px;
   width: max-content;
   min-width: max-content;
   /* Generous padding ensures garments NEVER clip against viewport edges */
@@ -217,7 +217,7 @@
 
 .hanger-item {
   position: relative;
-  width: var(--rack-item-width, 170px);
+  width: var(--rack-item-width, 130px);
   flex: 0 0 auto;
   /* Anchor rotation at top center (the hook contact point) */
   transform-origin: 50% 0px;
@@ -243,38 +243,64 @@
 }
 
 /* ==========================================================================
-   Wire Hanger SVG (Perspectival Hanger for Side & Front Views)
+   Wire Hanger SVG: Distinct Side-Profile & Front-Profile Dual Engine
    ========================================================================== */
 
 .hanger-wire-wrapper {
   position: relative;
-  width: 145px;
+  width: 52px;
   height: 90px;
   color: var(--rack-hanger-color, #686f78);
-  margin-bottom: -40px; /* Hanger shoulders slide inside dress neckline */
+  margin-bottom: -40px; /* Hanger neck seamlessly meets dress collar */
   z-index: 2;
   pointer-events: none;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.14));
   transform-origin: 50% 12px;
-  transform: scaleX(0.78) rotateY(-18deg);
-  transition: transform 0.52s cubic-bezier(0.2, 0.8, 0.2, 1), color 0.4s ease, width 0.5s ease;
+  transition: width 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), color 0.4s ease;
+}
+
+.hanger-wire-svg {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+  transform-origin: 50% 12px;
+}
+
+/* Distinct Side View Hanger: slender neck & contour (NO wide wings at rest!) */
+.hanger-wire-side {
+  width: 52px;
+  transform: translateX(-50%) rotateY(0deg);
+  opacity: 1;
+  transition: opacity 0.38s ease, transform 0.48s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Distinct Front View Hanger: wide wire shoulders (only revealed on hover!) */
+.hanger-wire-front {
+  width: 195px;
+  transform: translateX(-50%) rotateY(40deg);
+  opacity: 0;
+  transition: opacity 0.38s ease, transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .hanger-item.is-hovered .hanger-wire-wrapper,
 .hanger-item.is-popped-out .hanger-wire-wrapper {
   width: 195px;
   color: #1a1c20;
-  transform: scaleX(1) rotateY(0deg);
 }
 
-.hanger-wire-svg {
-  width: 100%;
-  height: 100%;
-  display: block;
+.hanger-item.is-hovered .hanger-wire-side,
+.hanger-item.is-popped-out .hanger-wire-side {
+  opacity: 0;
+  transform: translateX(-50%) rotateY(-40deg);
 }
 
-.hanger-wire-svg .hook-curve {
-  transition: stroke 0.3s ease;
+.hanger-item.is-hovered .hanger-wire-front,
+.hanger-item.is-popped-out .hanger-wire-front {
+  opacity: 1;
+  transform: translateX(-50%) rotateY(0deg);
 }
 
 /* ==========================================================================
