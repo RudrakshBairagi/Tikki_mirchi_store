@@ -1,6 +1,6 @@
 /**
  * TIKKI BELLA — ATELIER WAITLIST JS
- * Multi-product tile selection, size mapping, client-side validation, and reservation receipts.
+ * Multi-dress selection, Indian sizing standard, Indian contact & address fields, and reservation receipt.
  */
 
 (function () {
@@ -12,102 +12,116 @@
     const form = document.getElementById('atelierWaitlistForm');
     const successView = document.getElementById('waitlistSuccessView');
     const dressCards = document.querySelectorAll('.dress-tile-card');
-    const globalSizeSelect = document.getElementById('globalSizeSelect');
+    const sizePills = document.querySelectorAll('.size-select-pill');
+    const customMeasureRow = document.getElementById('customMeasurementsRow');
+    const customMeasureInput = document.getElementById('customMeasurementsInput');
     const submitBtn = document.getElementById('waitlistSubmitBtn');
 
-    // Dresses state: map of index -> { selected: boolean, size: string, title: string, img: string }
+    // Dresses state: map of index -> { selected: boolean, title: string, price: string, img: string }
     const selectedDresses = {};
 
     dressCards.forEach((card) => {
       const index = card.dataset.index;
       const title = card.dataset.title;
+      const price = card.dataset.price;
       const img = card.dataset.img;
-      const defaultSize = card.querySelector('.size-pill.is-active')?.dataset.size || 'M';
 
       // Initialize
       selectedDresses[index] = {
         selected: card.classList.contains('is-selected'),
-        size: defaultSize,
         title: title,
+        price: price,
         img: img
       };
 
-      // Toggle card selection
-      card.addEventListener('click', (e) => {
-        // If clicking on a size pill, handle size selection without deselecting card
-        if (e.target.classList.contains('size-pill')) {
-          e.stopPropagation();
-          const sizePills = card.querySelectorAll('.size-pill');
-          sizePills.forEach((p) => p.classList.remove('is-active'));
-          e.target.classList.add('is-active');
-
-          const newSize = e.target.dataset.size;
-          selectedDresses[index].size = newSize;
-
-          // Ensure card is also selected when choosing size
-          if (!card.classList.contains('is-selected')) {
-            card.classList.add('is-selected');
-            selectedDresses[index].selected = true;
-          }
-          updateHiddenInput();
-          return;
-        }
-
-        // Click on the card itself toggles selection
+      // Click on dress card toggles selection
+      card.addEventListener('click', () => {
         card.classList.toggle('is-selected');
         selectedDresses[index].selected = card.classList.contains('is-selected');
-        updateHiddenInput();
+        updateHiddenSummary();
       });
     });
 
-    // Global Size Select: updates all selected dresses' sizes
-    globalSizeSelect?.addEventListener('change', (e) => {
-      const globalSize = e.target.value;
-      if (!globalSize) return;
+    // Single Primary Size Selection
+    let currentSelectedSize = 'M (UK 10 / Bust 36")';
 
-      dressCards.forEach((card) => {
-        const index = card.dataset.index;
-        const targetPill = card.querySelector(`.size-pill[data-size="${globalSize}"]`);
-        if (targetPill) {
-          card.querySelectorAll('.size-pill').forEach((p) => p.classList.remove('is-active'));
-          targetPill.classList.add('is-active');
-          selectedDresses[index].size = globalSize;
+    sizePills.forEach((pill) => {
+      pill.addEventListener('click', () => {
+        sizePills.forEach((p) => p.classList.remove('is-active'));
+        pill.classList.add('is-active');
+        currentSelectedSize = pill.dataset.size;
+
+        const sizeInput = document.getElementById('waitlistSizeInput');
+        if (sizeInput) sizeInput.value = currentSelectedSize;
+
+        // Toggle custom measurement input if custom selected
+        if (pill.dataset.isCustom === 'true') {
+          customMeasureRow?.classList.add('is-open');
+        } else {
+          customMeasureRow?.classList.remove('is-open');
         }
+
+        updateHiddenSummary();
       });
-      updateHiddenInput();
     });
 
-    function updateHiddenInput() {
-      const hiddenInput = document.getElementById('selectedDressesSummary');
+    function updateHiddenSummary() {
+      const hiddenDressesInput = document.getElementById('selectedDressesSummary');
       const hiddenNotes = document.getElementById('contactBodySummary');
 
       const chosen = Object.values(selectedDresses).filter((d) => d.selected);
-      const summaryList = chosen.map((d) => `${d.title} (Size: ${d.size})`).join(', ');
+      const summaryList = chosen.map((d) => `${d.title} [${d.price}]`).join(', ');
 
-      if (hiddenInput) {
-        hiddenInput.value = summaryList || 'No dresses explicitly selected';
+      if (hiddenDressesInput) {
+        hiddenDressesInput.value = summaryList || 'No dresses explicitly selected';
       }
 
       if (hiddenNotes) {
         const city = document.getElementById('waitlistCity')?.value || '';
         const state = document.getElementById('waitlistState')?.value || '';
+        const pincode = document.getElementById('waitlistPincode')?.value || '';
         const phone = document.getElementById('waitlistPhone')?.value || '';
-        hiddenNotes.value = `Waitlist Reservation:\nCity: ${city}\nState: ${state}\nPhone: ${phone}\nSelected Dresses: ${summaryList}`;
+        const customNotes = customMeasureInput?.value || '';
+
+        hiddenNotes.value = `Waitlist Reservation Details:\nLocation: ${city}, ${state} - PIN: ${pincode}\nPhone: +91 ${phone}\nSize: ${currentSelectedSize}${customNotes ? ` (Measurements: ${customNotes})` : ''}\nSelected Looks:\n${summaryList}`;
       }
     }
 
     // Handle Form Submit
     form?.addEventListener('submit', (e) => {
-      // Check if at least 1 dress is selected
       const chosen = Object.values(selectedDresses).filter((d) => d.selected);
       if (chosen.length === 0) {
         e.preventDefault();
-        alert('Please select at least one dress from our 5 runway looks to join the waitlist.');
+        alert('Please select at least one gown from our 5 runway looks to join the waitlist.');
         document.querySelector('.waitlist-dresses-section')?.scrollIntoView({ behavior: 'smooth' });
         return;
       }
 
-      updateHiddenInput();
+      // Validate 10-digit Indian phone
+      const phoneInput = document.getElementById('waitlistPhone');
+      if (phoneInput && phoneInput.value) {
+        const cleanPhone = phoneInput.value.replace(/[^0-9]/g, '');
+        if (cleanPhone.length < 10) {
+          e.preventDefault();
+          alert('Please enter a valid 10-digit Indian mobile number for WhatsApp VIP drop notifications.');
+          phoneInput.focus();
+          return;
+        }
+      }
+
+      // Validate 6-digit Indian PIN Code
+      const pinInput = document.getElementById('waitlistPincode');
+      if (pinInput && pinInput.value) {
+        const cleanPin = pinInput.value.replace(/[^0-9]/g, '');
+        if (cleanPin.length !== 6) {
+          e.preventDefault();
+          alert('Please enter a valid 6-digit Indian PIN code.');
+          pinInput.focus();
+          return;
+        }
+      }
+
+      updateHiddenSummary();
 
       // If running inside standalone preview or non-Shopify submission, render immediate success view
       if (!form.getAttribute('action') || form.getAttribute('action') === '#' || form.getAttribute('action') === '') {
@@ -118,7 +132,7 @@
 
         setTimeout(() => {
           showConfirmation();
-        }, 600);
+        }, 500);
       }
     });
 
@@ -128,12 +142,12 @@
       const phone = document.getElementById('waitlistPhone')?.value || '';
       const city = document.getElementById('waitlistCity')?.value || '';
       const state = document.getElementById('waitlistState')?.value || '';
+      const pincode = document.getElementById('waitlistPincode')?.value || '';
       const chosen = Object.values(selectedDresses).filter((d) => d.selected);
+      const customNotes = customMeasureInput?.value || '';
 
-      // Generate random reservation code
-      const code = 'TB-WL-' + Math.floor(100000 + Math.random() * 900000);
+      const code = 'TB-IN-' + Math.floor(100000 + Math.random() * 900000);
 
-      // Save to localStorage
       try {
         localStorage.setItem(
           'tikki_bella_waitlist_data',
@@ -141,16 +155,19 @@
             code,
             name,
             email,
-            phone,
+            phone: '+91 ' + phone,
             city,
             state,
+            pincode,
+            size: currentSelectedSize,
+            customNotes,
             dresses: chosen,
             date: new Date().toISOString()
           })
         );
       } catch (err) {}
 
-      // Populate Receipt
+      // Populate Receipt Card
       const receiptCard = document.getElementById('receiptDetails');
       if (receiptCard) {
         receiptCard.innerHTML = `
@@ -163,15 +180,19 @@
             <span class="receipt-val">${escapeHtml(name)}</span>
           </div>
           <div class="receipt-row">
-            <span class="receipt-label">Contact</span>
-            <span class="receipt-val">${escapeHtml(email)}<br><small style="color:#777;">${escapeHtml(phone)}</small></span>
+            <span class="receipt-label">WhatsApp Contact</span>
+            <span class="receipt-val">+91 ${escapeHtml(phone)}<br><small style="color:#777;">${escapeHtml(email)}</small></span>
           </div>
           <div class="receipt-row">
-            <span class="receipt-label">Location</span>
-            <span class="receipt-val">${escapeHtml(city)}, ${escapeHtml(state)}</span>
+            <span class="receipt-label">Delivery Region</span>
+            <span class="receipt-val">${escapeHtml(city)}, ${escapeHtml(state)} — ${escapeHtml(pincode)}</span>
+          </div>
+          <div class="receipt-row">
+            <span class="receipt-label">Selected Size</span>
+            <span class="receipt-val">${escapeHtml(currentSelectedSize)}${customNotes ? `<br><small style="color:#777;">(${escapeHtml(customNotes)})</small>` : ''}</span>
           </div>
           <div class="receipt-dresses-list">
-            <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#888;">Reserved Pieces (${chosen.length})</div>
+            <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#888;">Reserved Runway Looks (${chosen.length})</div>
             ${chosen
               .map(
                 (d) => `
@@ -179,7 +200,7 @@
                 <img src="${d.img}" alt="${escapeHtml(d.title)}">
                 <div>
                   <div style="font-weight:600;font-size:13px;color:#111;">${escapeHtml(d.title)}</div>
-                  <div style="font-size:11px;color:#777;">Size: <strong>${escapeHtml(d.size)}</strong> • Hand-crafted Atelier</div>
+                  <div style="font-size:11px;color:#b38728;font-weight:600;">${escapeHtml(d.price)} • Hand-crafted Atelier</div>
                 </div>
               </div>
             `

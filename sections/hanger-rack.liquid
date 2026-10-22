@@ -120,8 +120,12 @@
 >
   <div class="hanger-rack-container">
     {%- if section.settings.show_waitlist_buttons != false -%}
+      {%- assign default_wl_link = '#atelierWaitlistSection' -%}
+      {%- if section.settings.waitlist_url != blank -%}
+        {%- assign default_wl_link = section.settings.waitlist_url -%}
+      {%- endif -%}
       <div class="rack-waitlist-btn-wrap-top">
-        <a href="{{ section.settings.waitlist_url | default: '/pages/waitlist' }}" class="rack-waitlist-btn" title="Join the exclusive atelier waitlist">
+        <a href="{{ default_wl_link }}" class="rack-waitlist-btn" title="Join the exclusive atelier waitlist">
           <span class="btn-sparkle">✦</span>
           <span>{{ section.settings.waitlist_btn_text | default: 'Join the waitlist' }}</span>
           <span class="btn-arrow">⟶</span>
@@ -289,8 +293,12 @@
       </div>
 
       {%- if section.settings.show_waitlist_buttons != false -%}
+        {%- assign default_wl_link = '#atelierWaitlistSection' -%}
+        {%- if section.settings.waitlist_url != blank -%}
+          {%- assign default_wl_link = section.settings.waitlist_url -%}
+        {%- endif -%}
         <div class="rack-waitlist-btn-wrap-bottom">
-          <a href="{{ section.settings.waitlist_url | default: '/pages/waitlist' }}" class="rack-waitlist-btn" title="Join the exclusive atelier waitlist">
+          <a href="{{ default_wl_link }}" class="rack-waitlist-btn" title="Join the exclusive atelier waitlist">
             <span class="btn-sparkle">✦</span>
             <span>{{ section.settings.waitlist_btn_text | default: 'Join the waitlist' }}</span>
             <span class="btn-arrow">⟶</span>

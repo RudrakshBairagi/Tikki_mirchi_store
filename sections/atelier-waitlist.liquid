@@ -1,7 +1,7 @@
 {{ 'atelier-waitlist.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'atelier-waitlist.js' | asset_url }}" defer="defer"></script>
 
-<div class="waitlist-page" id="AtelierWaitlist-{{ section.id }}" style="--wl-bg: {{ section.settings.bg_color | default: '#ffffff' }};">
+<div class="waitlist-page" id="atelierWaitlistSection" style="--wl-bg: {{ section.settings.bg_color | default: '#ffffff' }};">
   <main class="waitlist-main-wrap">
     
     <!-- Hero Header -->
@@ -28,7 +28,7 @@
             <div class="success-badge">✦ Reservation Confirmed ✦</div>
             <h2 class="success-title">You're on the exclusive waitlist!</h2>
             <p class="success-msg">
-              Thank you for reserving. We have registered your inquiry and will email priority drop access directly to you.
+              Thank you for reserving. We have registered your inquiry and will send priority drop access directly via WhatsApp and email.
             </p>
             <div class="success-actions">
               <a href="{{ routes.root_url }}" class="success-rack-btn">
@@ -45,7 +45,7 @@
             </div>
           {%- endif -%}
 
-          <!-- Step 1: Client Information -->
+          <!-- Step 1: Client Information (Indian Standard) -->
           <div class="form-section-title">
             <span class="step-num">1</span>
             <span>Your Information</span>
@@ -78,59 +78,98 @@
               >
             </div>
 
-            <!-- Phone Number -->
+            <!-- Phone Number with +91 Indian Prefix -->
             <div class="form-input-wrap">
-              <label for="waitlistPhone">Phone Number *</label>
-              <input
-                type="tel"
-                id="waitlistPhone"
-                name="contact[phone]"
-                value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
-                placeholder="+1 (555) 000-0000 (for private SMS VIP access)"
-                required
-              >
+              <label for="waitlistPhone">Phone Number (WhatsApp VIP Access) *</label>
+              <div class="phone-input-group">
+                <span class="phone-prefix">+91</span>
+                <input
+                  type="tel"
+                  id="waitlistPhone"
+                  name="contact[phone]"
+                  value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+                  placeholder="98765 43210 (For WhatsApp drop access & VIP alerts)"
+                  maxlength="10"
+                  required
+                >
+              </div>
             </div>
 
-            <!-- City & State -->
-            <div class="form-field-row">
+            <!-- Indian Standards: City, State/UT, and 6-digit PIN Code -->
+            <div class="form-field-row form-field-row-3">
               <div class="form-input-wrap">
                 <label for="waitlistCity">City *</label>
                 <input
                   type="text"
                   id="waitlistCity"
                   name="contact[city]"
-                  placeholder="e.g. New York / London / Mumbai"
+                  placeholder="e.g. Mumbai / Delhi / Jaipur"
                   required
                 >
               </div>
+
               <div class="form-input-wrap">
-                <label for="waitlistState">State / Region *</label>
+                <label for="waitlistState">State / UT *</label>
+                <select id="waitlistState" name="contact[state]" required>
+                  <option value="" disabled selected>Select State / UT</option>
+                  <option value="Maharashtra">Maharashtra</option>
+                  <option value="Delhi (NCR)">Delhi (NCR)</option>
+                  <option value="Karnataka">Karnataka</option>
+                  <option value="Rajasthan">Rajasthan</option>
+                  <option value="Gujarat">Gujarat</option>
+                  <option value="Telangana">Telangana</option>
+                  <option value="Tamil Nadu">Tamil Nadu</option>
+                  <option value="Uttar Pradesh">Uttar Pradesh</option>
+                  <option value="Punjab">Punjab</option>
+                  <option value="West Bengal">West Bengal</option>
+                  <option value="Haryana">Haryana</option>
+                  <option value="Madhya Pradesh">Madhya Pradesh</option>
+                  <option value="Kerala">Kerala</option>
+                  <option value="Goa">Goa</option>
+                  <option value="Andhra Pradesh">Andhra Pradesh</option>
+                  <option value="Assam">Assam</option>
+                  <option value="Bihar">Bihar</option>
+                  <option value="Chandigarh">Chandigarh</option>
+                  <option value="Chhattisgarh">Chhattisgarh</option>
+                  <option value="Himachal Pradesh">Himachal Pradesh</option>
+                  <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                  <option value="Jharkhand">Jharkhand</option>
+                  <option value="Odisha">Odisha</option>
+                  <option value="Uttarakhand">Uttarakhand</option>
+                  <option value="Other">Other / International</option>
+                </select>
+              </div>
+
+              <div class="form-input-wrap">
+                <label for="waitlistPincode">PIN Code *</label>
                 <input
                   type="text"
-                  id="waitlistState"
-                  name="contact[state]"
-                  placeholder="e.g. NY / England / MH"
+                  id="waitlistPincode"
+                  name="contact[pincode]"
+                  placeholder="6 Digits (e.g. 400050)"
+                  maxlength="6"
+                  pattern="[0-9]{6}"
                   required
                 >
               </div>
             </div>
           </div>
 
-          <!-- Step 2: Select Dresses (5 Tiles) -->
+          <!-- Step 2: Select Dresses (5 Tiles - No Card Size Pills) -->
           <div class="waitlist-dresses-section">
             <div class="dresses-section-header">
               <div class="form-section-title">
                 <span class="step-num">2</span>
                 <span>Select Your Desired Runway Dresses</span>
               </div>
-              <p class="dresses-helper-text">Click on any dress to select it, then choose your size below each gown.</p>
+              <p class="dresses-helper-text">Click on any dress tile to select or unselect. You can select multiple dresses.</p>
             </div>
 
             <!-- 5 Dresses Tiles Grid -->
             <div class="dress-tiles-grid" id="dressTilesGrid">
 
               <!-- Tile 1 -->
-              <div class="dress-tile-card is-selected" data-index="1" data-title="{{ section.settings.dress_1_title | default: 'Archival Manuscript Corset Gown' }}" data-img="{% if section.settings.dress_1_img != blank %}{{ section.settings.dress_1_img | image_url: width: 400 }}{% else %}{{ 'hanger-look-1.png' | asset_url }}{% endif %}">
+              <div class="dress-tile-card is-selected" data-index="1" data-title="{{ section.settings.dress_1_title | default: 'Archival Manuscript Corset Gown' }}" data-price="{{ section.settings.dress_1_price | default: '₹74,500' }}" data-img="{% if section.settings.dress_1_img != blank %}{{ section.settings.dress_1_img | image_url: width: 400 }}{% else %}{{ 'hanger-look-1.png' | asset_url }}{% endif %}">
                 <div class="dress-card-badge">Look 01</div>
                 <div class="dress-card-check">✓</div>
                 <div class="dress-card-img-wrap">
@@ -138,22 +177,12 @@
                 </div>
                 <div class="dress-card-info">
                   <h3 class="dress-card-title">{{ section.settings.dress_1_title | default: 'Archival Manuscript Corset Gown' }}</h3>
-                  <div class="dress-card-price">{{ section.settings.dress_1_price | default: 'Edition 01 • $890' }}</div>
-                </div>
-                <div class="dress-size-wrap">
-                  <div class="dress-size-label"><span>Size:</span></div>
-                  <div class="dress-size-pills">
-                    <button type="button" class="size-pill" data-size="XS">XS</button>
-                    <button type="button" class="size-pill is-active" data-size="S">S</button>
-                    <button type="button" class="size-pill" data-size="M">M</button>
-                    <button type="button" class="size-pill" data-size="L">L</button>
-                    <button type="button" class="size-pill" data-size="XL">XL</button>
-                  </div>
+                  <div class="dress-card-price">{{ section.settings.dress_1_price | default: 'Edition 01 • ₹74,500' }}</div>
                 </div>
               </div>
 
               <!-- Tile 2 -->
-              <div class="dress-tile-card" data-index="2" data-title="{{ section.settings.dress_2_title | default: 'Heritage Mural Mirror Lehenga' }}" data-img="{% if section.settings.dress_2_img != blank %}{{ section.settings.dress_2_img | image_url: width: 400 }}{% else %}{{ 'hanger-look-2.png' | asset_url }}{% endif %}">
+              <div class="dress-tile-card" data-index="2" data-title="{{ section.settings.dress_2_title | default: 'Heritage Mural Mirror Lehenga' }}" data-price="{{ section.settings.dress_2_price | default: '₹1,25,000' }}" data-img="{% if section.settings.dress_2_img != blank %}{{ section.settings.dress_2_img | image_url: width: 400 }}{% else %}{{ 'hanger-look-2.png' | asset_url }}{% endif %}">
                 <div class="dress-card-badge">Look 02</div>
                 <div class="dress-card-check">✓</div>
                 <div class="dress-card-img-wrap">
@@ -161,22 +190,12 @@
                 </div>
                 <div class="dress-card-info">
                   <h3 class="dress-card-title">{{ section.settings.dress_2_title | default: 'Heritage Mural Mirror Lehenga' }}</h3>
-                  <div class="dress-card-price">{{ section.settings.dress_2_price | default: 'Edition 02 • $1,250' }}</div>
-                </div>
-                <div class="dress-size-wrap">
-                  <div class="dress-size-label"><span>Size:</span></div>
-                  <div class="dress-size-pills">
-                    <button type="button" class="size-pill" data-size="XS">XS</button>
-                    <button type="button" class="size-pill" data-size="S">S</button>
-                    <button type="button" class="size-pill is-active" data-size="M">M</button>
-                    <button type="button" class="size-pill" data-size="L">L</button>
-                    <button type="button" class="size-pill" data-size="XL">XL</button>
-                  </div>
+                  <div class="dress-card-price">{{ section.settings.dress_2_price | default: 'Edition 02 • ₹1,25,000' }}</div>
                 </div>
               </div>
 
               <!-- Tile 3 -->
-              <div class="dress-tile-card" data-index="3" data-title="{{ section.settings.dress_3_title | default: 'Rose-Coral Shimmer Saree Gown' }}" data-img="{% if section.settings.dress_3_img != blank %}{{ section.settings.dress_3_img | image_url: width: 400 }}{% else %}{{ 'hanger-look-3.png' | asset_url }}{% endif %}">
+              <div class="dress-tile-card" data-index="3" data-title="{{ section.settings.dress_3_title | default: 'Rose-Coral Shimmer Saree Gown' }}" data-price="{{ section.settings.dress_3_price | default: '₹98,000' }}" data-img="{% if section.settings.dress_3_img != blank %}{{ section.settings.dress_3_img | image_url: width: 400 }}{% else %}{{ 'hanger-look-3.png' | asset_url }}{% endif %}">
                 <div class="dress-card-badge">Look 03</div>
                 <div class="dress-card-check">✓</div>
                 <div class="dress-card-img-wrap">
@@ -184,22 +203,12 @@
                 </div>
                 <div class="dress-card-info">
                   <h3 class="dress-card-title">{{ section.settings.dress_3_title | default: 'Rose-Coral Shimmer Saree Gown' }}</h3>
-                  <div class="dress-card-price">{{ section.settings.dress_3_price | default: 'Edition 03 • $980' }}</div>
-                </div>
-                <div class="dress-size-wrap">
-                  <div class="dress-size-label"><span>Size:</span></div>
-                  <div class="dress-size-pills">
-                    <button type="button" class="size-pill" data-size="XS">XS</button>
-                    <button type="button" class="size-pill is-active" data-size="S">S</button>
-                    <button type="button" class="size-pill" data-size="M">M</button>
-                    <button type="button" class="size-pill" data-size="L">L</button>
-                    <button type="button" class="size-pill" data-size="XL">XL</button>
-                  </div>
+                  <div class="dress-card-price">{{ section.settings.dress_3_price | default: 'Edition 03 • ₹98,000' }}</div>
                 </div>
               </div>
 
               <!-- Tile 4 -->
-              <div class="dress-tile-card" data-index="4" data-title="{{ section.settings.dress_4_title | default: 'Midnight Botanical Co-ord Set' }}" data-img="{% if section.settings.dress_4_img != blank %}{{ section.settings.dress_4_img | image_url: width: 400 }}{% else %}{{ 'hanger-look-4.png' | asset_url }}{% endif %}">
+              <div class="dress-tile-card" data-index="4" data-title="{{ section.settings.dress_4_title | default: 'Midnight Botanical Co-ord Set' }}" data-price="{{ section.settings.dress_4_price | default: '₹92,000' }}" data-img="{% if section.settings.dress_4_img != blank %}{{ section.settings.dress_4_img | image_url: width: 400 }}{% else %}{{ 'hanger-look-4.png' | asset_url }}{% endif %}">
                 <div class="dress-card-badge">Look 04</div>
                 <div class="dress-card-check">✓</div>
                 <div class="dress-card-img-wrap">
@@ -207,22 +216,12 @@
                 </div>
                 <div class="dress-card-info">
                   <h3 class="dress-card-title">{{ section.settings.dress_4_title | default: 'Midnight Botanical Co-ord Set' }}</h3>
-                  <div class="dress-card-price">{{ section.settings.dress_4_price | default: 'Edition 04 • $920' }}</div>
-                </div>
-                <div class="dress-size-wrap">
-                  <div class="dress-size-label"><span>Size:</span></div>
-                  <div class="dress-size-pills">
-                    <button type="button" class="size-pill" data-size="XS">XS</button>
-                    <button type="button" class="size-pill" data-size="S">S</button>
-                    <button type="button" class="size-pill is-active" data-size="M">M</button>
-                    <button type="button" class="size-pill" data-size="L">L</button>
-                    <button type="button" class="size-pill" data-size="XL">XL</button>
-                  </div>
+                  <div class="dress-card-price">{{ section.settings.dress_4_price | default: 'Edition 04 • ₹92,000' }}</div>
                 </div>
               </div>
 
               <!-- Tile 5 -->
-              <div class="dress-tile-card" data-index="5" data-title="{{ section.settings.dress_5_title | default: 'Bordeaux Peplum Halter Gown' }}" data-img="{% if section.settings.dress_5_img != blank %}{{ section.settings.dress_5_img | image_url: width: 400 }}{% else %}{{ 'hanger-look-5.png' | asset_url }}{% endif %}">
+              <div class="dress-tile-card" data-index="5" data-title="{{ section.settings.dress_5_title | default: 'Bordeaux Peplum Halter Gown' }}" data-price="{{ section.settings.dress_5_price | default: '₹1,10,000' }}" data-img="{% if section.settings.dress_5_img != blank %}{{ section.settings.dress_5_img | image_url: width: 400 }}{% else %}{{ 'hanger-look-5.png' | asset_url }}{% endif %}">
                 <div class="dress-card-badge">Look 05</div>
                 <div class="dress-card-check">✓</div>
                 <div class="dress-card-img-wrap">
@@ -230,41 +229,65 @@
                 </div>
                 <div class="dress-card-info">
                   <h3 class="dress-card-title">{{ section.settings.dress_5_title | default: 'Bordeaux Peplum Halter Gown' }}</h3>
-                  <div class="dress-card-price">{{ section.settings.dress_5_price | default: 'Edition 05 • $1,100' }}</div>
-                </div>
-                <div class="dress-size-wrap">
-                  <div class="dress-size-label"><span>Size:</span></div>
-                  <div class="dress-size-pills">
-                    <button type="button" class="size-pill" data-size="XS">XS</button>
-                    <button type="button" class="size-pill" data-size="S">S</button>
-                    <button type="button" class="size-pill is-active" data-size="M">M</button>
-                    <button type="button" class="size-pill" data-size="L">L</button>
-                    <button type="button" class="size-pill" data-size="XL">XL</button>
-                  </div>
+                  <div class="dress-card-price">{{ section.settings.dress_5_price | default: 'Edition 05 • ₹1,10,000' }}</div>
                 </div>
               </div>
 
             </div>
           </div>
 
-          <!-- Overall Size Selector -->
-          <div class="global-size-row">
-            <div class="global-size-desc">
-              <strong>Preferred Primary Size:</strong>
-              <span>Quickly sync sizing across all chosen pieces or tailor individually above</span>
+          <!-- Step 3: Indian Standard Size Selection -->
+          <div class="waitlist-size-section">
+            <div class="size-section-header">
+              <div class="form-section-title" style="margin-bottom:0;">
+                <span class="step-num">3</span>
+                <span>Select Your Size</span>
+              </div>
+              <span class="size-guide-hint">Indian Standard Couture Fit</span>
             </div>
-            <div class="global-size-select-box">
-              <select id="globalSizeSelect" aria-label="Global Size Selector">
-                <option value="S">Size S (US 2-4 / UK 8)</option>
-                <option value="XS">Size XS (US 0-2 / UK 6)</option>
-                <option value="M" selected>Size M (US 6-8 / UK 10)</option>
-                <option value="L">Size L (US 10-12 / UK 12)</option>
-                <option value="XL">Size XL (US 14 / UK 14)</option>
-              </select>
+
+            <div class="size-pills-row">
+              <button type="button" class="size-select-pill" data-size='XS (UK 6 / Bust 32")'>
+                <span class="size-pill-name">XS</span>
+                <span class="size-pill-detail">Bust 32"</span>
+              </button>
+              <button type="button" class="size-select-pill" data-size='S (UK 8 / Bust 34")'>
+                <span class="size-pill-name">S</span>
+                <span class="size-pill-detail">Bust 34"</span>
+              </button>
+              <button type="button" class="size-select-pill is-active" data-size='M (UK 10 / Bust 36")'>
+                <span class="size-pill-name">M</span>
+                <span class="size-pill-detail">Bust 36"</span>
+              </button>
+              <button type="button" class="size-select-pill" data-size='L (UK 12 / Bust 38")'>
+                <span class="size-pill-name">L</span>
+                <span class="size-pill-detail">Bust 38"</span>
+              </button>
+              <button type="button" class="size-select-pill" data-size='XL (UK 14 / Bust 40")'>
+                <span class="size-pill-name">XL</span>
+                <span class="size-pill-detail">Bust 40"</span>
+              </button>
+              <button type="button" class="size-select-pill" data-size='XXL (UK 16 / Bust 42")'>
+                <span class="size-pill-name">XXL</span>
+                <span class="size-pill-detail">Bust 42"</span>
+              </button>
+              <button type="button" class="size-select-pill" data-size="Custom Made-to-Measure" data-is-custom="true">
+                <span class="size-pill-name">Custom</span>
+                <span class="size-pill-detail">Made-to-Measure</span>
+              </button>
+            </div>
+
+            <!-- Optional Custom Measurement Row (Toggles when Custom is chosen) -->
+            <div class="custom-measurements-row" id="customMeasurementsRow">
+              <div class="form-input-wrap">
+                <label for="customMeasurementsInput">Custom Sizing Details (Optional):</label>
+                <input type="text" id="customMeasurementsInput" placeholder="e.g. Bust 35, Waist 28, Hips 38, Height 5'6&quot;">
+              </div>
             </div>
           </div>
 
           <!-- Hidden summaries for Shopify contact form payload -->
+          <input type="hidden" id="waitlistSizeInput" name="contact[size]" value='M (UK 10 / Bust 36")'>
           <input type="hidden" id="selectedDressesSummary" name="contact[selected_dresses]" value="">
           <input type="hidden" id="contactBodySummary" name="contact[body]" value="">
 
@@ -274,7 +297,7 @@
               <span>Submit</span>
             </button>
             <p class="waitlist-disclaimer">
-              By signing up, you agree to receive private collection drops & VIP runway access. View our privacy policy and terms of service for more info.
+              By signing up, you agree to receive private collection drops & VIP runway access via WhatsApp / SMS. View our privacy policy and terms of service for more info.
             </p>
           </div>
 
@@ -287,7 +310,7 @@
         <div class="success-badge">✦ Reservation Confirmed ✦</div>
         <h2 class="success-title">You're on the exclusive waitlist!</h2>
         <p class="success-msg">
-          Thank you for joining. When our private atelier drop opens, your VIP access link and priority checkout code will be dispatched directly to your email and phone.
+          Thank you for joining. When our private atelier drop opens, your VIP access link and priority checkout code will be dispatched directly to your WhatsApp and email.
         </p>
         <div class="success-receipt-card" id="receiptDetails"></div>
         <div class="success-actions">
@@ -350,8 +373,8 @@
     {
       "type": "text",
       "id": "dress_1_price",
-      "label": "Dress 1 Price",
-      "default": "Edition 01 • $890"
+      "label": "Dress 1 Price (INR)",
+      "default": "Edition 01 • ₹74,500"
     },
     {
       "type": "header",
@@ -371,8 +394,8 @@
     {
       "type": "text",
       "id": "dress_2_price",
-      "label": "Dress 2 Price",
-      "default": "Edition 02 • $1,250"
+      "label": "Dress 2 Price (INR)",
+      "default": "Edition 02 • ₹1,25,000"
     },
     {
       "type": "header",
@@ -392,8 +415,8 @@
     {
       "type": "text",
       "id": "dress_3_price",
-      "label": "Dress 3 Price",
-      "default": "Edition 03 • $980"
+      "label": "Dress 3 Price (INR)",
+      "default": "Edition 03 • ₹98,000"
     },
     {
       "type": "header",
@@ -413,8 +436,8 @@
     {
       "type": "text",
       "id": "dress_4_price",
-      "label": "Dress 4 Price",
-      "default": "Edition 04 • $920"
+      "label": "Dress 4 Price (INR)",
+      "default": "Edition 04 • ₹92,000"
     },
     {
       "type": "header",
@@ -434,8 +457,8 @@
     {
       "type": "text",
       "id": "dress_5_price",
-      "label": "Dress 5 Price",
-      "default": "Edition 05 • $1,100"
+      "label": "Dress 5 Price (INR)",
+      "default": "Edition 05 • ₹1,10,000"
     }
   ],
   "presets": [
