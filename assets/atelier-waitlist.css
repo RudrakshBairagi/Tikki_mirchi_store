@@ -800,6 +800,29 @@
   transform: translateY(-1px);
 }
 
+.success-secondary-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  background: #ffffff;
+  color: var(--wl-text);
+  border: 1px solid var(--wl-border);
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.success-secondary-btn:hover {
+  border-color: #111;
+  background: #fbfbfa;
+  transform: translateY(-1px);
+}
+
 /* On dedicated waitlist page, hide standard default theme header & 404 wrapper so the bespoke waitlist navbar shines */
 body:has(#atelierWaitlistSection) .template-404,
 body:has(#atelierWaitlistSection) .header-wrapper,
