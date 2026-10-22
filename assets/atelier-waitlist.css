@@ -1,7 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
+
 /**
  * TEEKHI BELLA — ATELIER WAITLIST
  * Inspired by gigiaedit.com minimalist editorial aesthetic + Indian Haute Couture Standards.
- * Unified Luxury Typography: Ragara everywhere.
+ * Unified Luxury Typography: Plus Jakarta Sans (matching header navigation).
  */
 
 @font-face {
@@ -36,12 +38,12 @@
   --wl-accent-gold-light: #d4af37;
   --wl-btn-bg: #202020;
   --wl-btn-text: #ffffff;
-  --wl-font-serif: 'Ragara', 'Italiana', Georgia, serif;
-  --wl-font-sans: 'Ragara', 'Italiana', Georgia, serif;
-  --wl-font-main: 'Ragara', 'Italiana', Georgia, serif;
+  --wl-font-serif: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --wl-font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --wl-font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-/* Page Wrapper — Unified Ragara Typography for Waitlist Content */
+/* Page Wrapper — Unified Plus Jakarta Sans Typography for Waitlist Content */
 .waitlist-page {
   min-height: 100vh;
   background-color: var(--wl-bg, #f8f8f6) !important;
@@ -59,7 +61,7 @@
 .waitlist-hero-header,
 .waitlist-form-card,
 .waitlist-success-view {
-  font-family: 'Ragara', 'Italiana', Georgia, serif !important;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
 }
 
 /* Luxury Morphing Header Consistency Overrides on Waitlist Page */
@@ -194,8 +196,8 @@
 .waitlist-title {
   font-family: var(--wl-font-serif);
   font-size: clamp(32px, 4.5vw, 48px);
-  font-weight: 400;
-  letter-spacing: 0.03em;
+  font-weight: 600;
+  letter-spacing: -0.02em;
   line-height: 1.15;
   margin: 0 0 14px 0;
   color: var(--wl-text-main);
@@ -700,7 +702,8 @@
 .success-title {
   font-family: var(--wl-font-serif);
   font-size: clamp(28px, 4vw, 42px);
-  font-weight: 400;
+  font-weight: 600;
+  letter-spacing: -0.02em;
   margin: 0 0 12px 0;
   color: var(--wl-text-main);
 }
