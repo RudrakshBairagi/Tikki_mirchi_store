@@ -22,12 +22,65 @@
     font-display: swap;
   }
 
+  {%- if section.settings.logo_font_source == 'shopify' and section.settings.logo_font != blank -%}
+    {{ section.settings.logo_font | font_face: font_display: 'swap' }}
+  {%- endif -%}
+  {%- if section.settings.tagline_font_source == 'shopify' and section.settings.tagline_font != blank -%}
+    {{ section.settings.tagline_font | font_face: font_display: 'swap' }}
+  {%- endif -%}
+  {%- if section.settings.nav_font_source == 'shopify' and section.settings.nav_font != blank -%}
+    {{ section.settings.nav_font | font_face: font_display: 'swap' }}
+  {%- endif -%}
+
   #LuxuryHeaderSection-{{ section.id }} {
     --hero-bg: {{ section.settings.bg_color | default: 'transparent' }};
     --hero-text: {{ section.settings.text_color | default: '#161517' }};
     --hero-title-color: {{ section.settings.title_color | default: '#161517' }};
     --docked-text-color: {{ section.settings.docked_text_color | default: '#161517' }};
     --docked-bg-color: {{ section.settings.docked_bg_color | default: 'rgba(255, 255, 255, 0.96)' }};
+
+    {%- if section.settings.logo_font_source == 'shopify' and section.settings.logo_font != blank -%}
+      --header-logo-font: {{ section.settings.logo_font.family }}, {{ section.settings.logo_font.fallback_families }};
+      --header-logo-weight: {{ section.settings.logo_font.weight }};
+      --header-logo-style: {{ section.settings.logo_font.style }};
+    {%- elsif section.settings.logo_font_source == 'custom' and section.settings.custom_logo_font != blank -%}
+      --header-logo-font: '{{ section.settings.custom_logo_font }}', serif;
+      --header-logo-weight: 400;
+      --header-logo-style: normal;
+    {%- else -%}
+      --header-logo-font: 'Ragara', 'Italiana', Georgia, serif;
+      --header-logo-weight: 400;
+      --header-logo-style: normal;
+    {%- endif -%}
+
+    {%- if section.settings.tagline_font_source == 'shopify' and section.settings.tagline_font != blank -%}
+      --header-tagline-font: {{ section.settings.tagline_font.family }}, {{ section.settings.tagline_font.fallback_families }};
+      --header-tagline-weight: {{ section.settings.tagline_font.weight }};
+      --header-tagline-style: {{ section.settings.tagline_font.style }};
+    {%- elsif section.settings.tagline_font_source == 'custom' and section.settings.custom_tagline_font != blank -%}
+      --header-tagline-font: '{{ section.settings.custom_tagline_font }}', serif;
+      --header-tagline-weight: 400;
+      --header-tagline-style: italic;
+    {%- else -%}
+      --header-tagline-font: 'Italiana', Georgia, serif;
+      --header-tagline-weight: 400;
+      --header-tagline-style: italic;
+    {%- endif -%}
+
+    {%- if section.settings.nav_font_source == 'shopify' and section.settings.nav_font != blank -%}
+      --header-nav-font: {{ section.settings.nav_font.family }}, {{ section.settings.nav_font.fallback_families }};
+      --header-nav-weight: {{ section.settings.nav_font.weight }};
+    {%- elsif section.settings.nav_font_source == 'custom' and section.settings.custom_nav_font != blank -%}
+      --header-nav-font: '{{ section.settings.custom_nav_font }}', sans-serif;
+      --header-nav-weight: 600;
+    {%- else -%}
+      --header-nav-font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --header-nav-weight: 600;
+    {%- endif -%}
+
+    --header-logo-scale: {{ section.settings.logo_font_scale | default: 100 | divided_by: 100.0 }};
+    --header-tagline-scale: {{ section.settings.tagline_font_scale | default: 100 | divided_by: 100.0 }};
+    --header-nav-scale: {{ section.settings.nav_font_scale | default: 100 | divided_by: 100.0 }};
   }
 
   #LuxuryHeaderSection-{{ section.id }} .hero-editorial-masthead {
@@ -35,7 +88,31 @@
   }
 
   #LuxuryHeaderSection-{{ section.id }} .brand-morph-logo {
-    font-family: 'Ragara', 'Italiana', Georgia, serif;
+    font-family: var(--header-logo-font) !important;
+    font-weight: var(--header-logo-weight, 400) !important;
+    font-style: var(--header-logo-style, normal) !important;
+  }
+
+  #LuxuryHeaderSection-{{ section.id }} .brand-morph-logo.jump-in {
+    font-size: calc(clamp(3.4rem, 11.5vw, 8.5rem) * var(--header-logo-scale, 1)) !important;
+  }
+
+  #LuxuryHeaderSection-{{ section.id }} .brand-tagline {
+    font-family: var(--header-tagline-font) !important;
+    font-weight: var(--header-tagline-weight, 400) !important;
+    font-style: var(--header-tagline-style, italic) !important;
+    font-size: calc(clamp(13px, 1.35vw, 16px) * var(--header-tagline-scale, 1)) !important;
+  }
+
+  #LuxuryHeaderSection-{{ section.id }} .luxury-header,
+  #LuxuryHeaderSection-{{ section.id }} .nav-link,
+  #LuxuryHeaderSection-{{ section.id }} .btn-label {
+    font-family: var(--header-nav-font) !important;
+  }
+
+  #LuxuryHeaderSection-{{ section.id }} .nav-link,
+  #LuxuryHeaderSection-{{ section.id }} .btn-label {
+    font-size: calc(12px * var(--header-nav-scale, 1)) !important;
   }
 {%- endstyle -%}
 
@@ -140,10 +217,118 @@
       "default": "TIKKI Bella"
     },
     {
+      "type": "select",
+      "id": "logo_font_source",
+      "label": "Brand Logo Font Source",
+      "options": [
+        { "value": "brand", "label": "Brand Default (Ragara Couture)" },
+        { "value": "shopify", "label": "Shopify Font Library (Select below)" },
+        { "value": "custom", "label": "Custom Font Name (e.g. Google Font)" }
+      ],
+      "default": "brand"
+    },
+    {
+      "type": "font_picker",
+      "id": "logo_font",
+      "label": "Logo Font (Shopify Library)",
+      "default": "assistant_n4",
+      "info": "Active when 'Shopify Font Library' is selected."
+    },
+    {
+      "type": "text",
+      "id": "custom_logo_font",
+      "label": "Custom Logo Font Name",
+      "info": "Active when 'Custom Font Name' is selected (e.g. Playfair Display, Cinzel, Italiana)."
+    },
+    {
+      "type": "range",
+      "id": "logo_font_scale",
+      "min": 70,
+      "max": 150,
+      "step": 5,
+      "unit": "%",
+      "label": "Logo Font Size Scale",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Editorial Tagline Typography"
+    },
+    {
       "type": "text",
       "id": "tagline",
       "label": "Editorial Tagline (Cursive)",
       "default": "Atelier Couture & Ready-to-Wear"
+    },
+    {
+      "type": "select",
+      "id": "tagline_font_source",
+      "label": "Tagline Font Source",
+      "options": [
+        { "value": "brand", "label": "Brand Default (Italiana Serif)" },
+        { "value": "shopify", "label": "Shopify Font Library (Select below)" },
+        { "value": "custom", "label": "Custom Font Name" }
+      ],
+      "default": "brand"
+    },
+    {
+      "type": "font_picker",
+      "id": "tagline_font",
+      "label": "Tagline Font (Shopify Library)",
+      "default": "assistant_n4",
+      "info": "Active when 'Shopify Font Library' is selected."
+    },
+    {
+      "type": "text",
+      "id": "custom_tagline_font",
+      "label": "Custom Tagline Font Name"
+    },
+    {
+      "type": "range",
+      "id": "tagline_font_scale",
+      "min": 70,
+      "max": 150,
+      "step": 5,
+      "unit": "%",
+      "label": "Tagline Font Size Scale",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Navigation Typography"
+    },
+    {
+      "type": "select",
+      "id": "nav_font_source",
+      "label": "Navigation Font Source",
+      "options": [
+        { "value": "brand", "label": "Brand Default (Plus Jakarta Sans)" },
+        { "value": "shopify", "label": "Shopify Font Library (Select below)" },
+        { "value": "custom", "label": "Custom Font Name" }
+      ],
+      "default": "brand"
+    },
+    {
+      "type": "font_picker",
+      "id": "nav_font",
+      "label": "Navigation Font (Shopify Library)",
+      "default": "assistant_n4",
+      "info": "Active when 'Shopify Font Library' is selected."
+    },
+    {
+      "type": "text",
+      "id": "custom_nav_font",
+      "label": "Custom Navigation Font Name"
+    },
+    {
+      "type": "range",
+      "id": "nav_font_scale",
+      "min": 70,
+      "max": 140,
+      "step": 5,
+      "unit": "%",
+      "label": "Navigation Font Size Scale",
+      "default": 100
     },
     {
       "type": "header",

@@ -2,6 +2,16 @@
 <script src="{{ 'hanger-rack.js' | asset_url }}" defer="defer"></script>
 
 {%- style -%}
+  {%- if section.settings.heading_font_source == 'shopify' and section.settings.heading_font != blank -%}
+    {{ section.settings.heading_font | font_face: font_display: 'swap' }}
+  {%- endif -%}
+  {%- if section.settings.body_font_source == 'shopify' and section.settings.body_font != blank -%}
+    {{ section.settings.body_font | font_face: font_display: 'swap' }}
+  {%- endif -%}
+  {%- if section.settings.tag_font_source == 'shopify' and section.settings.tag_font != blank -%}
+    {{ section.settings.tag_font | font_face: font_display: 'swap' }}
+  {%- endif -%}
+
   #HangerRack-{{ section.id }} {
     --rack-bg: {{ section.settings.bg_color | default: '#f7f6f2' }};
     --rack-rail-color: {{ section.settings.rail_color | default: '#7a818b' }};
@@ -12,6 +22,64 @@
     --rack-item-width: {{ section.settings.item_width | default: 280 }}px;
     --rack-padding-top: {{ section.settings.padding_top | default: 60 }}px;
     --rack-padding-bottom: {{ section.settings.padding_bottom | default: 80 }}px;
+
+    {%- if section.settings.heading_font_source == 'shopify' and section.settings.heading_font != blank -%}
+      --rack-title-font: {{ section.settings.heading_font.family }}, {{ section.settings.heading_font.fallback_families }};
+      --rack-title-weight: {{ section.settings.heading_font.weight }};
+      --rack-title-style: {{ section.settings.heading_font.style }};
+    {%- elsif section.settings.heading_font_source == 'custom' and section.settings.custom_heading_font != blank -%}
+      --rack-title-font: '{{ section.settings.custom_heading_font }}', serif;
+      --rack-title-weight: 400;
+      --rack-title-style: normal;
+    {%- else -%}
+      --rack-title-font: 'Ragara', 'Italiana', Georgia, 'Times New Roman', serif;
+      --rack-title-weight: 400;
+      --rack-title-style: normal;
+    {%- endif -%}
+
+    {%- if section.settings.body_font_source == 'shopify' and section.settings.body_font != blank -%}
+      --rack-eyebrow-font: {{ section.settings.body_font.family }}, {{ section.settings.body_font.fallback_families }};
+      --rack-subheading-font: {{ section.settings.body_font.family }}, {{ section.settings.body_font.fallback_families }};
+    {%- elsif section.settings.body_font_source == 'custom' and section.settings.custom_body_font != blank -%}
+      --rack-eyebrow-font: '{{ section.settings.custom_body_font }}', sans-serif;
+      --rack-subheading-font: '{{ section.settings.custom_body_font }}', sans-serif;
+    {%- else -%}
+      --rack-eyebrow-font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --rack-subheading-font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    {%- endif -%}
+
+    {%- if section.settings.tag_font_source == 'shopify' and section.settings.tag_font != blank -%}
+      --rack-tag-font: {{ section.settings.tag_font.family }}, {{ section.settings.tag_font.fallback_families }};
+    {%- elsif section.settings.tag_font_source == 'custom' and section.settings.custom_tag_font != blank -%}
+      --rack-tag-font: '{{ section.settings.custom_tag_font }}', sans-serif;
+    {%- else -%}
+      --rack-tag-font: 'Plus Jakarta Sans', sans-serif;
+    {%- endif -%}
+
+    --rack-heading-scale: {{ section.settings.heading_font_scale | default: 100 | divided_by: 100.0 }};
+    --rack-subheading-scale: {{ section.settings.subheading_font_scale | default: 100 | divided_by: 100.0 }};
+  }
+
+  #HangerRack-{{ section.id }} .hanger-rack-title {
+    font-family: var(--rack-title-font) !important;
+    font-weight: var(--rack-title-weight, 400) !important;
+    font-style: var(--rack-title-style, normal) !important;
+    font-size: calc(clamp(34px, 4.5vw, 54px) * var(--rack-heading-scale, 1)) !important;
+  }
+
+  #HangerRack-{{ section.id }} .hanger-rack-eyebrow {
+    font-family: var(--rack-eyebrow-font) !important;
+  }
+
+  #HangerRack-{{ section.id }} .hanger-rack-subheading {
+    font-family: var(--rack-subheading-font) !important;
+    font-size: calc(14px * var(--rack-subheading-scale, 1)) !important;
+  }
+
+  #HangerRack-{{ section.id }} .tag-code,
+  #HangerRack-{{ section.id }} .tag-name,
+  #HangerRack-{{ section.id }} .tag-price {
+    font-family: var(--rack-tag-font) !important;
   }
 
   /* Critical display overrides ensuring Shopify base.css (div:empty { display:none }) never hides rail rod elements */
@@ -236,6 +304,104 @@
       "id": "subheading",
       "label": "Subheading",
       "default": "Hover over any gown to slide and inspect couture details on our atelier rack."
+    },
+    {
+      "type": "header",
+      "content": "Typography & Font Styling"
+    },
+    {
+      "type": "select",
+      "id": "heading_font_source",
+      "label": "Heading Font Source",
+      "options": [
+        { "value": "brand", "label": "Brand Default (Ragara Couture)" },
+        { "value": "shopify", "label": "Shopify Font Library (Select below)" },
+        { "value": "custom", "label": "Custom Font Name (e.g. Google Font)" }
+      ],
+      "default": "brand"
+    },
+    {
+      "type": "font_picker",
+      "id": "heading_font",
+      "label": "Heading Font (Shopify Library)",
+      "default": "assistant_n4",
+      "info": "Active when 'Shopify Font Library' is selected."
+    },
+    {
+      "type": "text",
+      "id": "custom_heading_font",
+      "label": "Custom Heading Font Name",
+      "info": "E.g. Playfair Display, Cinzel, Italiana, Bodoni Moda"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_scale",
+      "min": 70,
+      "max": 150,
+      "step": 5,
+      "unit": "%",
+      "label": "Heading Font Size Scale",
+      "default": 100
+    },
+    {
+      "type": "select",
+      "id": "body_font_source",
+      "label": "Eyebrow & Subheading Font Source",
+      "options": [
+        { "value": "brand", "label": "Brand Default (Plus Jakarta Sans)" },
+        { "value": "shopify", "label": "Shopify Font Library (Select below)" },
+        { "value": "custom", "label": "Custom Font Name" }
+      ],
+      "default": "brand"
+    },
+    {
+      "type": "font_picker",
+      "id": "body_font",
+      "label": "Eyebrow & Subheading Font (Shopify Library)",
+      "default": "assistant_n4",
+      "info": "Active when 'Shopify Font Library' is selected."
+    },
+    {
+      "type": "text",
+      "id": "custom_body_font",
+      "label": "Custom Eyebrow & Subheading Font Name"
+    },
+    {
+      "type": "range",
+      "id": "subheading_font_scale",
+      "min": 70,
+      "max": 140,
+      "step": 5,
+      "unit": "%",
+      "label": "Subheading Font Size Scale",
+      "default": 100
+    },
+    {
+      "type": "select",
+      "id": "tag_font_source",
+      "label": "Garment Swing Tag Font Source",
+      "options": [
+        { "value": "brand", "label": "Brand Default (Plus Jakarta Sans)" },
+        { "value": "shopify", "label": "Shopify Font Library (Select below)" },
+        { "value": "custom", "label": "Custom Font Name" }
+      ],
+      "default": "brand"
+    },
+    {
+      "type": "font_picker",
+      "id": "tag_font",
+      "label": "Swing Tag Font (Shopify Library)",
+      "default": "assistant_n4",
+      "info": "Active when 'Shopify Font Library' is selected."
+    },
+    {
+      "type": "text",
+      "id": "custom_tag_font",
+      "label": "Custom Swing Tag Font Name"
+    },
+    {
+      "type": "header",
+      "content": "Rack Stage Colors & Dimensions"
     },
     {
       "type": "color",

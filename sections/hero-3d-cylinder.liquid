@@ -22,6 +22,13 @@
     font-display: swap;
   }
 
+  {%- if section.settings.heading_font_source == 'shopify' and section.settings.heading_font != blank -%}
+    {{ section.settings.heading_font | font_face: font_display: 'swap' }}
+  {%- endif -%}
+  {%- if section.settings.meta_font_source == 'shopify' and section.settings.meta_font != blank -%}
+    {{ section.settings.meta_font | font_face: font_display: 'swap' }}
+  {%- endif -%}
+
   #Hero3D-{{ section.id }} {
     --hero-bg: {{ section.settings.bg_color }};
     --hero-text: {{ section.settings.text_color }};
@@ -33,10 +40,43 @@
     --card-radius: {{ section.settings.card_radius }}px;
     --card-gap: {{ section.settings.card_gap }}px;
     --reflection-opacity: {{ section.settings.reflection_opacity | divided_by: 100.0 }};
+
+    {%- if section.settings.heading_font_source == 'shopify' and section.settings.heading_font != blank -%}
+      --hero-heading-font: {{ section.settings.heading_font.family }}, {{ section.settings.heading_font.fallback_families }};
+      --hero-heading-weight: {{ section.settings.heading_font.weight }};
+      --hero-heading-style: {{ section.settings.heading_font.style }};
+    {%- elsif section.settings.heading_font_source == 'custom' and section.settings.custom_heading_font != blank -%}
+      --hero-heading-font: '{{ section.settings.custom_heading_font }}', serif;
+      --hero-heading-weight: 400;
+      --hero-heading-style: normal;
+    {%- else -%}
+      --hero-heading-font: 'Ragara', 'Italiana', Georgia, serif;
+      --hero-heading-weight: 400;
+      --hero-heading-style: normal;
+    {%- endif -%}
+
+    {%- if section.settings.meta_font_source == 'shopify' and section.settings.meta_font != blank -%}
+      --hero-meta-font: {{ section.settings.meta_font.family }}, {{ section.settings.meta_font.fallback_families }};
+    {%- elsif section.settings.meta_font_source == 'custom' and section.settings.custom_meta_font != blank -%}
+      --hero-meta-font: '{{ section.settings.custom_meta_font }}', sans-serif;
+    {%- else -%}
+      --hero-meta-font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    {%- endif -%}
+
+    --hero-title-scale: {{ section.settings.heading_font_scale | default: 100 | divided_by: 100.0 }};
   }
 
   #Hero3D-{{ section.id }} .hero-3d-giant-title {
-    font-family: 'Ragara', 'Italiana', Georgia, serif;
+    font-family: var(--hero-heading-font) !important;
+    font-weight: var(--hero-heading-weight, 400) !important;
+    font-style: var(--hero-heading-style, normal) !important;
+    font-size: calc(clamp(3.8rem, 13vw, 11rem) * var(--hero-title-scale, 1)) !important;
+  }
+
+  #Hero3D-{{ section.id }} .hero-3d-topbar,
+  #Hero3D-{{ section.id }} .hero-3d-bottombar,
+  #Hero3D-{{ section.id }} .hero-3d-cta {
+    font-family: var(--hero-meta-font) !important;
   }
 {%- endstyle -%}
 
@@ -204,6 +244,71 @@
       "type": "text",
       "id": "heading_accent",
       "label": "Title Accent (Italic)"
+    },
+    {
+      "type": "header",
+      "content": "Typography & Font Styling"
+    },
+    {
+      "type": "select",
+      "id": "heading_font_source",
+      "label": "Giant Title Font Source",
+      "options": [
+        { "value": "brand", "label": "Brand Default (Ragara Couture)" },
+        { "value": "shopify", "label": "Shopify Font Library (Select below)" },
+        { "value": "custom", "label": "Custom Font Name (e.g. Google Font)" }
+      ],
+      "default": "brand"
+    },
+    {
+      "type": "font_picker",
+      "id": "heading_font",
+      "label": "Giant Title Font (Shopify Library)",
+      "default": "assistant_n4",
+      "info": "Active when 'Shopify Font Library' is selected."
+    },
+    {
+      "type": "text",
+      "id": "custom_heading_font",
+      "label": "Custom Title Font Name",
+      "info": "E.g. Playfair Display, Cinzel, Italiana, Bodoni Moda"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_scale",
+      "min": 70,
+      "max": 150,
+      "step": 5,
+      "unit": "%",
+      "label": "Giant Title Font Size Scale",
+      "default": 100
+    },
+    {
+      "type": "select",
+      "id": "meta_font_source",
+      "label": "Topbar & Meta Font Source",
+      "options": [
+        { "value": "brand", "label": "Brand Default (Plus Jakarta Sans)" },
+        { "value": "shopify", "label": "Shopify Font Library (Select below)" },
+        { "value": "custom", "label": "Custom Font Name" }
+      ],
+      "default": "brand"
+    },
+    {
+      "type": "font_picker",
+      "id": "meta_font",
+      "label": "Topbar & Meta Font (Shopify Library)",
+      "default": "assistant_n4",
+      "info": "Active when 'Shopify Font Library' is selected."
+    },
+    {
+      "type": "text",
+      "id": "custom_meta_font",
+      "label": "Custom Topbar Font Name"
+    },
+    {
+      "type": "header",
+      "content": "Topbar & Meta Information"
     },
     {
       "type": "text",

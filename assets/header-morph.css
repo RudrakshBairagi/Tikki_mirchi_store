@@ -57,7 +57,7 @@
   margin: 0 !important;
   padding: 0 !important;
   transition: background 0.4s ease, border-color 0.35s ease, box-shadow 0.4s ease;
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--header-nav-font, 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif);
   pointer-events: none; /* Allows clicks to pass through empty regions to the hero */
 }
 
@@ -164,7 +164,7 @@
   align-items: center;
   justify-content: center;
   white-space: nowrap;
-  font-family: 'Ragara', 'Italiana', Georgia, serif;
+  font-family: var(--header-logo-font, 'Ragara', 'Italiana', Georgia, serif);
   transform-origin: center center;
   transition: 
     top var(--header-duration) var(--header-ease),
@@ -395,7 +395,7 @@
 
 .brand-tagline {
   display: inline-block;
-  font-family: 'Italiana', Georgia, serif;
+  font-family: var(--header-tagline-font, 'Italiana', Georgia, serif);
   font-style: italic;
   font-size: clamp(13px, 1.35vw, 16px);
   letter-spacing: 0.16em;
