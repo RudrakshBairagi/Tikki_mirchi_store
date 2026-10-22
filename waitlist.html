@@ -14,9 +14,26 @@
       src: url('assets/Ragara.woff') format('woff'),
            url('assets/Ragara.otf') format('opentype'),
            url('assets/Ragara.ttf') format('truetype');
-      font-weight: normal;
+      font-weight: 400;
       font-style: normal;
       font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'Ragara';
+      src: url('assets/Ragara-Italic.woff') format('woff'),
+           url('assets/Ragara-Italic.otf') format('opentype'),
+           url('assets/Ragara-Italic.ttf') format('truetype');
+      font-weight: 400;
+      font-style: italic;
+      font-display: swap;
+    }
+
+    body.waitlist-page,
+    body.waitlist-page *,
+    .waitlist-page,
+    .waitlist-page * {
+      font-family: 'Ragara', 'Italiana', Georgia, serif !important;
     }
   </style>
 </head>

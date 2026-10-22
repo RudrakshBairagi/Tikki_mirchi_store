@@ -1,6 +1,43 @@
 {{ 'atelier-waitlist.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'atelier-waitlist.js' | asset_url }}" defer="defer"></script>
 
+<style>
+  @font-face {
+    font-family: 'Ragara';
+    src: url('{{ "Ragara.woff" | asset_url }}') format('woff'),
+         url('{{ "Ragara.otf" | asset_url }}') format('opentype'),
+         url('{{ "Ragara.ttf" | asset_url }}') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Ragara';
+    src: url('{{ "Ragara-Italic.woff" | asset_url }}') format('woff'),
+         url('{{ "Ragara-Italic.otf" | asset_url }}') format('opentype'),
+         url('{{ "Ragara-Italic.ttf" | asset_url }}') format('truetype');
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+  }
+
+  #atelierWaitlistSection,
+  #atelierWaitlistSection *,
+  .waitlist-page,
+  .waitlist-page *,
+  .waitlist-navbar,
+  .waitlist-navbar *,
+  .waitlist-hero-header,
+  .waitlist-hero-header *,
+  .waitlist-form-card,
+  .waitlist-form-card *,
+  .waitlist-success-view,
+  .waitlist-success-view * {
+    font-family: 'Ragara', 'Italiana', Georgia, serif !important;
+  }
+</style>
+
 <div class="waitlist-page" id="atelierWaitlistSection" style="--wl-bg: {{ section.settings.bg_color | default: '#ffffff' }};">
   <!-- Minimalist Editorial Navigation Header -->
   <header class="waitlist-navbar">
