@@ -4,15 +4,106 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TIKKI Bella — Atelier Runway & Dress Rack</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Italiana&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Syne:wght@400;600;700;800&family=Montserrat:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/header-morph.css">
   <link rel="stylesheet" href="assets/hanger-rack.css?v=studio">
   <style>
+    :root {
+      --header-logo-font: 'Ragara', 'Italiana', Georgia, serif;
+      --header-tagline-font: 'Italiana', Georgia, serif;
+      --header-nav-font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --rack-title-font: 'Ragara', 'Italiana', Georgia, 'Times New Roman', serif;
+      --rack-eyebrow-font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --rack-subheading-font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --rack-tag-font: 'Plus Jakarta Sans', sans-serif;
+    }
+
     body {
       margin: 0;
       padding: 0;
       background: #f8f8f6;
       overflow-x: hidden;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    /* Live Font Switcher Bar (Desktop Demo Only, Hidden on Mobile) */
+    .preview-font-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 999999;
+      background: rgba(22, 20, 24, 0.95);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      color: #f7f6f2;
+      padding: 6px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 11px;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+      transition: transform 0.3s ease;
+    }
+
+    .preview-font-bar.is-collapsed {
+      transform: translateY(-100%);
+    }
+
+    .preview-font-bar-toggle {
+      position: fixed;
+      top: 10px;
+      right: 16px;
+      z-index: 1000000;
+      background: rgba(24, 22, 26, 0.88);
+      color: #d4af37;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 10.5px;
+      font-weight: 600;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .font-bar-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .font-bar-label {
+      color: #bfa36a;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-size: 10px;
+    }
+
+    .font-bar-select {
+      background: #2b2830;
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+      padding: 3px 8px;
+      font-size: 11px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    @media (max-width: 900px) {
+      .preview-font-bar,
+      .preview-font-bar-toggle {
+        display: none !important;
+      }
     }
   </style>
 </head>
@@ -338,7 +429,87 @@
     </div>
   </section>
 
+  <!-- Live Preview Font Toolbar (Desktop Demo) -->
+  <button type="button" class="preview-font-bar-toggle" id="fontBarToggle" title="Toggle Font Customizer">
+    <span>✦</span><span>Fonts</span>
+  </button>
+  
+  <aside class="preview-font-bar is-collapsed" id="previewFontBar" aria-label="Live Font Studio">
+    <div class="font-bar-group">
+      <span class="font-bar-label">Logo:</span>
+      <select class="font-bar-select" id="selectLogoFont">
+        <option value="'Ragara', 'Italiana', Georgia, serif">Ragara (Brand Default)</option>
+        <option value="'Playfair Display', serif">Playfair Display</option>
+        <option value="'Cormorant Garamond', serif">Cormorant Garamond</option>
+        <option value="'Italiana', serif">Italiana</option>
+        <option value="'Cinzel', serif">Cinzel</option>
+        <option value="'Bodoni Moda', serif">Bodoni Moda</option>
+        <option value="'Syne', sans-serif">Syne</option>
+        <option value="'Montserrat', sans-serif">Montserrat</option>
+      </select>
+    </div>
+
+    <div class="font-bar-group">
+      <span class="font-bar-label">Tagline:</span>
+      <select class="font-bar-select" id="selectTaglineFont">
+        <option value="'Italiana', Georgia, serif">Italiana (Brand Default)</option>
+        <option value="'Cormorant Garamond', serif">Cormorant Garamond</option>
+        <option value="'Playfair Display', serif">Playfair Display</option>
+        <option value="'Plus Jakarta Sans', sans-serif">Plus Jakarta Sans</option>
+      </select>
+    </div>
+
+    <div class="font-bar-group">
+      <span class="font-bar-label">Rack Heading:</span>
+      <select class="font-bar-select" id="selectRackHeadingFont">
+        <option value="'Ragara', 'Italiana', Georgia, serif">Ragara (Brand Default)</option>
+        <option value="'Playfair Display', serif">Playfair Display</option>
+        <option value="'Cormorant Garamond', serif">Cormorant Garamond</option>
+        <option value="'Cinzel', serif">Cinzel</option>
+        <option value="'Bodoni Moda', serif">Bodoni Moda</option>
+        <option value="'Italiana', serif">Italiana</option>
+      </select>
+    </div>
+
+    <div class="font-bar-group">
+      <span class="font-bar-label">Nav & Tags:</span>
+      <select class="font-bar-select" id="selectNavFont">
+        <option value="'Plus Jakarta Sans', sans-serif">Plus Jakarta Sans (Default)</option>
+        <option value="'Montserrat', sans-serif">Montserrat</option>
+        <option value="-apple-system, BlinkMacSystemFont, sans-serif">System Sans</option>
+      </select>
+    </div>
+  </aside>
+
   <script src="assets/header-morph.js"></script>
   <script src="assets/hanger-rack.js?v=studio"></script>
+  <script>
+    (function() {
+      const toggle = document.getElementById('fontBarToggle');
+      const bar = document.getElementById('previewFontBar');
+      if (toggle && bar) {
+        toggle.addEventListener('click', () => {
+          bar.classList.toggle('is-collapsed');
+        });
+      }
+
+      const root = document.documentElement;
+      document.getElementById('selectLogoFont')?.addEventListener('change', (e) => {
+        root.style.setProperty('--header-logo-font', e.target.value);
+      });
+      document.getElementById('selectTaglineFont')?.addEventListener('change', (e) => {
+        root.style.setProperty('--header-tagline-font', e.target.value);
+      });
+      document.getElementById('selectRackHeadingFont')?.addEventListener('change', (e) => {
+        root.style.setProperty('--rack-title-font', e.target.value);
+      });
+      document.getElementById('selectNavFont')?.addEventListener('change', (e) => {
+        root.style.setProperty('--header-nav-font', e.target.value);
+        root.style.setProperty('--rack-eyebrow-font', e.target.value);
+        root.style.setProperty('--rack-subheading-font', e.target.value);
+        root.style.setProperty('--rack-tag-font', e.target.value);
+      });
+    })();
+  </script>
 </body>
 </html>

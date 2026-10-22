@@ -2,16 +2,81 @@
 <script src="{{ 'wardrobe-carousel.js' | asset_url }}" defer="defer"></script>
 
 {%- style -%}
+  {%- if section.settings.heading_font_source == 'shopify' and section.settings.heading_font != blank -%}
+    {{ section.settings.heading_font | font_face: font_display: 'swap' }}
+  {%- endif -%}
+  {%- if section.settings.body_font_source == 'shopify' and section.settings.body_font != blank -%}
+    {{ section.settings.body_font | font_face: font_display: 'swap' }}
+  {%- endif -%}
+  {%- if section.settings.card_font_source == 'shopify' and section.settings.card_font != blank -%}
+    {{ section.settings.card_font | font_face: font_display: 'swap' }}
+  {%- endif -%}
+
   #Wardrobe-{{ section.id }} {
     --wardrobe-bg: {{ section.settings.bg_color | default: '#f3f0e7' }};
     --wardrobe-text: {{ section.settings.text_color | default: '#2a2529' }};
     --wardrobe-accent: {{ section.settings.accent_color | default: '#c59b27' }};
     --wardrobe-dark: #1e1b1c;
     --wardrobe-card-bg: rgba(255, 255, 255, 0.94);
+
+    {%- if section.settings.heading_font_source == 'shopify' and section.settings.heading_font != blank -%}
+      --wardrobe-title-font: {{ section.settings.heading_font.family }}, {{ section.settings.heading_font.fallback_families }};
+      --wardrobe-title-weight: {{ section.settings.heading_font.weight }};
+      --wardrobe-title-style: {{ section.settings.heading_font.style }};
+    {%- elsif section.settings.heading_font_source == 'custom' and section.settings.custom_heading_font != blank -%}
+      --wardrobe-title-font: '{{ section.settings.custom_heading_font }}', serif;
+      --wardrobe-title-weight: 400;
+      --wardrobe-title-style: normal;
+    {%- else -%}
+      --wardrobe-title-font: 'Ragara', 'Italiana', Georgia, serif;
+      --wardrobe-title-weight: 400;
+      --wardrobe-title-style: normal;
+    {%- endif -%}
+
+    {%- if section.settings.body_font_source == 'shopify' and section.settings.body_font != blank -%}
+      --wardrobe-body-font: {{ section.settings.body_font.family }}, {{ section.settings.body_font.fallback_families }};
+    {%- elsif section.settings.body_font_source == 'custom' and section.settings.custom_body_font != blank -%}
+      --wardrobe-body-font: '{{ section.settings.custom_body_font }}', sans-serif;
+    {%- else -%}
+      --wardrobe-body-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    {%- endif -%}
+
+    {%- if section.settings.card_font_source == 'shopify' and section.settings.card_font != blank -%}
+      --wardrobe-card-font: {{ section.settings.card_font.family }}, {{ section.settings.card_font.fallback_families }};
+    {%- elsif section.settings.card_font_source == 'custom' and section.settings.custom_card_font != blank -%}
+      --wardrobe-card-font: '{{ section.settings.custom_card_font }}', sans-serif;
+    {%- else -%}
+      --wardrobe-card-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    {%- endif -%}
+
+    --wardrobe-heading-scale: {{ section.settings.heading_font_scale | default: 100 | divided_by: 100.0 }};
+    --wardrobe-body-scale: {{ section.settings.body_font_scale | default: 100 | divided_by: 100.0 }};
   }
 
   #Wardrobe-{{ section.id }} .magic-wardrobe-title {
-    font-family: 'Ragara', 'Italiana', Georgia, serif;
+    font-family: var(--wardrobe-title-font) !important;
+    font-weight: var(--wardrobe-title-weight, 400) !important;
+    font-style: var(--wardrobe-title-style, normal) !important;
+    font-size: calc(clamp(30px, 4.5vw, 56px) * var(--wardrobe-heading-scale, 1)) !important;
+  }
+
+  #Wardrobe-{{ section.id }} .magic-wardrobe-subtitle,
+  #Wardrobe-{{ section.id }} .magic-wardrobe-tagline,
+  #Wardrobe-{{ section.id }} .magic-active-indicator,
+  #Wardrobe-{{ section.id }} .magic-tab-btn {
+    font-family: var(--wardrobe-body-font) !important;
+  }
+
+  #Wardrobe-{{ section.id }} .magic-wardrobe-subtitle {
+    font-size: calc(15px * var(--wardrobe-body-scale, 1)) !important;
+  }
+
+  #Wardrobe-{{ section.id }} .card-title,
+  #Wardrobe-{{ section.id }} .card-desc,
+  #Wardrobe-{{ section.id }} .card-cta-btn,
+  #Wardrobe-{{ section.id }} .card-tag,
+  #Wardrobe-{{ section.id }} .card-badge {
+    font-family: var(--wardrobe-card-font) !important;
   }
 {%- endstyle -%}
 
@@ -231,6 +296,104 @@
       "id": "subheading",
       "label": "Subheading",
       "default": "Step inside our private dressing room. Watch our debut partywear collection come to life."
+    },
+    {
+      "type": "header",
+      "content": "Typography & Font Styling"
+    },
+    {
+      "type": "select",
+      "id": "heading_font_source",
+      "label": "Heading Font Source",
+      "options": [
+        { "value": "brand", "label": "Brand Default (Ragara Couture)" },
+        { "value": "shopify", "label": "Shopify Font Library (Select below)" },
+        { "value": "custom", "label": "Custom Font Name (e.g. Google Font)" }
+      ],
+      "default": "brand"
+    },
+    {
+      "type": "font_picker",
+      "id": "heading_font",
+      "label": "Heading Font (Shopify Library)",
+      "default": "assistant_n4",
+      "info": "Active when 'Shopify Font Library' is selected."
+    },
+    {
+      "type": "text",
+      "id": "custom_heading_font",
+      "label": "Custom Heading Font Name",
+      "info": "E.g. Playfair Display, Cinzel, Italiana, Bodoni Moda"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_scale",
+      "min": 70,
+      "max": 150,
+      "step": 5,
+      "unit": "%",
+      "label": "Heading Font Size Scale",
+      "default": 100
+    },
+    {
+      "type": "select",
+      "id": "body_font_source",
+      "label": "Subtitle & Tagline Font Source",
+      "options": [
+        { "value": "brand", "label": "Theme Default" },
+        { "value": "shopify", "label": "Shopify Font Library (Select below)" },
+        { "value": "custom", "label": "Custom Font Name" }
+      ],
+      "default": "brand"
+    },
+    {
+      "type": "font_picker",
+      "id": "body_font",
+      "label": "Subtitle & Tagline Font (Shopify Library)",
+      "default": "assistant_n4",
+      "info": "Active when 'Shopify Font Library' is selected."
+    },
+    {
+      "type": "text",
+      "id": "custom_body_font",
+      "label": "Custom Subtitle Font Name"
+    },
+    {
+      "type": "range",
+      "id": "body_font_scale",
+      "min": 70,
+      "max": 140,
+      "step": 5,
+      "unit": "%",
+      "label": "Subtitle Font Size Scale",
+      "default": 100
+    },
+    {
+      "type": "select",
+      "id": "card_font_source",
+      "label": "Outfit Card Font Source",
+      "options": [
+        { "value": "brand", "label": "Theme Default" },
+        { "value": "shopify", "label": "Shopify Font Library (Select below)" },
+        { "value": "custom", "label": "Custom Font Name" }
+      ],
+      "default": "brand"
+    },
+    {
+      "type": "font_picker",
+      "id": "card_font",
+      "label": "Outfit Card Font (Shopify Library)",
+      "default": "assistant_n4",
+      "info": "Active when 'Shopify Font Library' is selected."
+    },
+    {
+      "type": "text",
+      "id": "custom_card_font",
+      "label": "Custom Outfit Card Font Name"
+    },
+    {
+      "type": "header",
+      "content": "Carousel Interactive Controls"
     },
     {
       "type": "checkbox",
