@@ -75,9 +75,9 @@ class HangerRack {
         tag,
         index,
         title: el.dataset.title || `Look 0${index + 1}`,
-        price: el.dataset.price || '$890',
+        price: el.dataset.price || '₹85,000',
         tagText: el.dataset.tag || `LOOK 0${index + 1}`,
-        link: el.querySelector('a')?.getAttribute('href') || '#',
+        link: el.dataset.link || el.querySelector('a')?.getAttribute('href') || '',
 
         // Persistent physical simulation state (natural initial organic resting variance)
         angle: (Math.random() - 0.5) * 0.01,
@@ -92,6 +92,7 @@ class HangerRack {
 
   init() {
     this.setupAudio();
+    this.setupFloatingCard();
     this.bindPointerVelocity();
     this.bindGarmentInteractions();
 
@@ -411,18 +412,80 @@ class HangerRack {
     }
   }
 
-  /* -------------------------------------------------------------      1. Atelier Floating Detail Card (Disabled: user prefers small boutique tag only)
+  /* --------------------------------------------------------------------------
+     1. Atelier Floating Detail Card (Atelier Pop-Up beside hovered garment)
      -------------------------------------------------------------------------- */
   setupFloatingCard() {
-    // Disabled: User only wants the small swing price tag on the garment
+    let card = this.stage.querySelector(':scope > .hanger-floating-card');
+    if (!card) {
+      card = document.createElement('div');
+      card.className = 'hanger-floating-card';
+      card.setAttribute('aria-hidden', 'true');
+      card.innerHTML = `
+        <span class="floating-card-tag">LOOK 01 • ATELIER</span>
+        <h3 class="floating-card-title">Couture Piece</h3>
+        <div class="floating-card-row">
+          <span class="floating-card-price">₹85,000</span>
+          <span class="floating-card-badge">Atelier Exclusive</span>
+        </div>
+        <a href="/pages/waitlist" class="floating-card-link">
+          <span>Inspect Piece</span>
+          <span class="card-arrow">→</span>
+        </a>
+      `;
+      this.stage.appendChild(card);
+    }
+
+    this.card = card;
+    this.cardTag = card.querySelector('.floating-card-tag');
+    this.cardTitle = card.querySelector('.floating-card-title');
+    this.cardPrice = card.querySelector('.floating-card-price');
+    this.cardBadge = card.querySelector('.floating-card-badge');
+    this.cardLink = card.querySelector('.floating-card-link');
+
+    this.card.addEventListener('pointerenter', () => {
+      clearTimeout(this.leaveTimeout);
+    });
+    this.card.addEventListener('pointerleave', (e) => {
+      if (e.pointerType === 'touch') return;
+      this.queueClearHover();
+    });
   }
 
-  showFloatingCard() {
-    // Disabled: User only wants the small swing price tag on the garment
+  showFloatingCard(g) {
+    if (!this.card || !g) return;
+
+    this.cardTag.textContent = g.tagText ? `${g.tagText} • BESPOKE` : 'EXCLUSIVE DROP';
+    this.cardTitle.textContent = g.title || 'Couture Piece';
+    this.cardPrice.textContent = g.price || '';
+    const defaultWaitlist = (window.location.pathname.endsWith('.html') || window.location.protocol === 'file:') ? 'waitlist.html' : '/pages/waitlist';
+    this.cardLink.href = (g.link && g.link !== '#' && g.link !== '') ? g.link : defaultWaitlist;
+
+    // Smart positioning relative to stage and garment
+    const gRect = g.el.getBoundingClientRect();
+    const stageRect = this.stage.getBoundingClientRect();
+    const cardWidth = (this.card && this.card.offsetWidth) || (window.innerWidth <= 640 ? 210 : 250);
+
+    // Prefer placing to the right of the dress; if close to edge, place to the left
+    let left = gRect.right - stageRect.left + 14;
+    if (left + cardWidth > stageRect.width - 20) {
+      left = gRect.left - stageRect.left - cardWidth - 14;
+    }
+    left = Math.max(16, Math.min(stageRect.width - cardWidth - 16, left));
+
+    const top = Math.max(40, Math.min(stageRect.height - 180, gRect.top - stageRect.top + 70));
+
+    this.card.style.left = `${left.toFixed(1)}px`;
+    this.card.style.top = `${top.toFixed(1)}px`;
+    this.card.classList.add('is-active');
+    this.card.setAttribute('aria-hidden', 'false');
   }
 
   hideFloatingCard() {
-    // Disabled
+    if (this.card) {
+      this.card.classList.remove('is-active');
+      this.card.setAttribute('aria-hidden', 'true');
+    }
   }
 
   /* --------------------------------------------------------------------------

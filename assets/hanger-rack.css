@@ -407,38 +407,35 @@
 }
 
 /* ==========================================================================
-   Floating Boutique Product Card (Reveals beneath the active front profile)
+   Atelier Floating Detail Card (Pops out beside hovered outfit)
    ========================================================================== */
 
 .hanger-floating-card {
   position: absolute;
-  bottom: -48px;
-  left: 50%;
-  transform: translateX(-50%) translateY(16px);
-  z-index: 60;
-  background: rgba(255, 255, 255, 0.96);
-  border: 1px solid rgba(212, 175, 55, 0.35);
-  border-radius: 12px;
-  padding: 14px 18px 16px 18px;
-  box-shadow: 0 18px 42px rgba(20, 16, 22, 0.16), 0 2px 6px rgba(0, 0, 0, 0.05);
+  z-index: 55;
+  width: 250px;
+  background: rgba(255, 255, 255, 0.98);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  text-align: center;
-  min-width: 210px;
-  max-width: 260px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 6px;
+  padding: 16px 18px 14px;
+  box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.04);
   opacity: 0;
+  transform: translateY(8px);
   pointer-events: none;
-  transition: opacity 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: opacity 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-sizing: border-box;
+  text-align: left;
 }
 
-.hanger-item.is-hovered .hanger-floating-card,
-.hanger-item.is-popped-out .hanger-floating-card {
+.hanger-floating-card.is-active {
   opacity: 1;
+  transform: translateY(0);
   pointer-events: auto;
-  transform: translateX(-50%) translateY(0);
 }
 
-.floating-card-badge {
+.floating-card-tag {
   display: inline-block;
   font-family: var(--rack-tag-font, 'Plus Jakarta Sans', sans-serif);
   font-size: 8.5px;
@@ -446,13 +443,13 @@
   letter-spacing: 0.16em;
   color: var(--rack-accent-color, #b38728);
   text-transform: uppercase;
-  margin-bottom: 5px;
+  margin-bottom: 6px;
 }
 
 .floating-card-title {
-  margin: 0 0 6px 0;
+  margin: 0 0 8px 0;
   font-family: var(--rack-title-font, 'Ragara', 'Italiana', Georgia, serif);
-  font-size: 15.5px;
+  font-size: 17px;
   font-weight: 400;
   line-height: 1.25;
   color: #1a1819;
@@ -462,9 +459,8 @@
 .floating-card-row {
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 8px;
-  margin-bottom: 11px;
+  margin-bottom: 12px;
 }
 
 .floating-card-price {
@@ -474,54 +470,46 @@
   color: #1a1819;
 }
 
-.floating-card-availability {
+.floating-card-badge {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 8.5px;
+  font-size: 9px;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  background: #f5efe3;
-  color: #8a6a24;
+  background: #f4efe6;
+  color: #8c6820;
   padding: 2px 7px;
-  border-radius: 999px;
+  border-radius: 3px;
 }
 
-.floating-card-cta {
+.floating-card-link {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
   gap: 6px;
-  width: 100%;
-  padding: 8px 14px;
-  background: #1a1819;
-  color: #f8f8f6;
-  border-radius: 6px;
   font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  color: #1a1819;
   text-decoration: none;
-  box-sizing: border-box;
-  transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
+  border-bottom: 1px solid rgba(26, 24, 25, 0.3);
+  padding-bottom: 2px;
+  transition: color 0.2s, border-color 0.2s;
 }
 
-.floating-card-cta:hover {
-  background: #b38728;
-  color: #ffffff;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(179, 135, 40, 0.35);
+.floating-card-link:hover {
+  color: var(--rack-accent-color, #b38728);
+  border-color: var(--rack-accent-color, #b38728);
 }
 
-.floating-card-cta-sparkle {
-  color: #d4af37;
-  font-size: 10px;
+.card-arrow {
+  display: inline-block;
   transition: transform 0.25s ease;
 }
 
-.floating-card-cta:hover .floating-card-cta-sparkle {
-  transform: rotate(45deg);
-  color: #ffffff;
+.floating-card-link:hover .card-arrow {
+  transform: translateX(4px);
 }
 
 /* ==========================================================================
@@ -975,6 +963,14 @@
 }
 
 @media (max-width: 640px) {
+  .hanger-floating-card {
+    width: 210px;
+    padding: 12px 14px 10px;
+  }
+  .floating-card-title {
+    font-size: 15px;
+    margin: 0 0 6px 0;
+  }
   .rack-waitlist-btn {
     padding: 12px 26px;
     font-size: 11px;

@@ -208,6 +208,7 @@
                 data-title="{{ dress_title | escape }}"
                 data-price="{{ dress_price | escape }}"
                 data-tag="{{ block.settings.tag | default: 'LOOK ' | append: look_num }}"
+                data-link="{{ dress_link }}"
                 {{ block.shopify_attributes }}
               >
                 <!-- Whole Assembly that Pivots around top hook contact point -->
@@ -309,22 +310,6 @@
                       <!-- Soft Dynamic Drop Shadow on the Atelier Wall -->
                       <div class="hanger-garment-shadow" aria-hidden="true"><span></span></div>
                     </div>
-                  </div>
-
-                  <!-- Floating Boutique Product Card (Reveals beneath the active front profile) -->
-                  <div class="hanger-floating-card">
-                    <span class="floating-card-badge">{{ block.settings.tag | default: 'LOOK ' | append: look_num }} • BESPOKE</span>
-                    <h4 class="floating-card-title">{{ dress_title }}</h4>
-                    <div class="floating-card-row">
-                      {%- if dress_price != blank -%}
-                        <span class="floating-card-price">{{ dress_price }}</span>
-                      {%- endif -%}
-                      <span class="floating-card-availability">Made to Measure</span>
-                    </div>
-                    <a href="{{ dress_link }}" class="floating-card-cta">
-                      <span>Reserve Look</span>
-                      <span class="floating-card-cta-sparkle">✦</span>
-                    </a>
                   </div>
 
                   <!-- Delicate Swing Price Tag dangling from the hanger -->
