@@ -128,6 +128,19 @@
   margin: 0 !important;
   pointer-events: auto !important;
   white-space: nowrap !important;
+  font-size: clamp(2.2rem, 3.2vw, 3rem) !important;
+}
+
+@media (max-width: 768px) {
+  .waitlist-page .luxury-header .brand-morph-logo {
+    font-size: clamp(1.45rem, 5.2vw, 1.85rem) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .waitlist-page .luxury-header .brand-morph-logo {
+    font-size: 1.4rem !important;
+  }
 }
 
 .waitlist-page .luxury-header .brand-wordmark {

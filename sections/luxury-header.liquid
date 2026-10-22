@@ -91,10 +91,19 @@
     font-family: var(--header-logo-font) !important;
     font-weight: var(--header-logo-weight, 400) !important;
     font-style: var(--header-logo-style, normal) !important;
+    font-size: calc(clamp(2.2rem, 3.2vw, 3rem) * var(--header-logo-scale, 1)) !important;
   }
 
-  #LuxuryHeaderSection-{{ section.id }} .brand-morph-logo.jump-in {
-    font-size: calc(clamp(3.4rem, 11.5vw, 8.5rem) * var(--header-logo-scale, 1)) !important;
+  @media (max-width: 768px) {
+    #LuxuryHeaderSection-{{ section.id }} .brand-morph-logo {
+      font-size: calc(clamp(1.45rem, 5.2vw, 1.85rem) * var(--header-logo-scale, 1)) !important;
+    }
+  }
+
+  @media (max-width: 480px) {
+    #LuxuryHeaderSection-{{ section.id }} .brand-morph-logo {
+      font-size: calc(1.4rem * var(--header-logo-scale, 1)) !important;
+    }
   }
 
   #LuxuryHeaderSection-{{ section.id }} .brand-tagline {
@@ -134,9 +143,9 @@
 
 <div id="LuxuryHeaderSection-{{ section.id }}" class="luxury-header-section-wrapper">
   <!-- ==========================================================================
-       1. LUXURY STICKY NAVIGATION BAR (SOPHIE & LUCIE INSPIRED)
+       1. LUXURY NAVIGATION BAR (SOPHIE & LUCIE INSPIRED)
        ========================================================================== -->
-  <header id="LuxuryHeader" class="luxury-header">
+  <header id="LuxuryHeader" class="luxury-header scrolled-down">
     <div class="luxury-header__inner">
       <!-- Left: Navigation Links (Homepage + Waitlist) -->
       <div class="luxury-header__left">
@@ -148,7 +157,7 @@
 
       <!-- Center: Morph Dock Anchor (Brand Logo Centered in Middle) -->
       <div class="luxury-header__center brand-morph-zone">
-        <a href="{{ routes.root_url }}" class="brand-morph-logo is-visible jump-in" id="BrandMorphLogo" aria-label="{{ section.settings.heading | default: 'Teekhi Bella' }}">
+        <a href="{{ routes.root_url }}" class="brand-morph-logo is-visible" id="BrandMorphLogo" aria-label="{{ section.settings.heading | default: 'Teekhi Bella' }}">
           <span class="brand-wordmark">{{ section.settings.heading | default: 'Teekhi Bella' }}</span>
         </a>
       </div>
@@ -157,18 +166,7 @@
       <div class="luxury-header__right" aria-hidden="true"></div>
     </div>
   </header>
-
-  <!-- ==========================================================================
-       2. HERO MASTHEAD BACKDROP
-       ========================================================================== -->
-  <section class="hero-editorial-masthead">
-    <!-- Cursive Editorial Tagline positioned in hero above wordmark -->
-    <div class="hero-tagline-container">
-      <div class="brand-tagline">
-        {{ section.settings.tagline | default: 'Atelier Couture & Ready-to-Wear' }}
-      </div>
-    </div>
-  </section>
+  <div class="luxury-header-spacer" aria-hidden="true"></div>
 </div>
 
 {% schema %}
