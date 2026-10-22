@@ -17,12 +17,12 @@
 
     <title>
       {%- if canonical_url contains 'waitlist' or request.path contains 'waitlist' -%}
-        Waitlist &ndash; {{ shop.name }}
+        Waitlist &ndash; Teekhi Bella
       {%- else -%}
         {{ page_title }}
         {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
         {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
-        {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+        &ndash; Teekhi Bella
       {%- endif -%}
     </title>
 
@@ -31,7 +31,7 @@
         var p = (window.location.pathname || '').toLowerCase();
         var h = (window.location.href || '').toLowerCase();
         if (p.indexOf('waitlist') !== -1 || h.indexOf('waitlist') !== -1) {
-          document.title = "Waitlist \u2014 {{ shop.name | escape }}";
+          document.title = "Waitlist \u2014 Teekhi Bella";
           document.documentElement.classList.add('is-waitlist-mode');
         }
       })();

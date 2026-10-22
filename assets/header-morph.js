@@ -1,5 +1,5 @@
 /**
- * TIKKI Bella — Luxury Morphing Header Controller
+ * Teekhi Bella — Luxury Morphing Header Controller
  * Reverse-engineered from Sophie & Lucie header behavior.
  * 
  * Manages:

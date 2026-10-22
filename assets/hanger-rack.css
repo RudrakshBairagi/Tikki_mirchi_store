@@ -6,7 +6,7 @@
 .hanger-rack-section {
   position: relative;
   width: 100%;
-  background: var(--rack-bg, #f7f6f2);
+  background: var(--rack-bg, #f8f8f6);
   color: var(--rack-text-color, #1a1819);
   padding-top: var(--rack-padding-top, 60px);
   padding-bottom: var(--rack-padding-bottom, 80px);

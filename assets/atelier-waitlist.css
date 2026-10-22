@@ -1,5 +1,5 @@
 /**
- * TIKKI BELLA — ATELIER WAITLIST
+ * TEEKHI BELLA — ATELIER WAITLIST
  * Inspired by gigiaedit.com minimalist editorial aesthetic + Indian Haute Couture Standards.
  * Unified Luxury Typography: Ragara everywhere.
  */
@@ -25,9 +25,9 @@
 }
 
 :root {
-  --wl-bg: #ffffff;
-  --wl-card-bg: #fdfdfc;
-  --wl-card-alt: #f7f6f2;
+  --wl-bg: #f8f8f6;
+  --wl-card-bg: #ffffff;
+  --wl-card-alt: #f1f0eb;
   --wl-text-main: #141314;
   --wl-text-muted: #6e6b6f;
   --wl-border-light: #e5e3de;
@@ -44,7 +44,7 @@
 /* Page Wrapper — Unified Ragara Typography for Waitlist Content */
 .waitlist-page {
   min-height: 100vh;
-  background-color: var(--wl-bg);
+  background-color: var(--wl-bg, #f8f8f6) !important;
   color: var(--wl-text-main);
   font-family: var(--wl-font-main);
   margin: 0;
@@ -70,7 +70,7 @@
   width: 100% !important;
   height: var(--luxury-header-height, 80px) !important;
   min-height: var(--luxury-header-height, 80px) !important;
-  background: rgba(255, 255, 255, 0.96) !important;
+  background: rgba(248, 248, 246, 0.96) !important;
   backdrop-filter: blur(20px) !important;
   -webkit-backdrop-filter: blur(20px) !important;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;

@@ -32,13 +32,17 @@
   #atelierWaitlistSection .waitlist-success-view * {
     font-family: 'Ragara', 'Italiana', Georgia, serif !important;
   }
+
+  .waitlist-page {
+    background-color: #f8f8f6 !important;
+  }
 </style>
 
-<div class="waitlist-page" id="atelierWaitlistSection" style="--wl-bg: {{ section.settings.bg_color | default: '#ffffff' }};">
+<div class="waitlist-page" id="atelierWaitlistSection" style="--wl-bg: {{ section.settings.bg_color | default: '#f8f8f6' }}; background-color: #f8f8f6;">
   <!-- ==========================================================================
        LUXURY MORPHING HEADER (CONSISTENT WITH YOUR DREAM RACK PAGE)
        ========================================================================== -->
-  <header id="LuxuryHeader" class="luxury-header scrolled-down" style="--docked-bg-color: rgba(255, 255, 255, 0.96); --docked-text-color: #161517; --header-border-docked: rgba(0, 0, 0, 0.08);">
+  <header id="LuxuryHeader" class="luxury-header scrolled-down" style="--docked-bg-color: rgba(248, 248, 246, 0.96); --docked-text-color: #161517; --header-border-docked: rgba(0, 0, 0, 0.08);">
     <div class="luxury-header__inner">
       <!-- Left: Menu Toggle + Desktop Navigation Links -->
       <div class="luxury-header__left">
@@ -63,8 +67,8 @@
 
       <!-- Center: Morph Dock Anchor (Brand Logo Centered in Middle) -->
       <div class="luxury-header__center brand-morph-zone">
-        <a href="{{ routes.root_url }}" class="brand-morph-logo merge-up is-visible" id="BrandMorphLogo" aria-label="{{ shop.name | default: 'TIKKI Bella' }}">
-          <span class="brand-wordmark">{{ shop.name | default: 'TIKKI Bella' }}</span>
+        <a href="{{ routes.root_url }}" class="brand-morph-logo merge-up is-visible" id="BrandMorphLogo" aria-label="Teekhi Bella">
+          <span class="brand-wordmark">Teekhi Bella</span>
         </a>
       </div>
 

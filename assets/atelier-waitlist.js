@@ -1,5 +1,5 @@
 /**
- * TIKKI BELLA — ATELIER WAITLIST JS
+ * TEEKHI BELLA — ATELIER WAITLIST JS
  * Multi-dress selection, Indian sizing standard, Indian contact & address fields, and reservation receipt.
  */
 
@@ -150,7 +150,7 @@
 
       try {
         localStorage.setItem(
-          'tikki_bella_waitlist_data',
+          'teekhi_bella_waitlist_data',
           JSON.stringify({
             code,
             name,
