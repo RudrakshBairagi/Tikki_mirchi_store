@@ -730,11 +730,18 @@
   transform: translateY(-1px);
 }
 
-/* On dedicated waitlist page, hide standard default theme header so the bespoke waitlist navbar shines */
+/* On dedicated waitlist page, hide standard default theme header & 404 wrapper so the bespoke waitlist navbar shines */
+body:has(#atelierWaitlistSection) .template-404,
 body:has(#atelierWaitlistSection) .header-wrapper,
 body:has(#atelierWaitlistSection) #shopify-section-announcement-bar,
 body:has(#atelierWaitlistSection) .announcement-bar-section,
 body:has(#atelierWaitlistSection) .header-group {
   display: none !important;
+}
+
+body:has(#atelierWaitlistSection) main#MainContent {
+  padding: 0 !important;
+  margin: 0 !important;
+  max-width: 100% !important;
 }
 
