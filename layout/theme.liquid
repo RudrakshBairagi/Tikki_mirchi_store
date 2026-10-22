@@ -16,7 +16,7 @@
     {%- endunless -%}
 
     <title>
-      {%- if request.path contains 'waitlist' -%}
+      {%- if canonical_url contains 'waitlist' or request.path contains 'waitlist' -%}
         Waitlist &ndash; {{ shop.name }}
       {%- else -%}
         {{ page_title }}

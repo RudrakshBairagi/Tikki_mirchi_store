@@ -1,30 +1,58 @@
-{%- if request.path contains 'waitlist' -%}
+{%- if canonical_url contains 'waitlist' or request.path contains 'waitlist' -%}
   <script>
     document.title = "Waitlist — {{ shop.name }}";
   </script>
   {%- render 'atelier-waitlist-content' -%}
 {%- else -%}
-  <style type="text/css">
-    .template-404 .title + * {
-      margin-top: 1rem;
-    }
-
-    @media screen and (min-width: 750px) {
-      .template-404 .title + * {
-        margin-top: 2rem;
-      }
-    }
-  </style>
-
-  <div class="template-404 page-width page-margin center">
-    <p>
-      {{ 'templates.404.subtext' | t }}
-    </p>
-    <h1 class="title">
-      {{ 'templates.404.title' | t }}
-    </h1>
-    <a href="{{ routes.all_products_collection_url }}" class="button">
-      {{ 'general.continue_shopping' | t }}
-    </a>
+  <div id="waitlistAutoFallback" style="display: none;">
+    {%- render 'atelier-waitlist-content' -%}
   </div>
+
+  <div id="standard404Markup">
+    <style type="text/css">
+      .template-404 .title + * {
+        margin-top: 1rem;
+      }
+
+      @media screen and (min-width: 750px) {
+        .template-404 .title + * {
+          margin-top: 2rem;
+        }
+      }
+    </style>
+
+    <div class="template-404 page-width page-margin center">
+      <p>
+        {{ 'templates.404.subtext' | t }}
+      </p>
+      <h1 class="title">
+        {{ 'templates.404.title' | t }}
+      </h1>
+      <a href="{{ routes.all_products_collection_url }}" class="button">
+        {{ 'general.continue_shopping' | t }}
+      </a>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      var fullUrl = (window.location.href || '').toLowerCase();
+      var path = (window.location.pathname || '').toLowerCase();
+      if (path.indexOf('waitlist') !== -1 || fullUrl.indexOf('waitlist') !== -1) {
+        document.title = "Waitlist — {{ shop.name | escape }}";
+        var wl = document.getElementById('waitlistAutoFallback');
+        var std = document.getElementById('standard404Markup');
+        if (wl) {
+          wl.style.display = 'block';
+        }
+        if (std) {
+          std.style.display = 'none';
+        }
+        var defaultHeaders = document.querySelectorAll('.header-wrapper, #shopify-section-announcement-bar, .announcement-bar-section, .header-group');
+        defaultHeaders.forEach(function(el) {
+          el.style.display = 'none';
+        });
+      }
+    })();
+  </script>
 {%- endif -%}
