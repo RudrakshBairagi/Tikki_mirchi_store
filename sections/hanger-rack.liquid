@@ -120,7 +120,7 @@
 >
   <div class="hanger-rack-container">
     {%- if section.settings.show_waitlist_buttons != false -%}
-      {%- assign default_wl_link = '#atelierWaitlistSection' -%}
+      {%- assign default_wl_link = routes.root_url | append: 'pages/waitlist' | replace: '//', '/' -%}
       {%- if section.settings.waitlist_url != blank -%}
         {%- assign default_wl_link = section.settings.waitlist_url -%}
       {%- endif -%}
@@ -293,7 +293,7 @@
       </div>
 
       {%- if section.settings.show_waitlist_buttons != false -%}
-        {%- assign default_wl_link = '#atelierWaitlistSection' -%}
+        {%- assign default_wl_link = routes.root_url | append: 'pages/waitlist' | replace: '//', '/' -%}
         {%- if section.settings.waitlist_url != blank -%}
           {%- assign default_wl_link = section.settings.waitlist_url -%}
         {%- endif -%}

@@ -201,21 +201,11 @@
         "padding_top": 60,
         "padding_bottom": 80
       }
-    },
-    "atelier_waitlist": {
-      "type": "atelier-waitlist",
-      "settings": {
-        "eyebrow": "Summer Atelier 2026",
-        "title": "Sign up to our waitlist!",
-        "subtitle": "Complete the form below to reserve your bespoke piece from our exclusive runway drop.",
-        "bg_color": "#ffffff"
-      }
     }
   },
   "order": [
     "luxury_header",
     "hero_3d_cylinder",
-    "hanger_rack",
-    "atelier_waitlist"
+    "hanger_rack"
   ]
 }

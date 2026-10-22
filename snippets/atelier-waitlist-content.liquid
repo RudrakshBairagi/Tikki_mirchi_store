@@ -1,0 +1,408 @@
+{{ 'atelier-waitlist.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'atelier-waitlist.js' | asset_url }}" defer="defer"></script>
+
+<div class="waitlist-page" id="atelierWaitlistSection" style="--wl-bg: {{ section.settings.bg_color | default: '#ffffff' }};">
+  <!-- Minimalist Editorial Navigation Header -->
+  <header class="waitlist-navbar">
+    <a href="{{ routes.root_url }}" class="waitlist-nav-back" title="Return to Runway Rack">
+      <span>⟵</span>
+      <span>Back to Runway Rack</span>
+    </a>
+
+    <a href="{{ routes.root_url }}" class="waitlist-brand-logo">{{ shop.name | default: 'TIKKI BELLA' }}</a>
+
+    <nav class="waitlist-nav-links">
+      <a href="{{ routes.root_url }}" class="waitlist-nav-link">Home</a>
+      <a href="{{ routes.root_url }}#HangerRack" class="waitlist-nav-link">Runway Rack</a>
+      <a href="{{ request.path }}" class="waitlist-nav-link is-active">Waitlist</a>
+    </nav>
+  </header>
+
+  <main class="waitlist-main-wrap">
+    
+    <!-- Hero Header -->
+    <div class="waitlist-hero-header">
+      {%- assign eyebrow_text = section.settings.eyebrow | default: 'Summer Atelier 2026' -%}
+      {%- if eyebrow_text != blank -%}
+        <div class="waitlist-eyebrow">
+          <span>✦</span>
+          <span>{{ eyebrow_text }}</span>
+          <span>✦</span>
+        </div>
+      {%- endif -%}
+      <h1 class="waitlist-title">{{ section.settings.title | default: 'Sign up to our waitlist!' }}</h1>
+      {%- assign subtitle_text = section.settings.subtitle | default: 'Complete the form below to reserve your bespoke piece from our exclusive runway drop.' -%}
+      {%- if subtitle_text != blank -%}
+        <p class="waitlist-subtitle">{{ subtitle_text }}</p>
+      {%- endif -%}
+    </div>
+
+    <!-- Waitlist Form Card -->
+    <div class="waitlist-form-card">
+      {%- form 'contact', id: 'atelierWaitlistForm' -%}
+
+        {%- if form.posted_successfully? -%}
+          <div class="waitlist-success-view is-visible" style="display: block;">
+            <div class="success-badge">✦ Reservation Confirmed ✦</div>
+            <h2 class="success-title">You're on the exclusive waitlist!</h2>
+            <p class="success-msg">
+              Thank you for reserving. We have registered your inquiry and will send priority drop access directly via WhatsApp and email.
+            </p>
+            <div class="success-actions">
+              <a href="{{ routes.root_url }}" class="success-rack-btn">
+                <span>⟵</span>
+                <span>Return to Home</span>
+              </a>
+            </div>
+          </div>
+        {%- else -%}
+
+          {%- if form.errors -%}
+            <div class="form-status form-status-list form__message" tabindex="-1" autofocus style="color:#d9534f; margin-bottom: 20px;">
+              {{ form.errors | default_errors }}
+            </div>
+          {%- endif -%}
+
+          <!-- Step 1: Client Information (Indian Standard) -->
+          <div class="form-section-title">
+            <span class="step-num">1</span>
+            <span>Your Information</span>
+          </div>
+
+          <div class="waitlist-fields-grid">
+            <!-- Full Name -->
+            <div class="form-input-wrap">
+              <label for="waitlistFullName">Full Name *</label>
+              <input
+                type="text"
+                id="waitlistFullName"
+                name="contact[name]"
+                value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+                placeholder="Enter your full name"
+                required
+              >
+            </div>
+
+            <!-- Email -->
+            <div class="form-input-wrap">
+              <label for="waitlistEmail">Email Address *</label>
+              <input
+                type="email"
+                id="waitlistEmail"
+                name="contact[email]"
+                value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+                placeholder="name@example.com"
+                required
+              >
+            </div>
+
+            <!-- Phone Number with +91 Indian Prefix -->
+            <div class="form-input-wrap">
+              <label for="waitlistPhone">Phone Number (WhatsApp VIP Access) *</label>
+              <div class="phone-input-group">
+                <span class="phone-prefix">+91</span>
+                <input
+                  type="tel"
+                  id="waitlistPhone"
+                  name="contact[phone]"
+                  value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+                  placeholder="98765 43210 (For WhatsApp drop access & VIP alerts)"
+                  maxlength="10"
+                  required
+                >
+              </div>
+            </div>
+
+            <!-- Indian Standards: City, State/UT, and 6-digit PIN Code -->
+            <div class="form-field-row form-field-row-3">
+              <div class="form-input-wrap">
+                <label for="waitlistCity">City *</label>
+                <input
+                  type="text"
+                  id="waitlistCity"
+                  name="contact[city]"
+                  placeholder="e.g. Mumbai / Delhi / Jaipur"
+                  required
+                >
+              </div>
+
+              <div class="form-input-wrap">
+                <label for="waitlistState">State / UT *</label>
+                <select id="waitlistState" name="contact[state]" required>
+                  <option value="" disabled selected>Select State / UT</option>
+                  <option value="Maharashtra">Maharashtra</option>
+                  <option value="Delhi (NCR)">Delhi (NCR)</option>
+                  <option value="Karnataka">Karnataka</option>
+                  <option value="Rajasthan">Rajasthan</option>
+                  <option value="Gujarat">Gujarat</option>
+                  <option value="Telangana">Telangana</option>
+                  <option value="Tamil Nadu">Tamil Nadu</option>
+                  <option value="Uttar Pradesh">Uttar Pradesh</option>
+                  <option value="Punjab">Punjab</option>
+                  <option value="West Bengal">West Bengal</option>
+                  <option value="Haryana">Haryana</option>
+                  <option value="Madhya Pradesh">Madhya Pradesh</option>
+                  <option value="Kerala">Kerala</option>
+                  <option value="Goa">Goa</option>
+                  <option value="Andhra Pradesh">Andhra Pradesh</option>
+                  <option value="Assam">Assam</option>
+                  <option value="Bihar">Bihar</option>
+                  <option value="Chandigarh">Chandigarh</option>
+                  <option value="Chhattisgarh">Chhattisgarh</option>
+                  <option value="Himachal Pradesh">Himachal Pradesh</option>
+                  <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                  <option value="Jharkhand">Jharkhand</option>
+                  <option value="Odisha">Odisha</option>
+                  <option value="Uttarakhand">Uttarakhand</option>
+                  <option value="Other">Other / International</option>
+                </select>
+              </div>
+
+              <div class="form-input-wrap">
+                <label for="waitlistPincode">PIN Code *</label>
+                <input
+                  type="text"
+                  id="waitlistPincode"
+                  name="contact[pincode]"
+                  placeholder="6 Digits (e.g. 400050)"
+                  maxlength="6"
+                  pattern="[0-9]{6}"
+                  required
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2: Select Dresses (5 Runway Looks - Clean, No Card Size Pills) -->
+          <div class="waitlist-dresses-section">
+            <div class="dresses-section-header">
+              <div class="form-section-title">
+                <span class="step-num">2</span>
+                <span>Select Your Desired Runway Dresses</span>
+              </div>
+              <p class="dresses-helper-text">Click on any dress tile to select or unselect. You can select multiple dresses.</p>
+            </div>
+
+            <!-- 5 Dresses Tiles Grid -->
+            <div class="dress-tiles-grid" id="dressTilesGrid">
+
+              <!-- Dress 1 -->
+              {%- assign d1_img = 'hanger-look-1.png' | asset_url -%}
+              {%- if section.settings.dress_1_img != blank -%}
+                {%- assign d1_img = section.settings.dress_1_img | image_url: width: 600 -%}
+              {%- endif -%}
+              {%- assign d1_title = section.settings.dress_1_title | default: 'Archival Manuscript Corset Gown' -%}
+              {%- assign d1_price = section.settings.dress_1_price | default: 'Edition 01 • ₹74,500' -%}
+              <div
+                class="dress-tile-card is-selected"
+                data-index="1"
+                data-title="{{ d1_title | escape }}"
+                data-price="{{ d1_price | escape }}"
+                data-img="{{ d1_img }}"
+              >
+                <div class="dress-card-badge">Look 01</div>
+                <div class="dress-card-check">✓</div>
+                <div class="dress-card-img-wrap">
+                  <img src="{{ d1_img }}" alt="{{ d1_title | escape }}" loading="lazy">
+                </div>
+                <div class="dress-card-info">
+                  <h3 class="dress-card-title">{{ d1_title }}</h3>
+                  <div class="dress-card-price">{{ d1_price }}</div>
+                </div>
+              </div>
+
+              <!-- Dress 2 -->
+              {%- assign d2_img = 'hanger-look-2.png' | asset_url -%}
+              {%- if section.settings.dress_2_img != blank -%}
+                {%- assign d2_img = section.settings.dress_2_img | image_url: width: 600 -%}
+              {%- endif -%}
+              {%- assign d2_title = section.settings.dress_2_title | default: 'Heritage Mural Mirror Lehenga' -%}
+              {%- assign d2_price = section.settings.dress_2_price | default: 'Edition 02 • ₹1,25,000' -%}
+              <div
+                class="dress-tile-card"
+                data-index="2"
+                data-title="{{ d2_title | escape }}"
+                data-price="{{ d2_price | escape }}"
+                data-img="{{ d2_img }}"
+              >
+                <div class="dress-card-badge">Look 02</div>
+                <div class="dress-card-check">✓</div>
+                <div class="dress-card-img-wrap">
+                  <img src="{{ d2_img }}" alt="{{ d2_title | escape }}" loading="lazy">
+                </div>
+                <div class="dress-card-info">
+                  <h3 class="dress-card-title">{{ d2_title }}</h3>
+                  <div class="dress-card-price">{{ d2_price }}</div>
+                </div>
+              </div>
+
+              <!-- Dress 3 -->
+              {%- assign d3_img = 'hanger-look-3.png' | asset_url -%}
+              {%- if section.settings.dress_3_img != blank -%}
+                {%- assign d3_img = section.settings.dress_3_img | image_url: width: 600 -%}
+              {%- endif -%}
+              {%- assign d3_title = section.settings.dress_3_title | default: 'Rose-Coral Shimmer Saree Gown' -%}
+              {%- assign d3_price = section.settings.dress_3_price | default: 'Edition 03 • ₹98,000' -%}
+              <div
+                class="dress-tile-card"
+                data-index="3"
+                data-title="{{ d3_title | escape }}"
+                data-price="{{ d3_price | escape }}"
+                data-img="{{ d3_img }}"
+              >
+                <div class="dress-card-badge">Look 03</div>
+                <div class="dress-card-check">✓</div>
+                <div class="dress-card-img-wrap">
+                  <img src="{{ d3_img }}" alt="{{ d3_title | escape }}" loading="lazy">
+                </div>
+                <div class="dress-card-info">
+                  <h3 class="dress-card-title">{{ d3_title }}</h3>
+                  <div class="dress-card-price">{{ d3_price }}</div>
+                </div>
+              </div>
+
+              <!-- Dress 4 -->
+              {%- assign d4_img = 'hanger-look-4.png' | asset_url -%}
+              {%- if section.settings.dress_4_img != blank -%}
+                {%- assign d4_img = section.settings.dress_4_img | image_url: width: 600 -%}
+              {%- endif -%}
+              {%- assign d4_title = section.settings.dress_4_title | default: 'Midnight Botanical Co-ord Set' -%}
+              {%- assign d4_price = section.settings.dress_4_price | default: 'Edition 04 • ₹92,000' -%}
+              <div
+                class="dress-tile-card"
+                data-index="4"
+                data-title="{{ d4_title | escape }}"
+                data-price="{{ d4_price | escape }}"
+                data-img="{{ d4_img }}"
+              >
+                <div class="dress-card-badge">Look 04</div>
+                <div class="dress-card-check">✓</div>
+                <div class="dress-card-img-wrap">
+                  <img src="{{ d4_img }}" alt="{{ d4_title | escape }}" loading="lazy">
+                </div>
+                <div class="dress-card-info">
+                  <h3 class="dress-card-title">{{ d4_title }}</h3>
+                  <div class="dress-card-price">{{ d4_price }}</div>
+                </div>
+              </div>
+
+              <!-- Dress 5 -->
+              {%- assign d5_img = 'hanger-look-5.png' | asset_url -%}
+              {%- if section.settings.dress_5_img != blank -%}
+                {%- assign d5_img = section.settings.dress_5_img | image_url: width: 600 -%}
+              {%- endif -%}
+              {%- assign d5_title = section.settings.dress_5_title | default: 'Bordeaux Peplum Halter Gown' -%}
+              {%- assign d5_price = section.settings.dress_5_price | default: 'Edition 05 • ₹1,10,000' -%}
+              <div
+                class="dress-tile-card"
+                data-index="5"
+                data-title="{{ d5_title | escape }}"
+                data-price="{{ d5_price | escape }}"
+                data-img="{{ d5_img }}"
+              >
+                <div class="dress-card-badge">Look 05</div>
+                <div class="dress-card-check">✓</div>
+                <div class="dress-card-img-wrap">
+                  <img src="{{ d5_img }}" alt="{{ d5_title | escape }}" loading="lazy">
+                </div>
+                <div class="dress-card-info">
+                  <h3 class="dress-card-title">{{ d5_title }}</h3>
+                  <div class="dress-card-price">{{ d5_price }}</div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Step 3: Indian Standard Size Selection -->
+          <div class="waitlist-size-section">
+            <div class="size-section-header">
+              <div class="form-section-title" style="margin-bottom:0;">
+                <span class="step-num">3</span>
+                <span>Select Your Size</span>
+              </div>
+              <span class="size-guide-hint">Indian Standard Couture Fit</span>
+            </div>
+
+            <div class="size-pills-row">
+              <button type="button" class="size-select-pill" data-size='XS (UK 6 / Bust 32")'>
+                <span class="size-pill-name">XS</span>
+                <span class="size-pill-detail">Bust 32"</span>
+              </button>
+              <button type="button" class="size-select-pill" data-size='S (UK 8 / Bust 34")'>
+                <span class="size-pill-name">S</span>
+                <span class="size-pill-detail">Bust 34"</span>
+              </button>
+              <button type="button" class="size-select-pill is-active" data-size='M (UK 10 / Bust 36")'>
+                <span class="size-pill-name">M</span>
+                <span class="size-pill-detail">Bust 36"</span>
+              </button>
+              <button type="button" class="size-select-pill" data-size='L (UK 12 / Bust 38")'>
+                <span class="size-pill-name">L</span>
+                <span class="size-pill-detail">Bust 38"</span>
+              </button>
+              <button type="button" class="size-select-pill" data-size='XL (UK 14 / Bust 40")'>
+                <span class="size-pill-name">XL</span>
+                <span class="size-pill-detail">Bust 40"</span>
+              </button>
+              <button type="button" class="size-select-pill" data-size='XXL (UK 16 / Bust 42")'>
+                <span class="size-pill-name">XXL</span>
+                <span class="size-pill-detail">Bust 42"</span>
+              </button>
+              <button type="button" class="size-select-pill" data-size="Custom Made-to-Measure" data-is-custom="true">
+                <span class="size-pill-name">Custom</span>
+                <span class="size-pill-detail">Made-to-Measure</span>
+              </button>
+            </div>
+
+            <!-- Optional Custom Measurement Row (Toggles when Custom is chosen) -->
+            <div class="custom-measurements-row" id="customMeasurementsRow">
+              <div class="form-input-wrap">
+                <label for="customMeasurementsInput">Custom Sizing Details (Optional):</label>
+                <input
+                  type="text"
+                  id="customMeasurementsInput"
+                  placeholder="e.g. Bust 35, Waist 28, Hips 38, Height 5'6&quot;"
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Hidden Form Serializations -->
+          <input type="hidden" id="waitlistSizeInput" name="contact[size]" value='M (UK 10 / Bust 36")'>
+          <input type="hidden" id="selectedDressesSummary" name="contact[selected_looks]" value="">
+          <input type="hidden" id="contactBodySummary" name="contact[body]" value="">
+
+          <!-- Submit Button -->
+          <div class="waitlist-submit-wrap">
+            <button type="submit" class="waitlist-submit-btn" id="waitlistSubmitBtn">
+              <span>Submit Reservation</span>
+            </button>
+            <p class="waitlist-disclaimer">
+              By signing up, you agree to receive private collection drops & VIP runway access via WhatsApp / SMS. View our privacy policy and terms of service for more info.
+            </p>
+          </div>
+
+        {%- endif -%}
+
+      {%- endform -%}
+
+      <!-- Confirmation / Success View for client-side fallback -->
+      <div class="waitlist-success-view" id="waitlistSuccessView">
+        <div class="success-badge">✦ Reservation Confirmed ✦</div>
+        <h2 class="success-title">You're on the exclusive waitlist!</h2>
+        <p class="success-msg">
+          Thank you for joining. When our private atelier drop opens, your VIP access link and priority checkout code will be dispatched directly to your WhatsApp and email.
+        </p>
+        <div class="success-receipt-card" id="receiptDetails"></div>
+        <div class="success-actions">
+          <a href="{{ routes.root_url }}" class="success-rack-btn">
+            <span>⟵</span>
+            <span>Return to Runway Rack</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
