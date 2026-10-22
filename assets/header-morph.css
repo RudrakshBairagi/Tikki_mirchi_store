@@ -100,12 +100,16 @@
 .desktop-nav {
   display: flex;
   align-items: center;
-  gap: 22px;
+  gap: clamp(14px, 2vw, 24px);
 }
 
-@media (max-width: 960px) {
+@media (max-width: 768px) {
   .desktop-nav {
-    display: none;
+    gap: 12px;
+  }
+  .nav-link {
+    font-size: 10px;
+    letter-spacing: 0.14em;
   }
 }
 
