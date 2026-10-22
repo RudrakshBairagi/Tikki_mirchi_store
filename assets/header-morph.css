@@ -104,12 +104,28 @@
 }
 
 @media (max-width: 768px) {
-  .desktop-nav {
+  .luxury-header__left {
     gap: 12px;
+  }
+  .desktop-nav {
+    gap: clamp(8px, 2vw, 12px);
   }
   .nav-link {
     font-size: 10px;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.08em;
+  }
+}
+
+@media (max-width: 480px) {
+  .luxury-header__left {
+    gap: 8px;
+  }
+  .desktop-nav {
+    gap: 8px;
+  }
+  .nav-link {
+    font-size: 9px;
+    letter-spacing: 0.06em;
   }
 }
 
@@ -421,7 +437,7 @@
     --luxury-header-height: 68px;
   }
   .luxury-header__inner {
-    padding: 0 18px;
+    padding: 0 clamp(12px, 3vw, 18px);
   }
   .icon-wishlist,
   .icon-account {
@@ -431,12 +447,12 @@
     left: 50%;
     transform: translate(-50%, 0);
     margin-top: clamp(22px, 4vh, 36px);
-    font-size: clamp(2.6rem, 12vw, 4.2rem);
+    font-size: clamp(2.4rem, 11vw, 3.8rem);
   }
   .brand-morph-logo.merge-up {
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 1.35rem;
+    font-size: clamp(1.15rem, 3.4vw, 1.35rem);
   }
   .hero-tagline-container {
     left: 50%;
@@ -448,6 +464,15 @@
   .hero-editorial-masthead {
     min-height: 220px;
     padding: 0 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .luxury-header__inner {
+    padding: 0 12px;
+  }
+  .brand-morph-logo.merge-up {
+    font-size: 1.1rem;
   }
 }
 

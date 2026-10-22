@@ -86,10 +86,48 @@
   letter-spacing: 0.2em;
 }
 
+@media (max-width: 768px) {
+  .waitlist-page .luxury-header .nav-link,
+  .waitlist-page .luxury-header .btn-label {
+    letter-spacing: 0.08em !important;
+    font-size: 10px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .waitlist-page .luxury-header .nav-link,
+  .waitlist-page .luxury-header .btn-label {
+    letter-spacing: 0.06em !important;
+    font-size: 9px !important;
+  }
+}
+
 .waitlist-page .luxury-header .nav-link.is-active {
   color: #b38728 !important;
   text-decoration: underline;
   text-underline-offset: 6px;
+}
+
+.waitlist-page .luxury-header .luxury-header__center {
+  position: absolute !important;
+  left: 50% !important;
+  top: 0 !important;
+  height: 100% !important;
+  transform: translateX(-50%) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  pointer-events: none !important;
+}
+
+.waitlist-page .luxury-header .brand-morph-logo {
+  position: absolute !important;
+  left: 50% !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  margin: 0 !important;
+  pointer-events: auto !important;
+  white-space: nowrap !important;
 }
 
 .waitlist-page .luxury-header .brand-wordmark {

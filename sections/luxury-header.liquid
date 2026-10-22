@@ -114,6 +114,22 @@
   #LuxuryHeaderSection-{{ section.id }} .btn-label {
     font-size: calc(12px * var(--header-nav-scale, 1)) !important;
   }
+
+  @media (max-width: 768px) {
+    #LuxuryHeaderSection-{{ section.id }} .nav-link,
+    #LuxuryHeaderSection-{{ section.id }} .btn-label {
+      font-size: clamp(9.5px, 2.5vw, 10.5px) !important;
+      letter-spacing: 0.08em !important;
+    }
+  }
+
+  @media (max-width: 480px) {
+    #LuxuryHeaderSection-{{ section.id }} .nav-link,
+    #LuxuryHeaderSection-{{ section.id }} .btn-label {
+      font-size: 9px !important;
+      letter-spacing: 0.06em !important;
+    }
+  }
 {%- endstyle -%}
 
 <div id="LuxuryHeaderSection-{{ section.id }}" class="luxury-header-section-wrapper">
