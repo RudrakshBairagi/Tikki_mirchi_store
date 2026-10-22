@@ -1,0 +1,281 @@
+/* The Rack: the document-level stylesheet. The room, the card and the detail
+   view are styled inside the element's Shadow DOM (render/rail.ts, RAIL_CSS),
+   where theme CSS cannot reach them. This file only sizes the host and
+   styles the theme editor's "no such rack" message, which has no shadow
+   root. Loaded once per page through the block schema's `stylesheet` key.
+   Budget: 5 KB gzip, asserted in test/extension/block.test.ts. */
+
+the-rack {
+  display: block;
+  box-sizing: border-box;
+}
+
+.the-rack--empty {
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  border: 1px dashed currentColor;
+  opacity: 0.7;
+}
+
+.the-rack__empty {
+  margin: 0;
+  text-align: center;
+}
+
+.the-rack__links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Reduced motion: the rail's physics and transitions check the same query
+   inside the shadow root. This block stays LAST (docs/STOREFRONT.md §6). */
+@media (prefers-reduced-motion: reduce) {
+  the-rack {
+    animation: none;
+    transition: none;
+  }
+}
+
+/*
+ * THE THEME-EDITOR NOTICE (2026-10-16).
+ *
+ * Printed by the block only when `request.design_mode` is true and the shop
+ * is not entitled, so it reaches the merchant and never a shopper. Styled
+ * here rather than inline so it inherits the theme's own font, and kept
+ * deliberately plain: it is an app message sitting in someone else's design.
+ */
+.the-rack__notice {
+  box-sizing: border-box;
+  margin: 0 auto 12px;
+  max-width: 48rem;
+  padding: 10px 14px;
+  border: 1px solid rgba(0, 0, 0, .12);
+  border-radius: 8px;
+  background: #fff8e1;
+  color: #3d2b00;
+  font: inherit;
+  font-size: 14px;
+  line-height: 1.45;
+  text-align: center;
+}
+
+
+/*
+ * THE SPACE THE RAIL WILL TAKE, HELD FROM THE FIRST BYTE.
+ *
+ * The rail is drawn by JavaScript after a fetch, so until it arrived the
+ * block was as tall as its padding and everything below it jumped when the
+ * rail landed. That is layout shift, Shopify charges the merchant for it on
+ * every page the block sits on, and reserving the space with min-height is
+ * Shopify's own advice for app-injected content.
+ *
+ * EVERY NUMBER BELOW WAS MEASURED, NOT DERIVED — scripts/rack-shift-check.mjs
+ * lays the real block out in headless Chrome and subtracts. The first version
+ * of this reserved the stage alone and still let the page move 212px, because
+ * the heading, the gap and the hint are not in the stage. Re-run that script
+ * after touching any of this; the arithmetic is not obvious and guessing it
+ * wrong in the other direction holds a blank band open on a storefront.
+ *
+ *   stage    520px desktop / 380px phone, times the garment size — the rail's
+ *            own floor (render/rail.ts, DESKTOP.minH and PHONE.minH), which
+ *            is what decides the height for every real garment: measured over
+ *            the cut-outs we hold, the tallest is 2.16 hanger units and the
+ *            floor covers it.
+ *   heading  clamp(30px, 3.4vw, 46px) x 1.05, the h2's own line box, plus
+ *            29px when there is a subheading under it.
+ *   gap      26px desktop, 14px phone (.rk-room margin-top).
+ *   hint     38px, one 13px line plus its 18px margin.
+ *   padding  the merchant's own, added back because this element is
+ *            border-box and min-height would otherwise swallow it.
+ *
+ * IT IS NOT RELEASED WHEN THE RAIL DRAWS. Dropping it to 0 at that moment
+ * would cause the very shift it exists to prevent, in the other direction,
+ * every time the rail came out shorter than the reserve. min-height only ever
+ * adds space, so leaving it costs at most a little air under a short rail and
+ * guarantees no jump.
+ *
+ * It IS released when there is nothing to draw — a shop without the plan, or
+ * a rail with no ready garment — because a blank band held open forever on
+ * someone's storefront is worse than one shift on a page that was going to
+ * show nothing anyway.
+ */
+the-rack {
+  --ssw-head: 0px;
+  --ssw-gap: 26px;
+  --ssw-hint: 38px;
+  min-height: calc(
+    max(var(--ssw-rack-reserve, 0px), var(--ssw-min-height, 0px))
+    + var(--ssw-head) + var(--ssw-gap) + var(--ssw-hint) + var(--ssw-pad-y, 0px)
+  );
+}
+
+/* The heading is only in the DOM when the merchant wrote one. */
+/* These three MUST track the font sizes in rail.ts, and they do it by
+   reading the SAME two custom properties the block sets.
+
+   The merchant picks pixels (user, 2026-10-21). The clamp survives only
+   as the fallback, for a block saved before the settings existed — which
+   is why the defaults, 46px and 14px, are the values that clamp produced
+   on a desktop.
+
+   Let a merchant enlarge the heading without enlarging the reservation
+   and the block grows when the rail mounts: the layout shift this whole
+   file exists to prevent (0.134 -> 0.009).
+   scripts/rack-shift-check.mjs --titleSize 72 is the proof. */
+the-rack[data-title] { --ssw-head: calc(var(--ssw-h-size, clamp(30px, 3.4vw, 46px)) * 1.05); }
+the-rack[data-title][data-subheading] { --ssw-head: calc(var(--ssw-h-size, clamp(30px, 3.4vw, 46px)) * 1.05 + 8px + var(--ssw-sub-size, 14px) * 1.5); }
+the-rack[data-subheading]:not([data-title]) { --ssw-head: calc(8px + var(--ssw-sub-size, 14px) * 1.5); }
+
+/* An emptied hint renders nothing; the attribute is always present. */
+the-rack[data-hint=""] { --ssw-hint: 0px; }
+
+/*
+ * The phone numbers. The rail switches its own metrics on the width of the
+ * RAIL VIEWPORT (render/rail.ts, NARROW_BELOW) and this switches on the
+ * window, which are the same thing on a phone and can differ for a block in
+ * a narrow desktop column. The reserve is then a little tall there, which
+ * costs air and never a jump.
+ */
+@media (max-width: 640px) {
+  the-rack {
+    --ssw-gap: 14px;
+    min-height: calc(
+      max(var(--ssw-rack-reserve-sm, 0px), var(--ssw-min-height, 0px))
+      + var(--ssw-head) + var(--ssw-gap) + var(--ssw-hint) + var(--ssw-pad-y, 0px)
+    );
+  }
+}
+
+/* Nothing to draw: give the space back rather than hold a blank band. */
+the-rack[data-ssw-empty="1"] { min-height: 0; }
+
+
+/*
+ * THE GARMENTS LIQUID PRINTED, BEFORE THE SCRIPT HAS PLACED THEM.
+ *
+ * blocks/rack.liquid emits a real <img> per garment so the browser's preload
+ * scanner finds them while it is still parsing the HTML — the whole point of
+ * moving the rail into a metaobject. They cannot be shown where they land,
+ * because the rail positions each piece against the rod and an unplaced row
+ * of garments flashing first is worse than waiting a frame.
+ *
+ * NOT display:none, and not a zero-sized box. Both would tell the browser it
+ * can skip the work, and a lazy image inside a collapsed container may never
+ * load at all. This covers the block's own area, so the first garments count
+ * as in-viewport and download, while nothing is visible.
+ */
+.the-rack__pre {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: -1;
+}
+.the-rack__pre .the-rack__garment { max-width: 50%; height: auto; }
+
+/* The host becomes the positioning context for the layer above. */
+the-rack { position: relative; }
+
+/* Once the script has the images, the layer has done its job. */
+the-rack[data-ssw-adopted="1"] .the-rack__pre { display: none; }
+
+/*
+ * THEME EDITOR ONLY — never rendered for a shopper.
+ *
+ * Two states wear it: "pick a rail" when nothing is selected, and "only
+ * you can see this" when the shop has no plan. In the second case the
+ * rail is drawn underneath, so this has to read as a note about it rather
+ * than as the block having failed.
+ */
+.the-rack__gate {
+  margin: 0 auto 12px;
+  max-width: 520px;
+  padding: 14px 18px;
+  text-align: center;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.02);
+}
+.the-rack__gate-t {
+  margin: 0 0 4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #111827;
+}
+.the-rack__gate-b {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.45;
+  color: #6b7280;
+}
+.the-rack__gate-l {
+  margin: 10px 0 0;
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  font-size: 13px;
+}
+.the-rack__gate-l a { color: #111827; }
+
+/* ─────────────────────────────────────────────────────────────────────────
+   ROOM AND RAIL — ported from digital-rack (4).html, 2026-10-19.
+
+   Pure CSS on the HOST, so they cost the storefront nothing: no
+   JavaScript runs to apply them and they paint before the-rack.min.js has
+   parsed.
+
+   Rail works because custom properties inherit THROUGH the shadow
+   boundary. The host sets --ssw-rail-*, and the shadow root's tokens read
+   them with the chrome values as the fallback, so Chrome needs no
+   attribute at all.
+
+   DELIBERATE DEVIATION: the reference draws the floor as a separate
+   `.floor` element. Here it is extra background LAYERS on the host,
+   because a host's background always paints behind its shadow content,
+   so the garments are guaranteed to hang in front of it. The colours, the
+   54px height and the 6px top edge are the reference's.
+
+   TWO THINGS THAT SILENTLY KILL THESE RULES, both found by screenshotting
+   rather than by reading the CSS:
+     1. The values contain `data:image/svg+xml;utf8,`. Split a declaration
+        on the first `;` and you truncate the rule; the browser drops it
+        and the room just does not paint.
+     2. A background-color is only legal in the LAST layer. Concrete's
+        floor ends in `#BDB9B3`, and moving the floor to the front made
+        that colour illegal, which invalidated the whole declaration.
+        Trailing colours are rewritten as gradients below.
+
+   No data-room attribute paints nothing at all. We never ship a
+   background colour by default.
+   ───────────────────────────────────────────────────────────────────── */
+
+the-rack[data-rail="brass"] { --ssw-rail-hi: #FBEFC8; --ssw-rail-mid: #C9A24B; --ssw-rail-lo: #76561C; }
+the-rack[data-rail="black"] { --ssw-rail-hi: #6A6A6A; --ssw-rail-mid: #2A2A2A; --ssw-rail-lo: #0C0C0C; }
+
+/* White: no wall texture, a hairline floor — the reference's White row. */
+the-rack[data-room="white"] {
+  background: linear-gradient(#E7E7E7, #E7E7E7) bottom / 100% 1px no-repeat, #FFFFFF;
+}
+
+the-rack[data-room="limewash"] {
+  background: repeating-linear-gradient(90deg,#DCC7A8 0 150px,#CDB693 150px 152px) bottom / 100% 54px no-repeat,
+    linear-gradient(#F4F0EA, #F4F0EA) bottom 54px left / 100% 6px no-repeat,
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='420' height='420'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.006' numOctaves='3' seed='7' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .55  0 0 0 0 .5  0 0 0 0 .44  0 0 0 .28 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>"),linear-gradient(#EEE8DF,#E7E0D5);
+}
+
+the-rack[data-room="oak"] {
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9 .012' numOctaves='2' seed='7' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .35  0 0 0 0 .22  0 0 0 0 .12  0 0 0 .22 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>"),repeating-linear-gradient(90deg,#8C6646 0 120px,#6E4E33 120px 122px) bottom / 100% 54px no-repeat,
+    linear-gradient(#5A3F28, #5A3F28) bottom 54px left / 100% 6px no-repeat,
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9 .012' numOctaves='2' seed='7' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .35  0 0 0 0 .22  0 0 0 0 .12  0 0 0 .22 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>"),repeating-linear-gradient(90deg,#CDA87F 0 62px,#B98F64 62px 64px,#C9A378 64px 126px,#B48A5F 126px 128px);
+}
+
+the-rack[data-room="concrete"] {
+  background: linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0) 60%),url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' seed='7' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .3  0 0 0 0 .3  0 0 0 0 .3  0 0 0 .22 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>"),linear-gradient(#BDB9B3, #BDB9B3) bottom / 100% 54px no-repeat,
+    linear-gradient(#A9A59F, #A9A59F) bottom 54px left / 100% 6px no-repeat,
+    radial-gradient(circle at 50% 50%,rgba(70,66,60,.28) 0 3px,rgba(255,255,255,.25) 4px,transparent 5px) 0 0/190px 130px,url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' seed='7' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .3  0 0 0 0 .3  0 0 0 0 .3  0 0 0 .22 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>"),url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='420' height='420'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.01' numOctaves='2' seed='7' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .4  0 0 0 0 .4  0 0 0 0 .38  0 0 0 .18 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>"),linear-gradient(#D9D6D1,#CFCBC5);
+}
