@@ -44,24 +44,11 @@
        ========================================================================== -->
   <header id="LuxuryHeader" class="luxury-header scrolled-down" style="--docked-bg-color: rgba(248, 248, 246, 0.96); --docked-text-color: #161517; --header-border-docked: rgba(0, 0, 0, 0.08);">
     <div class="luxury-header__inner">
-      <!-- Left: Menu Toggle + Desktop Navigation Links -->
+      <!-- Left: Navigation Links (Homepage + Waitlist) -->
       <div class="luxury-header__left">
-        <!-- Menu Toggle -->
-        <button class="header-action-btn menu-toggle" aria-label="Open menu" type="button">
-          <span class="hamburger-icon" aria-hidden="true">
-            <span></span>
-            <span></span>
-            <span></span>
-          </span>
-          <span class="btn-label">MENU</span>
-        </button>
-
-        <!-- Desktop Navigation -->
         <nav class="desktop-nav" aria-label="Primary Navigation">
-          <a href="preview.html#atelier" class="nav-link">ATELIER</a>
-          <a href="preview.html#HangerRack" class="nav-link">RUNWAY</a>
-          <a href="preview.html#collections" class="nav-link">COLLECTIONS</a>
-          <a href="waitlist.html" class="nav-link is-active" style="color: #b38728; font-weight: 600;">WAITLIST ✦</a>
+          <a href="preview.html" class="nav-link header-nav-home">HOME</a>
+          <a href="waitlist.html" class="nav-link header-nav-waitlist is-active" style="color: #b38728; font-weight: 600;">WAITLIST ✦</a>
         </nav>
       </div>
 
@@ -72,41 +59,8 @@
         </a>
       </div>
 
-      <!-- Right: High-Fashion Boutique Icons -->
-      <div class="luxury-header__right">
-        <!-- Search -->
-        <button class="header-action-btn" aria-label="Search" title="Search" type="button">
-          <svg class="header-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="11" cy="11" r="7"></circle>
-            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-          </svg>
-        </button>
-
-        <!-- Wishlist -->
-        <button class="header-action-btn icon-wishlist" aria-label="Wishlist" title="Wishlist" type="button">
-          <svg class="header-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-          </svg>
-        </button>
-
-        <!-- Account -->
-        <button class="header-action-btn icon-account" aria-label="Account" title="Account" type="button">
-          <svg class="header-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-            <circle cx="12" cy="7" r="4"></circle>
-          </svg>
-        </button>
-
-        <!-- Shopping Bag / Cart with live badge -->
-        <button class="header-action-btn cart-btn" aria-label="Shopping Bag" title="Shopping Bag" type="button">
-          <svg class="header-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <path d="M16 10a4 4 0 0 1-8 0"></path>
-          </svg>
-          <span class="cart-count-badge">0</span>
-        </button>
-      </div>
+      <!-- Right: Clean Minimal Zone (Utility icons removed) -->
+      <div class="luxury-header__right" aria-hidden="true"></div>
     </div>
   </header>
 
