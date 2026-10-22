@@ -87,6 +87,12 @@
 }
 
 @media (max-width: 768px) {
+  .waitlist-page .luxury-header .menu-toggle {
+    display: inline-flex !important;
+  }
+  .waitlist-page .luxury-header .desktop-nav {
+    display: none !important;
+  }
   .waitlist-page .luxury-header .nav-link,
   .waitlist-page .luxury-header .btn-label {
     letter-spacing: 0.08em !important;

@@ -539,9 +539,20 @@
        ========================================================================== -->
   <header id="LuxuryHeader" class="luxury-header scrolled-down">
     <div class="luxury-header__inner">
-      <!-- Left: Navigation Links (Homepage + Waitlist) -->
+      <!-- Left: Navigation Links (Menu Toggle on Mobile + Direct Links on Desktop) -->
       <div class="luxury-header__left">
-        <nav class="desktop-nav">
+        <!-- Mobile Menu Toggle Button (Visible on Phone) -->
+        <button class="header-action-btn menu-toggle" id="HeaderMenuToggle" aria-label="Open Navigation Menu" type="button" aria-expanded="false" aria-controls="LuxuryMobileMenu">
+          <span class="hamburger-icon" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
+          <span class="btn-label">MENU</span>
+        </button>
+
+        <!-- Desktop Navigation (Visible on Desktop) -->
+        <nav class="desktop-nav" aria-label="Primary Navigation">
           <a href="preview.html" class="nav-link header-nav-home is-active" style="color: #b38728; font-weight: 600;">HOME</a>
           <a href="waitlist.html" class="nav-link header-nav-waitlist">WAITLIST ✦</a>
         </nav>
@@ -559,6 +570,42 @@
     </div>
   </header>
   <div class="luxury-header-spacer" aria-hidden="true"></div>
+
+  <!-- ==========================================================================
+       LUXURY MOBILE NAVIGATION DRAWER
+       ========================================================================== -->
+  <div id="LuxuryMobileMenu" class="luxury-mobile-drawer" aria-hidden="true">
+    <div class="luxury-mobile-drawer__backdrop" id="MobileMenuBackdrop"></div>
+    <div class="luxury-mobile-drawer__panel" role="dialog" aria-modal="true" aria-label="Navigation Menu">
+      <div class="luxury-mobile-drawer__header">
+        <div class="luxury-mobile-drawer__brand">Teekhi Bella</div>
+        <button class="luxury-mobile-drawer__close" id="MobileMenuClose" aria-label="Close menu" type="button">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <nav class="luxury-mobile-drawer__nav">
+        <a href="preview.html" class="mobile-nav-link mobile-link-home is-active">
+          <span class="mobile-nav-num">01</span>
+          <span class="mobile-nav-text">HOME</span>
+          <span class="mobile-nav-arrow">⟶</span>
+        </a>
+        <a href="waitlist.html" class="mobile-nav-link mobile-link-waitlist">
+          <span class="mobile-nav-num">02</span>
+          <span class="mobile-nav-text" style="color: #b38728;">WAITLIST ✦</span>
+          <span class="mobile-nav-arrow">⟶</span>
+        </a>
+      </nav>
+
+      <div class="luxury-mobile-drawer__footer">
+        <div class="mobile-drawer-tagline">House of Royals • Haute Couture</div>
+        <div class="mobile-drawer-copyright">© 2026 Teekhi Bella</div>
+      </div>
+    </div>
+  </div>
 
   <!-- ==========================================================================
        HOUSE OF ROYALS — CLOTHES HANGER RACK (ATELIER RUNWAY)
