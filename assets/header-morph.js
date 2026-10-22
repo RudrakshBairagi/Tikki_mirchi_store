@@ -1,6 +1,6 @@
 /**
- * Teekhi Bella — Luxury Static Header & Mobile Drawer Controller
- * Keeps the brand logo statically centered and manages the mobile navigation menu.
+ * Teekhi Bella — Luxury Static Header & Mobile Dropdown Controller
+ * Keeps the brand logo statically centered and manages the mobile navigation dropdown.
  */
 (function() {
   'use strict';
@@ -17,63 +17,61 @@
       logo.classList.add('is-visible');
     }
 
-    initMobileDrawer();
+    initMobileDropdown();
   }
 
-  function initMobileDrawer() {
-    const menuToggle = document.querySelector('.menu-toggle');
-    const drawer = document.getElementById('LuxuryMobileMenu') || document.querySelector('.luxury-mobile-drawer');
-    const closeBtn = document.getElementById('MobileMenuClose') || (drawer ? drawer.querySelector('.luxury-mobile-drawer__close') : null);
-    const backdrop = document.getElementById('MobileMenuBackdrop') || (drawer ? drawer.querySelector('.luxury-mobile-drawer__backdrop') : null);
-    const navLinks = drawer ? drawer.querySelectorAll('.mobile-nav-link') : [];
+  function initMobileDropdown() {
+    const menuToggle = document.getElementById('HeaderMenuToggle') || document.querySelector('.menu-toggle');
+    const dropdown = document.getElementById('LuxuryMenuDropdown') || document.querySelector('.luxury-menu-dropdown');
+    const wrapper = document.querySelector('.menu-dropdown-wrapper');
+    const navLinks = dropdown ? dropdown.querySelectorAll('.dropdown-nav-link') : [];
 
-    if (!menuToggle || !drawer) return;
+    if (!menuToggle || !dropdown) return;
 
-    function openMenu() {
-      drawer.classList.add('is-open');
-      drawer.setAttribute('aria-hidden', 'false');
+    function openDropdown() {
+      dropdown.classList.add('is-open');
+      dropdown.setAttribute('aria-hidden', 'false');
       menuToggle.setAttribute('aria-expanded', 'true');
-      document.body.classList.add('mobile-nav-open');
     }
 
-    function closeMenu() {
-      drawer.classList.remove('is-open');
-      drawer.setAttribute('aria-hidden', 'true');
+    function closeDropdown() {
+      dropdown.classList.remove('is-open');
+      dropdown.setAttribute('aria-hidden', 'true');
       menuToggle.setAttribute('aria-expanded', 'false');
-      document.body.classList.remove('mobile-nav-open');
     }
 
     menuToggle.addEventListener('click', function(e) {
       e.preventDefault();
-      if (drawer.classList.contains('is-open')) {
-        closeMenu();
+      e.stopPropagation();
+      if (dropdown.classList.contains('is-open')) {
+        closeDropdown();
       } else {
-        openMenu();
+        openDropdown();
       }
     });
 
-    if (closeBtn) {
-      closeBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        closeMenu();
-      });
-    }
-
-    if (backdrop) {
-      backdrop.addEventListener('click', function() {
-        closeMenu();
-      });
-    }
-
     navLinks.forEach(function(link) {
       link.addEventListener('click', function() {
-        closeMenu();
+        closeDropdown();
       });
     });
 
+    // Close on click outside
+    document.addEventListener('click', function(e) {
+      if (dropdown.classList.contains('is-open')) {
+        if (wrapper && !wrapper.contains(e.target)) {
+          closeDropdown();
+        } else if (!dropdown.contains(e.target) && !menuToggle.contains(e.target)) {
+          closeDropdown();
+        }
+      }
+    });
+
+    // Close on Escape
     document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape' && drawer.classList.contains('is-open')) {
-        closeMenu();
+      if (e.key === 'Escape' && dropdown.classList.contains('is-open')) {
+        closeDropdown();
+        menuToggle.focus();
       }
     });
   }
