@@ -111,35 +111,13 @@
 
     <!-- Waitlist Form Card -->
     <div class="waitlist-form-card">
-      {%- form 'contact', id: 'atelierWaitlistForm' -%}
+      <form id="atelierWaitlistForm" class="atelier-waitlist-form" novalidate>
 
-        {%- if form.posted_successfully? -%}
-          <div class="waitlist-success-view is-visible" style="display: block;">
-            <div class="success-badge">✦ Reservation Confirmed ✦</div>
-            <h2 class="success-title">You're on the exclusive waitlist!</h2>
-            <p class="success-msg">
-              Thank you for reserving. We have registered your inquiry and will send priority drop access directly via WhatsApp and email.
-            </p>
-            <div class="success-actions">
-              <a href="{{ routes.root_url }}" class="success-rack-btn">
-                <span>⟵</span>
-                <span>Return to Home</span>
-              </a>
-            </div>
-          </div>
-        {%- else -%}
-
-          {%- if form.errors -%}
-            <div class="form-status form-status-list form__message" tabindex="-1" autofocus style="color:#d9534f; margin-bottom: 20px;">
-              {{ form.errors | default_errors }}
-            </div>
-          {%- endif -%}
-
-          <!-- Step 1: Client Information (Indian Standard) -->
-          <div class="form-section-title">
-            <span class="step-num">1</span>
-            <span>Your Information</span>
-          </div>
+        <!-- Step 1: Client Information (Indian Standard) -->
+        <div class="form-section-title">
+          <span class="step-num">1</span>
+          <span>Your Information</span>
+        </div>
 
           <div class="waitlist-fields-grid">
             <!-- Full Name -->
@@ -455,9 +433,7 @@
             </p>
           </div>
 
-        {%- endif -%}
-
-      {%- endform -%}
+      </form>
 
       <!-- Confirmation / Success View for client-side fallback -->
       <div class="waitlist-success-view" id="waitlistSuccessView">

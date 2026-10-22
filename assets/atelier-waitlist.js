@@ -177,26 +177,7 @@
         console.warn('Google Sheet invocation warning:', err);
       }
 
-      // 2. Background Post to Shopify native /contact endpoint (so customer & message register in Shopify Admin)
-      const formAction = form.getAttribute('action');
-      if (formAction && formAction !== '#' && !formAction.startsWith('javascript:')) {
-        try {
-          const formData = new FormData(form);
-          fetch(formAction, {
-            method: 'POST',
-            body: formData,
-            headers: {
-              'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
-            }
-          }).catch((shopifyErr) => {
-            console.log('Shopify Admin contact sync:', shopifyErr);
-          });
-        } catch (shopifyEx) {
-          console.log('Shopify sync notice:', shopifyEx);
-        }
-      }
-
-      // 3. Save to localStorage for client-side persistence
+      // 2. Save to localStorage for client-side persistence
       try {
         localStorage.setItem(
           'teekhi_bella_waitlist_data',
