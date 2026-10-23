@@ -213,7 +213,10 @@
                 {%- assign dress_price = block.settings.product.price | money -%}
               {%- endif -%}
 
-              {%- assign default_inspect_link = routes.root_url | append: 'products/skirt' | replace: '//', '/' -%}
+              {%- assign default_inspect_link = routes.root_url | append: 'pages/product-inspect' | replace: '//', '/' -%}
+              {%- if section.settings.inspect_url != blank -%}
+                {%- assign default_inspect_link = section.settings.inspect_url -%}
+              {%- endif -%}
               {%- assign dress_link = default_inspect_link -%}
               {%- if block.settings.link != blank -%}
                 {%- assign dress_link = block.settings.link -%}
@@ -424,6 +427,16 @@
       "type": "url",
       "id": "waitlist_url",
       "label": "Waitlist Page Link"
+    },
+    {
+      "type": "header",
+      "content": "Product Inspection Link"
+    },
+    {
+      "type": "url",
+      "id": "inspect_url",
+      "label": "Default Product Inspect Page Link",
+      "info": "URL opened when inspecting garments. Defaults to /pages/product-inspect."
     },
     {
       "type": "header",

@@ -425,7 +425,7 @@ class HangerRack {
       card.className = 'hanger-floating-card';
       card.setAttribute('aria-hidden', 'true');
       const isHtmlOrFile = (window.location.pathname.endsWith('.html') || window.location.protocol === 'file:');
-      const defaultInspect = isHtmlOrFile ? 'product-inspect.html' : '/products/skirt';
+      const defaultInspect = isHtmlOrFile ? 'product-inspect.html' : '/pages/product-inspect';
       card.innerHTML = `
         <h3 class="floating-card-title">Couture Piece</h3>
         <a href="${defaultInspect}" class="floating-card-link">
@@ -462,11 +462,11 @@ class HangerRack {
 
     this.cardTitle.textContent = g.title || 'Couture Piece';
     const isHtmlOrFile = (window.location.pathname.endsWith('.html') || window.location.protocol === 'file:');
-    const defaultInspect = isHtmlOrFile ? 'product-inspect.html' : '/products/skirt';
+    const defaultInspect = isHtmlOrFile ? 'product-inspect.html' : '/pages/product-inspect';
     
     // Direct "Inspect Piece" clicks to the product inspect description page
     let targetLink = g.link;
-    if (!targetLink || targetLink === '#' || targetLink === '' || targetLink.includes('waitlist')) {
+    if (!targetLink || targetLink === '#' || targetLink === '' || targetLink.includes('waitlist') || targetLink.includes('/products/skirt')) {
       targetLink = defaultInspect;
     }
     this.cardLink.href = targetLink;

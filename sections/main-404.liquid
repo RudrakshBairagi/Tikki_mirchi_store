@@ -5,20 +5,32 @@
     if (p.indexOf('waitlist') !== -1 || h.indexOf('waitlist') !== -1) {
       document.title = "Waitlist \u2014 Teekhi Bella";
       document.documentElement.classList.add('is-waitlist-mode');
+    } else if (p.indexOf('product-inspect') !== -1 || p.indexOf('inspect') !== -1 || p.indexOf('products/skirt') !== -1 || p.indexOf('product/skirt') !== -1) {
+      document.title = "cvnt's genda phool skirt \u2014 Teekhi Bella";
+      document.documentElement.classList.add('is-inspect-mode');
     }
   })();
 </script>
 
 <style type="text/css">
-  #waitlistAutoFallback {
+  #waitlistAutoFallback,
+  #inspectAutoFallback {
     display: none;
   }
   html.is-waitlist-mode #waitlistAutoFallback {
     display: block !important;
   }
+  html.is-inspect-mode #inspectAutoFallback {
+    display: block !important;
+  }
   html.is-waitlist-mode #standard404Markup,
+  html.is-waitlist-mode #inspectAutoFallback,
   html.is-waitlist-mode .header-group,
-  html.is-waitlist-mode .footer-group {
+  html.is-waitlist-mode .footer-group,
+  html.is-inspect-mode #standard404Markup,
+  html.is-inspect-mode #waitlistAutoFallback,
+  html.is-inspect-mode .header-group,
+  html.is-inspect-mode .footer-group {
     display: none !important;
   }
   .template-404 .title + * {
@@ -33,6 +45,10 @@
 
 <div id="waitlistAutoFallback">
   {%- render 'atelier-waitlist-content' -%}
+</div>
+
+<div id="inspectAutoFallback">
+  {%- render 'product-inspect-content' -%}
 </div>
 
 <div id="standard404Markup">

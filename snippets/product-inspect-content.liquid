@@ -1,0 +1,640 @@
+{{ 'header-morph.css' | asset_url | stylesheet_tag }}
+{{ 'product-inspect.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'header-morph.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'product-inspect.js' | asset_url }}" defer="defer"></script>
+
+<script>
+  window.__cvntMeowAudioUrl = '{{ "cvnt-cat-meow.mp3" | asset_url }}';
+</script>
+
+<style>
+  @font-face {
+    font-family: 'Ahsing';
+    src: url('{{ "Ahsing.woff" | asset_url }}') format('woff'),
+         url('{{ "Ahsing.otf" | asset_url }}') format('opentype'),
+         url('{{ "typogama-ahsing.otf" | asset_url }}') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Ragara';
+    src: url('{{ "Ragara.woff" | asset_url }}') format('woff'),
+         url('{{ "Ragara.otf" | asset_url }}') format('opentype'),
+         url('{{ "Ragara.ttf" | asset_url }}') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Ragara';
+    src: url('{{ "Ragara-Italic.woff" | asset_url }}') format('woff'),
+         url('{{ "Ragara-Italic.otf" | asset_url }}') format('opentype'),
+         url('{{ "Ragara-Italic.ttf" | asset_url }}') format('truetype');
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+  }
+
+  :root {
+    --header-logo-font: 'Ahsing', serif;
+    --header-tagline-font: 'Italiana', Georgia, serif;
+    --header-nav-font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --header-logo-spacing: 0.02em;
+  }
+
+  /* Custom Chili Cursor */
+  html, body, .product-inspect-wrapper {
+    cursor: url('{{ "chili-cursor-32.png" | asset_url }}') 0 0, auto !important;
+    cursor: -webkit-image-set(url('{{ "chili-cursor-32.png" | asset_url }}') 1x, url('{{ "chili-cursor-64.png" | asset_url }}') 2x) 0 0, auto !important;
+  }
+
+  a, button, [role="button"], input, select, textarea, label,
+  .nav-link, .menu-toggle, .header-action-btn,
+  .ProductDetailExperience_colorThumbButton__2sQvm,
+  .ProductDetailExperience_variantLabel__VkJns,
+  .ProductDetailExperience_quantityButton__6Nxre,
+  .ProductDetailExperience_buyNowButton__6tiNm,
+  .ProductDetailExperience_addToCartButton__egkl6,
+  .ProductDetailExperience_detailButton__nHj7N,
+  .ProductDetailExperience_miniatureButton__bPKNm,
+  .MeowButton_button__GaaqF,
+  .dropdown-nav-link,
+  .inspect-font-pill,
+  .inspect-font-studio-link {
+    cursor: url('{{ "chili-cursor-32.png" | asset_url }}') 0 0, pointer !important;
+    cursor: -webkit-image-set(url('{{ "chili-cursor-32.png" | asset_url }}') 1x, url('{{ "chili-cursor-64.png" | asset_url }}') 2x) 0 0, pointer !important;
+  }
+  
+  /* Luxury Header Typography & Dark Integration for Inspect Page */
+  #LuxuryHeader {
+    --docked-bg-color: rgba(5, 5, 5, 0.88) !important;
+    --docked-text-color: #f5f5f5 !important;
+    --header-border-docked: rgba(255, 255, 255, 0.1) !important;
+    z-index: 150 !important;
+    font-family: var(--header-nav-font, "Plus Jakarta Sans", sans-serif) !important;
+  }
+  #LuxuryHeader .brand-morph-logo,
+  #LuxuryHeader .brand-wordmark {
+    font-family: var(--header-logo-font, "Ahsing", serif) !important;
+    font-weight: 400 !important;
+    font-size: clamp(2rem, 3.2vw, 2.85rem) !important;
+    color: #f5f5f5 !important;
+    letter-spacing: 0.02em !important;
+    text-transform: none !important;
+    text-decoration: none !important;
+  }
+  #LuxuryHeader .nav-link {
+    color: #f5f5f5 !important;
+    font-family: var(--header-nav-font, "Plus Jakarta Sans", sans-serif) !important;
+    font-size: 11px !important;
+    letter-spacing: 0.2em !important;
+    font-weight: 500 !important;
+    text-transform: uppercase !important;
+    text-decoration: none !important;
+  }
+  #LuxuryHeader .header-action-btn.menu-toggle {
+    color: #f5f5f5 !important;
+  }
+  #LuxuryHeader .menu-toggle .btn-label {
+    color: #f5f5f5 !important;
+  }
+  #LuxuryHeader .menu-toggle:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+  }
+
+  @media (max-width: 768px) {
+    #LuxuryHeader .brand-morph-logo,
+    #LuxuryHeader .brand-wordmark {
+      font-size: clamp(2.35rem, 7.8vw, 3.1rem) !important;
+      line-height: 0.95 !important;
+    }
+  }
+
+  @media (max-width: 480px) {
+    #LuxuryHeader .brand-morph-logo,
+    #LuxuryHeader .brand-wordmark {
+      font-size: clamp(2.25rem, 8.2vw, 2.85rem) !important;
+      line-height: 0.95 !important;
+    }
+  }
+
+  /* Floating Header Font Switcher */
+  .inspect-font-bar {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 14px;
+    background: rgba(14, 13, 17, 0.94);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 9999px;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(212, 175, 55, 0.15);
+    animation: floatIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @keyframes floatIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .inspect-font-bar__label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--header-nav-font, "Plus Jakarta Sans", sans-serif);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #cbb479;
+    white-space: nowrap;
+  }
+  .inspect-font-bar__pills {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .inspect-font-pill {
+    padding: 5px 11px;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #e5e5e7;
+    font-family: var(--header-nav-font, "Plus Jakarta Sans", sans-serif);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: all 0.22s ease;
+    white-space: nowrap;
+  }
+  .inspect-font-pill:hover {
+    background: rgba(255, 255, 255, 0.18);
+    border-color: rgba(212, 175, 55, 0.5);
+    color: #fff;
+    transform: translateY(-1px);
+  }
+  .inspect-font-pill.active {
+    background: linear-gradient(135deg, #d4af37 0%, #b38728 100%);
+    border-color: #f3e5ab;
+    color: #0b0a0d;
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.35);
+  }
+  .inspect-font-studio-link {
+    font-family: var(--header-nav-font, "Plus Jakarta Sans", sans-serif);
+    font-size: 11px;
+    font-weight: 600;
+    color: #cbb479;
+    text-decoration: none;
+    padding: 5px 10px;
+    border-left: 1px solid rgba(255, 255, 255, 0.15);
+    margin-left: 4px;
+    transition: color 0.2s ease;
+  }
+  .inspect-font-studio-link:hover {
+    color: #fff;
+  }
+
+  @media (max-width: 768px) {
+    .inspect-font-bar {
+      bottom: 12px;
+      right: 12px;
+      left: 12px;
+      justify-content: space-between;
+      padding: 6px 10px;
+      overflow-x: auto;
+    }
+    .inspect-font-bar__label {
+      display: none;
+    }
+  }
+</style>
+
+<div class="product-inspect-wrapper __variable_337fc1 __variable_9924fb __variable_68f3f8 bg-black text-white antialiased min-h-screen">
+  <main class="min-h-screen bg-black text-white">
+    <audio src="{{ 'cvnt-cat-meow.mp3' | asset_url }}" preload="auto" playsinline=""></audio>
+    <span hidden="" data-cart-image="{{ 'cvnt-skirt-1.png' | asset_url }}"></span>
+
+    <div class="ProductDetailExperience_page__CnLir">
+      <div class="ProductDetailExperience_pageSurface__LIloS">
+        <!-- Luxury Morphing Header -->
+        <header id="LuxuryHeader" class="luxury-header scrolled-down">
+          <div class="luxury-header__inner">
+            <!-- Left: Navigation Links -->
+            <div class="luxury-header__left">
+              <div class="menu-dropdown-wrapper">
+                <button class="header-action-btn menu-toggle" id="HeaderMenuToggle" aria-label="Toggle Navigation Menu" type="button" aria-expanded="false" aria-haspopup="true" aria-controls="LuxuryMenuDropdown">
+                  <span class="hamburger-icon" aria-hidden="true">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </span>
+                  <span class="btn-label">MENU</span>
+                </button>
+
+                <div id="LuxuryMenuDropdown" class="luxury-menu-dropdown" role="menu" aria-label="Navigation Menu" aria-hidden="true">
+                  <a href="{{ routes.root_url }}" class="dropdown-nav-link dropdown-link-home" role="menuitem">
+                    <span class="dropdown-link-label">HOME</span>
+                    <span class="dropdown-link-arrow">⟶</span>
+                  </a>
+                  <div class="dropdown-nav-divider"></div>
+                  <a href="{{ routes.root_url | append: 'pages/waitlist' | replace: '//', '/' }}" class="dropdown-nav-link dropdown-link-waitlist" role="menuitem">
+                    <span class="dropdown-link-label">WAITLIST ✦</span>
+                    <span class="dropdown-link-arrow">⟶</span>
+                  </a>
+                </div>
+              </div>
+
+              <nav class="desktop-nav" aria-label="Primary Navigation">
+                <a href="{{ routes.root_url }}" class="nav-link header-nav-home">HOME</a>
+                <a href="{{ routes.root_url | append: 'pages/waitlist' | replace: '//', '/' }}" class="nav-link header-nav-waitlist">WAITLIST ✦</a>
+              </nav>
+            </div>
+
+            <!-- Center: Brand Logo -->
+            <div class="luxury-header__center brand-morph-zone">
+              <a href="{{ routes.root_url }}" class="brand-morph-logo is-visible" id="BrandMorphLogo" aria-label="Teekhi Bella">
+                <span class="brand-wordmark">Teekhi Bella</span>
+              </a>
+            </div>
+
+            <div class="luxury-header__right" aria-hidden="true"></div>
+          </div>
+        </header>
+
+        <!-- Product Presentation -->
+        <section class="ProductDetailExperience_product__yw3EP">
+          <!-- Gallery -->
+          <div class="ProductDetailExperience_mediaWrapper__6sGrb">
+            <div class="ProductDetailExperience_mediaTrack__EhUL6" aria-label="cvnt's genda phool skirt media gallery">
+              <div data-index="0" class="ProductDetailExperience_mediaSlide__b9fgy">
+                <img alt="cvnt's genda phool skirt image 1" fetchpriority="high" width="2000" height="3000" decoding="async" class="ProductDetailExperience_mediaImage__HDdXi" style="color:transparent" src="{{ 'cvnt-skirt-1.png' | asset_url }}">
+              </div>
+              <div data-index="1" class="ProductDetailExperience_mediaSlide__b9fgy">
+                <img alt="cvnt's genda phool skirt image 2" fetchpriority="high" loading="eager" width="2000" height="3000" decoding="async" class="ProductDetailExperience_mediaImage__HDdXi" style="color:transparent" src="{{ 'cvnt-skirt-2.webp' | asset_url }}">
+              </div>
+              <div data-index="2" class="ProductDetailExperience_mediaSlide__b9fgy">
+                <img alt="cvnt's genda phool skirt image 3" fetchpriority="high" loading="eager" width="2000" height="3000" decoding="async" class="ProductDetailExperience_mediaImage__HDdXi" style="color:transparent" src="{{ 'cvnt-skirt-3.webp' | asset_url }}">
+              </div>
+            </div>
+            <div class="ProductDetailExperience_mediaIndicator__bfOTo" aria-hidden="true">
+              <div class="ProductDetailExperience_mediaIndicatorRail__XPFrm">
+                <span class="ProductDetailExperience_mediaIndicatorDot__qRHzC ProductDetailExperience_mediaIndicatorDotActive__0LD8H"></span>
+                <span class="ProductDetailExperience_mediaIndicatorDot__qRHzC"></span>
+                <span class="ProductDetailExperience_mediaIndicatorDot__qRHzC"></span>
+              </div>
+              <span class="ProductDetailExperience_mediaIndicatorCount__d6Zih">1<!-- --> / <!-- -->3</span>
+            </div>
+            <button type="button" aria-label="Play meow sound" class="MeowButton_button__GaaqF MeowButton_buttonSurface__m3HzA ProductDetailExperience_meowButtonSlider__nA63E">
+              <span class="MeowButton_label__j87Wl">meow</span>
+            </button>
+          </div>
+
+          <!-- Product Details & Actions -->
+          <div class="ProductDetailExperience_infoWrapper__CFYVl">
+            <div class="ProductDetailExperience_infoStickyWrapper___Eppz">
+              <div class="ProductDetailExperience_stickyAuthRow__2rPOu">
+                <button type="button" class="ProductDetailExperience_stickyAuthAction__u8nwk ProductDetailExperience_cartShortcutButton__m_KP5 ProductDetailExperience_stickyCartButton__WMImQ" aria-label="Open cart">
+                  <span>Cart</span>
+                  <span class="ProductDetailExperience_cartShortcutCount__g9LhO">00</span>
+                </button>
+              </div>
+              <div class="ProductDetailExperience_infoStickyInner__reVhb">
+                <div class="ProductDetailExperience_infoContainer__EnrqK">
+                  <div class="ProductDetailExperience_pdpTitle__UQep_">
+                    <div class="ProductDetailExperience_productTitle__QOiCe">
+                      <div class="ProductDetailExperience_productHeadingRow__mnPF6">
+                        <div class="ProductDetailExperience_productHeading__fwjkS">cvnt's genda phool skirt</div>
+                      </div>
+                    </div>
+                    <div class="ProductDetailExperience_price__BiBNX" role="status" aria-live="polite">
+                      <div class="ProductDetailExperience_priceContainer__VazXX">
+                        <div class="ProductDetailExperience_priceRegular__f_WJq">
+                          <span class="ProductDetailExperience_priceItem__8Q8z1">₹2,975</span>
+                        </div>
+                      </div>
+                    </div>
+                    <button type="button" class="ProductDetailExperience_reviewSummaryButton__uw_6m" aria-label="View reviews. Average rating 4.0 out of 5 from 1 buyers.">
+                      <span class="ProductDetailExperience_reviewSummaryPill__NYCNA">
+                        <img alt="" aria-hidden="true" loading="eager" width="26" height="26" decoding="async" class="ProductDetailExperience_reviewSummaryBadgeIcon___cd3E" style="color:transparent" src="{{ 'cvnt-reviewstar.webp' | asset_url }}">
+                        <span class="ProductDetailExperience_reviewSummaryValue__hgROt">4.0</span>
+                      </span>
+                      <span class="ProductDetailExperience_reviewSummaryCount__OGDcg" aria-hidden="true">
+                        <span class="ProductDetailExperience_reviewSummaryCountDesktop__D47oT">
+                          <span class="TextShimmer_shimmer__8uLHv ProductDetailExperience_reviewSummaryCountText__gW7Kk" style="--duration:2.1s;--spread:18.7px">By 1+ buyer</span>
+                        </span>
+                      </span>
+                    </button>
+                  </div>
+
+                  <!-- Color Swatches -->
+                  <div class="ProductDetailExperience_colorCluster__kd63b">
+                    <div class="ProductDetailExperience_colorGrid__6JtnJ">
+                      <button type="button" class="ProductDetailExperience_colorThumbButton__2sQvm ProductDetailExperience_colorThumbButtonCurrent__SHQDx" aria-pressed="true" aria-label="Choose Black">
+                        <span class="ProductDetailExperience_colorThumbFrame__SuPec">
+                          <img alt="" loading="eager" width="120" height="180" decoding="async" class="ProductDetailExperience_colorThumbImage__ZXba6" style="color:transparent" src="{{ 'cvnt-swatch-black.webp' | asset_url }}">
+                        </span>
+                        <span class="ProductDetailExperience_colorThumbMeta__49zU3">
+                          <span class="ProductDetailExperience_colorThumbName__7LlrB">Black</span>
+                        </span>
+                      </button>
+                      <button type="button" class="ProductDetailExperience_colorThumbButton__2sQvm" aria-pressed="false" aria-label="Choose White">
+                        <span class="ProductDetailExperience_colorThumbFrame__SuPec">
+                          <img alt="" loading="eager" width="120" height="180" decoding="async" class="ProductDetailExperience_colorThumbImage__ZXba6" style="color:transparent" src="{{ 'cvnt-skirt-1.png' | asset_url }}">
+                        </span>
+                        <span class="ProductDetailExperience_colorThumbMeta__49zU3">
+                          <span class="ProductDetailExperience_colorThumbName__7LlrB">White</span>
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Variant & Quantity Selectors -->
+                  <div class="ProductDetailExperience_pdpButtons__9ISfM">
+                    <div class="ProductDetailExperience_selectorStack__4X2ec">
+                      <div class="ProductDetailExperience_variantFieldsetGroup__U1VDe">
+                        <fieldset class="ProductDetailExperience_variantFieldset__qD_B8">
+                          <legend class="ProductDetailExperience_legend__FK7OL">Size</legend>
+                          <div class="ProductDetailExperience_variantPills__QYsSz">
+                            <div class="ProductDetailExperience_variantOption__BbwxA">
+                              <input id="product-size-xs" type="radio" class="ProductDetailExperience_variantInput__TQjTe" name="size" checked="" value="xs">
+                              <label for="product-size-xs" class="ProductDetailExperience_variantLabel__VkJns ProductDetailExperience_variantLabelChecked__2YDWo">
+                                <span class="ProductDetailExperience_variantLabelValue__KQHNK">XS</span>
+                              </label>
+                            </div>
+                            <div class="ProductDetailExperience_variantOption__BbwxA">
+                              <input id="product-size-s" type="radio" class="ProductDetailExperience_variantInput__TQjTe" name="size" value="s">
+                              <label for="product-size-s" class="ProductDetailExperience_variantLabel__VkJns">
+                                <span class="ProductDetailExperience_variantLabelValue__KQHNK">S</span>
+                              </label>
+                            </div>
+                            <div class="ProductDetailExperience_variantOption__BbwxA">
+                              <input id="product-size-m" type="radio" class="ProductDetailExperience_variantInput__TQjTe" name="size" value="m">
+                              <label for="product-size-m" class="ProductDetailExperience_variantLabel__VkJns">
+                                <span class="ProductDetailExperience_variantLabelValue__KQHNK">M</span>
+                              </label>
+                            </div>
+                            <div class="ProductDetailExperience_variantOption__BbwxA">
+                              <input id="product-size-l" type="radio" class="ProductDetailExperience_variantInput__TQjTe" name="size" value="l">
+                              <label for="product-size-l" class="ProductDetailExperience_variantLabel__VkJns">
+                                <span class="ProductDetailExperience_variantLabelValue__KQHNK">L</span>
+                              </label>
+                            </div>
+                            <div class="ProductDetailExperience_variantOption__BbwxA">
+                              <input id="product-size-xl" type="radio" class="ProductDetailExperience_variantInput__TQjTe" name="size" value="xl">
+                              <label for="product-size-xl" class="ProductDetailExperience_variantLabel__VkJns">
+                                <span class="ProductDetailExperience_variantLabelValue__KQHNK">XL</span>
+                              </label>
+                            </div>
+                          </div>
+                        </fieldset>
+                      </div>
+
+                      <fieldset class="ProductDetailExperience_variantFieldset__qD_B8 ProductDetailExperience_quantityFieldset__kov6k">
+                        <legend class="ProductDetailExperience_legend__FK7OL">Quantity</legend>
+                        <div class="ProductDetailExperience_quantitySelector__mWHBi" aria-label="Quantity selector">
+                          <button type="button" class="ProductDetailExperience_quantityButton__6Nxre" disabled="" aria-label="Decrease quantity">-</button>
+                          <span class="ProductDetailExperience_quantityValue__JeJ09">1</span>
+                          <button type="button" class="ProductDetailExperience_quantityButton__6Nxre" aria-label="Increase quantity">+</button>
+                        </div>
+                      </fieldset>
+                    </div>
+
+                    <!-- Buy Buttons -->
+                    <div class="ProductDetailExperience_buyButtons__mEvEC">
+                      <button type="button" class="ProductDetailExperience_buyNowButton__6tiNm ProductDetailExperience_buyNowButtonCompact__m8SKC">
+                        <span class="ProductDetailExperience_buyNowButtonLabel__hFgHq">Buy now</span>
+                      </button>
+                      <button type="button" class="ProductDetailExperience_addToCartButton__egkl6" aria-label="Add to cart">
+                        <svg class="ProductDetailExperience_addToCartButtonIcon__XY5cX" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                          <path d="M4 5h2l2 9.2h9.1l2-6.5H7.2" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"></path>
+                          <circle cx="10" cy="18.2" r="1.15" fill="currentColor"></circle>
+                          <circle cx="17.1" cy="18.2" r="1.15" fill="currentColor"></circle>
+                        </svg>
+                      </button>
+                    </div>
+                    <p class="ProductDetailExperience_paymentTicker__ASlgg" aria-live="polite">
+                      <span class="ProductDetailExperience_paymentTickerLabel__PzXQ5">PAY VIA</span>
+                      <span class="ProductDetailExperience_paymentTickerValue__kOI_v">WALLET</span>
+                    </p>
+
+                    <!-- In The Box -->
+                    <section class="ProductDetailExperience_inTheBoxSection__iEslI" aria-labelledby="product-in-the-box-heading">
+                      <h2 id="product-in-the-box-heading" class="ProductDetailExperience_inTheBoxHeading__h6P9_">In the box</h2>
+                      <ul class="ProductDetailExperience_inTheBoxGrid__W0xSB">
+                        <li class="ProductDetailExperience_inTheBoxItem__ATitC">
+                          <span class="ProductDetailExperience_inTheBoxIconFrame__rl6OU">
+                            <img alt="" loading="eager" width="120" height="120" decoding="async" class="ProductDetailExperience_inTheBoxIcon__6114j" style="color:transparent" src="{{ 'cvnt-box-skirt.png' | asset_url }}">
+                          </span>
+                          <span class="ProductDetailExperience_inTheBoxLabel__GBeH0">
+                            <span class="ProductDetailExperience_inTheBoxLabelLine__FAKtb">skirt</span>
+                          </span>
+                        </li>
+                        <li class="ProductDetailExperience_inTheBoxItem__ATitC">
+                          <span class="ProductDetailExperience_inTheBoxIconFrame__rl6OU">
+                            <img alt="" loading="eager" width="120" height="120" decoding="async" class="ProductDetailExperience_inTheBoxIcon__6114j" style="color:transparent" src="{{ 'cvnt-box-tattoo.webp' | asset_url }}">
+                          </span>
+                          <span class="ProductDetailExperience_inTheBoxLabel__GBeH0">
+                            <span class="ProductDetailExperience_inTheBoxLabelLine__FAKtb">temporary tattoo</span>
+                          </span>
+                        </li>
+                      </ul>
+                    </section>
+                  </div>
+
+                  <!-- Details Drawer Links -->
+                  <div class="ProductDetailExperience_detailLinks__m3QxJ">
+                    <button type="button" class="ProductDetailExperience_detailButton__nHj7N">
+                      <span>Product details</span>
+                      <span><svg class="ProductDetailExperience_detailChevron__0h_Zb" width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3.2998 4.76758L5.4998 6.96758L7.6998 4.76758" stroke="currentColor" stroke-linecap="square"></path></svg></span>
+                    </button>
+                    <button type="button" class="ProductDetailExperience_detailButton__nHj7N">
+                      <span>Construction</span>
+                      <span><svg class="ProductDetailExperience_detailChevron__0h_Zb" width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3.2998 4.76758L5.4998 6.96758L7.6998 4.76758" stroke="currentColor" stroke-linecap="square"></path></svg></span>
+                    </button>
+                    <button type="button" class="ProductDetailExperience_detailButton__nHj7N">
+                      <span>Size guide</span>
+                      <span><svg class="ProductDetailExperience_detailChevron__0h_Zb" width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3.2998 4.76758L5.4998 6.96758L7.6998 4.76758" stroke="currentColor" stroke-linecap="square"></path></svg></span>
+                    </button>
+                    <button type="button" class="ProductDetailExperience_detailButton__nHj7N">
+                      <span>Shipping and returns</span>
+                      <span><svg class="ProductDetailExperience_detailChevron__0h_Zb" width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3.2998 4.76758L5.4998 6.96758L7.6998 4.76758" stroke="currentColor" stroke-linecap="square"></path></svg></span>
+                    </button>
+                    <button type="button" class="ProductDetailExperience_detailButton__nHj7N">
+                      <span>Care</span>
+                      <span><svg class="ProductDetailExperience_detailChevron__0h_Zb" width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3.2998 4.76758L5.4998 6.96758L7.6998 4.76758" stroke="currentColor" stroke-linecap="square"></path></svg></span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Reviews Section -->
+        <section id="product-reviews-section" class="ProductDetailExperience_reviewsSection__yviqb" aria-label="Customer reviews for cvnt's genda phool skirt">
+          <div class="ProductDetailExperience_reviewsShowcase__Rau_s">
+            <div class="ProductDetailExperience_reviewsSummaryPanel__Uivhm">
+              <div class="ProductDetailExperience_reviewsHeroBadge__CpBgm">
+                <img src="{{ 'cvnt-reviewstar.webp' | asset_url }}" alt="" aria-hidden="true" class="ProductDetailExperience_reviewsHeroBadgeIcon__tXvey">
+                <span class="ProductDetailExperience_reviewsHeroBadgeValue__fuLfQ">4.0</span>
+              </div>
+              <div class="ProductDetailExperience_reviewsHeroCount__0EQhw">
+                <span class="TextShimmer_shimmer__8uLHv ProductDetailExperience_reviewsHeroCountText__OUVH3" style="--duration:2.1s;--spread:20.4px">By 1+ buyers</span>
+              </div>
+              <div class="ProductDetailExperience_reviewsBreakdown__GGO2o" aria-label="Rating breakdown">
+                <div class="ProductDetailExperience_reviewsBreakdownRow__5owt9">
+                  <span class="ProductDetailExperience_reviewsBreakdownLabel__TDUL8">5</span>
+                  <div class="ProductDetailExperience_reviewsBreakdownTrack__0P2e9">
+                    <span class="ProductDetailExperience_reviewsBreakdownFill__o9AD3" style="width:0%;background:#10df3d"></span>
+                  </div>
+                </div>
+                <div class="ProductDetailExperience_reviewsBreakdownRow__5owt9">
+                  <span class="ProductDetailExperience_reviewsBreakdownLabel__TDUL8">4</span>
+                  <div class="ProductDetailExperience_reviewsBreakdownTrack__0P2e9">
+                    <span class="ProductDetailExperience_reviewsBreakdownFill__o9AD3" style="width:100%;background:#009f22"></span>
+                  </div>
+                </div>
+                <div class="ProductDetailExperience_reviewsBreakdownRow__5owt9">
+                  <span class="ProductDetailExperience_reviewsBreakdownLabel__TDUL8">3</span>
+                  <div class="ProductDetailExperience_reviewsBreakdownTrack__0P2e9">
+                    <span class="ProductDetailExperience_reviewsBreakdownFill__o9AD3" style="width:0%;background:#d49b08"></span>
+                  </div>
+                </div>
+                <div class="ProductDetailExperience_reviewsBreakdownRow__5owt9">
+                  <span class="ProductDetailExperience_reviewsBreakdownLabel__TDUL8">2</span>
+                  <div class="ProductDetailExperience_reviewsBreakdownTrack__0P2e9">
+                    <span class="ProductDetailExperience_reviewsBreakdownFill__o9AD3" style="width:0%;background:#ff7a00"></span>
+                  </div>
+                </div>
+                <div class="ProductDetailExperience_reviewsBreakdownRow__5owt9">
+                  <span class="ProductDetailExperience_reviewsBreakdownLabel__TDUL8">1</span>
+                  <div class="ProductDetailExperience_reviewsBreakdownTrack__0P2e9">
+                    <span class="ProductDetailExperience_reviewsBreakdownFill__o9AD3" style="width:0%;background:#ff3232"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="ProductDetailExperience_reviewGridPreviewFrame__pFCov">
+              <div class="ProductDetailExperience_reviewGridPreview__IJRco">
+                <article class="ProductDetailExperience_reviewCard__fVnzj">
+                  <div class="ProductDetailExperience_reviewCardTopline__ROGxv">
+                    <div class="ProductDetailExperience_reviewCardHeaderMeta__QKzNB">
+                      <strong class="ProductDetailExperience_reviewCardName__VrfSV">Pratishtha B.</strong>
+                      <span class="ProductDetailExperience_reviewVerifiedBadge__9S33k">Verified purchase</span>
+                    </div>
+                    <span class="ProductDetailExperience_reviewCardDate__9_rJH">16 MAY 2026</span>
+                  </div>
+                  <div class="ProductDetailExperience_reviewCardContent__V2QF7">
+                    <div class="ProductDetailExperience_reviewCopyBlock__gyrHv">
+                      <p class="ProductDetailExperience_reviewBody__0CTOP ProductDetailExperience_reviewBodyCollapsed__h2LbN">My package got torn in delivery a bit which i don't like but the skirt's fabric and ruffles are quite good</p>
+                    </div>
+                  </div>
+                  <div class="ProductDetailExperience_reviewCardFooter__PV2bA">
+                    <button type="button" class="ProductDetailExperience_reviewHelpfulStat__KkCFP" aria-label="Mark Pratishtha B.'s review as helpful">
+                      <svg viewBox="0 0 24 24" aria-hidden="true" class="ProductDetailExperience_reviewHelpfulIcon__NLUcO" style="width:14px;height:14px;"><path d="M12 21.35 10.55 20.03C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54z" fill="currentColor"></path></svg>
+                      <span>9</span>
+                    </button>
+                    <span class="ProductDetailExperience_reviewFeaturedMarker__gMt89">Top</span>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Floating Sound Button -->
+      <button type="button" aria-label="Play meow sound" class="MeowButton_button__GaaqF MeowButton_buttonSurface__m3HzA ProductDetailExperience_meowButtonViewport__Ql2VU">
+        <span class="MeowButton_label__j87Wl">meow</span>
+      </button>
+
+      <!-- Miniatures Rail -->
+      <div class="ProductDetailExperience_miniatures__3XUir ProductDetailExperience_miniaturesLoaded__l_hO8">
+        <div class="ProductDetailExperience_miniatureWrapper__aUtOy">
+          <button type="button" class="ProductDetailExperience_miniatureButton__bPKNm" aria-label="Jump to media 1">
+            <img alt="" loading="eager" width="100" height="150" decoding="async" class="ProductDetailExperience_miniatureImage__GVOPo" style="color:transparent" src="{{ 'cvnt-skirt-1.png' | asset_url }}">
+          </button>
+          <button type="button" class="ProductDetailExperience_miniatureButton__bPKNm" aria-label="Jump to media 2">
+            <img alt="" loading="eager" width="100" height="150" decoding="async" class="ProductDetailExperience_miniatureImage__GVOPo" style="color:transparent" src="{{ 'cvnt-skirt-2.webp' | asset_url }}">
+          </button>
+          <button type="button" class="ProductDetailExperience_miniatureButton__bPKNm" aria-label="Jump to media 3">
+            <img alt="" loading="eager" width="100" height="150" decoding="async" class="ProductDetailExperience_miniatureImage__GVOPo" style="color:transparent" src="{{ 'cvnt-skirt-3.webp' | asset_url }}">
+          </button>
+        </div>
+        <div class="ProductDetailExperience_miniatureCadre__QCU44 ProductDetailExperience_miniatureCadreStart__0xMl8" aria-hidden="true"></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Slide-out Drawer Markup -->
+  <div id="cvntDrawerRoot" class="ProductDetailExperience_overlayTheme__SGLWa" style="display:none;">
+    <div class="ProductDetailExperience_overlayRoot__GlpBX" style="pointer-events: auto;">
+      <button type="button" id="cvntDrawerScrim" class="ProductDetailExperience_overlayScrim__sE_UF" aria-label="Close panel"></button>
+      <aside id="cvntDrawerPanel" class="ProductDetailExperience_overlayPanel__5gYWv ProductDetailExperience_overlayPanelRight__ytFGo" role="dialog" aria-modal="true" tabindex="-1">
+        <div class="ProductDetailExperience_overlayHeader__kjUj_">
+          <div id="cvntDrawerTitle" class="ProductDetailExperience_overlayTitle__IblOX">Product details</div>
+          <button type="button" id="cvntDrawerClose" class="ProductDetailExperience_overlayClose__djvhR" aria-label="Close panel"></button>
+        </div>
+        <div id="cvntDrawerBody" class="ProductDetailExperience_overlayContent__CAYBB"></div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- Floating Header Font Switcher Pill for Testing -->
+  <aside class="inspect-font-bar" id="inspectFontBar" aria-label="Header Font Switcher">
+    <div class="inspect-font-bar__label">
+      <span class="font-bar-icon">✦</span>
+      <span class="font-bar-text">Header Font:</span>
+    </div>
+    <div class="inspect-font-bar__pills">
+      <button type="button" class="inspect-font-pill active" data-font="'Ahsing', serif" data-spacing="0.02em" data-weight="400" data-transform="none">Ahsing</button>
+      <button type="button" class="inspect-font-pill" data-font="'Ragara', 'Italiana', Georgia, serif" data-spacing="0.04em" data-weight="400" data-transform="none">Ragara</button>
+      <button type="button" class="inspect-font-pill" data-font="'Syne', sans-serif" data-spacing="0.04em" data-weight="800" data-transform="uppercase">Syne</button>
+      <button type="button" class="inspect-font-pill" data-font="'Bodoni Moda', serif" data-spacing="0.02em" data-weight="700" data-transform="uppercase">Bodoni</button>
+      <button type="button" class="inspect-font-pill" data-font="'Playfair Display', serif" data-spacing="0.03em" data-weight="600" data-transform="none">Playfair</button>
+    </div>
+    <a href="{{ routes.root_url }}#studio" class="inspect-font-studio-link" title="Open Studio on Home">Studio ↗</a>
+  </aside>
+
+  <script>
+    (function() {
+      const pills = document.querySelectorAll('.inspect-font-pill');
+      const root = document.documentElement;
+      const logoEl = document.querySelector('#LuxuryHeader .brand-morph-logo');
+      const wordmarkEl = document.querySelector('#LuxuryHeader .brand-wordmark');
+
+      pills.forEach(pill => {
+        pill.addEventListener('click', () => {
+          pills.forEach(p => p.classList.remove('active'));
+          pill.classList.add('active');
+
+          const font = pill.getAttribute('data-font');
+          const spacing = pill.getAttribute('data-spacing') || '0.02em';
+          const weight = pill.getAttribute('data-weight') || '400';
+          const transform = pill.getAttribute('data-transform') || 'none';
+
+          root.style.setProperty('--header-logo-font', font);
+          root.style.setProperty('--header-logo-spacing', spacing);
+          
+          if (wordmarkEl) {
+            wordmarkEl.style.fontFamily = font;
+            wordmarkEl.style.letterSpacing = spacing;
+            wordmarkEl.style.fontWeight = weight;
+            wordmarkEl.style.textTransform = transform;
+          }
+          if (logoEl) {
+            logoEl.style.fontFamily = font;
+          }
+        });
+      });
+    })();
+  </script>
+</div>
