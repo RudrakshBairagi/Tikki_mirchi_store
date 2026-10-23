@@ -32,13 +32,13 @@
         "link_2_label": "WAITLIST ✦",
         "link_2_url": "/pages/waitlist",
         "bg_mode": "solid",
-        "docked_bg_color": "#f8f8f6",
+        "docked_bg_color": "#000000",
         "bg_gradient": "linear-gradient(135deg, rgba(248, 248, 246, 0.95) 0%, rgba(238, 234, 226, 0.92) 100%)",
         "backdrop_blur": 12,
         "bg_color": "#f8f8f6",
         "text_color": "#161517",
         "title_color": "#161517",
-        "docked_text_color": "#161517"
+        "docked_text_color": "#FFB9DD"
       }
     },
     "hero_3d_cylinder": {
@@ -224,7 +224,7 @@
         "tag_font": "assistant_n4",
         "custom_tag_font": "",
         "bg_mode": "solid",
-        "bg_color": "#f8f8f6",
+        "bg_color": "#FDDDED",
         "bg_gradient": "linear-gradient(135deg, #f8f8f6 0%, #ede8de 100%)",
         "bg_overlay_opacity": 0,
         "rail_color": "#7d858f",
