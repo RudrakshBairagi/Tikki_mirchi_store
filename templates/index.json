@@ -14,7 +14,7 @@
       "settings": {
         "heading": "Teekhi Bella",
         "logo_font_source": "ahsing",
-        "logo_font": "assistant_n4",
+        "logo_font": "bayon_n4",
         "custom_logo_font": "",
         "logo_font_scale": 100,
         "logo_letter_spacing": 0,
@@ -38,7 +38,7 @@
         "bg_color": "#f8f8f6",
         "text_color": "#161517",
         "title_color": "#161517",
-        "docked_text_color": "#FFB9DD"
+        "docked_text_color": "#FFFFFF"
       }
     },
     "hero_3d_cylinder": {
@@ -206,18 +206,18 @@
       "settings": {
         "eyebrow": "Pretty with a bite",
         "heading": "Your Dream Rack",
-        "subheading": "Make your pick",
-        "show_waitlist_buttons": true,
+        "subheading": "Pick your teekhi bella outfit",
+        "show_waitlist_buttons": false,
         "waitlist_btn_text": "Join the waitlist",
         "waitlist_url": "",
         "inspect_url": "",
-        "heading_font_source": "brand",
-        "heading_font": "assistant_n4",
+        "heading_font_source": "ahsing",
+        "heading_font": "gloock_n4",
         "custom_heading_font": "",
         "heading_font_scale": 100,
         "heading_letter_spacing": 2,
-        "body_font_source": "brand",
-        "body_font": "assistant_n4",
+        "body_font_source": "shopify",
+        "body_font": "nothing_you_could_do_n4",
         "custom_body_font": "",
         "subheading_font_scale": 100,
         "tag_font_source": "brand",
@@ -236,7 +236,7 @@
         "floating_card_btn_text": "Inspect Piece",
         "floating_card_bg": "#1a1819",
         "floating_card_text": "#ffffff",
-        "floating_card_accent": "#d4af37",
+        "floating_card_accent": "#000000",
         "floating_card_border": "#333333",
         "hint_text": "Hover to sway • Drag along the rack",
         "hint_icon_left": "⟵",
