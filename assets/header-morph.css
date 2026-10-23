@@ -557,7 +557,7 @@
   margin: 4px 6px;
 }
 
-/* Scoped Shopify Theme Override: Hide Dawn default header so Luxury Header renders exclusively */
-body.template-index .header-wrapper:not(.luxury-header) {
+/* Universal Theme Override: Hide Dawn default header across all pages so Luxury Header renders exclusively */
+.header-wrapper:not(.luxury-header) {
   display: none !important;
 }

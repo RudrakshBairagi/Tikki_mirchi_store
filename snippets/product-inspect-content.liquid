@@ -1,14 +1,26 @@
-{%- assign s = s | default: settings | default: section.settings -%}
+{%- assign s = s | default: section.settings -%}
 
-{%- assign bg_color = s.bg_color | default: '#000000' -%}
-{%- assign surface_bg_color = s.surface_bg_color | default: '#080808' -%}
-{%- assign text_color = s.text_color | default: '#ffffff' -%}
-{%- assign muted_text_color = s.muted_text_color | default: '#999999' -%}
-{%- assign accent_color = s.accent_color | default: '#d4af37' -%}
-{%- assign border_color = s.border_color | default: 'rgba(255, 255, 255, 0.12)' -%}
-{%- assign line_thickness = s.line_thickness | default: 1 -%}
-{%- assign button_bg_color = s.button_bg_color | default: '#ffffff' -%}
-{%- assign button_text_color = s.button_text_color | default: '#000000' -%}
+{%- if s.product_title == blank -%}
+  {%- assign bg_color = '#000000' -%}
+  {%- assign surface_bg_color = '#080808' -%}
+  {%- assign text_color = '#ffffff' -%}
+  {%- assign muted_text_color = '#999999' -%}
+  {%- assign accent_color = '#d4af37' -%}
+  {%- assign border_color = 'rgba(255, 255, 255, 0.12)' -%}
+  {%- assign line_thickness = 1 -%}
+  {%- assign button_bg_color = '#ffffff' -%}
+  {%- assign button_text_color = '#000000' -%}
+{%- else -%}
+  {%- assign bg_color = s.bg_color | default: '#000000' -%}
+  {%- assign surface_bg_color = s.surface_bg_color | default: '#080808' -%}
+  {%- assign text_color = s.text_color | default: '#ffffff' -%}
+  {%- assign muted_text_color = s.muted_text_color | default: '#999999' -%}
+  {%- assign accent_color = s.accent_color | default: '#d4af37' -%}
+  {%- assign border_color = s.border_color | default: 'rgba(255, 255, 255, 0.12)' -%}
+  {%- assign line_thickness = s.line_thickness | default: 1 -%}
+  {%- assign button_bg_color = s.button_bg_color | default: '#ffffff' -%}
+  {%- assign button_text_color = s.button_text_color | default: '#000000' -%}
+{%- endif -%}
 
 {%- assign header_logo_text = s.header_logo_text | default: 'Teekhi Bella' -%}
 {%- assign logo_font_size_desktop = s.logo_font_size_desktop | default: 40 -%}
@@ -208,7 +220,16 @@
     border-bottom: var(--pdp-line-thickness) solid var(--pdp-border) !important;
   }
 
-
+  /* Clear redundant margin-top since fixed luxury-header-spacer already provides 80px clearance */
+  .ProductDetailExperience_infoWrapper__CFYVl {
+    margin-top: 0 !important;
+  }
+  @media (max-width: 1024px) {
+    .ProductDetailExperience_infoWrapper__CFYVl {
+      margin-top: 0 !important;
+      padding: 24px 20px 0 !important;
+    }
+  }
 </style>
 
 <div class="product-inspect-wrapper __variable_337fc1 __variable_9924fb __variable_68f3f8 bg-black text-white antialiased min-h-screen">
