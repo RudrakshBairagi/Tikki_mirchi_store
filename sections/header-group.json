@@ -31,6 +31,7 @@
     "header": {
       "type": "header",
       "settings": {
+        "logo_font_source": "ahsing",
         "color_scheme": "scheme-1",
         "menu_color_scheme": "scheme-1",
         "logo_position": "middle-left",

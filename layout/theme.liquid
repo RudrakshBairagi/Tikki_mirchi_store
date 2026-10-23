@@ -152,6 +152,16 @@
       }
 
       @font-face {
+        font-family: 'Ahsing';
+        src: url('{{ "Ahsing.woff" | asset_url }}') format('woff'),
+             url('{{ "Ahsing.otf" | asset_url }}') format('opentype'),
+             url('{{ "typogama-ahsing.otf" | asset_url }}') format('opentype');
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      @font-face {
         font-family: 'Ragara';
         src: url('{{ "Ragara.woff" | asset_url }}') format('woff'),
              url('{{ "Ragara.otf" | asset_url }}') format('opentype'),
@@ -177,12 +187,42 @@
         --font-body-weight: {{ settings.type_body_font.weight }};
         --font-body-weight-bold: {{ settings.type_body_font.weight | plus: 300 | at_most: 1000 }};
 
+        {%- if settings.logo_font_source == 'ahsing' -%}
+          --header-logo-font: 'Ahsing', serif;
+        {%- elsif settings.logo_font_source == 'brand' -%}
+          --header-logo-font: 'Ragara', 'Italiana', Georgia, serif;
+        {%- elsif settings.logo_font_source == 'custom' and settings.custom_logo_font != blank -%}
+          --header-logo-font: '{{ settings.custom_logo_font }}', serif;
+        {%- else -%}
+          --header-logo-font: 'Ahsing', serif;
+        {%- endif -%}
+
         --font-heading-family: {{ settings.type_header_font.family }}, {{ settings.type_header_font.fallback_families }};
         --font-heading-style: {{ settings.type_header_font.style }};
         --font-heading-weight: {{ settings.type_header_font.weight }};
 
         --font-body-scale: {{ settings.body_scale | divided_by: 100.0 }};
         --font-heading-scale: {{ settings.heading_scale | times: 1.0 | divided_by: settings.body_scale }};
+      }
+
+      @media screen and (max-width: 768px) {
+        .header__heading-link,
+        .header__heading-logo,
+        .brand-morph-logo,
+        .brand-wordmark {
+          font-size: clamp(2.35rem, 7.8vw, 3.1rem) !important;
+          line-height: 0.95 !important;
+        }
+      }
+      @media screen and (max-width: 480px) {
+        .header__heading-link,
+        .header__heading-logo,
+        .brand-morph-logo,
+        .brand-wordmark {
+          font-size: clamp(2.25rem, 8.2vw, 2.85rem) !important;
+          line-height: 0.95 !important;
+        }
+      }
 
         --media-padding: {{ settings.media_padding }}px;
         --media-border-opacity: {{ settings.media_border_opacity | divided_by: 100.0 }};

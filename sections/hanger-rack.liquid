@@ -2,6 +2,16 @@
 <script src="{{ 'hanger-rack.js' | asset_url }}" defer="defer"></script>
 
 {%- style -%}
+  @font-face {
+    font-family: 'Ahsing';
+    src: url('{{ "Ahsing.woff" | asset_url }}') format('woff'),
+         url('{{ "Ahsing.otf" | asset_url }}') format('opentype'),
+         url('{{ "typogama-ahsing.otf" | asset_url }}') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
   {%- if section.settings.heading_font_source == 'shopify' and section.settings.heading_font != blank -%}
     {{ section.settings.heading_font | font_face: font_display: 'swap' }}
   {%- endif -%}
@@ -27,6 +37,10 @@
       --rack-title-font: {{ section.settings.heading_font.family }}, {{ section.settings.heading_font.fallback_families }};
       --rack-title-weight: {{ section.settings.heading_font.weight }};
       --rack-title-style: {{ section.settings.heading_font.style }};
+    {%- elsif section.settings.heading_font_source == 'ahsing' -%}
+      --rack-title-font: 'Ahsing', serif;
+      --rack-title-weight: 400;
+      --rack-title-style: normal;
     {%- elsif section.settings.heading_font_source == 'custom' and section.settings.custom_heading_font != blank -%}
       --rack-title-font: '{{ section.settings.custom_heading_font }}', serif;
       --rack-title-weight: 400;
@@ -40,6 +54,9 @@
     {%- if section.settings.body_font_source == 'shopify' and section.settings.body_font != blank -%}
       --rack-eyebrow-font: {{ section.settings.body_font.family }}, {{ section.settings.body_font.fallback_families }};
       --rack-subheading-font: {{ section.settings.body_font.family }}, {{ section.settings.body_font.fallback_families }};
+    {%- elsif section.settings.body_font_source == 'ahsing' -%}
+      --rack-eyebrow-font: 'Ahsing', serif;
+      --rack-subheading-font: 'Ahsing', serif;
     {%- elsif section.settings.body_font_source == 'custom' and section.settings.custom_body_font != blank -%}
       --rack-eyebrow-font: '{{ section.settings.custom_body_font }}', sans-serif;
       --rack-subheading-font: '{{ section.settings.custom_body_font }}', sans-serif;
@@ -50,6 +67,8 @@
 
     {%- if section.settings.tag_font_source == 'shopify' and section.settings.tag_font != blank -%}
       --rack-tag-font: {{ section.settings.tag_font.family }}, {{ section.settings.tag_font.fallback_families }};
+    {%- elsif section.settings.tag_font_source == 'ahsing' -%}
+      --rack-tag-font: 'Ahsing', serif;
     {%- elsif section.settings.tag_font_source == 'custom' and section.settings.custom_tag_font != blank -%}
       --rack-tag-font: '{{ section.settings.custom_tag_font }}', sans-serif;
     {%- else -%}
@@ -414,6 +433,7 @@
       "id": "heading_font_source",
       "label": "Heading Font Source",
       "options": [
+        { "value": "ahsing", "label": "Ahsing (Typogama Couture)" },
         { "value": "brand", "label": "Brand Default (Ragara Couture)" },
         { "value": "shopify", "label": "Shopify Font Library (Select below)" },
         { "value": "custom", "label": "Custom Font Name (e.g. Google Font)" }
@@ -448,6 +468,7 @@
       "id": "body_font_source",
       "label": "Eyebrow & Subheading Font Source",
       "options": [
+        { "value": "ahsing", "label": "Ahsing (Typogama Couture)" },
         { "value": "brand", "label": "Brand Default (Plus Jakarta Sans)" },
         { "value": "shopify", "label": "Shopify Font Library (Select below)" },
         { "value": "custom", "label": "Custom Font Name" }
@@ -481,6 +502,7 @@
       "id": "tag_font_source",
       "label": "Garment Swing Tag Font Source",
       "options": [
+        { "value": "ahsing", "label": "Ahsing (Typogama Couture)" },
         { "value": "brand", "label": "Brand Default (Plus Jakarta Sans)" },
         { "value": "shopify", "label": "Shopify Font Library (Select below)" },
         { "value": "custom", "label": "Custom Font Name" }

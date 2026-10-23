@@ -5,6 +5,16 @@
 
 <style>
   @font-face {
+    font-family: 'Ahsing';
+    src: url('{{ "Ahsing.woff" | asset_url }}') format('woff'),
+         url('{{ "Ahsing.otf" | asset_url }}') format('opentype'),
+         url('{{ "typogama-ahsing.otf" | asset_url }}') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
     font-family: 'Ragara';
     src: url('{{ "Ragara.woff" | asset_url }}') format('woff'),
          url('{{ "Ragara.otf" | asset_url }}') format('opentype'),
@@ -22,6 +32,33 @@
     font-weight: 400;
     font-style: italic;
     font-display: swap;
+  }
+
+  #atelierWaitlistSection .brand-morph-logo,
+  #atelierWaitlistSection .brand-wordmark {
+    font-family: var(--header-logo-font, 'Ahsing', serif) !important;
+    text-transform: none !important;
+    letter-spacing: 0.02em !important;
+  }
+
+  @media (max-width: 768px) {
+    #atelierWaitlistSection .brand-morph-logo {
+      font-size: clamp(2.35rem, 7.8vw, 3.1rem) !important;
+    }
+    #atelierWaitlistSection .brand-wordmark {
+      font-size: inherit !important;
+      line-height: 0.95 !important;
+    }
+  }
+
+  @media (max-width: 480px) {
+    #atelierWaitlistSection .brand-morph-logo {
+      font-size: clamp(2.25rem, 8.2vw, 2.85rem) !important;
+    }
+    #atelierWaitlistSection .brand-wordmark {
+      font-size: inherit !important;
+      line-height: 0.95 !important;
+    }
   }
 
   #atelierWaitlistSection .waitlist-hero-header,

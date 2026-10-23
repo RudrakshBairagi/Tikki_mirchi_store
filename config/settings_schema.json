@@ -106,6 +106,28 @@
     "settings": [
       {
         "type": "header",
+        "content": "Brand & Logo Typography"
+      },
+      {
+        "type": "select",
+        "id": "logo_font_source",
+        "label": "Brand Logo Font Source",
+        "options": [
+          { "value": "ahsing", "label": "Ahsing (Typogama Couture)" },
+          { "value": "brand", "label": "Ragara Couture (Classic)" },
+          { "value": "shopify", "label": "Shopify Font Library (Selected below)" },
+          { "value": "custom", "label": "Custom Font Name" }
+        ],
+        "default": "ahsing"
+      },
+      {
+        "type": "text",
+        "id": "custom_logo_font",
+        "label": "Custom Logo Font Name",
+        "info": "Active when 'Custom Font Name' is selected (e.g. Ahsing, Ragara, Syne, Bodoni)."
+      },
+      {
+        "type": "header",
         "content": "t:settings_schema.typography.settings.header__1.content"
       },
       {

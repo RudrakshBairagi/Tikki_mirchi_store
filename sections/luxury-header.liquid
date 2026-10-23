@@ -22,6 +22,16 @@
     font-display: swap;
   }
 
+  @font-face {
+    font-family: 'Ahsing';
+    src: url('{{ "Ahsing.woff" | asset_url }}') format('woff'),
+         url('{{ "Ahsing.otf" | asset_url }}') format('opentype'),
+         url('{{ "typogama-ahsing.otf" | asset_url }}') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
   {%- if section.settings.logo_font_source == 'shopify' and section.settings.logo_font != blank -%}
     {{ section.settings.logo_font | font_face: font_display: 'swap' }}
   {%- endif -%}
@@ -43,6 +53,10 @@
       --header-logo-font: {{ section.settings.logo_font.family }}, {{ section.settings.logo_font.fallback_families }};
       --header-logo-weight: {{ section.settings.logo_font.weight }};
       --header-logo-style: {{ section.settings.logo_font.style }};
+    {%- elsif section.settings.logo_font_source == 'ahsing' -%}
+      --header-logo-font: 'Ahsing', serif;
+      --header-logo-weight: 400;
+      --header-logo-style: normal;
     {%- elsif section.settings.logo_font_source == 'custom' and section.settings.custom_logo_font != blank -%}
       --header-logo-font: '{{ section.settings.custom_logo_font }}', serif;
       --header-logo-weight: 400;
@@ -57,6 +71,10 @@
       --header-tagline-font: {{ section.settings.tagline_font.family }}, {{ section.settings.tagline_font.fallback_families }};
       --header-tagline-weight: {{ section.settings.tagline_font.weight }};
       --header-tagline-style: {{ section.settings.tagline_font.style }};
+    {%- elsif section.settings.tagline_font_source == 'ahsing' -%}
+      --header-tagline-font: 'Ahsing', serif;
+      --header-tagline-weight: 400;
+      --header-tagline-style: normal;
     {%- elsif section.settings.tagline_font_source == 'custom' and section.settings.custom_tagline_font != blank -%}
       --header-tagline-font: '{{ section.settings.custom_tagline_font }}', serif;
       --header-tagline-weight: 400;
@@ -70,6 +88,9 @@
     {%- if section.settings.nav_font_source == 'shopify' and section.settings.nav_font != blank -%}
       --header-nav-font: {{ section.settings.nav_font.family }}, {{ section.settings.nav_font.fallback_families }};
       --header-nav-weight: {{ section.settings.nav_font.weight }};
+    {%- elsif section.settings.nav_font_source == 'ahsing' -%}
+      --header-nav-font: 'Ahsing', serif;
+      --header-nav-weight: 400;
     {%- elsif section.settings.nav_font_source == 'custom' and section.settings.custom_nav_font != blank -%}
       --header-nav-font: '{{ section.settings.custom_nav_font }}', sans-serif;
       --header-nav-weight: 600;
@@ -96,13 +117,23 @@
 
   @media (max-width: 768px) {
     #LuxuryHeaderSection-{{ section.id }} .brand-morph-logo {
-      font-size: calc(clamp(1.45rem, 5.2vw, 1.85rem) * var(--header-logo-scale, 1)) !important;
+      font-size: calc(clamp(2.35rem, 7.8vw, 3.1rem) * var(--header-logo-scale, 1)) !important;
+      line-height: 0.95 !important;
+    }
+    #LuxuryHeaderSection-{{ section.id }} .brand-morph-logo .brand-wordmark {
+      font-size: inherit !important;
+      line-height: 0.95 !important;
     }
   }
 
   @media (max-width: 480px) {
     #LuxuryHeaderSection-{{ section.id }} .brand-morph-logo {
-      font-size: calc(1.4rem * var(--header-logo-scale, 1)) !important;
+      font-size: calc(clamp(2.25rem, 8.2vw, 2.85rem) * var(--header-logo-scale, 1)) !important;
+      line-height: 0.95 !important;
+    }
+    #LuxuryHeaderSection-{{ section.id }} .brand-morph-logo .brand-wordmark {
+      font-size: inherit !important;
+      line-height: 0.95 !important;
     }
   }
 
@@ -216,11 +247,12 @@
       "id": "logo_font_source",
       "label": "Brand Logo Font Source",
       "options": [
-        { "value": "brand", "label": "Brand Default (Ragara Couture)" },
+        { "value": "ahsing", "label": "Ahsing (Typogama Couture)" },
+        { "value": "brand", "label": "Ragara Couture (Classic)" },
         { "value": "shopify", "label": "Shopify Font Library (Select below)" },
         { "value": "custom", "label": "Custom Font Name (e.g. Google Font)" }
       ],
-      "default": "brand"
+      "default": "ahsing"
     },
     {
       "type": "font_picker",
@@ -260,6 +292,7 @@
       "id": "tagline_font_source",
       "label": "Tagline Font Source",
       "options": [
+        { "value": "ahsing", "label": "Ahsing (Typogama Couture)" },
         { "value": "brand", "label": "Brand Default (Italiana Serif)" },
         { "value": "shopify", "label": "Shopify Font Library (Select below)" },
         { "value": "custom", "label": "Custom Font Name" }
@@ -297,6 +330,7 @@
       "id": "nav_font_source",
       "label": "Navigation Font Source",
       "options": [
+        { "value": "ahsing", "label": "Ahsing (Typogama Couture)" },
         { "value": "brand", "label": "Brand Default (Plus Jakarta Sans)" },
         { "value": "shopify", "label": "Shopify Font Library (Select below)" },
         { "value": "custom", "label": "Custom Font Name" }

@@ -13,6 +13,7 @@
       "type": "luxury-header",
       "settings": {
         "heading": "Teekhi Bella",
+        "logo_font_source": "ahsing",
         "tagline": ".",
         "link_1_label": "HOME",
         "link_1_url": "/",

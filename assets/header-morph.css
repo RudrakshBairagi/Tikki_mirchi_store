@@ -25,6 +25,16 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'Ahsing';
+  src: url('Ahsing.woff') format('woff'),
+       url('Ahsing.otf') format('opentype'),
+       url('typogama-ahsing.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --luxury-header-height: 80px;
   --header-ease: cubic-bezier(0.5, 0, 0, 1);
@@ -417,7 +427,11 @@
     left: 50% !important;
     top: 50% !important;
     transform: translate(-50%, -50%) !important;
-    font-size: clamp(1.45rem, 5.2vw, 1.85rem) !important;
+    font-size: clamp(2.35rem, 7.8vw, 3.1rem) !important;
+  }
+  .brand-morph-logo .brand-wordmark {
+    font-size: inherit !important;
+    line-height: 0.95 !important;
   }
 }
 
@@ -426,7 +440,11 @@
     padding: 0 10px;
   }
   .brand-morph-logo {
-    font-size: 1.4rem !important;
+    font-size: clamp(2.25rem, 8.2vw, 2.85rem) !important;
+  }
+  .brand-morph-logo .brand-wordmark {
+    font-size: inherit !important;
+    line-height: 0.95 !important;
   }
 }
 

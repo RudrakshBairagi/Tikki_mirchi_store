@@ -6,9 +6,18 @@
   <title>cvnt's genda phool skirt | cvnt</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Italiana&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Italiana&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Syne:wght@700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/header-morph.css" />
   <style>
+    @font-face {
+      font-family: "Ahsing";
+      src: url("assets/Ahsing.woff") format("woff"),
+           url("assets/Ahsing.otf") format("opentype"),
+           url("assets/typogama-ahsing.otf") format("opentype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
     @font-face {
       font-family: "Ragara";
       src: url("assets/Ragara.woff") format("woff"),
@@ -28,9 +37,33 @@
       font-display: swap;
     }
     :root {
-      --header-logo-font: "Ragara", "Italiana", Georgia, serif;
+      --header-logo-font: "Ahsing", serif;
       --header-tagline-font: "Italiana", Georgia, serif;
       --header-nav-font: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+      --header-logo-spacing: 0.02em;
+    }
+
+    /* Custom Chili Cursor */
+    html, body {
+      cursor: url('assets/chili-cursor-32.png') 0 0, auto !important;
+      cursor: -webkit-image-set(url('assets/chili-cursor-32.png') 1x, url('assets/chili-cursor-64.png') 2x) 0 0, auto !important;
+    }
+
+    a, button, [role="button"], input, select, textarea, label,
+    .nav-link, .menu-toggle, .header-action-btn,
+    .ProductDetailExperience_colorThumbButton__2sQvm,
+    .ProductDetailExperience_variantLabel__VkJns,
+    .ProductDetailExperience_quantityButton__6Nxre,
+    .ProductDetailExperience_buyNowButton__6tiNm,
+    .ProductDetailExperience_addToCartButton__egkl6,
+    .ProductDetailExperience_detailButton__nHj7N,
+    .ProductDetailExperience_miniatureButton__bPKNm,
+    .MeowButton_button__GaaqF,
+    .dropdown-nav-link,
+    .inspect-font-pill,
+    .inspect-font-studio-link {
+      cursor: url('assets/chili-cursor-32.png') 0 0, pointer !important;
+      cursor: -webkit-image-set(url('assets/chili-cursor-32.png') 1x, url('assets/chili-cursor-64.png') 2x) 0 0, pointer !important;
     }
     
     /* Luxury Header Typography & Dark Integration for Inspect Page */
@@ -43,10 +76,12 @@
     }
     #LuxuryHeader .brand-morph-logo,
     #LuxuryHeader .brand-wordmark {
-      font-family: var(--header-logo-font, "Ragara", "Italiana", Georgia, serif) !important;
-      font-size: clamp(2rem, 3vw, 2.7rem) !important;
+      font-family: var(--header-logo-font, "Ahsing", serif) !important;
+      font-weight: 400 !important;
+      font-size: clamp(2rem, 3.2vw, 2.85rem) !important;
       color: #f5f5f5 !important;
-      letter-spacing: var(--header-logo-spacing, -0.02em) !important;
+      letter-spacing: 0.02em !important;
+      text-transform: none !important;
       text-decoration: none !important;
     }
     #LuxuryHeader .nav-link {
@@ -67,6 +102,116 @@
     #LuxuryHeader .menu-toggle:hover {
       background: rgba(255, 255, 255, 0.08) !important;
       border-color: rgba(255, 255, 255, 0.15) !important;
+    }
+
+    @media (max-width: 768px) {
+      #LuxuryHeader .brand-morph-logo,
+      #LuxuryHeader .brand-wordmark {
+        font-size: clamp(2.35rem, 7.8vw, 3.1rem) !important;
+        line-height: 0.95 !important;
+      }
+    }
+
+    @media (max-width: 480px) {
+      #LuxuryHeader .brand-morph-logo,
+      #LuxuryHeader .brand-wordmark {
+        font-size: clamp(2.25rem, 8.2vw, 2.85rem) !important;
+        line-height: 0.95 !important;
+      }
+    }
+
+    /* Floating Header Font Switcher */
+    .inspect-font-bar {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 14px;
+      background: rgba(14, 13, 17, 0.94);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 9999px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(212, 175, 55, 0.15);
+      animation: floatIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes floatIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .inspect-font-bar__label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      font-weight: 700;
+      color: #d4af37;
+      text-transform: uppercase;
+      padding-right: 4px;
+    }
+    .inspect-font-bar__pills {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .inspect-font-pill {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 9999px;
+      padding: 6px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: #d1d0d5;
+      transition: all 0.2s ease;
+    }
+    .inspect-font-pill:hover {
+      background: rgba(255, 255, 255, 0.14);
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+    .inspect-font-pill.active {
+      background: #ffffff;
+      color: #0b0a0d;
+      border-color: #ffffff;
+      font-weight: 700;
+      box-shadow: 0 4px 14px rgba(255, 255, 255, 0.25);
+    }
+    .inspect-font-studio-link {
+      margin-left: 6px;
+      padding: 6px 12px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #d4af37;
+      background: rgba(212, 175, 55, 0.12);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      border-radius: 9999px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .inspect-font-studio-link:hover {
+      background: #d4af37;
+      color: #0b0a0d;
+    }
+    @media (max-width: 768px) {
+      .inspect-font-bar {
+        bottom: 12px;
+        right: 12px;
+        left: 12px;
+        justify-content: space-between;
+        padding: 6px 10px;
+        overflow-x: auto;
+      }
+      .inspect-font-bar__label {
+        display: none;
+      }
     }
 
   </style>
@@ -137,7 +282,56 @@
   </div>
 </div>
 
+<!-- Floating Header Font Switcher Pill for Testing -->
+<aside class="inspect-font-bar" id="inspectFontBar" aria-label="Header Font Switcher">
+  <div class="inspect-font-bar__label">
+    <span class="font-bar-icon">✦</span>
+    <span class="font-bar-text">Header Font:</span>
+  </div>
+  <div class="inspect-font-bar__pills">
+    <button type="button" class="inspect-font-pill active" data-font="'Ahsing', serif" data-spacing="0.02em" data-weight="400" data-transform="none">Ahsing</button>
+    <button type="button" class="inspect-font-pill" data-font="'Ragara', 'Italiana', Georgia, serif" data-spacing="0.04em" data-weight="400" data-transform="none">Ragara</button>
+    <button type="button" class="inspect-font-pill" data-font="'Syne', sans-serif" data-spacing="0.04em" data-weight="800" data-transform="uppercase">Syne</button>
+    <button type="button" class="inspect-font-pill" data-font="'Bodoni Moda', serif" data-spacing="0.02em" data-weight="700" data-transform="uppercase">Bodoni</button>
+    <button type="button" class="inspect-font-pill" data-font="'Playfair Display', serif" data-spacing="0.03em" data-weight="600" data-transform="none">Playfair</button>
+  </div>
+  <a href="preview.html#studio" class="inspect-font-studio-link" title="Open Complete Atelier Studio in preview.html">Full Studio ↗</a>
+</aside>
+
   <script src="assets/header-morph.js"></script>
   <script src="assets/product-inspect.js"></script>
+  <script>
+    (function() {
+      const pills = document.querySelectorAll('.inspect-font-pill');
+      const root = document.documentElement;
+      const logoEl = document.querySelector('#LuxuryHeader .brand-morph-logo');
+      const wordmarkEl = document.querySelector('#LuxuryHeader .brand-wordmark');
+
+      pills.forEach(pill => {
+        pill.addEventListener('click', () => {
+          pills.forEach(p => p.classList.remove('active'));
+          pill.classList.add('active');
+
+          const font = pill.getAttribute('data-font');
+          const spacing = pill.getAttribute('data-spacing') || '0.02em';
+          const weight = pill.getAttribute('data-weight') || '400';
+          const transform = pill.getAttribute('data-transform') || 'none';
+
+          root.style.setProperty('--header-logo-font', font);
+          root.style.setProperty('--header-logo-spacing', spacing);
+          
+          if (wordmarkEl) {
+            wordmarkEl.style.fontFamily = font;
+            wordmarkEl.style.letterSpacing = spacing;
+            wordmarkEl.style.fontWeight = weight;
+            wordmarkEl.style.textTransform = transform;
+          }
+          if (logoEl) {
+            logoEl.style.fontFamily = font;
+          }
+        });
+      });
+    })();
+  </script>
 </body>
 </html>

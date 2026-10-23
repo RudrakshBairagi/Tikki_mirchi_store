@@ -7,6 +7,16 @@
  */
 
 @font-face {
+  font-family: 'Ahsing';
+  src: url('Ahsing.woff') format('woff'),
+       url('Ahsing.otf') format('opentype'),
+       url('typogama-ahsing.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
   font-family: 'Ragara';
   src: url('Ragara.woff') format('woff'),
        url('Ragara.otf') format('opentype'),
@@ -141,18 +151,27 @@
 
 @media (max-width: 768px) {
   .waitlist-page .luxury-header .brand-morph-logo {
-    font-size: clamp(1.45rem, 5.2vw, 1.85rem) !important;
+    font-size: clamp(2.35rem, 7.8vw, 3.1rem) !important;
+  }
+  .waitlist-page .luxury-header .brand-wordmark {
+    font-size: inherit !important;
+    line-height: 0.95 !important;
   }
 }
 
 @media (max-width: 480px) {
   .waitlist-page .luxury-header .brand-morph-logo {
-    font-size: 1.4rem !important;
+    font-size: clamp(2.25rem, 8.2vw, 2.85rem) !important;
+  }
+  .waitlist-page .luxury-header .brand-wordmark {
+    font-size: inherit !important;
+    line-height: 0.95 !important;
   }
 }
 
 .waitlist-page .luxury-header .brand-wordmark {
-  font-family: 'Ragara', 'Italiana', Georgia, serif !important;
+  font-family: var(--header-logo-font, 'Ahsing', serif) !important;
+  text-transform: none !important;
   color: #161517 !important;
 }
 

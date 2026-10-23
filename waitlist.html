@@ -11,6 +11,16 @@
   <link rel="stylesheet" href="assets/atelier-waitlist.css">
   <style>
     @font-face {
+      font-family: 'Ahsing';
+      src: url('assets/Ahsing.woff') format('woff'),
+           url('assets/Ahsing.otf') format('opentype'),
+           url('assets/typogama-ahsing.otf') format('opentype');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
       font-family: 'Ragara';
       src: url('assets/Ragara.woff') format('woff'),
            url('assets/Ragara.otf') format('opentype'),
@@ -28,6 +38,49 @@
       font-weight: 400;
       font-style: italic;
       font-display: swap;
+    }
+
+    :root {
+      --header-logo-font: 'Ahsing', serif;
+    }
+
+    /* Custom Chili Cursor */
+    html, body {
+      cursor: url('assets/chili-cursor-32.png') 0 0, auto !important;
+      cursor: -webkit-image-set(url('assets/chili-cursor-32.png') 1x, url('assets/chili-cursor-64.png') 2x) 0 0, auto !important;
+    }
+
+    a, button, [role="button"], input, select, textarea, label,
+    .nav-link, .menu-toggle, .header-action-btn, .dropdown-nav-link, .btn-waitlist-submit {
+      cursor: url('assets/chili-cursor-32.png') 0 0, pointer !important;
+      cursor: -webkit-image-set(url('assets/chili-cursor-32.png') 1x, url('assets/chili-cursor-64.png') 2x) 0 0, pointer !important;
+    }
+
+    .brand-morph-logo,
+    .brand-wordmark {
+      font-family: var(--header-logo-font, 'Ahsing', serif) !important;
+      text-transform: none !important;
+      letter-spacing: 0.02em !important;
+    }
+
+    @media (max-width: 768px) {
+      .brand-morph-logo {
+        font-size: clamp(2.35rem, 7.8vw, 3.1rem) !important;
+      }
+      .brand-wordmark {
+        font-size: inherit !important;
+        line-height: 0.95 !important;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .brand-morph-logo {
+        font-size: clamp(2.25rem, 8.2vw, 2.85rem) !important;
+      }
+      .brand-wordmark {
+        font-size: inherit !important;
+        line-height: 0.95 !important;
+      }
     }
 
     .waitlist-hero-header *,

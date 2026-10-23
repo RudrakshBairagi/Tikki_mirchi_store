@@ -17,6 +17,69 @@
 {%- endif -%}
 
 <style>
+  @font-face {
+    font-family: 'Ahsing';
+    src: url('{{ "Ahsing.woff" | asset_url }}') format('woff'),
+         url('{{ "Ahsing.otf" | asset_url }}') format('opentype'),
+         url('{{ "typogama-ahsing.otf" | asset_url }}') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Ragara';
+    src: url('{{ "Ragara.woff" | asset_url }}') format('woff'),
+         url('{{ "Ragara.otf" | asset_url }}') format('opentype'),
+         url('{{ "Ragara.ttf" | asset_url }}') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  {%- if section.settings.logo_font_source == 'ahsing' -%}
+    :root, .header__heading, .header__heading-link, .header__heading-logo {
+      --header-logo-font: 'Ahsing', serif;
+    }
+  {%- elsif section.settings.logo_font_source == 'brand' -%}
+    :root, .header__heading, .header__heading-link, .header__heading-logo {
+      --header-logo-font: 'Ragara', 'Italiana', Georgia, serif;
+    }
+  {%- elsif section.settings.logo_font_source == 'custom' and section.settings.custom_logo_font != blank -%}
+    :root, .header__heading, .header__heading-link, .header__heading-logo {
+      --header-logo-font: '{{ section.settings.custom_logo_font }}', serif;
+    }
+  {%- else -%}
+    :root, .header__heading, .header__heading-link, .header__heading-logo {
+      --header-logo-font: 'Ahsing', serif;
+    }
+  {%- endif -%}
+
+  .header__heading-link,
+  .header__heading-logo,
+  .header__heading {
+    font-family: var(--header-logo-font, 'Ahsing', serif) !important;
+    text-transform: none !important;
+    letter-spacing: 0.02em !important;
+  }
+
+  @media screen and (max-width: 768px) {
+    .header__heading-link,
+    .header__heading-logo,
+    .header__heading {
+      font-size: clamp(2.35rem, 7.8vw, 3.1rem) !important;
+      line-height: 0.95 !important;
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    .header__heading-link,
+    .header__heading-logo,
+    .header__heading {
+      font-size: clamp(2.25rem, 8.2vw, 2.85rem) !important;
+      line-height: 0.95 !important;
+    }
+  }
+
   header-drawer {
     justify-self: start;
     margin-left: -1.2rem;
@@ -504,6 +567,28 @@
   "class": "section-header",
   "max_blocks": 3,
   "settings": [
+    {
+      "type": "header",
+      "content": "Brand Typography & Logo Font"
+    },
+    {
+      "type": "select",
+      "id": "logo_font_source",
+      "label": "Brand Logo Font Source",
+      "options": [
+        { "value": "ahsing", "label": "Ahsing (Typogama Couture)" },
+        { "value": "brand", "label": "Ragara Couture (Classic)" },
+        { "value": "shopify", "label": "Shopify Font Library (From Theme Settings)" },
+        { "value": "custom", "label": "Custom Font Name" }
+      ],
+      "default": "ahsing"
+    },
+    {
+      "type": "text",
+      "id": "custom_logo_font",
+      "label": "Custom Logo Font Name",
+      "info": "Active when 'Custom Font Name' is selected."
+    },
     {
       "type": "select",
       "id": "logo_position",
