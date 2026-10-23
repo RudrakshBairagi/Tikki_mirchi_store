@@ -167,6 +167,7 @@
     {%- endif -%}
 
     --rack-heading-scale: {{ section.settings.heading_font_scale | default: 100 | divided_by: 100.0 }};
+    --rack-eyebrow-scale: {{ section.settings.eyebrow_font_scale | default: 100 | divided_by: 100.0 }};
     --rack-subheading-scale: {{ section.settings.subheading_font_scale | default: 100 | divided_by: 100.0 }};
     --rack-title-spacing: {{ section.settings.heading_letter_spacing | default: 2 }}px;
   }
@@ -208,6 +209,11 @@
 
   #HangerRack-{{ section.id }} .hanger-rack-eyebrow {
     font-family: var(--rack-eyebrow-font) !important;
+    font-size: calc(clamp(15px, 1.5vw, 19px) * var(--rack-eyebrow-scale, 1)) !important;
+  }
+
+  #HangerRack-{{ section.id }} .rack-eyebrow-sparkle {
+    font-size: calc(13px * var(--rack-eyebrow-scale, 1)) !important;
   }
 
   #HangerRack-{{ section.id }} .hanger-rack-subheading {
@@ -1139,6 +1145,16 @@
       "type": "text",
       "id": "custom_body_font",
       "label": "Custom Eyebrow & Subheading Font Name"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_font_scale",
+      "min": 70,
+      "max": 200,
+      "step": 5,
+      "unit": "%",
+      "label": "Eyebrow Font Size Scale ('Pretty with a bite')",
+      "default": 100
     },
     {
       "type": "range",

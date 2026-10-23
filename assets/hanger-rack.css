@@ -40,19 +40,19 @@
 .hanger-rack-eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   font-family: var(--rack-eyebrow-font, 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif);
-  font-size: 11px;
+  font-size: clamp(15px, 1.5vw, 19px);
   font-weight: 600;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--rack-accent-color, #b38728);
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .rack-eyebrow-sparkle {
-  font-size: 9px;
-  opacity: 0.8;
+  font-size: 13px;
+  opacity: 0.85;
 }
 
 .hanger-rack-title {
