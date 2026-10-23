@@ -336,6 +336,25 @@
 >
   <div class="hanger-rack-bg-overlay" aria-hidden="true"></div>
   <div class="hanger-rack-container">
+    {%- if section.settings.show_header -%}
+      <!-- Header: Editorial & Minimalist -->
+      <div class="hanger-rack-header">
+        {%- if section.settings.eyebrow != blank -%}
+          <div class="hanger-rack-eyebrow">
+            <span class="rack-eyebrow-sparkle">✦</span>
+            <span>{{ section.settings.eyebrow }}</span>
+            <span class="rack-eyebrow-sparkle">✦</span>
+          </div>
+        {%- endif -%}
+
+        <h2 class="hanger-rack-title">{{ section.settings.heading | default: 'House of Royals' }}</h2>
+
+        {%- if section.settings.subheading != blank -%}
+          <p class="hanger-rack-subheading">{{ section.settings.subheading }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
     {%- assign show_top = false -%}
     {%- if section.settings.show_top_waitlist_btn != false -%}
       {%- assign show_top = true -%}
@@ -357,25 +376,6 @@
             <span class="btn-arrow" aria-hidden="true">{{ section.settings.btn_arrow_icon | default: '⟶' }}</span>
           {%- endif -%}
         </a>
-      </div>
-    {%- endif -%}
-
-    {%- if section.settings.show_header -%}
-      <!-- Header: Editorial & Minimalist -->
-      <div class="hanger-rack-header">
-        {%- if section.settings.eyebrow != blank -%}
-          <div class="hanger-rack-eyebrow">
-            <span class="rack-eyebrow-sparkle">✦</span>
-            <span>{{ section.settings.eyebrow }}</span>
-            <span class="rack-eyebrow-sparkle">✦</span>
-          </div>
-        {%- endif -%}
-
-        <h2 class="hanger-rack-title">{{ section.settings.heading | default: 'House of Royals' }}</h2>
-
-        {%- if section.settings.subheading != blank -%}
-          <p class="hanger-rack-subheading">{{ section.settings.subheading }}</p>
-        {%- endif -%}
       </div>
     {%- endif -%}
 

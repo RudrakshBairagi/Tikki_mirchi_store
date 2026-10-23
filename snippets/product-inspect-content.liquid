@@ -149,59 +149,11 @@
     .ProductDetailExperience_detailButton__nHj7N,
     .ProductDetailExperience_miniatureButton__bPKNm,
     .MeowButton_button__GaaqF,
-    .dropdown-nav-link,
-    .inspect-font-pill,
-    .inspect-font-studio-link {
+    .dropdown-nav-link {
       cursor: url('{{ "chili-cursor-32.png" | asset_url }}') 0 0, pointer !important;
       cursor: -webkit-image-set(url('{{ "chili-cursor-32.png" | asset_url }}') 1x, url('{{ "chili-cursor-64.png" | asset_url }}') 2x) 0 0, pointer !important;
     }
   {%- endif -%}
-  
-  /* Luxury Header Styling */
-  #LuxuryHeader {
-    --docked-bg-color: rgba(5, 5, 5, 0.92) !important;
-    --docked-text-color: #f5f5f5 !important;
-    --header-border-docked: {{ border_color }} !important;
-    z-index: 150 !important;
-    font-family: var(--header-nav-font, "Plus Jakarta Sans", sans-serif) !important;
-  }
-  #LuxuryHeader .brand-morph-logo,
-  #LuxuryHeader .brand-wordmark {
-    font-family: var(--header-logo-font, "Ahsing", serif) !important;
-    font-weight: 400 !important;
-    font-size: {{ logo_font_size_desktop }}px !important;
-    color: #f5f5f5 !important;
-    letter-spacing: 0.02em !important;
-    text-transform: none !important;
-    text-decoration: none !important;
-  }
-  #LuxuryHeader .nav-link {
-    color: #f5f5f5 !important;
-    font-family: var(--header-nav-font, "Plus Jakarta Sans", sans-serif) !important;
-    font-size: 11px !important;
-    letter-spacing: 0.2em !important;
-    font-weight: 500 !important;
-    text-transform: uppercase !important;
-    text-decoration: none !important;
-  }
-  #LuxuryHeader .header-action-btn.menu-toggle {
-    color: #f5f5f5 !important;
-  }
-  #LuxuryHeader .menu-toggle .btn-label {
-    color: #f5f5f5 !important;
-  }
-  #LuxuryHeader .menu-toggle:hover {
-    background: rgba(255, 255, 255, 0.08) !important;
-    border-color: rgba(255, 255, 255, 0.15) !important;
-  }
-
-  @media (max-width: 768px) {
-    #LuxuryHeader .brand-morph-logo,
-    #LuxuryHeader .brand-wordmark {
-      font-size: {{ logo_font_size_mobile }}px !important;
-      line-height: 0.95 !important;
-    }
-  }
 
   /* Dynamic CSS overrides based on section settings */
   .product-inspect-wrapper {
@@ -256,100 +208,7 @@
     border-bottom: var(--pdp-line-thickness) solid var(--pdp-border) !important;
   }
 
-  /* Floating Header Font Switcher */
-  .inspect-font-bar {
-    position: fixed;
-    bottom: 24px;
-    right: 24px;
-    z-index: 99999;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px 14px;
-    background: rgba(14, 13, 17, 0.94);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    border-radius: 9999px;
-    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(212, 175, 55, 0.15);
-    animation: floatIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  @keyframes floatIn {
-    from { opacity: 0; transform: translateY(16px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .inspect-font-bar__label {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-family: var(--header-nav-font, "Plus Jakarta Sans", sans-serif);
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: #cbb479;
-    white-space: nowrap;
-  }
-  .inspect-font-bar__pills {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .inspect-font-pill {
-    padding: 5px 11px;
-    border-radius: 9999px;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    color: #e5e5e7;
-    font-family: var(--header-nav-font, "Plus Jakarta Sans", sans-serif);
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.04em;
-    cursor: pointer;
-    transition: all 0.22s ease;
-    white-space: nowrap;
-  }
-  .inspect-font-pill:hover {
-    background: rgba(255, 255, 255, 0.18);
-    border-color: rgba(212, 175, 55, 0.5);
-    color: #fff;
-    transform: translateY(-1px);
-  }
-  .inspect-font-pill.active {
-    background: linear-gradient(135deg, #d4af37 0%, #b38728 100%);
-    border-color: #f3e5ab;
-    color: #0b0a0d;
-    font-weight: 700;
-    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.35);
-  }
-  .inspect-font-studio-link {
-    font-family: var(--header-nav-font, "Plus Jakarta Sans", sans-serif);
-    font-size: 11px;
-    font-weight: 600;
-    color: #cbb479;
-    text-decoration: none;
-    padding: 5px 10px;
-    border-left: 1px solid rgba(255, 255, 255, 0.15);
-    margin-left: 4px;
-    transition: color 0.2s ease;
-  }
-  .inspect-font-studio-link:hover {
-    color: #fff;
-  }
 
-  @media (max-width: 768px) {
-    .inspect-font-bar {
-      bottom: 12px;
-      right: 12px;
-      left: 12px;
-      justify-content: space-between;
-      padding: 6px 10px;
-      overflow-x: auto;
-    }
-    .inspect-font-bar__label {
-      display: none;
-    }
-  }
 </style>
 
 <div class="product-inspect-wrapper __variable_337fc1 __variable_9924fb __variable_68f3f8 bg-black text-white antialiased min-h-screen">
@@ -360,50 +219,7 @@
 
     <div class="ProductDetailExperience_page__CnLir">
       <div class="ProductDetailExperience_pageSurface__LIloS">
-        <!-- Luxury Morphing Header -->
-        <header id="LuxuryHeader" class="luxury-header scrolled-down">
-          <div class="luxury-header__inner">
-            <!-- Left: Navigation Links -->
-            <div class="luxury-header__left">
-              <div class="menu-dropdown-wrapper">
-                <button class="header-action-btn menu-toggle" id="HeaderMenuToggle" aria-label="Toggle Navigation Menu" type="button" aria-expanded="false" aria-haspopup="true" aria-controls="LuxuryMenuDropdown">
-                  <span class="hamburger-icon" aria-hidden="true">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                  </span>
-                  <span class="btn-label">MENU</span>
-                </button>
 
-                <div id="LuxuryMenuDropdown" class="luxury-menu-dropdown" role="menu" aria-label="Navigation Menu" aria-hidden="true">
-                  <a href="{{ routes.root_url }}" class="dropdown-nav-link dropdown-link-home" role="menuitem">
-                    <span class="dropdown-link-label">{{ s.nav_home_label | default: 'HOME' }}</span>
-                    <span class="dropdown-link-arrow">⟶</span>
-                  </a>
-                  <div class="dropdown-nav-divider"></div>
-                  <a href="{{ waitlist_url }}" class="dropdown-nav-link dropdown-link-waitlist" role="menuitem">
-                    <span class="dropdown-link-label">{{ s.nav_waitlist_label | default: 'WAITLIST ✦' }}</span>
-                    <span class="dropdown-link-arrow">⟶</span>
-                  </a>
-                </div>
-              </div>
-
-              <nav class="desktop-nav" aria-label="Primary Navigation">
-                <a href="{{ routes.root_url }}" class="nav-link header-nav-home">{{ s.nav_home_label | default: 'HOME' }}</a>
-                <a href="{{ waitlist_url }}" class="nav-link header-nav-waitlist">{{ s.nav_waitlist_label | default: 'WAITLIST ✦' }}</a>
-              </nav>
-            </div>
-
-            <!-- Center: Brand Logo -->
-            <div class="luxury-header__center brand-morph-zone">
-              <a href="{{ routes.root_url }}" class="brand-morph-logo is-visible" id="BrandMorphLogo" aria-label="{{ header_logo_text | escape }}">
-                <span class="brand-wordmark">{{ header_logo_text }}</span>
-              </a>
-            </div>
-
-            <div class="luxury-header__right" aria-hidden="true"></div>
-          </div>
-        </header>
 
         <!-- Product Presentation -->
         <section class="ProductDetailExperience_product__yw3EP">
@@ -883,53 +699,5 @@
     </section>
   </div>
 
-  <!-- Floating Header Font Switcher Pill for Testing -->
-  <aside class="inspect-font-bar" id="inspectFontBar" aria-label="Header Font Switcher">
-    <div class="inspect-font-bar__label">
-      <span class="font-bar-icon">✦</span>
-      <span class="font-bar-text">Header Font:</span>
-    </div>
-    <div class="inspect-font-bar__pills">
-      <button type="button" class="inspect-font-pill active" data-font="'Ahsing', serif" data-spacing="0.02em" data-weight="400" data-transform="none">Ahsing</button>
-      <button type="button" class="inspect-font-pill" data-font="'Ragara', 'Italiana', Georgia, serif" data-spacing="0.04em" data-weight="400" data-transform="none">Ragara</button>
-      <button type="button" class="inspect-font-pill" data-font="'Syne', sans-serif" data-spacing="0.04em" data-weight="800" data-transform="uppercase">Syne</button>
-      <button type="button" class="inspect-font-pill" data-font="'Bodoni Moda', serif" data-spacing="0.02em" data-weight="700" data-transform="uppercase">Bodoni</button>
-      <button type="button" class="inspect-font-pill" data-font="'Playfair Display', serif" data-spacing="0.03em" data-weight="600" data-transform="none">Playfair</button>
-    </div>
-    <a href="{{ routes.root_url }}#studio" class="inspect-font-studio-link" title="Open Studio on Home">Studio ↗</a>
-  </aside>
 
-  <script>
-    (function() {
-      const pills = document.querySelectorAll('.inspect-font-pill');
-      const root = document.documentElement;
-      const logoEl = document.querySelector('#LuxuryHeader .brand-morph-logo');
-      const wordmarkEl = document.querySelector('#LuxuryHeader .brand-wordmark');
-
-      pills.forEach(pill => {
-        pill.addEventListener('click', () => {
-          pills.forEach(p => p.classList.remove('active'));
-          pill.classList.add('active');
-
-          const font = pill.getAttribute('data-font');
-          const spacing = pill.getAttribute('data-spacing') || '0.02em';
-          const weight = pill.getAttribute('data-weight') || '400';
-          const transform = pill.getAttribute('data-transform') || 'none';
-
-          root.style.setProperty('--header-logo-font', font);
-          root.style.setProperty('--header-logo-spacing', spacing);
-          
-          if (wordmarkEl) {
-            wordmarkEl.style.fontFamily = font;
-            wordmarkEl.style.letterSpacing = spacing;
-            wordmarkEl.style.fontWeight = weight;
-            wordmarkEl.style.textTransform = transform;
-          }
-          if (logoEl) {
-            logoEl.style.fontFamily = font;
-          }
-        });
-      });
-    })();
-  </script>
 </div>

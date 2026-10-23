@@ -133,8 +133,8 @@
 
 .menu-toggle:hover,
 .menu-toggle[aria-expanded="true"] {
-  background: rgba(0, 0, 0, 0.04);
-  border-color: rgba(0, 0, 0, 0.08);
+  background: rgba(128, 128, 128, 0.15);
+  border-color: rgba(128, 128, 128, 0.25);
 }
 
 .menu-toggle .hamburger-icon {
@@ -539,9 +539,7 @@
   margin: 4px 6px;
 }
 
-/* Scoped Shopify Theme Override: Hide Dawn header on homepage so Luxury Header renders exclusively */
-body.template-index .header-wrapper,
-body.template-index #shopify-section-announcement-bar,
-body.template-index .announcement-bar-section {
+/* Scoped Shopify Theme Override: Hide Dawn default header so Luxury Header renders exclusively */
+body.template-index .header-wrapper:not(.luxury-header) {
   display: none !important;
 }

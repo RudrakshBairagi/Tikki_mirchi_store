@@ -71,17 +71,17 @@
   font-family: var(--wl-font-main, 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif);
 }
 
-/* Main Container — Spaced cleanly below 80px sticky Luxury Header */
+/* Main Container — Spaced cleanly below Luxury Header spacer */
 .waitlist-main-wrap {
   max-width: 960px;
   margin: 0 auto;
-  padding: calc(var(--luxury-header-height, 80px) + 36px) 24px 0 24px;
+  padding: 36px 24px 0 24px;
   box-sizing: border-box;
 }
 
 @media (max-width: 768px) {
   .waitlist-main-wrap {
-    padding: calc(var(--luxury-header-height, 68px) + 24px) 16px 0 16px;
+    padding: 24px 16px 0 16px;
   }
 }
 
