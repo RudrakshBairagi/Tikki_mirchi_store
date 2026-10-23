@@ -1,10 +1,35 @@
+{%- assign s = section.settings -%}
+
+{%- assign bg_color = s.bg_color | default: '#000000' -%}
+{%- assign surface_bg_color = s.surface_bg_color | default: '#080808' -%}
+{%- assign text_color = s.text_color | default: '#ffffff' -%}
+{%- assign muted_text_color = s.muted_text_color | default: '#999999' -%}
+{%- assign accent_color = s.accent_color | default: '#d4af37' -%}
+{%- assign border_color = s.border_color | default: 'rgba(255, 255, 255, 0.12)' -%}
+{%- assign line_thickness = s.line_thickness | default: 1 -%}
+{%- assign button_bg_color = s.button_bg_color | default: '#ffffff' -%}
+{%- assign button_text_color = s.button_text_color | default: '#000000' -%}
+
+{%- assign header_logo_text = s.header_logo_text | default: 'Teekhi Bella' -%}
+{%- assign logo_font_size_desktop = s.logo_font_size_desktop | default: 40 -%}
+{%- assign logo_font_size_mobile = s.logo_font_size_mobile | default: 34 -%}
+
+{%- assign product_title = s.product_title | default: "cvnt's genda phool skirt" -%}
+{%- assign product_price = s.product_price | default: '₹2,975' -%}
+{%- assign product_compare_price = s.product_compare_price | default: '₹3,500' -%}
+{%- assign rating_score = s.rating_score | default: '4.0' -%}
+{%- assign rating_count_text = s.rating_count_text | default: 'By 1+ buyer' -%}
+
+{%- assign default_waitlist_url = routes.root_url | append: 'pages/waitlist' | replace: '//', '/' -%}
+{%- assign waitlist_url = s.buy_now_url | default: s.nav_waitlist_url | default: default_waitlist_url -%}
+
 {{ 'header-morph.css' | asset_url | stylesheet_tag }}
 {{ 'product-inspect.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'header-morph.js' | asset_url }}" defer="defer"></script>
 <script src="{{ 'product-inspect.js' | asset_url }}" defer="defer"></script>
 
 <script>
-  window.__cvntMeowAudioUrl = '{{ "cvnt-cat-meow.mp3" | asset_url }}';
+  window.__cvntMeowAudioUrl = '{{ s.custom_audio_url | default: "cvnt-cat-meow.mp3" | asset_url }}';
 </script>
 
 <style>
@@ -36,41 +61,92 @@
     font-display: swap;
   }
 
+  {%- if s.logo_font_source == 'shopify' and s.logo_font != blank -%}
+    {{ s.logo_font | font_face: font_display: 'swap' }}
+  {%- endif -%}
+  {%- if s.title_font_source == 'shopify' and s.title_font != blank -%}
+    {{ s.title_font | font_face: font_display: 'swap' }}
+  {%- endif -%}
+
   :root {
-    --header-logo-font: 'Ahsing', serif;
+    {%- if s.logo_font_source == 'ahsing' -%}
+      --header-logo-font: 'Ahsing', serif;
+    {%- elsif s.logo_font_source == 'ragara' -%}
+      --header-logo-font: 'Ragara', 'Italiana', Georgia, serif;
+    {%- elsif s.logo_font_source == 'syne' -%}
+      --header-logo-font: 'Syne', sans-serif;
+    {%- elsif s.logo_font_source == 'bodoni' -%}
+      --header-logo-font: 'Bodoni Moda', serif;
+    {%- elsif s.logo_font_source == 'playfair' -%}
+      --header-logo-font: 'Playfair Display', serif;
+    {%- elsif s.logo_font_source == 'shopify' and s.logo_font != blank -%}
+      --header-logo-font: {{ s.logo_font.family }}, {{ s.logo_font.fallback_families }};
+    {%- elsif s.logo_font_source == 'custom' and s.custom_logo_font != blank -%}
+      --header-logo-font: '{{ s.custom_logo_font }}', serif;
+    {%- else -%}
+      --header-logo-font: 'Ahsing', serif;
+    {%- endif -%}
+
+    {%- if s.title_font_source == 'ahsing' -%}
+      --pdp-title-font: 'Ahsing', serif;
+    {%- elsif s.title_font_source == 'ragara' -%}
+      --pdp-title-font: 'Ragara', 'Italiana', Georgia, serif;
+    {%- elsif s.title_font_source == 'syne' -%}
+      --pdp-title-font: 'Syne', sans-serif;
+    {%- elsif s.title_font_source == 'shopify' and s.title_font != blank -%}
+      --pdp-title-font: {{ s.title_font.family }}, {{ s.title_font.fallback_families }};
+    {%- elsif s.title_font_source == 'custom' and s.custom_title_font != blank -%}
+      --pdp-title-font: '{{ s.custom_title_font }}', sans-serif;
+    {%- else -%}
+      --pdp-title-font: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+    {%- endif -%}
+
     --header-tagline-font: 'Italiana', Georgia, serif;
     --header-nav-font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
     --header-logo-spacing: 0.02em;
+
+    /* Theme Dynamic Colors & Lines */
+    --pdp-bg: {{ bg_color }};
+    --pdp-surface: {{ surface_bg_color }};
+    --pdp-text: {{ text_color }};
+    --pdp-muted: {{ muted_text_color }};
+    --pdp-accent: {{ accent_color }};
+    --pdp-border: {{ border_color }};
+    --pdp-line-thickness: {{ line_thickness }}px;
+    --pdp-btn-bg: {{ button_bg_color }};
+    --pdp-btn-text: {{ button_text_color }};
   }
 
-  /* Custom Chili Cursor */
-  html, body, .product-inspect-wrapper {
-    cursor: url('{{ "chili-cursor-32.png" | asset_url }}') 0 0, auto !important;
-    cursor: -webkit-image-set(url('{{ "chili-cursor-32.png" | asset_url }}') 1x, url('{{ "chili-cursor-64.png" | asset_url }}') 2x) 0 0, auto !important;
-  }
+  {%- if s.enable_chili_cursor != false -%}
+    /* Custom Chili Cursor */
+    html, body, .product-inspect-wrapper {
+      cursor: url('{{ "chili-cursor-32.png" | asset_url }}') 0 0, auto !important;
+      cursor: -webkit-image-set(url('{{ "chili-cursor-32.png" | asset_url }}') 1x, url('{{ "chili-cursor-64.png" | asset_url }}') 2x) 0 0, auto !important;
+    }
 
-  a, button, [role="button"], input, select, textarea, label,
-  .nav-link, .menu-toggle, .header-action-btn,
-  .ProductDetailExperience_colorThumbButton__2sQvm,
-  .ProductDetailExperience_variantLabel__VkJns,
-  .ProductDetailExperience_quantityButton__6Nxre,
-  .ProductDetailExperience_buyNowButton__6tiNm,
-  .ProductDetailExperience_addToCartButton__egkl6,
-  .ProductDetailExperience_detailButton__nHj7N,
-  .ProductDetailExperience_miniatureButton__bPKNm,
-  .MeowButton_button__GaaqF,
-  .dropdown-nav-link,
-  .inspect-font-pill,
-  .inspect-font-studio-link {
-    cursor: url('{{ "chili-cursor-32.png" | asset_url }}') 0 0, pointer !important;
-    cursor: -webkit-image-set(url('{{ "chili-cursor-32.png" | asset_url }}') 1x, url('{{ "chili-cursor-64.png" | asset_url }}') 2x) 0 0, pointer !important;
-  }
+    a, button, [role="button"], input, select, textarea, label,
+    .nav-link, .menu-toggle, .header-action-btn,
+    .ProductDetailExperience_colorThumbButton__2sQvm,
+    .ProductDetailExperience_variantLabel__VkJns,
+    .ProductDetailExperience_quantityButton__6Nxre,
+    .ProductDetailExperience_buyNowButton__6tiNm,
+    .ProductDetailExperience_addToCartButton__egkl6,
+    .ProductDetailExperience_detailButton__nHj7N,
+    .ProductDetailExperience_miniatureButton__bPKNm,
+    .MeowButton_button__GaaqF,
+    .dropdown-nav-link,
+    .inspect-font-pill,
+    .inspect-font-studio-link {
+      cursor: url('{{ "chili-cursor-32.png" | asset_url }}') 0 0, pointer !important;
+      cursor: -webkit-image-set(url('{{ "chili-cursor-32.png" | asset_url }}') 1x, url('{{ "chili-cursor-64.png" | asset_url }}') 2x) 0 0, pointer !important;
+    }
+  {%- endif -%}
   
-  /* Luxury Header Typography & Dark Integration for Inspect Page */
+  /* Luxury Header Styling */
   #LuxuryHeader {
-    --docked-bg-color: rgba(5, 5, 5, 0.88) !important;
+    --docked-bg-color: rgba(5, 5, 5, 0.92) !important;
     --docked-text-color: #f5f5f5 !important;
-    --header-border-docked: rgba(255, 255, 255, 0.1) !important;
+    --header-border-docked: {{ border_color }} !important;
     z-index: 150 !important;
     font-family: var(--header-nav-font, "Plus Jakarta Sans", sans-serif) !important;
   }
@@ -78,7 +154,7 @@
   #LuxuryHeader .brand-wordmark {
     font-family: var(--header-logo-font, "Ahsing", serif) !important;
     font-weight: 400 !important;
-    font-size: clamp(2rem, 3.2vw, 2.85rem) !important;
+    font-size: {{ logo_font_size_desktop }}px !important;
     color: #f5f5f5 !important;
     letter-spacing: 0.02em !important;
     text-transform: none !important;
@@ -107,17 +183,36 @@
   @media (max-width: 768px) {
     #LuxuryHeader .brand-morph-logo,
     #LuxuryHeader .brand-wordmark {
-      font-size: clamp(2.35rem, 7.8vw, 3.1rem) !important;
+      font-size: {{ logo_font_size_mobile }}px !important;
       line-height: 0.95 !important;
     }
   }
 
-  @media (max-width: 480px) {
-    #LuxuryHeader .brand-morph-logo,
-    #LuxuryHeader .brand-wordmark {
-      font-size: clamp(2.25rem, 8.2vw, 2.85rem) !important;
-      line-height: 0.95 !important;
-    }
+  /* Dynamic CSS overrides based on section settings */
+  .product-inspect-wrapper,
+  .product-inspect-wrapper main {
+    background-color: var(--pdp-bg) !important;
+    color: var(--pdp-text) !important;
+  }
+  .ProductDetailExperience_pageSurface__LIloS {
+    background-color: var(--pdp-surface) !important;
+  }
+  .ProductDetailExperience_productHeading__fwjkS {
+    font-family: var(--pdp-title-font) !important;
+    color: var(--pdp-text) !important;
+  }
+  .ProductDetailExperience_priceRegular__f_WJq {
+    color: var(--pdp-text) !important;
+  }
+  .ProductDetailExperience_buyNowButton__6tiNm {
+    background: var(--pdp-btn-bg) !important;
+    color: var(--pdp-btn-text) !important;
+  }
+  .ProductDetailExperience_detailButton__nHj7N {
+    border-top: var(--pdp-line-thickness) solid var(--pdp-border) !important;
+  }
+  .ProductDetailExperience_detailLinks__m3QxJ {
+    border-bottom: var(--pdp-line-thickness) solid var(--pdp-border) !important;
   }
 
   /* Floating Header Font Switcher */
@@ -218,8 +313,8 @@
 
 <div class="product-inspect-wrapper __variable_337fc1 __variable_9924fb __variable_68f3f8 bg-black text-white antialiased min-h-screen">
   <main class="min-h-screen bg-black text-white">
-    <audio src="{{ 'cvnt-cat-meow.mp3' | asset_url }}" preload="auto" playsinline=""></audio>
-    <span hidden="" data-cart-image="{{ 'cvnt-skirt-1.png' | asset_url }}"></span>
+    <audio src="{{ s.custom_audio_url | default: 'cvnt-cat-meow.mp3' | asset_url }}" preload="auto" playsinline=""></audio>
+    <span hidden="" data-cart-image="{% if s.image_1 != blank %}{{ s.image_1 | image_url: width: 600 }}{% else %}{{ 'cvnt-skirt-1.png' | asset_url }}{% endif %}"></span>
 
     <div class="ProductDetailExperience_page__CnLir">
       <div class="ProductDetailExperience_pageSurface__LIloS">
@@ -240,27 +335,27 @@
 
                 <div id="LuxuryMenuDropdown" class="luxury-menu-dropdown" role="menu" aria-label="Navigation Menu" aria-hidden="true">
                   <a href="{{ routes.root_url }}" class="dropdown-nav-link dropdown-link-home" role="menuitem">
-                    <span class="dropdown-link-label">HOME</span>
+                    <span class="dropdown-link-label">{{ s.nav_home_label | default: 'HOME' }}</span>
                     <span class="dropdown-link-arrow">⟶</span>
                   </a>
                   <div class="dropdown-nav-divider"></div>
-                  <a href="{{ routes.root_url | append: 'pages/waitlist' | replace: '//', '/' }}" class="dropdown-nav-link dropdown-link-waitlist" role="menuitem">
-                    <span class="dropdown-link-label">WAITLIST ✦</span>
+                  <a href="{{ waitlist_url }}" class="dropdown-nav-link dropdown-link-waitlist" role="menuitem">
+                    <span class="dropdown-link-label">{{ s.nav_waitlist_label | default: 'WAITLIST ✦' }}</span>
                     <span class="dropdown-link-arrow">⟶</span>
                   </a>
                 </div>
               </div>
 
               <nav class="desktop-nav" aria-label="Primary Navigation">
-                <a href="{{ routes.root_url }}" class="nav-link header-nav-home">HOME</a>
-                <a href="{{ routes.root_url | append: 'pages/waitlist' | replace: '//', '/' }}" class="nav-link header-nav-waitlist">WAITLIST ✦</a>
+                <a href="{{ routes.root_url }}" class="nav-link header-nav-home">{{ s.nav_home_label | default: 'HOME' }}</a>
+                <a href="{{ waitlist_url }}" class="nav-link header-nav-waitlist">{{ s.nav_waitlist_label | default: 'WAITLIST ✦' }}</a>
               </nav>
             </div>
 
             <!-- Center: Brand Logo -->
             <div class="luxury-header__center brand-morph-zone">
-              <a href="{{ routes.root_url }}" class="brand-morph-logo is-visible" id="BrandMorphLogo" aria-label="Teekhi Bella">
-                <span class="brand-wordmark">Teekhi Bella</span>
+              <a href="{{ routes.root_url }}" class="brand-morph-logo is-visible" id="BrandMorphLogo" aria-label="{{ header_logo_text | escape }}">
+                <span class="brand-wordmark">{{ header_logo_text }}</span>
               </a>
             </div>
 
@@ -272,28 +367,67 @@
         <section class="ProductDetailExperience_product__yw3EP">
           <!-- Gallery -->
           <div class="ProductDetailExperience_mediaWrapper__6sGrb">
-            <div class="ProductDetailExperience_mediaTrack__EhUL6" aria-label="cvnt's genda phool skirt media gallery">
+            <div class="ProductDetailExperience_mediaTrack__EhUL6" aria-label="{{ product_title | escape }} media gallery">
+              
+              <!-- Slide 1 -->
+              {%- assign slide_1_src = 'cvnt-skirt-1.png' | asset_url -%}
+              {%- if s.image_1 != blank -%}{%- assign slide_1_src = s.image_1 | image_url: width: 2000 -%}{%- endif -%}
               <div data-index="0" class="ProductDetailExperience_mediaSlide__b9fgy">
-                <img alt="cvnt's genda phool skirt image 1" fetchpriority="high" width="2000" height="3000" decoding="async" class="ProductDetailExperience_mediaImage__HDdXi" style="color:transparent" src="{{ 'cvnt-skirt-1.png' | asset_url }}">
+                <img alt="{{ product_title | escape }} image 1" fetchpriority="high" width="2000" height="3000" decoding="async" class="ProductDetailExperience_mediaImage__HDdXi" style="color:transparent" src="{{ slide_1_src }}">
               </div>
+
+              <!-- Slide 2 -->
+              {%- assign slide_2_src = 'cvnt-skirt-2.webp' | asset_url -%}
+              {%- if s.image_2 != blank -%}{%- assign slide_2_src = s.image_2 | image_url: width: 2000 -%}{%- endif -%}
               <div data-index="1" class="ProductDetailExperience_mediaSlide__b9fgy">
-                <img alt="cvnt's genda phool skirt image 2" fetchpriority="high" loading="eager" width="2000" height="3000" decoding="async" class="ProductDetailExperience_mediaImage__HDdXi" style="color:transparent" src="{{ 'cvnt-skirt-2.webp' | asset_url }}">
+                <img alt="{{ product_title | escape }} image 2" fetchpriority="high" loading="eager" width="2000" height="3000" decoding="async" class="ProductDetailExperience_mediaImage__HDdXi" style="color:transparent" src="{{ slide_2_src }}">
               </div>
+
+              <!-- Slide 3 -->
+              {%- assign slide_3_src = 'cvnt-skirt-3.webp' | asset_url -%}
+              {%- if s.image_3 != blank -%}{%- assign slide_3_src = s.image_3 | image_url: width: 2000 -%}{%- endif -%}
               <div data-index="2" class="ProductDetailExperience_mediaSlide__b9fgy">
-                <img alt="cvnt's genda phool skirt image 3" fetchpriority="high" loading="eager" width="2000" height="3000" decoding="async" class="ProductDetailExperience_mediaImage__HDdXi" style="color:transparent" src="{{ 'cvnt-skirt-3.webp' | asset_url }}">
+                <img alt="{{ product_title | escape }} image 3" fetchpriority="high" loading="eager" width="2000" height="3000" decoding="async" class="ProductDetailExperience_mediaImage__HDdXi" style="color:transparent" src="{{ slide_3_src }}">
               </div>
+
+              {%- if s.image_4 != blank -%}
+                <div data-index="3" class="ProductDetailExperience_mediaSlide__b9fgy">
+                  <img alt="{{ product_title | escape }} image 4" loading="lazy" width="2000" height="3000" decoding="async" class="ProductDetailExperience_mediaImage__HDdXi" style="color:transparent" src="{{ s.image_4 | image_url: width: 2000 }}">
+                </div>
+              {%- endif -%}
+
+              {%- if s.image_5 != blank -%}
+                <div data-index="4" class="ProductDetailExperience_mediaSlide__b9fgy">
+                  <img alt="{{ product_title | escape }} image 5" loading="lazy" width="2000" height="3000" decoding="async" class="ProductDetailExperience_mediaImage__HDdXi" style="color:transparent" src="{{ s.image_5 | image_url: width: 2000 }}">
+                </div>
+              {%- endif -%}
+
+              {%- if s.image_6 != blank -%}
+                <div data-index="5" class="ProductDetailExperience_mediaSlide__b9fgy">
+                  <img alt="{{ product_title | escape }} image 6" loading="lazy" width="2000" height="3000" decoding="async" class="ProductDetailExperience_mediaImage__HDdXi" style="color:transparent" src="{{ s.image_6 | image_url: width: 2000 }}">
+                </div>
+              {%- endif -%}
+
             </div>
+
+            <!-- Indicator -->
             <div class="ProductDetailExperience_mediaIndicator__bfOTo" aria-hidden="true">
               <div class="ProductDetailExperience_mediaIndicatorRail__XPFrm">
                 <span class="ProductDetailExperience_mediaIndicatorDot__qRHzC ProductDetailExperience_mediaIndicatorDotActive__0LD8H"></span>
                 <span class="ProductDetailExperience_mediaIndicatorDot__qRHzC"></span>
                 <span class="ProductDetailExperience_mediaIndicatorDot__qRHzC"></span>
+                {%- if s.image_4 != blank -%}<span class="ProductDetailExperience_mediaIndicatorDot__qRHzC"></span>{%- endif -%}
+                {%- if s.image_5 != blank -%}<span class="ProductDetailExperience_mediaIndicatorDot__qRHzC"></span>{%- endif -%}
+                {%- if s.image_6 != blank -%}<span class="ProductDetailExperience_mediaIndicatorDot__qRHzC"></span>{%- endif -%}
               </div>
-              <span class="ProductDetailExperience_mediaIndicatorCount__d6Zih">1<!-- --> / <!-- -->3</span>
+              <span class="ProductDetailExperience_mediaIndicatorCount__d6Zih">1 / 3</span>
             </div>
-            <button type="button" aria-label="Play meow sound" class="MeowButton_button__GaaqF MeowButton_buttonSurface__m3HzA ProductDetailExperience_meowButtonSlider__nA63E">
-              <span class="MeowButton_label__j87Wl">meow</span>
-            </button>
+
+            {%- if s.enable_meow_sound != false -%}
+              <button type="button" aria-label="Play sound" class="MeowButton_button__GaaqF MeowButton_buttonSurface__m3HzA ProductDetailExperience_meowButtonSlider__nA63E">
+                <span class="MeowButton_label__j87Wl">{{ s.meow_label | default: 'meow' }}</span>
+              </button>
+            {%- endif -%}
           </div>
 
           <!-- Product Details & Actions -->
@@ -310,48 +444,93 @@
                   <div class="ProductDetailExperience_pdpTitle__UQep_">
                     <div class="ProductDetailExperience_productTitle__QOiCe">
                       <div class="ProductDetailExperience_productHeadingRow__mnPF6">
-                        <div class="ProductDetailExperience_productHeading__fwjkS">cvnt's genda phool skirt</div>
+                        <div class="ProductDetailExperience_productHeading__fwjkS">{{ product_title }}</div>
                       </div>
                     </div>
                     <div class="ProductDetailExperience_price__BiBNX" role="status" aria-live="polite">
                       <div class="ProductDetailExperience_priceContainer__VazXX">
                         <div class="ProductDetailExperience_priceRegular__f_WJq">
-                          <span class="ProductDetailExperience_priceItem__8Q8z1">₹2,975</span>
+                          <span class="ProductDetailExperience_priceItem__8Q8z1">{{ product_price }}</span>
+                          {%- if product_compare_price != blank -%}
+                            <span class="ProductDetailExperience_priceCompare__8Q8z1" style="text-decoration: line-through; opacity: 0.5; margin-left: 8px; font-size: 0.85em;">{{ product_compare_price }}</span>
+                          {%- endif -%}
                         </div>
                       </div>
                     </div>
-                    <button type="button" class="ProductDetailExperience_reviewSummaryButton__uw_6m" aria-label="View reviews. Average rating 4.0 out of 5 from 1 buyers.">
-                      <span class="ProductDetailExperience_reviewSummaryPill__NYCNA">
-                        <img alt="" aria-hidden="true" loading="eager" width="26" height="26" decoding="async" class="ProductDetailExperience_reviewSummaryBadgeIcon___cd3E" style="color:transparent" src="{{ 'cvnt-reviewstar.webp' | asset_url }}">
-                        <span class="ProductDetailExperience_reviewSummaryValue__hgROt">4.0</span>
-                      </span>
-                      <span class="ProductDetailExperience_reviewSummaryCount__OGDcg" aria-hidden="true">
-                        <span class="ProductDetailExperience_reviewSummaryCountDesktop__D47oT">
-                          <span class="TextShimmer_shimmer__8uLHv ProductDetailExperience_reviewSummaryCountText__gW7Kk" style="--duration:2.1s;--spread:18.7px">By 1+ buyer</span>
+
+                    {%- if s.enable_rating != false -%}
+                      <button type="button" class="ProductDetailExperience_reviewSummaryButton__uw_6m" aria-label="View reviews. Average rating {{ rating_score }} out of 5.">
+                        <span class="ProductDetailExperience_reviewSummaryPill__NYCNA">
+                          <img alt="" aria-hidden="true" loading="eager" width="26" height="26" decoding="async" class="ProductDetailExperience_reviewSummaryBadgeIcon___cd3E" style="color:transparent" src="{{ 'cvnt-reviewstar.webp' | asset_url }}">
+                          <span class="ProductDetailExperience_reviewSummaryValue__hgROt">{{ rating_score }}</span>
                         </span>
-                      </span>
-                    </button>
+                        <span class="ProductDetailExperience_reviewSummaryCount__OGDcg" aria-hidden="true">
+                          <span class="ProductDetailExperience_reviewSummaryCountDesktop__D47oT">
+                            <span class="TextShimmer_shimmer__8uLHv ProductDetailExperience_reviewSummaryCountText__gW7Kk" style="--duration:2.1s;--spread:18.7px">{{ rating_count_text }}</span>
+                          </span>
+                        </span>
+                      </button>
+                    {%- endif -%}
                   </div>
 
                   <!-- Color Swatches -->
                   <div class="ProductDetailExperience_colorCluster__kd63b">
                     <div class="ProductDetailExperience_colorGrid__6JtnJ">
-                      <button type="button" class="ProductDetailExperience_colorThumbButton__2sQvm ProductDetailExperience_colorThumbButtonCurrent__SHQDx" aria-pressed="true" aria-label="Choose Black">
+                      
+                      <!-- Swatch 1 -->
+                      {%- assign swatch_1_title = s.swatch_1_name | default: 'Black' -%}
+                      {%- assign swatch_1_img_src = 'cvnt-swatch-black.webp' | asset_url -%}
+                      {%- if s.swatch_1_img != blank -%}{%- assign swatch_1_img_src = s.swatch_1_img | image_url: width: 240 -%}{%- endif -%}
+                      <button type="button" class="ProductDetailExperience_colorThumbButton__2sQvm ProductDetailExperience_colorThumbButtonCurrent__SHQDx" aria-pressed="true" aria-label="Choose {{ swatch_1_title | escape }}">
                         <span class="ProductDetailExperience_colorThumbFrame__SuPec">
-                          <img alt="" loading="eager" width="120" height="180" decoding="async" class="ProductDetailExperience_colorThumbImage__ZXba6" style="color:transparent" src="{{ 'cvnt-swatch-black.webp' | asset_url }}">
+                          <img alt="" loading="eager" width="120" height="180" decoding="async" class="ProductDetailExperience_colorThumbImage__ZXba6" style="color:transparent" src="{{ swatch_1_img_src }}">
                         </span>
                         <span class="ProductDetailExperience_colorThumbMeta__49zU3">
-                          <span class="ProductDetailExperience_colorThumbName__7LlrB">Black</span>
+                          <span class="ProductDetailExperience_colorThumbName__7LlrB">{{ swatch_1_title }}</span>
                         </span>
                       </button>
-                      <button type="button" class="ProductDetailExperience_colorThumbButton__2sQvm" aria-pressed="false" aria-label="Choose White">
+
+                      <!-- Swatch 2 -->
+                      {%- assign swatch_2_title = s.swatch_2_name | default: 'White' -%}
+                      {%- assign swatch_2_img_src = 'cvnt-skirt-1.png' | asset_url -%}
+                      {%- if s.swatch_2_img != blank -%}{%- assign swatch_2_img_src = s.swatch_2_img | image_url: width: 240 -%}{%- endif -%}
+                      <button type="button" class="ProductDetailExperience_colorThumbButton__2sQvm" aria-pressed="false" aria-label="Choose {{ swatch_2_title | escape }}">
                         <span class="ProductDetailExperience_colorThumbFrame__SuPec">
-                          <img alt="" loading="eager" width="120" height="180" decoding="async" class="ProductDetailExperience_colorThumbImage__ZXba6" style="color:transparent" src="{{ 'cvnt-skirt-1.png' | asset_url }}">
+                          <img alt="" loading="eager" width="120" height="180" decoding="async" class="ProductDetailExperience_colorThumbImage__ZXba6" style="color:transparent" src="{{ swatch_2_img_src }}">
                         </span>
                         <span class="ProductDetailExperience_colorThumbMeta__49zU3">
-                          <span class="ProductDetailExperience_colorThumbName__7LlrB">White</span>
+                          <span class="ProductDetailExperience_colorThumbName__7LlrB">{{ swatch_2_title }}</span>
                         </span>
                       </button>
+
+                      <!-- Swatch 3 (Optional) -->
+                      {%- if s.swatch_3_name != blank -%}
+                        {%- assign swatch_3_img_src = 'cvnt-skirt-2.webp' | asset_url -%}
+                        {%- if s.swatch_3_img != blank -%}{%- assign swatch_3_img_src = s.swatch_3_img | image_url: width: 240 -%}{%- endif -%}
+                        <button type="button" class="ProductDetailExperience_colorThumbButton__2sQvm" aria-pressed="false" aria-label="Choose {{ s.swatch_3_name | escape }}">
+                          <span class="ProductDetailExperience_colorThumbFrame__SuPec">
+                            <img alt="" loading="lazy" width="120" height="180" decoding="async" class="ProductDetailExperience_colorThumbImage__ZXba6" style="color:transparent" src="{{ swatch_3_img_src }}">
+                          </span>
+                          <span class="ProductDetailExperience_colorThumbMeta__49zU3">
+                            <span class="ProductDetailExperience_colorThumbName__7LlrB">{{ s.swatch_3_name }}</span>
+                          </span>
+                        </button>
+                      {%- endif -%}
+
+                      <!-- Swatch 4 (Optional) -->
+                      {%- if s.swatch_4_name != blank -%}
+                        {%- assign swatch_4_img_src = 'cvnt-skirt-3.webp' | asset_url -%}
+                        {%- if s.swatch_4_img != blank -%}{%- assign swatch_4_img_src = s.swatch_4_img | image_url: width: 240 -%}{%- endif -%}
+                        <button type="button" class="ProductDetailExperience_colorThumbButton__2sQvm" aria-pressed="false" aria-label="Choose {{ s.swatch_4_name | escape }}">
+                          <span class="ProductDetailExperience_colorThumbFrame__SuPec">
+                            <img alt="" loading="lazy" width="120" height="180" decoding="async" class="ProductDetailExperience_colorThumbImage__ZXba6" style="color:transparent" src="{{ swatch_4_img_src }}">
+                          </span>
+                          <span class="ProductDetailExperience_colorThumbMeta__49zU3">
+                            <span class="ProductDetailExperience_colorThumbName__7LlrB">{{ s.swatch_4_name }}</span>
+                          </span>
+                        </button>
+                      {%- endif -%}
+
                     </div>
                   </div>
 
@@ -362,36 +541,17 @@
                         <fieldset class="ProductDetailExperience_variantFieldset__qD_B8">
                           <legend class="ProductDetailExperience_legend__FK7OL">Size</legend>
                           <div class="ProductDetailExperience_variantPills__QYsSz">
-                            <div class="ProductDetailExperience_variantOption__BbwxA">
-                              <input id="product-size-xs" type="radio" class="ProductDetailExperience_variantInput__TQjTe" name="size" checked="" value="xs">
-                              <label for="product-size-xs" class="ProductDetailExperience_variantLabel__VkJns ProductDetailExperience_variantLabelChecked__2YDWo">
-                                <span class="ProductDetailExperience_variantLabelValue__KQHNK">XS</span>
-                              </label>
-                            </div>
-                            <div class="ProductDetailExperience_variantOption__BbwxA">
-                              <input id="product-size-s" type="radio" class="ProductDetailExperience_variantInput__TQjTe" name="size" value="s">
-                              <label for="product-size-s" class="ProductDetailExperience_variantLabel__VkJns">
-                                <span class="ProductDetailExperience_variantLabelValue__KQHNK">S</span>
-                              </label>
-                            </div>
-                            <div class="ProductDetailExperience_variantOption__BbwxA">
-                              <input id="product-size-m" type="radio" class="ProductDetailExperience_variantInput__TQjTe" name="size" value="m">
-                              <label for="product-size-m" class="ProductDetailExperience_variantLabel__VkJns">
-                                <span class="ProductDetailExperience_variantLabelValue__KQHNK">M</span>
-                              </label>
-                            </div>
-                            <div class="ProductDetailExperience_variantOption__BbwxA">
-                              <input id="product-size-l" type="radio" class="ProductDetailExperience_variantInput__TQjTe" name="size" value="l">
-                              <label for="product-size-l" class="ProductDetailExperience_variantLabel__VkJns">
-                                <span class="ProductDetailExperience_variantLabelValue__KQHNK">L</span>
-                              </label>
-                            </div>
-                            <div class="ProductDetailExperience_variantOption__BbwxA">
-                              <input id="product-size-xl" type="radio" class="ProductDetailExperience_variantInput__TQjTe" name="size" value="xl">
-                              <label for="product-size-xl" class="ProductDetailExperience_variantLabel__VkJns">
-                                <span class="ProductDetailExperience_variantLabelValue__KQHNK">XL</span>
-                              </label>
-                            </div>
+                            {%- assign sizes_array = s.sizes_list | default: 'XS, S, M, L, XL' | split: ',' -%}
+                            {%- for sz in sizes_array -%}
+                              {%- assign size_clean = sz | strip -%}
+                              {%- assign size_id = size_clean | downcase | replace: ' ', '-' -%}
+                              <div class="ProductDetailExperience_variantOption__BbwxA">
+                                <input id="product-size-{{ size_id }}" type="radio" class="ProductDetailExperience_variantInput__TQjTe" name="size" {% if forloop.first %}checked=""{% endif %} value="{{ size_id }}">
+                                <label for="product-size-{{ size_id }}" class="ProductDetailExperience_variantLabel__VkJns {% if forloop.first %}ProductDetailExperience_variantLabelChecked__2YDWo{% endif %}">
+                                  <span class="ProductDetailExperience_variantLabelValue__KQHNK">{{ size_clean }}</span>
+                                </label>
+                              </div>
+                            {%- endfor -%}
                           </div>
                         </fieldset>
                       </div>
@@ -408,66 +568,97 @@
 
                     <!-- Buy Buttons -->
                     <div class="ProductDetailExperience_buyButtons__mEvEC">
-                      <button type="button" class="ProductDetailExperience_buyNowButton__6tiNm ProductDetailExperience_buyNowButtonCompact__m8SKC">
-                        <span class="ProductDetailExperience_buyNowButtonLabel__hFgHq">Buy now</span>
+                      <button type="button" class="ProductDetailExperience_buyNowButton__6tiNm ProductDetailExperience_buyNowButtonCompact__m8SKC" data-url="{{ waitlist_url }}">
+                        <span class="ProductDetailExperience_buyNowButtonLabel__hFgHq">{{ s.buy_now_label | default: 'Buy now' }}</span>
                       </button>
-                      <button type="button" class="ProductDetailExperience_addToCartButton__egkl6" aria-label="Add to cart">
-                        <svg class="ProductDetailExperience_addToCartButtonIcon__XY5cX" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                          <path d="M4 5h2l2 9.2h9.1l2-6.5H7.2" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"></path>
-                          <circle cx="10" cy="18.2" r="1.15" fill="currentColor"></circle>
-                          <circle cx="17.1" cy="18.2" r="1.15" fill="currentColor"></circle>
-                        </svg>
-                      </button>
+
+                      {%- if s.enable_add_to_cart != false -%}
+                        <button type="button" class="ProductDetailExperience_addToCartButton__egkl6" aria-label="Add to cart">
+                          <svg class="ProductDetailExperience_addToCartButtonIcon__XY5cX" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M4 5h2l2 9.2h9.1l2-6.5H7.2" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"></path>
+                            <circle cx="10" cy="18.2" r="1.15" fill="currentColor"></circle>
+                            <circle cx="17.1" cy="18.2" r="1.15" fill="currentColor"></circle>
+                          </svg>
+                        </button>
+                      {%- endif -%}
                     </div>
+
                     <p class="ProductDetailExperience_paymentTicker__ASlgg" aria-live="polite">
-                      <span class="ProductDetailExperience_paymentTickerLabel__PzXQ5">PAY VIA</span>
-                      <span class="ProductDetailExperience_paymentTickerValue__kOI_v">WALLET</span>
+                      <span class="ProductDetailExperience_paymentTickerLabel__PzXQ5">{{ s.payment_ticker_label | default: 'PAY VIA' }}</span>
+                      <span class="ProductDetailExperience_paymentTickerValue__kOI_v">{{ s.payment_ticker_value | default: 'WALLET' }}</span>
                     </p>
 
                     <!-- In The Box -->
-                    <section class="ProductDetailExperience_inTheBoxSection__iEslI" aria-labelledby="product-in-the-box-heading">
-                      <h2 id="product-in-the-box-heading" class="ProductDetailExperience_inTheBoxHeading__h6P9_">In the box</h2>
-                      <ul class="ProductDetailExperience_inTheBoxGrid__W0xSB">
-                        <li class="ProductDetailExperience_inTheBoxItem__ATitC">
-                          <span class="ProductDetailExperience_inTheBoxIconFrame__rl6OU">
-                            <img alt="" loading="eager" width="120" height="120" decoding="async" class="ProductDetailExperience_inTheBoxIcon__6114j" style="color:transparent" src="{{ 'cvnt-box-skirt.png' | asset_url }}">
-                          </span>
-                          <span class="ProductDetailExperience_inTheBoxLabel__GBeH0">
-                            <span class="ProductDetailExperience_inTheBoxLabelLine__FAKtb">skirt</span>
-                          </span>
-                        </li>
-                        <li class="ProductDetailExperience_inTheBoxItem__ATitC">
-                          <span class="ProductDetailExperience_inTheBoxIconFrame__rl6OU">
-                            <img alt="" loading="eager" width="120" height="120" decoding="async" class="ProductDetailExperience_inTheBoxIcon__6114j" style="color:transparent" src="{{ 'cvnt-box-tattoo.webp' | asset_url }}">
-                          </span>
-                          <span class="ProductDetailExperience_inTheBoxLabel__GBeH0">
-                            <span class="ProductDetailExperience_inTheBoxLabelLine__FAKtb">temporary tattoo</span>
-                          </span>
-                        </li>
-                      </ul>
-                    </section>
+                    {%- if s.enable_in_the_box != false -%}
+                      <section class="ProductDetailExperience_inTheBoxSection__iEslI" aria-labelledby="product-in-the-box-heading">
+                        <h2 id="product-in-the-box-heading" class="ProductDetailExperience_inTheBoxHeading__h6P9_">{{ s.in_the_box_heading | default: 'In the box' }}</h2>
+                        <ul class="ProductDetailExperience_inTheBoxGrid__W0xSB">
+                          
+                          <!-- Box 1 -->
+                          {%- assign box_1_src = 'cvnt-box-skirt.png' | asset_url -%}
+                          {%- if s.box_1_img != blank -%}{%- assign box_1_src = s.box_1_img | image_url: width: 240 -%}{%- endif -%}
+                          <li class="ProductDetailExperience_inTheBoxItem__ATitC">
+                            <span class="ProductDetailExperience_inTheBoxIconFrame__rl6OU">
+                              <img alt="" loading="eager" width="120" height="120" decoding="async" class="ProductDetailExperience_inTheBoxIcon__6114j" style="color:transparent" src="{{ box_1_src }}">
+                            </span>
+                            <span class="ProductDetailExperience_inTheBoxLabel__GBeH0">
+                              <span class="ProductDetailExperience_inTheBoxLabelLine__FAKtb">{{ s.box_1_title | default: 'skirt' }}</span>
+                            </span>
+                          </li>
+
+                          <!-- Box 2 -->
+                          {%- assign box_2_src = 'cvnt-box-tattoo.webp' | asset_url -%}
+                          {%- if s.box_2_img != blank -%}{%- assign box_2_src = s.box_2_img | image_url: width: 240 -%}{%- endif -%}
+                          <li class="ProductDetailExperience_inTheBoxItem__ATitC">
+                            <span class="ProductDetailExperience_inTheBoxIconFrame__rl6OU">
+                              <img alt="" loading="eager" width="120" height="120" decoding="async" class="ProductDetailExperience_inTheBoxIcon__6114j" style="color:transparent" src="{{ box_2_src }}">
+                            </span>
+                            <span class="ProductDetailExperience_inTheBoxLabel__GBeH0">
+                              <span class="ProductDetailExperience_inTheBoxLabelLine__FAKtb">{{ s.box_2_title | default: 'temporary tattoo' }}</span>
+                            </span>
+                          </li>
+
+                          <!-- Box 3 (Optional) -->
+                          {%- if s.box_3_title != blank -%}
+                            <li class="ProductDetailExperience_inTheBoxItem__ATitC">
+                              <span class="ProductDetailExperience_inTheBoxIconFrame__rl6OU">
+                                {%- if s.box_3_img != blank -%}
+                                  <img alt="" loading="lazy" width="120" height="120" decoding="async" class="ProductDetailExperience_inTheBoxIcon__6114j" style="color:transparent" src="{{ s.box_3_img | image_url: width: 240 }}">
+                                {%- else -%}
+                                  <span style="font-size: 28px;">✦</span>
+                                {%- endif -%}
+                              </span>
+                              <span class="ProductDetailExperience_inTheBoxLabel__GBeH0">
+                                <span class="ProductDetailExperience_inTheBoxLabelLine__FAKtb">{{ s.box_3_title }}</span>
+                              </span>
+                            </li>
+                          {%- endif -%}
+
+                        </ul>
+                      </section>
+                    {%- endif -%}
                   </div>
 
                   <!-- Details Drawer Links -->
                   <div class="ProductDetailExperience_detailLinks__m3QxJ">
                     <button type="button" class="ProductDetailExperience_detailButton__nHj7N">
-                      <span>Product details</span>
+                      <span>{{ s.details_tab_label | default: 'Product details' }}</span>
                       <span><svg class="ProductDetailExperience_detailChevron__0h_Zb" width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3.2998 4.76758L5.4998 6.96758L7.6998 4.76758" stroke="currentColor" stroke-linecap="square"></path></svg></span>
                     </button>
                     <button type="button" class="ProductDetailExperience_detailButton__nHj7N">
-                      <span>Construction</span>
+                      <span>{{ s.construction_tab_label | default: 'Construction' }}</span>
                       <span><svg class="ProductDetailExperience_detailChevron__0h_Zb" width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3.2998 4.76758L5.4998 6.96758L7.6998 4.76758" stroke="currentColor" stroke-linecap="square"></path></svg></span>
                     </button>
                     <button type="button" class="ProductDetailExperience_detailButton__nHj7N">
-                      <span>Size guide</span>
+                      <span>{{ s.size_guide_tab_label | default: 'Size guide' }}</span>
                       <span><svg class="ProductDetailExperience_detailChevron__0h_Zb" width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3.2998 4.76758L5.4998 6.96758L7.6998 4.76758" stroke="currentColor" stroke-linecap="square"></path></svg></span>
                     </button>
                     <button type="button" class="ProductDetailExperience_detailButton__nHj7N">
-                      <span>Shipping and returns</span>
+                      <span>{{ s.shipping_tab_label | default: 'Shipping and returns' }}</span>
                       <span><svg class="ProductDetailExperience_detailChevron__0h_Zb" width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3.2998 4.76758L5.4998 6.96758L7.6998 4.76758" stroke="currentColor" stroke-linecap="square"></path></svg></span>
                     </button>
                     <button type="button" class="ProductDetailExperience_detailButton__nHj7N">
-                      <span>Care</span>
+                      <span>{{ s.care_tab_label | default: 'Care' }}</span>
                       <span><svg class="ProductDetailExperience_detailChevron__0h_Zb" width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3.2998 4.76758L5.4998 6.96758L7.6998 4.76758" stroke="currentColor" stroke-linecap="square"></path></svg></span>
                     </button>
                   </div>
@@ -478,96 +669,115 @@
         </section>
 
         <!-- Reviews Section -->
-        <section id="product-reviews-section" class="ProductDetailExperience_reviewsSection__yviqb" aria-label="Customer reviews for cvnt's genda phool skirt">
-          <div class="ProductDetailExperience_reviewsShowcase__Rau_s">
-            <div class="ProductDetailExperience_reviewsSummaryPanel__Uivhm">
-              <div class="ProductDetailExperience_reviewsHeroBadge__CpBgm">
-                <img src="{{ 'cvnt-reviewstar.webp' | asset_url }}" alt="" aria-hidden="true" class="ProductDetailExperience_reviewsHeroBadgeIcon__tXvey">
-                <span class="ProductDetailExperience_reviewsHeroBadgeValue__fuLfQ">4.0</span>
+        {%- if s.enable_reviews != false -%}
+          <section id="product-reviews-section" class="ProductDetailExperience_reviewsSection__yviqb" aria-label="Customer reviews for {{ product_title | escape }}">
+            <div class="ProductDetailExperience_reviewsShowcase__Rau_s">
+              <div class="ProductDetailExperience_reviewsSummaryPanel__Uivhm">
+                <div class="ProductDetailExperience_reviewsHeroBadge__CpBgm">
+                  <img src="{{ 'cvnt-reviewstar.webp' | asset_url }}" alt="" aria-hidden="true" class="ProductDetailExperience_reviewsHeroBadgeIcon__tXvey">
+                  <span class="ProductDetailExperience_reviewsHeroBadgeValue__fuLfQ">{{ s.reviews_overall_rating | default: '4.0' }}</span>
+                </div>
+                <div class="ProductDetailExperience_reviewsHeroCount__0EQhw">
+                  <span class="TextShimmer_shimmer__8uLHv ProductDetailExperience_reviewsHeroCountText__OUVH3" style="--duration:2.1s;--spread:20.4px">{{ s.reviews_headline_count | default: 'By 1+ buyers' }}</span>
+                </div>
+                <div class="ProductDetailExperience_reviewsBreakdown__GGO2o" aria-label="Rating breakdown">
+                  <div class="ProductDetailExperience_reviewsBreakdownRow__5owt9">
+                    <span class="ProductDetailExperience_reviewsBreakdownLabel__TDUL8">5</span>
+                    <div class="ProductDetailExperience_reviewsBreakdownTrack__0P2e9">
+                      <span class="ProductDetailExperience_reviewsBreakdownFill__o9AD3" style="width:0%;background:#10df3d"></span>
+                    </div>
+                  </div>
+                  <div class="ProductDetailExperience_reviewsBreakdownRow__5owt9">
+                    <span class="ProductDetailExperience_reviewsBreakdownLabel__TDUL8">4</span>
+                    <div class="ProductDetailExperience_reviewsBreakdownTrack__0P2e9">
+                      <span class="ProductDetailExperience_reviewsBreakdownFill__o9AD3" style="width:100%;background:#009f22"></span>
+                    </div>
+                  </div>
+                  <div class="ProductDetailExperience_reviewsBreakdownRow__5owt9">
+                    <span class="ProductDetailExperience_reviewsBreakdownLabel__TDUL8">3</span>
+                    <div class="ProductDetailExperience_reviewsBreakdownTrack__0P2e9">
+                      <span class="ProductDetailExperience_reviewsBreakdownFill__o9AD3" style="width:0%;background:#d49b08"></span>
+                    </div>
+                  </div>
+                  <div class="ProductDetailExperience_reviewsBreakdownRow__5owt9">
+                    <span class="ProductDetailExperience_reviewsBreakdownLabel__TDUL8">2</span>
+                    <div class="ProductDetailExperience_reviewsBreakdownTrack__0P2e9">
+                      <span class="ProductDetailExperience_reviewsBreakdownFill__o9AD3" style="width:0%;background:#ff7a00"></span>
+                    </div>
+                  </div>
+                  <div class="ProductDetailExperience_reviewsBreakdownRow__5owt9">
+                    <span class="ProductDetailExperience_reviewsBreakdownLabel__TDUL8">1</span>
+                    <div class="ProductDetailExperience_reviewsBreakdownTrack__0P2e9">
+                      <span class="ProductDetailExperience_reviewsBreakdownFill__o9AD3" style="width:0%;background:#ff3232"></span>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div class="ProductDetailExperience_reviewsHeroCount__0EQhw">
-                <span class="TextShimmer_shimmer__8uLHv ProductDetailExperience_reviewsHeroCountText__OUVH3" style="--duration:2.1s;--spread:20.4px">By 1+ buyers</span>
-              </div>
-              <div class="ProductDetailExperience_reviewsBreakdown__GGO2o" aria-label="Rating breakdown">
-                <div class="ProductDetailExperience_reviewsBreakdownRow__5owt9">
-                  <span class="ProductDetailExperience_reviewsBreakdownLabel__TDUL8">5</span>
-                  <div class="ProductDetailExperience_reviewsBreakdownTrack__0P2e9">
-                    <span class="ProductDetailExperience_reviewsBreakdownFill__o9AD3" style="width:0%;background:#10df3d"></span>
-                  </div>
-                </div>
-                <div class="ProductDetailExperience_reviewsBreakdownRow__5owt9">
-                  <span class="ProductDetailExperience_reviewsBreakdownLabel__TDUL8">4</span>
-                  <div class="ProductDetailExperience_reviewsBreakdownTrack__0P2e9">
-                    <span class="ProductDetailExperience_reviewsBreakdownFill__o9AD3" style="width:100%;background:#009f22"></span>
-                  </div>
-                </div>
-                <div class="ProductDetailExperience_reviewsBreakdownRow__5owt9">
-                  <span class="ProductDetailExperience_reviewsBreakdownLabel__TDUL8">3</span>
-                  <div class="ProductDetailExperience_reviewsBreakdownTrack__0P2e9">
-                    <span class="ProductDetailExperience_reviewsBreakdownFill__o9AD3" style="width:0%;background:#d49b08"></span>
-                  </div>
-                </div>
-                <div class="ProductDetailExperience_reviewsBreakdownRow__5owt9">
-                  <span class="ProductDetailExperience_reviewsBreakdownLabel__TDUL8">2</span>
-                  <div class="ProductDetailExperience_reviewsBreakdownTrack__0P2e9">
-                    <span class="ProductDetailExperience_reviewsBreakdownFill__o9AD3" style="width:0%;background:#ff7a00"></span>
-                  </div>
-                </div>
-                <div class="ProductDetailExperience_reviewsBreakdownRow__5owt9">
-                  <span class="ProductDetailExperience_reviewsBreakdownLabel__TDUL8">1</span>
-                  <div class="ProductDetailExperience_reviewsBreakdownTrack__0P2e9">
-                    <span class="ProductDetailExperience_reviewsBreakdownFill__o9AD3" style="width:0%;background:#ff3232"></span>
-                  </div>
-                </div>
-              </div>
-            </div>
 
-            <div class="ProductDetailExperience_reviewGridPreviewFrame__pFCov">
-              <div class="ProductDetailExperience_reviewGridPreview__IJRco">
-                <article class="ProductDetailExperience_reviewCard__fVnzj">
-                  <div class="ProductDetailExperience_reviewCardTopline__ROGxv">
-                    <div class="ProductDetailExperience_reviewCardHeaderMeta__QKzNB">
-                      <strong class="ProductDetailExperience_reviewCardName__VrfSV">Pratishtha B.</strong>
-                      <span class="ProductDetailExperience_reviewVerifiedBadge__9S33k">Verified purchase</span>
+              <div class="ProductDetailExperience_reviewGridPreviewFrame__pFCov">
+                <div class="ProductDetailExperience_reviewGridPreview__IJRco">
+                  <article class="ProductDetailExperience_reviewCard__fVnzj">
+                    <div class="ProductDetailExperience_reviewCardTopline__ROGxv">
+                      <div class="ProductDetailExperience_reviewCardHeaderMeta__QKzNB">
+                        <strong class="ProductDetailExperience_reviewCardName__VrfSV">{{ s.review_author | default: 'Pratishtha B.' }}</strong>
+                        <span class="ProductDetailExperience_reviewVerifiedBadge__9S33k">{{ s.review_badge | default: 'Verified purchase' }}</span>
+                      </div>
+                      <span class="ProductDetailExperience_reviewCardDate__9_rJH">{{ s.review_date | default: '16 MAY 2026' }}</span>
                     </div>
-                    <span class="ProductDetailExperience_reviewCardDate__9_rJH">16 MAY 2026</span>
-                  </div>
-                  <div class="ProductDetailExperience_reviewCardContent__V2QF7">
-                    <div class="ProductDetailExperience_reviewCopyBlock__gyrHv">
-                      <p class="ProductDetailExperience_reviewBody__0CTOP ProductDetailExperience_reviewBodyCollapsed__h2LbN">My package got torn in delivery a bit which i don't like but the skirt's fabric and ruffles are quite good</p>
+                    <div class="ProductDetailExperience_reviewCardContent__V2QF7">
+                      <div class="ProductDetailExperience_reviewCopyBlock__gyrHv">
+                        <p class="ProductDetailExperience_reviewBody__0CTOP ProductDetailExperience_reviewBodyCollapsed__h2LbN">{{ s.review_body | default: "My package got torn in delivery a bit which i don't like but the skirt's fabric and ruffles are quite good" }}</p>
+                      </div>
                     </div>
-                  </div>
-                  <div class="ProductDetailExperience_reviewCardFooter__PV2bA">
-                    <button type="button" class="ProductDetailExperience_reviewHelpfulStat__KkCFP" aria-label="Mark Pratishtha B.'s review as helpful">
-                      <svg viewBox="0 0 24 24" aria-hidden="true" class="ProductDetailExperience_reviewHelpfulIcon__NLUcO" style="width:14px;height:14px;"><path d="M12 21.35 10.55 20.03C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54z" fill="currentColor"></path></svg>
-                      <span>9</span>
-                    </button>
-                    <span class="ProductDetailExperience_reviewFeaturedMarker__gMt89">Top</span>
-                  </div>
-                </article>
+                    <div class="ProductDetailExperience_reviewCardFooter__PV2bA">
+                      <button type="button" class="ProductDetailExperience_reviewHelpfulStat__KkCFP" aria-label="Mark review as helpful">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" class="ProductDetailExperience_reviewHelpfulIcon__NLUcO" style="width:14px;height:14px;"><path d="M12 21.35 10.55 20.03C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54z" fill="currentColor"></path></svg>
+                        <span>{{ s.review_likes | default: '9' }}</span>
+                      </button>
+                      <span class="ProductDetailExperience_reviewFeaturedMarker__gMt89">Top</span>
+                    </div>
+                  </article>
+                </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
+        {%- endif -%}
       </div>
 
       <!-- Floating Sound Button -->
-      <button type="button" aria-label="Play meow sound" class="MeowButton_button__GaaqF MeowButton_buttonSurface__m3HzA ProductDetailExperience_meowButtonViewport__Ql2VU">
-        <span class="MeowButton_label__j87Wl">meow</span>
-      </button>
+      {%- if s.enable_meow_sound != false -%}
+        <button type="button" aria-label="Play sound" class="MeowButton_button__GaaqF MeowButton_buttonSurface__m3HzA ProductDetailExperience_meowButtonViewport__Ql2VU">
+          <span class="MeowButton_label__j87Wl">{{ s.meow_label | default: 'meow' }}</span>
+        </button>
+      {%- endif -%}
 
       <!-- Miniatures Rail -->
       <div class="ProductDetailExperience_miniatures__3XUir ProductDetailExperience_miniaturesLoaded__l_hO8">
         <div class="ProductDetailExperience_miniatureWrapper__aUtOy">
           <button type="button" class="ProductDetailExperience_miniatureButton__bPKNm" aria-label="Jump to media 1">
-            <img alt="" loading="eager" width="100" height="150" decoding="async" class="ProductDetailExperience_miniatureImage__GVOPo" style="color:transparent" src="{{ 'cvnt-skirt-1.png' | asset_url }}">
+            <img alt="" loading="eager" width="100" height="150" decoding="async" class="ProductDetailExperience_miniatureImage__GVOPo" style="color:transparent" src="{{ slide_1_src }}">
           </button>
           <button type="button" class="ProductDetailExperience_miniatureButton__bPKNm" aria-label="Jump to media 2">
-            <img alt="" loading="eager" width="100" height="150" decoding="async" class="ProductDetailExperience_miniatureImage__GVOPo" style="color:transparent" src="{{ 'cvnt-skirt-2.webp' | asset_url }}">
+            <img alt="" loading="eager" width="100" height="150" decoding="async" class="ProductDetailExperience_miniatureImage__GVOPo" style="color:transparent" src="{{ slide_2_src }}">
           </button>
           <button type="button" class="ProductDetailExperience_miniatureButton__bPKNm" aria-label="Jump to media 3">
-            <img alt="" loading="eager" width="100" height="150" decoding="async" class="ProductDetailExperience_miniatureImage__GVOPo" style="color:transparent" src="{{ 'cvnt-skirt-3.webp' | asset_url }}">
+            <img alt="" loading="eager" width="100" height="150" decoding="async" class="ProductDetailExperience_miniatureImage__GVOPo" style="color:transparent" src="{{ slide_3_src }}">
           </button>
+          {%- if s.image_4 != blank -%}
+            <button type="button" class="ProductDetailExperience_miniatureButton__bPKNm" aria-label="Jump to media 4">
+              <img alt="" loading="lazy" width="100" height="150" decoding="async" class="ProductDetailExperience_miniatureImage__GVOPo" style="color:transparent" src="{{ s.image_4 | image_url: width: 240 }}">
+            </button>
+          {%- endif -%}
+          {%- if s.image_5 != blank -%}
+            <button type="button" class="ProductDetailExperience_miniatureButton__bPKNm" aria-label="Jump to media 5">
+              <img alt="" loading="lazy" width="100" height="150" decoding="async" class="ProductDetailExperience_miniatureImage__GVOPo" style="color:transparent" src="{{ s.image_5 | image_url: width: 240 }}">
+            </button>
+          {%- endif -%}
+          {%- if s.image_6 != blank -%}
+            <button type="button" class="ProductDetailExperience_miniatureButton__bPKNm" aria-label="Jump to media 6">
+              <img alt="" loading="lazy" width="100" height="150" decoding="async" class="ProductDetailExperience_miniatureImage__GVOPo" style="color:transparent" src="{{ s.image_6 | image_url: width: 240 }}">
+            </button>
+          {%- endif -%}
         </div>
         <div class="ProductDetailExperience_miniatureCadre__QCU44 ProductDetailExperience_miniatureCadreStart__0xMl8" aria-hidden="true"></div>
       </div>
@@ -580,12 +790,55 @@
       <button type="button" id="cvntDrawerScrim" class="ProductDetailExperience_overlayScrim__sE_UF" aria-label="Close panel"></button>
       <aside id="cvntDrawerPanel" class="ProductDetailExperience_overlayPanel__5gYWv ProductDetailExperience_overlayPanelRight__ytFGo" role="dialog" aria-modal="true" tabindex="-1">
         <div class="ProductDetailExperience_overlayHeader__kjUj_">
-          <div id="cvntDrawerTitle" class="ProductDetailExperience_overlayTitle__IblOX">Product details</div>
+          <div id="cvntDrawerTitle" class="ProductDetailExperience_overlayTitle__IblOX">{{ s.details_tab_label | default: 'Product details' }}</div>
           <button type="button" id="cvntDrawerClose" class="ProductDetailExperience_overlayClose__djvhR" aria-label="Close panel"></button>
         </div>
         <div id="cvntDrawerBody" class="ProductDetailExperience_overlayContent__CAYBB"></div>
       </aside>
     </div>
+  </div>
+
+  <!-- Hidden Custom Drawer Data Rendered from Shopify Schema Settings -->
+  <div id="cvnt-drawer-details" hidden data-drawer-title="{{ s.details_tab_label | default: 'Product details' | escape }}">
+    <section class="ProductDetailExperience_drawerSection__UWR7M">
+      <h3 class="ProductDetailExperience_drawerSectionTitle__QyY5C">{{ s.details_heading | default: product_title }}</h3>
+      <div class="ProductDetailExperience_drawerSectionBody__Iwl44">
+        <p>{{ s.details_text | default: "The ruffles of the skirt is inspired by the petals of marigold flower (genda phool). It's made from Duchess Satin." | newline_to_br }}</p>
+      </div>
+    </section>
+  </div>
+
+  <div id="cvnt-drawer-construction" hidden data-drawer-title="{{ s.construction_tab_label | default: 'Construction' | escape }}">
+    <section class="ProductDetailExperience_drawerSection__UWR7M">
+      <h3 class="ProductDetailExperience_drawerSectionTitle__QyY5C">{{ s.construction_heading | default: 'Fabric' }}</h3>
+      <div class="ProductDetailExperience_drawerSectionBody__Iwl44">
+        <p>{{ s.construction_text | default: 'duchess satin.' | newline_to_br }}</p>
+      </div>
+    </section>
+  </div>
+
+  <div id="cvnt-drawer-shipping" hidden data-drawer-title="{{ s.shipping_tab_label | default: 'Shipping and returns' | escape }}">
+    <section class="ProductDetailExperience_drawerSection__UWR7M">
+      <h3 class="ProductDetailExperience_drawerSectionTitle__QyY5C">{{ s.shipping_heading | default: 'Shipping' }}</h3>
+      <div class="ProductDetailExperience_drawerSectionBody__Iwl44">
+        <p>{{ s.shipping_text | default: "Packed within 24 hours.&#10;Dispatches next day.&#10;Can take 7-14 days depending on the location." | newline_to_br }}</p>
+      </div>
+    </section>
+    <section class="ProductDetailExperience_drawerSection__UWR7M">
+      <h3 class="ProductDetailExperience_drawerSectionTitle__QyY5C">{{ s.returns_heading | default: 'Returns' }}</h3>
+      <div class="ProductDetailExperience_drawerSectionBody__Iwl44">
+        <p>{{ s.returns_text | default: "Replacements/Returns/Store Credit available subject to an error reported within 7 days of delivery." | newline_to_br }}</p>
+      </div>
+    </section>
+  </div>
+
+  <div id="cvnt-drawer-care" hidden data-drawer-title="{{ s.care_tab_label | default: 'Care' | escape }}">
+    <section class="ProductDetailExperience_drawerSection__UWR7M">
+      <h3 class="ProductDetailExperience_drawerSectionTitle__QyY5C">{{ s.care_heading | default: 'Care' }}</h3>
+      <div class="ProductDetailExperience_drawerSectionBody__Iwl44">
+        <p>{{ s.care_text | default: 'Hand wash with cold water or dry clean only.' | newline_to_br }}</p>
+      </div>
+    </section>
   </div>
 
   <!-- Floating Header Font Switcher Pill for Testing -->

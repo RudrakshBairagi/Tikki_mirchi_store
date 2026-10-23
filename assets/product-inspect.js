@@ -318,7 +318,17 @@
     }
 
     function openDrawer(key) {
-      const data = drawerContents[key];
+      const customEl = document.getElementById('cvnt-drawer-' + key);
+      let data = drawerContents[key];
+      if (customEl && customEl.innerHTML.trim().length > 0) {
+        const customTitle = customEl.getAttribute('data-drawer-title');
+        data = {
+          title: customTitle || (drawerContents[key] ? drawerContents[key].title : key),
+          isSizeGuide: key === 'size-guide',
+          html: customEl.innerHTML,
+          getHtml: drawerContents[key] ? drawerContents[key].getHtml : null
+        };
+      }
       if (!data) return;
 
       currentDrawerKey = key;

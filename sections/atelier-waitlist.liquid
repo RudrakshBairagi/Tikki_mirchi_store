@@ -7,28 +7,305 @@
   "class": "section-atelier-waitlist",
   "settings": [
     {
+      "type": "header",
+      "content": "Brand & Header"
+    },
+    {
+      "type": "text",
+      "id": "header_logo_text",
+      "label": "Header Brand / Logo Text",
+      "default": "Teekhi Bella"
+    },
+    {
+      "type": "select",
+      "id": "logo_font_source",
+      "label": "Header Logo Font Source",
+      "options": [
+        { "value": "ahsing", "label": "Ahsing (Typogama Couture)" },
+        { "value": "ragara", "label": "Ragara (Couture Serif)" },
+        { "value": "syne", "label": "Syne (Modern Luxury)" },
+        { "value": "brand", "label": "Brand Default (Plus Jakarta Sans)" },
+        { "value": "shopify", "label": "Shopify Font Library (Select below)" },
+        { "value": "custom", "label": "Custom Font Name" }
+      ],
+      "default": "ahsing"
+    },
+    {
+      "type": "font_picker",
+      "id": "logo_font",
+      "label": "Logo Font (Shopify Library)",
+      "default": "assistant_n4",
+      "info": "Active when 'Shopify Font Library' is selected above."
+    },
+    {
+      "type": "text",
+      "id": "custom_logo_font",
+      "label": "Custom Logo Font Name"
+    },
+    {
+      "type": "range",
+      "id": "logo_font_size",
+      "label": "Logo Font Size (px)",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "default": 38
+    },
+    {
+      "type": "header",
+      "content": "Page Colors & Styling"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Page Background Color",
+      "default": "#f8f8f6"
+    },
+    {
+      "type": "color",
+      "id": "card_bg_color",
+      "label": "Form Card Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Primary Text Color",
+      "default": "#1a1819"
+    },
+    {
+      "type": "color",
+      "id": "muted_text_color",
+      "label": "Subtle / Helper Text Color",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Gold / Accent Color",
+      "default": "#b38728"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Card & Input Border Color",
+      "default": "#e2e0da"
+    },
+    {
+      "type": "color",
+      "id": "input_bg_color",
+      "label": "Input Field Background",
+      "default": "#fafaf8"
+    },
+    {
+      "type": "color",
+      "id": "submit_btn_bg",
+      "label": "Submit Button Background",
+      "default": "#1a1819"
+    },
+    {
+      "type": "color",
+      "id": "submit_btn_text",
+      "label": "Submit Button Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Hero Header Content"
+    },
+    {
       "type": "text",
       "id": "eyebrow",
-      "label": "Eyebrow",
+      "label": "Eyebrow Text",
       "default": "Summer Atelier 2026"
     },
     {
       "type": "text",
       "id": "title",
-      "label": "Title",
+      "label": "Main Heading Title",
       "default": "Sign up to our waitlist!"
     },
     {
       "type": "textarea",
       "id": "subtitle",
-      "label": "Subtitle",
+      "label": "Subtitle Description",
       "default": "Complete the form below to reserve your bespoke piece from our exclusive runway drop."
     },
     {
-      "type": "color",
-      "id": "bg_color",
-      "label": "Background Color",
-      "default": "#f8f8f6"
+      "type": "header",
+      "content": "Step 1: Your Information Labels"
+    },
+    {
+      "type": "text",
+      "id": "step_1_title",
+      "label": "Step 1 Title",
+      "default": "Your Information"
+    },
+    {
+      "type": "text",
+      "id": "name_label",
+      "label": "Name Field Label",
+      "default": "Full Name *"
+    },
+    {
+      "type": "text",
+      "id": "name_placeholder",
+      "label": "Name Field Placeholder",
+      "default": "Enter your full name"
+    },
+    {
+      "type": "text",
+      "id": "email_label",
+      "label": "Email Field Label",
+      "default": "Email Address *"
+    },
+    {
+      "type": "text",
+      "id": "email_placeholder",
+      "label": "Email Field Placeholder",
+      "default": "name@example.com"
+    },
+    {
+      "type": "text",
+      "id": "phone_label",
+      "label": "Phone Field Label",
+      "default": "Phone Number (WhatsApp VIP Access) *"
+    },
+    {
+      "type": "text",
+      "id": "phone_prefix",
+      "label": "Phone Country Prefix",
+      "default": "+91"
+    },
+    {
+      "type": "text",
+      "id": "phone_placeholder",
+      "label": "Phone Field Placeholder",
+      "default": "98765 43210 (For WhatsApp drop access & VIP alerts)"
+    },
+    {
+      "type": "text",
+      "id": "city_label",
+      "label": "City Field Label",
+      "default": "City *"
+    },
+    {
+      "type": "text",
+      "id": "city_placeholder",
+      "label": "City Field Placeholder",
+      "default": "e.g. Mumbai / Delhi / Jaipur"
+    },
+    {
+      "type": "text",
+      "id": "state_label",
+      "label": "State Field Label",
+      "default": "State / UT *"
+    },
+    {
+      "type": "text",
+      "id": "pincode_label",
+      "label": "PIN Code Field Label",
+      "default": "PIN Code *"
+    },
+    {
+      "type": "text",
+      "id": "pincode_placeholder",
+      "label": "PIN Code Placeholder",
+      "default": "6 Digits (e.g. 400050)"
+    },
+    {
+      "type": "header",
+      "content": "Step 2: Dress Selection Labels"
+    },
+    {
+      "type": "text",
+      "id": "step_2_title",
+      "label": "Step 2 Title",
+      "default": "Select Your Desired Runway Dresses"
+    },
+    {
+      "type": "text",
+      "id": "step_2_subtitle",
+      "label": "Step 2 Subtitle / Helper",
+      "default": "Click on any dress tile to select or unselect. You can select multiple dresses."
+    },
+    {
+      "type": "header",
+      "content": "Step 3: Size & Reservation"
+    },
+    {
+      "type": "text",
+      "id": "step_3_title",
+      "label": "Step 3 Title",
+      "default": "Select Your Size"
+    },
+    {
+      "type": "text",
+      "id": "step_3_badge",
+      "label": "Size Fit Badge",
+      "default": "Indian Standard Couture Fit"
+    },
+    {
+      "type": "text",
+      "id": "custom_measurements_label",
+      "label": "Custom Sizing Details Label",
+      "default": "Custom Sizing Details (Optional):"
+    },
+    {
+      "type": "text",
+      "id": "custom_measurements_placeholder",
+      "label": "Custom Sizing Placeholder",
+      "default": "e.g. Bust 35, Waist 28, Hips 38, Height 5'6\""
+    },
+    {
+      "type": "text",
+      "id": "submit_btn_text",
+      "label": "Submit Button Label",
+      "default": "Submit Reservation"
+    },
+    {
+      "type": "textarea",
+      "id": "disclaimer_text",
+      "label": "Privacy & VIP Disclaimer",
+      "default": "By signing up, you agree to receive private collection drops & VIP runway access via WhatsApp / SMS. View our privacy policy and terms of service for more info."
+    },
+    {
+      "type": "header",
+      "content": "Confirmation / Success Screen"
+    },
+    {
+      "type": "text",
+      "id": "success_badge_text",
+      "label": "Success Badge",
+      "default": "✦ Reservation Confirmed ✦"
+    },
+    {
+      "type": "text",
+      "id": "success_title",
+      "label": "Success Heading",
+      "default": "You're on the exclusive waitlist!"
+    },
+    {
+      "type": "textarea",
+      "id": "success_desc",
+      "label": "Success Description",
+      "default": "Thank you for joining. When our private atelier drop opens, your VIP access link and priority checkout code will be dispatched directly to your WhatsApp and email."
+    },
+    {
+      "type": "text",
+      "id": "return_btn_text",
+      "label": "Return Button Text",
+      "default": "Return to Runway Rack"
+    },
+    {
+      "type": "text",
+      "id": "reserve_another_btn_text",
+      "label": "Reserve Another Button Text",
+      "default": "Reserve Another Look"
+    },
+    {
+      "type": "header",
+      "content": "Runway Dresses (Looks 01 to 06)"
     },
     {
       "type": "header",
@@ -134,11 +411,38 @@
       "id": "dress_5_price",
       "label": "Dress 5 Price (INR)",
       "default": "Edition 05 • ₹1,10,000"
+    },
+    {
+      "type": "header",
+      "content": "Dress 6 (Look 06)"
+    },
+    {
+      "type": "image_picker",
+      "id": "dress_6_img",
+      "label": "Dress 6 Image"
+    },
+    {
+      "type": "text",
+      "id": "dress_6_title",
+      "label": "Dress 6 Title",
+      "default": "Scarlet Blossom Twist-Knot Gown"
+    },
+    {
+      "type": "text",
+      "id": "dress_6_price",
+      "label": "Dress 6 Price (INR)",
+      "default": "Edition 06 • ₹86,500"
     }
   ],
   "presets": [
     {
-      "name": "Atelier Waitlist"
+      "name": "Atelier Waitlist",
+      "settings": {
+        "eyebrow": "Summer Atelier 2026",
+        "title": "Sign up to our waitlist!",
+        "subtitle": "Complete the form below to reserve your bespoke piece from our exclusive runway drop.",
+        "bg_color": "#f8f8f6"
+      }
     }
   ]
 }

@@ -32,6 +32,11 @@
     --rack-item-width: {{ section.settings.item_width | default: 130 }}px;
     --rack-padding-top: {{ section.settings.padding_top | default: 60 }}px;
     --rack-padding-bottom: {{ section.settings.padding_bottom | default: 95 }}px;
+    --rack-card-bg: {{ section.settings.floating_card_bg | default: '#1a1819' }};
+    --rack-card-text: {{ section.settings.floating_card_text | default: '#ffffff' }};
+    --rack-card-accent: {{ section.settings.floating_card_accent | default: '#d4af37' }};
+    --rack-card-border: {{ section.settings.floating_card_border | default: 'rgba(255, 255, 255, 0.15)' }};
+    --rack-rail-thickness: {{ section.settings.rail_thickness | default: 6 }}px;
 
     {%- if section.settings.heading_font_source == 'shopify' and section.settings.heading_font != blank -%}
       --rack-title-font: {{ section.settings.heading_font.family }}, {{ section.settings.heading_font.fallback_families }};
@@ -116,6 +121,20 @@
   #HangerRack-{{ section.id }} .tag-thread:empty {
     display: block !important;
   }
+  #HangerRack-{{ section.id }} .hanger-floating-card {
+    background: var(--rack-card-bg) !important;
+    border-color: var(--rack-card-border) !important;
+    color: var(--rack-card-text) !important;
+  }
+  #HangerRack-{{ section.id }} .hanger-floating-card .floating-card-title {
+    color: var(--rack-card-text) !important;
+  }
+  #HangerRack-{{ section.id }} .hanger-floating-card .floating-card-link {
+    color: var(--rack-card-accent) !important;
+  }
+  #HangerRack-{{ section.id }} .hanger-rail-bar .rail-rod {
+    height: var(--rack-rail-thickness) !important;
+  }
 {%- endstyle -%}
 
 <section
@@ -135,6 +154,8 @@
   data-sound1="{{ 'sound_1.mp3' | asset_url }}"
   data-sound2="{{ 'sound_2.mp3' | asset_url }}"
   data-sound3="{{ 'sound_3.mp3' | asset_url }}"
+  data-card-title="{{ section.settings.floating_card_title | default: 'Couture Piece' | escape }}"
+  data-card-btn-text="{{ section.settings.floating_card_btn_text | default: 'Inspect Piece' | escape }}"
   aria-label="{{ section.settings.heading | default: 'House of Royals Runway Rack' }}"
 >
   <div class="hanger-rack-container">
@@ -360,9 +381,9 @@
 
       <!-- Optional subtle ambient bottom hint -->
       <div class="hanger-rack-hint" aria-hidden="true">
-        <span class="hint-icon">⟵</span>
-        <span class="hint-text">Hover to sway • Drag along the rack</span>
-        <span class="hint-icon">⟶</span>
+        <span class="hint-icon">{{ section.settings.hint_icon_left | default: '⟵' }}</span>
+        <span class="hint-text">{{ section.settings.hint_text | default: 'Hover to sway • Drag along the rack' }}</span>
+        <span class="hint-icon">{{ section.settings.hint_icon_right | default: '⟶' }}</span>
       </div>
 
       {%- if section.settings.show_waitlist_buttons != false -%}
@@ -568,6 +589,77 @@
       "id": "accent_color",
       "label": "Accent Color",
       "default": "#b38728"
+    },
+    {
+      "type": "range",
+      "id": "rail_thickness",
+      "label": "Overhead Metal Rail Thickness (px)",
+      "min": 2,
+      "max": 14,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "type": "header",
+      "content": "Floating Inspect Card Tile"
+    },
+    {
+      "type": "text",
+      "id": "floating_card_title",
+      "label": "Floating Card Default Title",
+      "default": "Couture Piece"
+    },
+    {
+      "type": "text",
+      "id": "floating_card_btn_text",
+      "label": "Inspect Button Text",
+      "default": "Inspect Piece"
+    },
+    {
+      "type": "color",
+      "id": "floating_card_bg",
+      "label": "Card Background Color",
+      "default": "#1a1819"
+    },
+    {
+      "type": "color",
+      "id": "floating_card_text",
+      "label": "Card Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "floating_card_accent",
+      "label": "Card Arrow & Link Color",
+      "default": "#d4af37"
+    },
+    {
+      "type": "color",
+      "id": "floating_card_border",
+      "label": "Card Border Color",
+      "default": "#333333"
+    },
+    {
+      "type": "header",
+      "content": "Ambient Bottom Hint"
+    },
+    {
+      "type": "text",
+      "id": "hint_text",
+      "label": "Bottom Hint Text",
+      "default": "Hover to sway • Drag along the rack"
+    },
+    {
+      "type": "text",
+      "id": "hint_icon_left",
+      "label": "Hint Left Icon",
+      "default": "⟵"
+    },
+    {
+      "type": "text",
+      "id": "hint_icon_right",
+      "label": "Hint Right Icon",
+      "default": "⟶"
     },
     {
       "type": "header",

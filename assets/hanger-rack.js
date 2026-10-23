@@ -426,10 +426,12 @@ class HangerRack {
       card.setAttribute('aria-hidden', 'true');
       const isHtmlOrFile = (window.location.pathname.endsWith('.html') || window.location.protocol === 'file:');
       const defaultInspect = isHtmlOrFile ? 'product-inspect.html' : '/pages/product-inspect';
+      const cardTitle = this.section.dataset.cardTitle || 'Couture Piece';
+      const cardBtnText = this.section.dataset.cardBtnText || 'Inspect Piece';
       card.innerHTML = `
-        <h3 class="floating-card-title">Couture Piece</h3>
+        <h3 class="floating-card-title">${cardTitle}</h3>
         <a href="${defaultInspect}" class="floating-card-link">
-          <span>Inspect Piece</span>
+          <span>${cardBtnText}</span>
           <span class="card-arrow">→</span>
         </a>
       `;

@@ -1,14 +1,587 @@
-{%- render 'product-inspect-content' -%}
+{%- render 'product-inspect-content', section: section -%}
 
 {% schema %}
 {
   "name": "Product Inspect Page",
   "tag": "section",
   "class": "section-product-inspect",
-  "settings": [],
+  "settings": [
+    {
+      "type": "header",
+      "content": "Brand & Header"
+    },
+    {
+      "type": "text",
+      "id": "header_logo_text",
+      "label": "Header Brand / Logo Text",
+      "default": "Teekhi Bella"
+    },
+    {
+      "type": "select",
+      "id": "logo_font_source",
+      "label": "Header Logo Font Source",
+      "options": [
+        { "value": "ahsing", "label": "Ahsing (Typogama Couture)" },
+        { "value": "ragara", "label": "Ragara (Couture Serif)" },
+        { "value": "syne", "label": "Syne (Modern Luxury)" },
+        { "value": "bodoni", "label": "Bodoni Moda (Editorial Serif)" },
+        { "value": "playfair", "label": "Playfair Display (Classic Serif)" },
+        { "value": "brand", "label": "Brand Default (Plus Jakarta Sans)" },
+        { "value": "shopify", "label": "Shopify Font Library (Select below)" },
+        { "value": "custom", "label": "Custom Font Name" }
+      ],
+      "default": "ahsing"
+    },
+    {
+      "type": "font_picker",
+      "id": "logo_font",
+      "label": "Logo Font (Shopify Library)",
+      "default": "assistant_n4",
+      "info": "Active when 'Shopify Font Library' is selected above."
+    },
+    {
+      "type": "text",
+      "id": "custom_logo_font",
+      "label": "Custom Logo Font Name"
+    },
+    {
+      "type": "range",
+      "id": "logo_font_size_desktop",
+      "label": "Logo Font Size Desktop (px)",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "logo_font_size_mobile",
+      "label": "Logo Font Size Mobile (px)",
+      "min": 20,
+      "max": 48,
+      "step": 2,
+      "default": 34
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_chili_cursor",
+      "label": "Enable Custom Chili Pepper Cursor",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "nav_home_label",
+      "label": "Home Navigation Link Label",
+      "default": "HOME"
+    },
+    {
+      "type": "text",
+      "id": "nav_waitlist_label",
+      "label": "Waitlist Navigation Link Label",
+      "default": "WAITLIST ✦"
+    },
+    {
+      "type": "url",
+      "id": "nav_waitlist_url",
+      "label": "Waitlist Link URL"
+    },
+    {
+      "type": "header",
+      "content": "Page Colors & Atmosphere"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Page Background Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "surface_bg_color",
+      "label": "Surface / Card Background Color",
+      "default": "#080808"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Primary Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "muted_text_color",
+      "label": "Subtle / Secondary Text Color",
+      "default": "#999999"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent / Gold Highlight Color",
+      "default": "#d4af37"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Borders & Line Dividers Color",
+      "default": "rgba(255, 255, 255, 0.12)"
+    },
+    {
+      "type": "range",
+      "id": "line_thickness",
+      "label": "Border & Divider Line Thickness (px)",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Buy Now Button Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Buy Now Button Text",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Product Information"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Connect Shopify Product (Optional)",
+      "info": "Optional: Link an existing product to sync checkout or use manual settings below."
+    },
+    {
+      "type": "text",
+      "id": "product_title",
+      "label": "Product Title",
+      "default": "cvnt's genda phool skirt"
+    },
+    {
+      "type": "select",
+      "id": "title_font_source",
+      "label": "Product Title Font Source",
+      "options": [
+        { "value": "brand", "label": "Brand Sans (Plus Jakarta Sans)" },
+        { "value": "ahsing", "label": "Ahsing (Typogama Couture)" },
+        { "value": "ragara", "label": "Ragara (Couture Serif)" },
+        { "value": "syne", "label": "Syne (Modern Luxury)" },
+        { "value": "shopify", "label": "Shopify Font Library (Select below)" },
+        { "value": "custom", "label": "Custom Font Name" }
+      ],
+      "default": "brand"
+    },
+    {
+      "type": "font_picker",
+      "id": "title_font",
+      "label": "Product Title Font (Shopify Library)",
+      "default": "assistant_n4",
+      "info": "Active when 'Shopify Font Library' is selected above."
+    },
+    {
+      "type": "text",
+      "id": "custom_title_font",
+      "label": "Custom Product Title Font Name"
+    },
+    {
+      "type": "text",
+      "id": "product_price",
+      "label": "Product Price Display",
+      "default": "₹2,975"
+    },
+    {
+      "type": "text",
+      "id": "product_compare_price",
+      "label": "Compare At / Original Price (Optional)",
+      "default": "₹3,500"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_rating",
+      "label": "Show Rating Badge",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "rating_score",
+      "label": "Rating Score",
+      "default": "4.0"
+    },
+    {
+      "type": "text",
+      "id": "rating_count_text",
+      "label": "Rating Buyers Text",
+      "default": "By 1+ buyer"
+    },
+    {
+      "type": "header",
+      "content": "Product Gallery Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Gallery Image 1 (Primary / Front)"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Gallery Image 2 (Look Angle / Drape)"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_3",
+      "label": "Gallery Image 3 (Details / Back)"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_4",
+      "label": "Gallery Image 4 (Optional)"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_5",
+      "label": "Gallery Image 5 (Optional)"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_6",
+      "label": "Gallery Image 6 (Optional)"
+    },
+    {
+      "type": "header",
+      "content": "Audio & Sound Effects"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_meow_sound",
+      "label": "Enable Meow Sound Buttons",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "meow_label",
+      "label": "Sound Button Text",
+      "default": "meow"
+    },
+    {
+      "type": "text",
+      "id": "custom_audio_url",
+      "label": "Custom Audio File URL (Optional MP3)"
+    },
+    {
+      "type": "header",
+      "content": "Colorways & Swatches"
+    },
+    {
+      "type": "text",
+      "id": "swatch_1_name",
+      "label": "Colorway 1 Name",
+      "default": "Black"
+    },
+    {
+      "type": "image_picker",
+      "id": "swatch_1_img",
+      "label": "Colorway 1 Thumbnail"
+    },
+    {
+      "type": "text",
+      "id": "swatch_2_name",
+      "label": "Colorway 2 Name",
+      "default": "White"
+    },
+    {
+      "type": "image_picker",
+      "id": "swatch_2_img",
+      "label": "Colorway 2 Thumbnail"
+    },
+    {
+      "type": "text",
+      "id": "swatch_3_name",
+      "label": "Colorway 3 Name (Optional)"
+    },
+    {
+      "type": "image_picker",
+      "id": "swatch_3_img",
+      "label": "Colorway 3 Thumbnail (Optional)"
+    },
+    {
+      "type": "text",
+      "id": "swatch_4_name",
+      "label": "Colorway 4 Name (Optional)"
+    },
+    {
+      "type": "image_picker",
+      "id": "swatch_4_img",
+      "label": "Colorway 4 Thumbnail (Optional)"
+    },
+    {
+      "type": "header",
+      "content": "Sizes & Purchase Actions"
+    },
+    {
+      "type": "text",
+      "id": "sizes_list",
+      "label": "Available Sizes (Comma-separated)",
+      "default": "XS, S, M, L, XL"
+    },
+    {
+      "type": "text",
+      "id": "buy_now_label",
+      "label": "Buy Now Button Label",
+      "default": "Buy now"
+    },
+    {
+      "type": "url",
+      "id": "buy_now_url",
+      "label": "Buy Now Target URL",
+      "info": "Leave blank to link directly to the Atelier Waitlist or Cart."
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_add_to_cart",
+      "label": "Show Cart Icon Button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "payment_ticker_label",
+      "label": "Payment Ticker Label",
+      "default": "PAY VIA"
+    },
+    {
+      "type": "text",
+      "id": "payment_ticker_value",
+      "label": "Payment Ticker Value",
+      "default": "WALLET"
+    },
+    {
+      "type": "header",
+      "content": "In The Box Section"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_in_the_box",
+      "label": "Show 'In The Box' Section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "in_the_box_heading",
+      "label": "Section Heading",
+      "default": "In the box"
+    },
+    {
+      "type": "text",
+      "id": "box_1_title",
+      "label": "Box Item 1 Title",
+      "default": "skirt"
+    },
+    {
+      "type": "image_picker",
+      "id": "box_1_img",
+      "label": "Box Item 1 Icon / Image"
+    },
+    {
+      "type": "text",
+      "id": "box_2_title",
+      "label": "Box Item 2 Title",
+      "default": "temporary tattoo"
+    },
+    {
+      "type": "image_picker",
+      "id": "box_2_img",
+      "label": "Box Item 2 Icon / Image"
+    },
+    {
+      "type": "text",
+      "id": "box_3_title",
+      "label": "Box Item 3 Title (Optional)"
+    },
+    {
+      "type": "image_picker",
+      "id": "box_3_img",
+      "label": "Box Item 3 Icon / Image (Optional)"
+    },
+    {
+      "type": "header",
+      "content": "Drawer 1: Product Details"
+    },
+    {
+      "type": "text",
+      "id": "details_tab_label",
+      "label": "Button Label",
+      "default": "Product details"
+    },
+    {
+      "type": "text",
+      "id": "details_heading",
+      "label": "Drawer Section Title",
+      "default": "cvnt's genda phool skirt"
+    },
+    {
+      "type": "textarea",
+      "id": "details_text",
+      "label": "Drawer Description Text",
+      "default": "The ruffles of the skirt is inspired by the petals of marigold flower (genda phool). It's made from Duchess Satin."
+    },
+    {
+      "type": "header",
+      "content": "Drawer 2: Construction"
+    },
+    {
+      "type": "text",
+      "id": "construction_tab_label",
+      "label": "Button Label",
+      "default": "Construction"
+    },
+    {
+      "type": "text",
+      "id": "construction_heading",
+      "label": "Drawer Section Title",
+      "default": "Fabric"
+    },
+    {
+      "type": "textarea",
+      "id": "construction_text",
+      "label": "Drawer Construction Text",
+      "default": "duchess satin."
+    },
+    {
+      "type": "header",
+      "content": "Drawer 3: Size Guide"
+    },
+    {
+      "type": "text",
+      "id": "size_guide_tab_label",
+      "label": "Button Label",
+      "default": "Size guide"
+    },
+    {
+      "type": "header",
+      "content": "Drawer 4: Shipping & Returns"
+    },
+    {
+      "type": "text",
+      "id": "shipping_tab_label",
+      "label": "Button Label",
+      "default": "Shipping and returns"
+    },
+    {
+      "type": "text",
+      "id": "shipping_heading",
+      "label": "Shipping Subheading",
+      "default": "Shipping"
+    },
+    {
+      "type": "textarea",
+      "id": "shipping_text",
+      "label": "Shipping Info Text",
+      "default": "Packed within 24 hours.\nDispatches next day.\nCan take 7-14 days depending on the location."
+    },
+    {
+      "type": "text",
+      "id": "returns_heading",
+      "label": "Returns Subheading",
+      "default": "Returns"
+    },
+    {
+      "type": "textarea",
+      "id": "returns_text",
+      "label": "Returns Info Text",
+      "default": "Replacements/Returns/Store Credit available subject to an error reported within 7 days of delivery."
+    },
+    {
+      "type": "header",
+      "content": "Drawer 5: Care"
+    },
+    {
+      "type": "text",
+      "id": "care_tab_label",
+      "label": "Button Label",
+      "default": "Care"
+    },
+    {
+      "type": "text",
+      "id": "care_heading",
+      "label": "Care Subheading",
+      "default": "Care"
+    },
+    {
+      "type": "textarea",
+      "id": "care_text",
+      "label": "Care Instructions Text",
+      "default": "Hand wash with cold water or dry clean only."
+    },
+    {
+      "type": "header",
+      "content": "Customer Reviews Showcase"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_reviews",
+      "label": "Show Reviews Section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "reviews_overall_rating",
+      "label": "Overall Rating",
+      "default": "4.0"
+    },
+    {
+      "type": "text",
+      "id": "reviews_headline_count",
+      "label": "Reviews Headline Count",
+      "default": "By 1+ buyers"
+    },
+    {
+      "type": "text",
+      "id": "review_author",
+      "label": "Featured Reviewer Name",
+      "default": "Pratishtha B."
+    },
+    {
+      "type": "text",
+      "id": "review_badge",
+      "label": "Reviewer Badge",
+      "default": "Verified purchase"
+    },
+    {
+      "type": "text",
+      "id": "review_date",
+      "label": "Review Date",
+      "default": "16 MAY 2026"
+    },
+    {
+      "type": "textarea",
+      "id": "review_body",
+      "label": "Review Content",
+      "default": "My package got torn in delivery a bit which i don't like but the skirt's fabric and ruffles are quite good"
+    },
+    {
+      "type": "text",
+      "id": "review_likes",
+      "label": "Review Helpful Count",
+      "default": "9"
+    }
+  ],
   "presets": [
     {
-      "name": "Product Inspect Page"
+      "name": "Product Inspect Page",
+      "settings": {
+        "header_logo_text": "Teekhi Bella",
+        "logo_font_source": "ahsing",
+        "product_title": "cvnt's genda phool skirt",
+        "product_price": "₹2,975",
+        "bg_color": "#000000",
+        "text_color": "#ffffff",
+        "accent_color": "#d4af37"
+      }
     }
   ]
 }
