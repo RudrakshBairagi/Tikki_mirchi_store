@@ -213,7 +213,8 @@
                 {%- assign dress_price = block.settings.product.price | money -%}
               {%- endif -%}
 
-              {%- assign dress_link = default_wl_link -%}
+              {%- assign default_inspect_link = routes.root_url | append: 'products/skirt' | replace: '//', '/' -%}
+              {%- assign dress_link = default_inspect_link -%}
               {%- if block.settings.link != blank -%}
                 {%- assign dress_link = block.settings.link -%}
               {%- elsif block.settings.product != blank and block.settings.product.url != blank -%}

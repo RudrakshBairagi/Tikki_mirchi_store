@@ -424,9 +424,11 @@ class HangerRack {
       card = document.createElement('div');
       card.className = 'hanger-floating-card';
       card.setAttribute('aria-hidden', 'true');
+      const isHtmlOrFile = (window.location.pathname.endsWith('.html') || window.location.protocol === 'file:');
+      const defaultInspect = isHtmlOrFile ? 'product-inspect.html' : '/products/skirt';
       card.innerHTML = `
         <h3 class="floating-card-title">Couture Piece</h3>
-        <a href="/pages/waitlist" class="floating-card-link">
+        <a href="${defaultInspect}" class="floating-card-link">
           <span>Inspect Piece</span>
           <span class="card-arrow">→</span>
         </a>
@@ -437,6 +439,14 @@ class HangerRack {
     this.card = card;
     this.cardTitle = card.querySelector('.floating-card-title');
     this.cardLink = card.querySelector('.floating-card-link');
+
+    // Clicking anywhere on the card tile navigates to the inspect piece page
+    this.card.addEventListener('click', (e) => {
+      if (e.target.closest('.floating-card-link')) return;
+      if (this.cardLink && this.cardLink.href) {
+        window.location.href = this.cardLink.href;
+      }
+    });
 
     this.card.addEventListener('pointerenter', () => {
       clearTimeout(this.leaveTimeout);
@@ -451,8 +461,15 @@ class HangerRack {
     if (!this.card || !g) return;
 
     this.cardTitle.textContent = g.title || 'Couture Piece';
-    const defaultWaitlist = (window.location.pathname.endsWith('.html') || window.location.protocol === 'file:') ? 'waitlist.html' : '/pages/waitlist';
-    this.cardLink.href = (g.link && g.link !== '#' && g.link !== '') ? g.link : defaultWaitlist;
+    const isHtmlOrFile = (window.location.pathname.endsWith('.html') || window.location.protocol === 'file:');
+    const defaultInspect = isHtmlOrFile ? 'product-inspect.html' : '/products/skirt';
+    
+    // Direct "Inspect Piece" clicks to the product inspect description page
+    let targetLink = g.link;
+    if (!targetLink || targetLink === '#' || targetLink === '' || targetLink.includes('waitlist')) {
+      targetLink = defaultInspect;
+    }
+    this.cardLink.href = targetLink;
 
     // Smart positioning relative to stage and garment
     const gRect = g.el.getBoundingClientRect();
@@ -670,7 +687,7 @@ class HangerRack {
 
   queueClearHover() {
     clearTimeout(this.leaveTimeout);
-    // Celestine exact 160ms unhover debounce
+    // 260ms unhover debounce to allow comfortable cursor transition to floating card
     this.leaveTimeout = setTimeout(() => {
       this.hoveredIndex = -1;
 
@@ -685,7 +702,7 @@ class HangerRack {
       this.hideFloatingCard();
 
       // Physics loop continues naturally: clothes sway and damp down to rest
-    }, 160);
+    }, 260);
   }
 
   /* --------------------------------------------------------------------------
