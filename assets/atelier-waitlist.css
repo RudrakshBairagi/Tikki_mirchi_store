@@ -748,3 +748,25 @@ body:has(#atelierWaitlistSection) main#MainContent {
   max-width: 100% !important;
 }
 
+/* Ensure the top luxury header displays consistently on the waitlist page */
+body:has(#atelierWaitlistSection) .luxury-header,
+.luxury-header {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+body:has(#atelierWaitlistSection) .brand-morph-logo,
+body:has(#atelierWaitlistSection) .brand-wordmark,
+body:has(#atelierWaitlistSection) .nav-link,
+body:has(#atelierWaitlistSection) .menu-toggle,
+body:has(#atelierWaitlistSection) .btn-label {
+  color: #ffffff !important;
+}
+
+body:has(#atelierWaitlistSection) .brand-morph-logo,
+body:has(#atelierWaitlistSection) .brand-wordmark {
+  font-family: 'Ahsing', serif !important;
+}
+

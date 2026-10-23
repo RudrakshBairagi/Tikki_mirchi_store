@@ -58,15 +58,17 @@
   top: 0 !important;
   left: 0 !important;
   width: 100% !important;
-  height: var(--luxury-header-height, 84px) !important;
-  min-height: var(--luxury-header-height, 84px) !important;
+  height: var(--luxury-header-height, 80px) !important;
+  min-height: var(--luxury-header-height, 80px) !important;
   z-index: 9999 !important;
   box-sizing: border-box !important;
-  background: var(--docked-bg-color, var(--header-bg-docked, rgba(248, 248, 246, 0.96))) !important;
+  background: #000000 !important;
+  background-color: #000000 !important;
+  color: #ffffff !important;
   backdrop-filter: blur(20px) !important;
   -webkit-backdrop-filter: blur(20px) !important;
-  border-bottom: 1px solid var(--header-border-docked, rgba(0, 0, 0, 0.08)) !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
   display: flex !important;
   align-items: center !important;
   margin: 0 !important;
@@ -81,11 +83,13 @@
 
 /* Scrolled / Docked State Header Bar */
 .luxury-header.scrolled-down {
-  background: var(--docked-bg-color, var(--header-bg-docked, rgba(248, 248, 246, 0.96))) !important;
+  background: #000000 !important;
+  background-color: #000000 !important;
+  color: #ffffff !important;
   backdrop-filter: blur(20px) !important;
   -webkit-backdrop-filter: blur(20px) !important;
-  border-bottom: 1px solid var(--header-border-docked, rgba(0, 0, 0, 0.08)) !important;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4) !important;
 }
 
 .luxury-header__inner {
@@ -125,7 +129,7 @@
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  color: var(--docked-text-color, #161517);
+  color: #ffffff !important;
   border-radius: 999px;
   transition: all 0.25s ease;
   user-select: none;
@@ -134,8 +138,8 @@
 
 .menu-toggle:hover,
 .menu-toggle[aria-expanded="true"] {
-  background: rgba(128, 128, 128, 0.15);
-  border-color: rgba(128, 128, 128, 0.25);
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.25);
 }
 
 .menu-toggle .hamburger-icon {
@@ -151,7 +155,7 @@
   display: block;
   width: 100%;
   height: 1.5px;
-  background-color: currentColor;
+  background-color: #ffffff !important;
   transform-origin: center;
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
               opacity 0.25s ease,
@@ -178,6 +182,7 @@
   letter-spacing: 0.18em;
   font-weight: 600;
   text-transform: uppercase;
+  color: #ffffff !important;
 }
 
 .desktop-nav {
@@ -201,7 +206,7 @@
   letter-spacing: 0.2em;
   font-weight: 500;
   text-transform: uppercase;
-  color: var(--hero-text, var(--brand-hero-color));
+  color: #ffffff !important;
   text-decoration: none;
   position: relative;
   padding: 4px 0;
@@ -209,7 +214,7 @@
 }
 
 .luxury-header.scrolled-down .nav-link {
-  color: var(--docked-text-color, var(--brand-docked-color)) !important;
+  color: #ffffff !important;
 }
 
 .nav-link::after {
@@ -257,7 +262,7 @@
   align-items: center;
   justify-content: center;
   white-space: nowrap;
-  font-family: var(--header-logo-font, 'Ragara', 'Italiana', Georgia, serif);
+  font-family: var(--header-logo-font, 'Ahsing', serif) !important;
   transform-origin: center center;
   position: absolute;
   left: 50%;
@@ -265,7 +270,7 @@
   transform: translate(-50%, -50%);
   font-size: clamp(2.2rem, 3.2vw, 3rem);
   letter-spacing: 0.02em;
-  color: var(--docked-text-color, #161517) !important;
+  color: #ffffff !important;
   opacity: 1 !important;
   text-shadow: none;
   transition: opacity 0.3s ease, transform 0.25s ease;

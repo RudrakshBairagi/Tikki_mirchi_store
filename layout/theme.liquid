@@ -39,11 +39,14 @@
         }
       })();
     </script>
+    {{ 'header-morph.css' | asset_url | stylesheet_tag }}
     <style>
+      /* Hide default Dawn header globally so Luxury Header is universally displayed */
+      .header-wrapper:not(.luxury-header) {
+        display: none !important;
+      }
       html.is-waitlist-mode #standard404Markup,
-      html.is-inspect-mode #standard404Markup,
-      html.is-waitlist-mode .header-wrapper:not(.luxury-header),
-      html.is-inspect-mode .header-wrapper:not(.luxury-header) {
+      html.is-inspect-mode #standard404Markup {
         display: none !important;
       }
       html.is-waitlist-mode #waitlistAutoFallback {
@@ -207,26 +210,6 @@
 
         --font-body-scale: {{ settings.body_scale | divided_by: 100.0 }};
         --font-heading-scale: {{ settings.heading_scale | times: 1.0 | divided_by: settings.body_scale }};
-      }
-
-      @media screen and (max-width: 768px) {
-        .header__heading-link,
-        .header__heading-logo,
-        .brand-morph-logo,
-        .brand-wordmark {
-          font-size: clamp(2.35rem, 7.8vw, 3.1rem) !important;
-          line-height: 0.95 !important;
-        }
-      }
-      @media screen and (max-width: 480px) {
-        .header__heading-link,
-        .header__heading-logo,
-        .brand-morph-logo,
-        .brand-wordmark {
-          font-size: clamp(2.25rem, 8.2vw, 2.85rem) !important;
-          line-height: 0.95 !important;
-        }
-      }
 
         --media-padding: {{ settings.media_padding }}px;
         --media-border-opacity: {{ settings.media_border_opacity | divided_by: 100.0 }};
@@ -334,8 +317,25 @@
         --variant-pills-border-opacity: {{ settings.variant_pills_border_opacity | divided_by: 100.0 }};
         --variant-pills-shadow-opacity: {{ settings.variant_pills_shadow_opacity | divided_by: 100.0 }};
         --variant-pills-shadow-horizontal-offset: {{ settings.variant_pills_shadow_horizontal_offset }}px;
-        --variant-pills-shadow-vertical-offset: {{ settings.variant_pills_shadow_vertical_offset }}px;
-        --variant-pills-shadow-blur-radius: {{ settings.variant_pills_shadow_blur }}px;
+      }
+
+      @media screen and (max-width: 768px) {
+        .header__heading-link,
+        .header__heading-logo,
+        .brand-morph-logo,
+        .brand-wordmark {
+          font-size: clamp(2.35rem, 7.8vw, 3.1rem) !important;
+          line-height: 0.95 !important;
+        }
+      }
+      @media screen and (max-width: 480px) {
+        .header__heading-link,
+        .header__heading-logo,
+        .brand-morph-logo,
+        .brand-wordmark {
+          font-size: clamp(2.25rem, 8.2vw, 2.85rem) !important;
+          line-height: 0.95 !important;
+        }
       }
 
       *,
