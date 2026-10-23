@@ -1,16 +1,3 @@
-{%- assign ws = section.settings -%}
-{%- assign wl_bg = ws.bg_color | default: '#f8f8f6' -%}
-{%- assign wl_card_bg = ws.card_bg_color | default: '#ffffff' -%}
-{%- assign wl_text = ws.text_color | default: '#1a1819' -%}
-{%- assign wl_muted = ws.muted_text_color | default: '#666666' -%}
-{%- assign wl_accent = ws.accent_color | default: '#b38728' -%}
-{%- assign wl_border = ws.border_color | default: '#e2e0da' -%}
-{%- assign wl_input_bg = ws.input_bg_color | default: '#fafaf8' -%}
-{%- assign wl_submit_bg = ws.submit_btn_bg | default: '#1a1819' -%}
-{%- assign wl_submit_text = ws.submit_btn_text | default: '#ffffff' -%}
-{%- assign header_logo_text = ws.header_logo_text | default: 'Teekhi Bella' -%}
-{%- assign logo_font_size = ws.logo_font_size | default: 38 -%}
-
 {{ 'header-morph.css' | asset_url | stylesheet_tag }}
 {{ 'atelier-waitlist.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'header-morph.js' | asset_url }}" defer="defer"></script>
@@ -47,71 +34,11 @@
     font-display: swap;
   }
 
-  {%- if ws.logo_font_source == 'shopify' and ws.logo_font != blank -%}
-    {{ ws.logo_font | font_face: font_display: 'swap' }}
-  {%- endif -%}
-  {%- if ws.title_font_source == 'shopify' and ws.title_font != blank -%}
-    {{ ws.title_font | font_face: font_display: 'swap' }}
-  {%- endif -%}
-
-  :root {
-    {%- if ws.logo_font_source == 'ahsing' -%}
-      --header-logo-font: 'Ahsing', serif;
-    {%- elsif ws.logo_font_source == 'ragara' -%}
-      --header-logo-font: 'Ragara', 'Italiana', Georgia, serif;
-    {%- elsif ws.logo_font_source == 'syne' -%}
-      --header-logo-font: 'Syne', sans-serif;
-    {%- elsif ws.logo_font_source == 'shopify' and ws.logo_font != blank -%}
-      --header-logo-font: {{ ws.logo_font.family }}, {{ ws.logo_font.fallback_families }};
-    {%- elsif ws.logo_font_source == 'custom' and ws.custom_logo_font != blank -%}
-      --header-logo-font: '{{ ws.custom_logo_font }}', serif;
-    {%- else -%}
-      --header-logo-font: 'Ahsing', serif;
-    {%- endif -%}
-
-    {%- if ws.title_font_source == 'ahsing' -%}
-      --wl-title-font: 'Ahsing', serif;
-    {%- elsif ws.title_font_source == 'ragara' -%}
-      --wl-title-font: 'Ragara', 'Italiana', Georgia, serif;
-    {%- elsif ws.title_font_source == 'syne' -%}
-      --wl-title-font: 'Syne', sans-serif;
-    {%- elsif ws.title_font_source == 'bodoni' -%}
-      --wl-title-font: 'Bodoni Moda', serif;
-    {%- elsif ws.title_font_source == 'playfair' -%}
-      --wl-title-font: 'Playfair Display', serif;
-    {%- elsif ws.title_font_source == 'italiana' -%}
-      --wl-title-font: 'Italiana', Georgia, serif;
-    {%- elsif ws.title_font_source == 'cinzel' -%}
-      --wl-title-font: 'Cinzel', serif;
-    {%- elsif ws.title_font_source == 'cormorant' -%}
-      --wl-title-font: 'Cormorant Garamond', serif;
-    {%- elsif ws.title_font_source == 'outfit' -%}
-      --wl-title-font: 'Outfit', sans-serif;
-    {%- elsif ws.title_font_source == 'shopify' and ws.title_font != blank -%}
-      --wl-title-font: {{ ws.title_font.family }}, {{ ws.title_font.fallback_families }};
-    {%- elsif ws.title_font_source == 'custom' and ws.custom_title_font != blank -%}
-      --wl-title-font: '{{ ws.custom_title_font }}', serif;
-    {%- else -%}
-      --wl-title-font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    {%- endif -%}
-
-    --wl-bg: {{ wl_bg }};
-    --wl-card-bg: {{ wl_card_bg }};
-    --wl-text: {{ wl_text }};
-    --wl-muted: {{ wl_muted }};
-    --wl-accent: {{ wl_accent }};
-    --wl-border: {{ wl_border }};
-    --wl-input-bg: {{ wl_input_bg }};
-    --wl-submit-bg: {{ wl_submit_bg }};
-    --wl-submit-text: {{ wl_submit_text }};
-  }
-
   #atelierWaitlistSection .brand-morph-logo,
   #atelierWaitlistSection .brand-wordmark {
     font-family: var(--header-logo-font, 'Ahsing', serif) !important;
     text-transform: none !important;
     letter-spacing: 0.02em !important;
-    font-size: {{ logo_font_size }}px !important;
   }
 
   @media (max-width: 768px) {
@@ -144,60 +71,11 @@
   }
 
   .waitlist-page {
-    position: relative;
-    overflow: hidden;
-    {%- if ws.bg_mode == 'gradient' and ws.bg_gradient != blank -%}
-      background: {{ ws.bg_gradient }} !important;
-    {%- elsif ws.bg_mode == 'image' and ws.bg_image != blank -%}
-      background-image: url('{{ ws.bg_image | image_url: width: 2600 }}') !important;
-      background-size: cover !important;
-      background-position: center !important;
-    {%- else -%}
-      background-color: var(--wl-bg) !important;
-    {%- endif -%}
-  }
-  .waitlist-bg-overlay {
-    position: absolute;
-    inset: 0;
-    background: #000000;
-    opacity: {{ ws.bg_overlay_opacity | default: 0 | divided_by: 100.0 }};
-    pointer-events: none;
-    z-index: 1;
-  }
-  .waitlist-main-wrap {
-    position: relative;
-    z-index: 2;
-  }
-  .waitlist-form-card {
-    background-color: var(--wl-card-bg) !important;
-    border-color: var(--wl-border) !important;
-    position: relative;
-    z-index: 2;
-  }
-  .waitlist-title {
-    font-family: var(--wl-title-font, 'Plus Jakarta Sans') !important;
-    font-size: calc(clamp(2rem, 3.8vw, 2.75rem) * {{ ws.title_scale | default: 100 | divided_by: 100.0 }}) !important;
-    letter-spacing: {{ ws.title_letter_spacing | default: 0 }}px !important;
-    color: var(--wl-text) !important;
-  }
-  .waitlist-subtitle {
-    color: var(--wl-muted) !important;
-  }
-  .form-input-wrap input,
-  .form-input-wrap select,
-  .phone-input-group {
-    background-color: var(--wl-input-bg) !important;
-    border-color: var(--wl-border) !important;
-    color: var(--wl-text) !important;
-  }
-  .waitlist-submit-btn {
-    background-color: var(--wl-submit-bg) !important;
-    color: var(--wl-submit-text) !important;
+    background-color: #f8f8f6 !important;
   }
 </style>
 
-<div class="waitlist-page" id="atelierWaitlistSection">
-  <div class="waitlist-bg-overlay" aria-hidden="true"></div>
+<div class="waitlist-page" id="atelierWaitlistSection" style="--wl-bg: {{ section.settings.bg_color | default: '#f8f8f6' }}; background-color: #f8f8f6;">
   <!-- ==========================================================================
        LUXURY MORPHING HEADER (CONSISTENT WITH YOUR DREAM RACK PAGE)
        ========================================================================== -->
@@ -223,55 +101,37 @@
               <span class="dropdown-link-arrow">⟶</span>
             </a>
             <div class="dropdown-nav-divider"></div>
-            <a href="{{ routes.root_url | append: 'pages/product-inspect' | replace: '//', '/' }}" class="dropdown-nav-link dropdown-link-inspect" role="menuitem">
-              <span class="dropdown-link-label">INSPECT PIECE ✦</span>
-              <span class="dropdown-link-arrow">⟶</span>
-            </a>
-            <div class="dropdown-nav-divider"></div>
-            <a href="{{ routes.root_url | append: 'pages/waitlist' | replace: '//', '/' }}" class="dropdown-nav-link dropdown-link-waitlist" role="menuitem">
+            <a href="{{ routes.root_url }}pages/waitlist" class="dropdown-nav-link dropdown-link-waitlist" role="menuitem">
               <span class="dropdown-link-label">WAITLIST ✦</span>
               <span class="dropdown-link-arrow">⟶</span>
             </a>
           </div>
         </div>
 
-        <!-- Desktop Navigation Links (Always Visible on Desktop) -->
+        <!-- Desktop Navigation (Visible on Desktop) -->
         <nav class="desktop-nav" aria-label="Primary Navigation">
           <a href="{{ routes.root_url }}" class="nav-link header-nav-home">HOME</a>
-          <a href="{{ routes.root_url | append: 'pages/product-inspect' | replace: '//', '/' }}" class="nav-link header-nav-inspect">INSPECT PIECE ✦</a>
-          <a href="{{ routes.root_url | append: 'pages/waitlist' | replace: '//', '/' }}" class="nav-link header-nav-waitlist">WAITLIST ✦</a>
+          <a href="{{ routes.root_url }}pages/waitlist" class="nav-link header-nav-waitlist">WAITLIST ✦</a>
         </nav>
       </div>
 
-      <!-- Center: Brand Wordmark -->
+      <!-- Center: Morph Dock Anchor (Brand Logo Centered in Middle) -->
       <div class="luxury-header__center brand-morph-zone">
-        <a href="{{ routes.root_url }}" class="brand-morph-logo is-visible" id="BrandMorphLogo" aria-label="{{ header_logo_text | escape }}">
-          <span class="brand-wordmark">{{ header_logo_text }}</span>
+        <a href="{{ routes.root_url }}" class="brand-morph-logo is-visible" id="BrandMorphLogo" aria-label="Teekhi Bella">
+          <span class="brand-wordmark">Teekhi Bella</span>
         </a>
       </div>
 
-      <!-- Right: Cart & Actions -->
-      <div class="luxury-header__right">
-        <a href="{{ routes.cart_url }}" class="header-action-btn cart-btn" aria-label="Cart">
-          <svg class="cart-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <path d="M16 10a4 4 0 0 1-8 0"></path>
-          </svg>
-          <span class="cart-count-badge" id="CartCountBadge">{{ cart.item_count | default: 0 }}</span>
-        </a>
-      </div>
+      <!-- Right: Clean Minimal Zone (Utility icons removed) -->
+      <div class="luxury-header__right" aria-hidden="true"></div>
     </div>
   </header>
 
-  <!-- ==========================================================================
-       MAIN WAITLIST INTERACTIVE EXPERIENCE
-       ========================================================================== -->
   <main class="waitlist-main-wrap">
     
     <!-- Hero Header -->
     <div class="waitlist-hero-header">
-      {%- assign eyebrow_text = ws.eyebrow | default: 'Summer Atelier 2026' -%}
+      {%- assign eyebrow_text = section.settings.eyebrow | default: 'Summer Atelier 2026' -%}
       {%- if eyebrow_text != blank -%}
         <div class="waitlist-eyebrow">
           <span>✦</span>
@@ -279,8 +139,8 @@
           <span>✦</span>
         </div>
       {%- endif -%}
-      <h1 class="waitlist-title">{{ ws.title | default: 'Sign up to our waitlist!' }}</h1>
-      {%- assign subtitle_text = ws.subtitle | default: 'Complete the form below to reserve your bespoke piece from our exclusive runway drop.' -%}
+      <h1 class="waitlist-title">{{ section.settings.title | default: 'Sign up to our waitlist!' }}</h1>
+      {%- assign subtitle_text = section.settings.subtitle | default: 'Complete the form below to reserve your bespoke piece from our exclusive runway drop.' -%}
       {%- if subtitle_text != blank -%}
         <p class="waitlist-subtitle">{{ subtitle_text }}</p>
       {%- endif -%}
@@ -293,306 +153,341 @@
         <!-- Step 1: Client Information (Indian Standard) -->
         <div class="form-section-title">
           <span class="step-num">1</span>
-          <span>{{ ws.step_1_title | default: 'Your Information' }}</span>
+          <span>Your Information</span>
         </div>
 
-        <div class="waitlist-fields-grid">
-          <!-- Full Name -->
-          <div class="form-input-wrap">
-            <label for="waitlistFullName">{{ ws.name_label | default: 'Full Name *' }}</label>
-            <input
-              type="text"
-              id="waitlistFullName"
-              name="contact[name]"
-              value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
-              placeholder="{{ ws.name_placeholder | default: 'Enter your full name' }}"
-              required
-            >
-          </div>
-
-          <!-- Email -->
-          <div class="form-input-wrap">
-            <label for="waitlistEmail">{{ ws.email_label | default: 'Email Address *' }}</label>
-            <input
-              type="email"
-              id="waitlistEmail"
-              name="contact[email]"
-              value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
-              placeholder="{{ ws.email_placeholder | default: 'name@example.com' }}"
-              required
-            >
-          </div>
-
-          <!-- Phone Number with Country Prefix -->
-          <div class="form-input-wrap">
-            <label for="waitlistPhone">{{ ws.phone_label | default: 'Phone Number (WhatsApp VIP Access) *' }}</label>
-            <div class="phone-input-group">
-              <span class="phone-prefix">{{ ws.phone_prefix | default: '+91' }}</span>
-              <input
-                type="tel"
-                id="waitlistPhone"
-                name="contact[phone]"
-                value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
-                placeholder="{{ ws.phone_placeholder | default: '98765 43210 (For WhatsApp drop access & VIP alerts)' }}"
-                maxlength="10"
-                required
-              >
-            </div>
-          </div>
-
-          <!-- Indian Standards: City, State/UT, and 6-digit PIN Code -->
-          <div class="form-field-row form-field-row-3">
+          <div class="waitlist-fields-grid">
+            <!-- Full Name -->
             <div class="form-input-wrap">
-              <label for="waitlistCity">{{ ws.city_label | default: 'City *' }}</label>
+              <label for="waitlistFullName">Full Name *</label>
               <input
                 type="text"
-                id="waitlistCity"
-                name="contact[city]"
-                placeholder="{{ ws.city_placeholder | default: 'e.g. Mumbai / Delhi / Jaipur' }}"
+                id="waitlistFullName"
+                name="contact[name]"
+                value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+                placeholder="Enter your full name"
                 required
               >
             </div>
 
+            <!-- Email -->
             <div class="form-input-wrap">
-              <label for="waitlistState">{{ ws.state_label | default: 'State / UT *' }}</label>
-              <select id="waitlistState" name="contact[state]" required>
-                <option value="" disabled selected>Select State / UT</option>
-                <option value="Maharashtra">Maharashtra</option>
-                <option value="Delhi (NCR)">Delhi (NCR)</option>
-                <option value="Karnataka">Karnataka</option>
-                <option value="Rajasthan">Rajasthan</option>
-                <option value="Gujarat">Gujarat</option>
-                <option value="Telangana">Telangana</option>
-                <option value="Tamil Nadu">Tamil Nadu</option>
-                <option value="Uttar Pradesh">Uttar Pradesh</option>
-                <option value="Punjab">Punjab</option>
-                <option value="West Bengal">West Bengal</option>
-                <option value="Haryana">Haryana</option>
-                <option value="Madhya Pradesh">Madhya Pradesh</option>
-                <option value="Kerala">Kerala</option>
-                <option value="Goa">Goa</option>
-                <option value="Andhra Pradesh">Andhra Pradesh</option>
-                <option value="Assam">Assam</option>
-                <option value="Bihar">Bihar</option>
-                <option value="Chandigarh">Chandigarh</option>
-                <option value="Chhattisgarh">Chhattisgarh</option>
-                <option value="Himachal Pradesh">Himachal Pradesh</option>
-                <option value="Jammu and Kashmir">Jammu and Kashmir</option>
-                <option value="Jharkhand">Jharkhand</option>
-                <option value="Odisha">Odisha</option>
-                <option value="Uttarakhand">Uttarakhand</option>
-                <option value="Other">Other / International</option>
-              </select>
-            </div>
-
-            <div class="form-input-wrap">
-              <label for="waitlistPincode">{{ ws.pincode_label | default: 'PIN Code *' }}</label>
+              <label for="waitlistEmail">Email Address *</label>
               <input
-                type="text"
-                id="waitlistPincode"
-                name="contact[pincode]"
-                placeholder="{{ ws.pincode_placeholder | default: '6 Digits (e.g. 400050)' }}"
-                maxlength="6"
-                pattern="[0-9]{6}"
+                type="email"
+                id="waitlistEmail"
+                name="contact[email]"
+                value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+                placeholder="name@example.com"
                 required
               >
             </div>
-          </div>
-        </div>
 
-        <!-- Step 2: Select Dresses (Runway Looks) -->
-        <div class="waitlist-dresses-section">
-          <div class="dresses-section-header">
-            <div class="form-section-title">
-              <span class="step-num">2</span>
-              <span>{{ ws.step_2_title | default: 'Select Your Desired Runway Dresses' }}</span>
-            </div>
-            <p class="dresses-helper-text">{{ ws.step_2_subtitle | default: 'Click on any dress tile to select or unselect. You can select multiple dresses.' }}</p>
-          </div>
-
-          <!-- Dresses Tiles Grid -->
-          <div class="dress-tiles-grid" id="dressTilesGrid">
-
-            <!-- Dress 1 -->
-            {%- assign d1_img = 'hanger-look-1.png' | asset_url -%}
-            {%- if ws.dress_1_img != blank -%}{%- assign d1_img = ws.dress_1_img | image_url: width: 600 -%}{%- endif -%}
-            {%- assign d1_title = ws.dress_1_title | default: 'Archival Manuscript Corset Gown' -%}
-            {%- assign d1_price = ws.dress_1_price | default: 'Edition 01 • ₹74,500' -%}
-            <div class="dress-tile-card is-selected" data-index="1" data-title="{{ d1_title | escape }}" data-price="{{ d1_price | escape }}" data-img="{{ d1_img }}">
-              <div class="dress-card-badge">Look 01</div>
-              <div class="dress-card-check">✓</div>
-              <div class="dress-card-img-wrap"><img src="{{ d1_img }}" alt="{{ d1_title | escape }}" loading="lazy"></div>
-              <div class="dress-card-info">
-                <h3 class="dress-card-title">{{ d1_title }}</h3>
-                <div class="dress-card-price">{{ d1_price }}</div>
-              </div>
-            </div>
-
-            <!-- Dress 2 -->
-            {%- assign d2_img = 'hanger-look-2.png' | asset_url -%}
-            {%- if ws.dress_2_img != blank -%}{%- assign d2_img = ws.dress_2_img | image_url: width: 600 -%}{%- endif -%}
-            {%- assign d2_title = ws.dress_2_title | default: 'Heritage Mural Mirror Lehenga' -%}
-            {%- assign d2_price = ws.dress_2_price | default: 'Edition 02 • ₹1,25,000' -%}
-            <div class="dress-tile-card" data-index="2" data-title="{{ d2_title | escape }}" data-price="{{ d2_price | escape }}" data-img="{{ d2_img }}">
-              <div class="dress-card-badge">Look 02</div>
-              <div class="dress-card-check">✓</div>
-              <div class="dress-card-img-wrap"><img src="{{ d2_img }}" alt="{{ d2_title | escape }}" loading="lazy"></div>
-              <div class="dress-card-info">
-                <h3 class="dress-card-title">{{ d2_title }}</h3>
-                <div class="dress-card-price">{{ d2_price }}</div>
-              </div>
-            </div>
-
-            <!-- Dress 3 -->
-            {%- assign d3_img = 'hanger-look-3.png' | asset_url -%}
-            {%- if ws.dress_3_img != blank -%}{%- assign d3_img = ws.dress_3_img | image_url: width: 600 -%}{%- endif -%}
-            {%- assign d3_title = ws.dress_3_title | default: 'Rose-Coral Shimmer Saree Gown' -%}
-            {%- assign d3_price = ws.dress_3_price | default: 'Edition 03 • ₹98,000' -%}
-            <div class="dress-tile-card" data-index="3" data-title="{{ d3_title | escape }}" data-price="{{ d3_price | escape }}" data-img="{{ d3_img }}">
-              <div class="dress-card-badge">Look 03</div>
-              <div class="dress-card-check">✓</div>
-              <div class="dress-card-img-wrap"><img src="{{ d3_img }}" alt="{{ d3_title | escape }}" loading="lazy"></div>
-              <div class="dress-card-info">
-                <h3 class="dress-card-title">{{ d3_title }}</h3>
-                <div class="dress-card-price">{{ d3_price }}</div>
-              </div>
-            </div>
-
-            <!-- Dress 4 -->
-            {%- assign d4_img = 'hanger-look-4.png' | asset_url -%}
-            {%- if ws.dress_4_img != blank -%}{%- assign d4_img = ws.dress_4_img | image_url: width: 600 -%}{%- endif -%}
-            {%- assign d4_title = ws.dress_4_title | default: 'Midnight Botanical Co-ord Set' -%}
-            {%- assign d4_price = ws.dress_4_price | default: 'Edition 04 • ₹92,000' -%}
-            <div class="dress-tile-card" data-index="4" data-title="{{ d4_title | escape }}" data-price="{{ d4_price | escape }}" data-img="{{ d4_img }}">
-              <div class="dress-card-badge">Look 04</div>
-              <div class="dress-card-check">✓</div>
-              <div class="dress-card-img-wrap"><img src="{{ d4_img }}" alt="{{ d4_title | escape }}" loading="lazy"></div>
-              <div class="dress-card-info">
-                <h3 class="dress-card-title">{{ d4_title }}</h3>
-                <div class="dress-card-price">{{ d4_price }}</div>
-              </div>
-            </div>
-
-            <!-- Dress 5 -->
-            {%- assign d5_img = 'hanger-look-5.png' | asset_url -%}
-            {%- if ws.dress_5_img != blank -%}{%- assign d5_img = ws.dress_5_img | image_url: width: 600 -%}{%- endif -%}
-            {%- assign d5_title = ws.dress_5_title | default: 'Bordeaux Peplum Halter Gown' -%}
-            {%- assign d5_price = ws.dress_5_price | default: 'Edition 05 • ₹1,10,000' -%}
-            <div class="dress-tile-card" data-index="5" data-title="{{ d5_title | escape }}" data-price="{{ d5_price | escape }}" data-img="{{ d5_img }}">
-              <div class="dress-card-badge">Look 05</div>
-              <div class="dress-card-check">✓</div>
-              <div class="dress-card-img-wrap"><img src="{{ d5_img }}" alt="{{ d5_title | escape }}" loading="lazy"></div>
-              <div class="dress-card-info">
-                <h3 class="dress-card-title">{{ d5_title }}</h3>
-                <div class="dress-card-price">{{ d5_price }}</div>
-              </div>
-            </div>
-
-            <!-- Dress 6 -->
-            {%- assign d6_img = 'hanger-look-6.png' | asset_url -%}
-            {%- if ws.dress_6_img != blank -%}{%- assign d6_img = ws.dress_6_img | image_url: width: 600 -%}{%- endif -%}
-            {%- assign d6_title = ws.dress_6_title | default: 'Scarlet Blossom Twist-Knot Gown' -%}
-            {%- assign d6_price = ws.dress_6_price | default: 'Edition 06 • ₹86,500' -%}
-            <div class="dress-tile-card" data-index="6" data-title="{{ d6_title | escape }}" data-price="{{ d6_price | escape }}" data-img="{{ d6_img }}">
-              <div class="dress-card-badge">Look 06</div>
-              <div class="dress-card-check">✓</div>
-              <div class="dress-card-img-wrap"><img src="{{ d6_img }}" alt="{{ d6_title | escape }}" loading="lazy"></div>
-              <div class="dress-card-info">
-                <h3 class="dress-card-title">{{ d6_title }}</h3>
-                <div class="dress-card-price">{{ d6_price }}</div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- Step 3: Size Selection -->
-        <div class="waitlist-size-section">
-          <div class="size-section-header">
-            <div class="form-section-title" style="margin-bottom:0;">
-              <span class="step-num">3</span>
-              <span>{{ ws.step_3_title | default: 'Select Your Size' }}</span>
-            </div>
-            <span class="size-guide-hint">{{ ws.step_3_badge | default: 'Indian Standard Couture Fit' }}</span>
-          </div>
-
-          <div class="size-pills-row">
-            <button type="button" class="size-select-pill" data-size='XS (UK 6 / Bust 32")'>
-              <span class="size-pill-name">XS</span>
-              <span class="size-pill-detail">Bust 32"</span>
-            </button>
-            <button type="button" class="size-select-pill" data-size='S (UK 8 / Bust 34")'>
-              <span class="size-pill-name">S</span>
-              <span class="size-pill-detail">Bust 34"</span>
-            </button>
-            <button type="button" class="size-select-pill is-active" data-size='M (UK 10 / Bust 36")'>
-              <span class="size-pill-name">M</span>
-              <span class="size-pill-detail">Bust 36"</span>
-            </button>
-            <button type="button" class="size-select-pill" data-size='L (UK 12 / Bust 38")'>
-              <span class="size-pill-name">L</span>
-              <span class="size-pill-detail">Bust 38"</span>
-            </button>
-            <button type="button" class="size-select-pill" data-size='XL (UK 14 / Bust 40")'>
-              <span class="size-pill-name">XL</span>
-              <span class="size-pill-detail">Bust 40"</span>
-            </button>
-            <button type="button" class="size-select-pill" data-size='XXL (UK 16 / Bust 42")'>
-              <span class="size-pill-name">XXL</span>
-              <span class="size-pill-detail">Bust 42"</span>
-            </button>
-            <button type="button" class="size-select-pill" data-size="Custom Made-to-Measure" data-is-custom="true">
-              <span class="size-pill-name">Custom</span>
-              <span class="size-pill-detail">Made-to-Measure</span>
-            </button>
-          </div>
-
-          <!-- Optional Custom Measurement Row (Toggles when Custom is chosen) -->
-          <div class="custom-measurements-row" id="customMeasurementsRow">
+            <!-- Phone Number with +91 Indian Prefix -->
             <div class="form-input-wrap">
-              <label for="customMeasurementsInput">{{ ws.custom_measurements_label | default: 'Custom Sizing Details (Optional):' }}</label>
-              <input
-                type="text"
-                id="customMeasurementsInput"
-                placeholder="{{ ws.custom_measurements_placeholder | default: 'e.g. Bust 35, Waist 28, Hips 38, Height 5\'6&quot;' }}"
-              >
+              <label for="waitlistPhone">Phone Number (WhatsApp VIP Access) *</label>
+              <div class="phone-input-group">
+                <span class="phone-prefix">+91</span>
+                <input
+                  type="tel"
+                  id="waitlistPhone"
+                  name="contact[phone]"
+                  value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+                  placeholder="98765 43210 (For WhatsApp drop access & VIP alerts)"
+                  maxlength="10"
+                  required
+                >
+              </div>
+            </div>
+
+            <!-- Indian Standards: City, State/UT, and 6-digit PIN Code -->
+            <div class="form-field-row form-field-row-3">
+              <div class="form-input-wrap">
+                <label for="waitlistCity">City *</label>
+                <input
+                  type="text"
+                  id="waitlistCity"
+                  name="contact[city]"
+                  placeholder="e.g. Mumbai / Delhi / Jaipur"
+                  required
+                >
+              </div>
+
+              <div class="form-input-wrap">
+                <label for="waitlistState">State / UT *</label>
+                <select id="waitlistState" name="contact[state]" required>
+                  <option value="" disabled selected>Select State / UT</option>
+                  <option value="Maharashtra">Maharashtra</option>
+                  <option value="Delhi (NCR)">Delhi (NCR)</option>
+                  <option value="Karnataka">Karnataka</option>
+                  <option value="Rajasthan">Rajasthan</option>
+                  <option value="Gujarat">Gujarat</option>
+                  <option value="Telangana">Telangana</option>
+                  <option value="Tamil Nadu">Tamil Nadu</option>
+                  <option value="Uttar Pradesh">Uttar Pradesh</option>
+                  <option value="Punjab">Punjab</option>
+                  <option value="West Bengal">West Bengal</option>
+                  <option value="Haryana">Haryana</option>
+                  <option value="Madhya Pradesh">Madhya Pradesh</option>
+                  <option value="Kerala">Kerala</option>
+                  <option value="Goa">Goa</option>
+                  <option value="Andhra Pradesh">Andhra Pradesh</option>
+                  <option value="Assam">Assam</option>
+                  <option value="Bihar">Bihar</option>
+                  <option value="Chandigarh">Chandigarh</option>
+                  <option value="Chhattisgarh">Chhattisgarh</option>
+                  <option value="Himachal Pradesh">Himachal Pradesh</option>
+                  <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                  <option value="Jharkhand">Jharkhand</option>
+                  <option value="Odisha">Odisha</option>
+                  <option value="Uttarakhand">Uttarakhand</option>
+                  <option value="Other">Other / International</option>
+                </select>
+              </div>
+
+              <div class="form-input-wrap">
+                <label for="waitlistPincode">PIN Code *</label>
+                <input
+                  type="text"
+                  id="waitlistPincode"
+                  name="contact[pincode]"
+                  placeholder="6 Digits (e.g. 400050)"
+                  maxlength="6"
+                  pattern="[0-9]{6}"
+                  required
+                >
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- Hidden Form Serializations -->
-        <input type="hidden" id="waitlistSizeInput" name="contact[size]" value='M (UK 10 / Bust 36")'>
-        <input type="hidden" id="selectedDressesSummary" name="contact[selected_looks]" value="">
-        <input type="hidden" id="contactBodySummary" name="contact[body]" value="">
+          <!-- Step 2: Select Dresses (5 Runway Looks - Clean, No Card Size Pills) -->
+          <div class="waitlist-dresses-section">
+            <div class="dresses-section-header">
+              <div class="form-section-title">
+                <span class="step-num">2</span>
+                <span>Select Your Desired Runway Dresses</span>
+              </div>
+              <p class="dresses-helper-text">Click on any dress tile to select or unselect. You can select multiple dresses.</p>
+            </div>
 
-        <!-- Submit Button -->
-        <div class="waitlist-submit-wrap">
-          <button type="submit" class="waitlist-submit-btn" id="waitlistSubmitBtn">
-            <span>{{ ws.submit_btn_text | default: 'Submit Reservation' }}</span>
-          </button>
-          <p class="waitlist-disclaimer">
-            {{ ws.disclaimer_text | default: 'By signing up, you agree to receive private collection drops & VIP runway access via WhatsApp / SMS. View our privacy policy and terms of service for more info.' }}
-          </p>
-        </div>
+            <!-- 5 Dresses Tiles Grid -->
+            <div class="dress-tiles-grid" id="dressTilesGrid">
+
+              <!-- Dress 1 -->
+              {%- assign d1_img = 'hanger-look-1.png' | asset_url -%}
+              {%- if section.settings.dress_1_img != blank -%}
+                {%- assign d1_img = section.settings.dress_1_img | image_url: width: 600 -%}
+              {%- endif -%}
+              {%- assign d1_title = section.settings.dress_1_title | default: 'Archival Manuscript Corset Gown' -%}
+              {%- assign d1_price = section.settings.dress_1_price | default: 'Edition 01 • ₹74,500' -%}
+              <div
+                class="dress-tile-card is-selected"
+                data-index="1"
+                data-title="{{ d1_title | escape }}"
+                data-price="{{ d1_price | escape }}"
+                data-img="{{ d1_img }}"
+              >
+                <div class="dress-card-badge">Look 01</div>
+                <div class="dress-card-check">✓</div>
+                <div class="dress-card-img-wrap">
+                  <img src="{{ d1_img }}" alt="{{ d1_title | escape }}" loading="lazy">
+                </div>
+                <div class="dress-card-info">
+                  <h3 class="dress-card-title">{{ d1_title }}</h3>
+                  <div class="dress-card-price">{{ d1_price }}</div>
+                </div>
+              </div>
+
+              <!-- Dress 2 -->
+              {%- assign d2_img = 'hanger-look-2.png' | asset_url -%}
+              {%- if section.settings.dress_2_img != blank -%}
+                {%- assign d2_img = section.settings.dress_2_img | image_url: width: 600 -%}
+              {%- endif -%}
+              {%- assign d2_title = section.settings.dress_2_title | default: 'Heritage Mural Mirror Lehenga' -%}
+              {%- assign d2_price = section.settings.dress_2_price | default: 'Edition 02 • ₹1,25,000' -%}
+              <div
+                class="dress-tile-card"
+                data-index="2"
+                data-title="{{ d2_title | escape }}"
+                data-price="{{ d2_price | escape }}"
+                data-img="{{ d2_img }}"
+              >
+                <div class="dress-card-badge">Look 02</div>
+                <div class="dress-card-check">✓</div>
+                <div class="dress-card-img-wrap">
+                  <img src="{{ d2_img }}" alt="{{ d2_title | escape }}" loading="lazy">
+                </div>
+                <div class="dress-card-info">
+                  <h3 class="dress-card-title">{{ d2_title }}</h3>
+                  <div class="dress-card-price">{{ d2_price }}</div>
+                </div>
+              </div>
+
+              <!-- Dress 3 -->
+              {%- assign d3_img = 'hanger-look-3.png' | asset_url -%}
+              {%- if section.settings.dress_3_img != blank -%}
+                {%- assign d3_img = section.settings.dress_3_img | image_url: width: 600 -%}
+              {%- endif -%}
+              {%- assign d3_title = section.settings.dress_3_title | default: 'Rose-Coral Shimmer Saree Gown' -%}
+              {%- assign d3_price = section.settings.dress_3_price | default: 'Edition 03 • ₹98,000' -%}
+              <div
+                class="dress-tile-card"
+                data-index="3"
+                data-title="{{ d3_title | escape }}"
+                data-price="{{ d3_price | escape }}"
+                data-img="{{ d3_img }}"
+              >
+                <div class="dress-card-badge">Look 03</div>
+                <div class="dress-card-check">✓</div>
+                <div class="dress-card-img-wrap">
+                  <img src="{{ d3_img }}" alt="{{ d3_title | escape }}" loading="lazy">
+                </div>
+                <div class="dress-card-info">
+                  <h3 class="dress-card-title">{{ d3_title }}</h3>
+                  <div class="dress-card-price">{{ d3_price }}</div>
+                </div>
+              </div>
+
+              <!-- Dress 4 -->
+              {%- assign d4_img = 'hanger-look-4.png' | asset_url -%}
+              {%- if section.settings.dress_4_img != blank -%}
+                {%- assign d4_img = section.settings.dress_4_img | image_url: width: 600 -%}
+              {%- endif -%}
+              {%- assign d4_title = section.settings.dress_4_title | default: 'Midnight Botanical Co-ord Set' -%}
+              {%- assign d4_price = section.settings.dress_4_price | default: 'Edition 04 • ₹92,000' -%}
+              <div
+                class="dress-tile-card"
+                data-index="4"
+                data-title="{{ d4_title | escape }}"
+                data-price="{{ d4_price | escape }}"
+                data-img="{{ d4_img }}"
+              >
+                <div class="dress-card-badge">Look 04</div>
+                <div class="dress-card-check">✓</div>
+                <div class="dress-card-img-wrap">
+                  <img src="{{ d4_img }}" alt="{{ d4_title | escape }}" loading="lazy">
+                </div>
+                <div class="dress-card-info">
+                  <h3 class="dress-card-title">{{ d4_title }}</h3>
+                  <div class="dress-card-price">{{ d4_price }}</div>
+                </div>
+              </div>
+
+              <!-- Dress 5 -->
+              {%- assign d5_img = 'hanger-look-5.png' | asset_url -%}
+              {%- if section.settings.dress_5_img != blank -%}
+                {%- assign d5_img = section.settings.dress_5_img | image_url: width: 600 -%}
+              {%- endif -%}
+              {%- assign d5_title = section.settings.dress_5_title | default: 'Bordeaux Peplum Halter Gown' -%}
+              {%- assign d5_price = section.settings.dress_5_price | default: 'Edition 05 • ₹1,10,000' -%}
+              <div
+                class="dress-tile-card"
+                data-index="5"
+                data-title="{{ d5_title | escape }}"
+                data-price="{{ d5_price | escape }}"
+                data-img="{{ d5_img }}"
+              >
+                <div class="dress-card-badge">Look 05</div>
+                <div class="dress-card-check">✓</div>
+                <div class="dress-card-img-wrap">
+                  <img src="{{ d5_img }}" alt="{{ d5_title | escape }}" loading="lazy">
+                </div>
+                <div class="dress-card-info">
+                  <h3 class="dress-card-title">{{ d5_title }}</h3>
+                  <div class="dress-card-price">{{ d5_price }}</div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Step 3: Indian Standard Size Selection -->
+          <div class="waitlist-size-section">
+            <div class="size-section-header">
+              <div class="form-section-title" style="margin-bottom:0;">
+                <span class="step-num">3</span>
+                <span>Select Your Size</span>
+              </div>
+              <span class="size-guide-hint">Indian Standard Couture Fit</span>
+            </div>
+
+            <div class="size-pills-row">
+              <button type="button" class="size-select-pill" data-size='XS (UK 6 / Bust 32")'>
+                <span class="size-pill-name">XS</span>
+                <span class="size-pill-detail">Bust 32"</span>
+              </button>
+              <button type="button" class="size-select-pill" data-size='S (UK 8 / Bust 34")'>
+                <span class="size-pill-name">S</span>
+                <span class="size-pill-detail">Bust 34"</span>
+              </button>
+              <button type="button" class="size-select-pill is-active" data-size='M (UK 10 / Bust 36")'>
+                <span class="size-pill-name">M</span>
+                <span class="size-pill-detail">Bust 36"</span>
+              </button>
+              <button type="button" class="size-select-pill" data-size='L (UK 12 / Bust 38")'>
+                <span class="size-pill-name">L</span>
+                <span class="size-pill-detail">Bust 38"</span>
+              </button>
+              <button type="button" class="size-select-pill" data-size='XL (UK 14 / Bust 40")'>
+                <span class="size-pill-name">XL</span>
+                <span class="size-pill-detail">Bust 40"</span>
+              </button>
+              <button type="button" class="size-select-pill" data-size='XXL (UK 16 / Bust 42")'>
+                <span class="size-pill-name">XXL</span>
+                <span class="size-pill-detail">Bust 42"</span>
+              </button>
+              <button type="button" class="size-select-pill" data-size="Custom Made-to-Measure" data-is-custom="true">
+                <span class="size-pill-name">Custom</span>
+                <span class="size-pill-detail">Made-to-Measure</span>
+              </button>
+            </div>
+
+            <!-- Optional Custom Measurement Row (Toggles when Custom is chosen) -->
+            <div class="custom-measurements-row" id="customMeasurementsRow">
+              <div class="form-input-wrap">
+                <label for="customMeasurementsInput">Custom Sizing Details (Optional):</label>
+                <input
+                  type="text"
+                  id="customMeasurementsInput"
+                  placeholder="e.g. Bust 35, Waist 28, Hips 38, Height 5'6&quot;"
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Hidden Form Serializations -->
+          <input type="hidden" id="waitlistSizeInput" name="contact[size]" value='M (UK 10 / Bust 36")'>
+          <input type="hidden" id="selectedDressesSummary" name="contact[selected_looks]" value="">
+          <input type="hidden" id="contactBodySummary" name="contact[body]" value="">
+
+          <!-- Submit Button -->
+          <div class="waitlist-submit-wrap">
+            <button type="submit" class="waitlist-submit-btn" id="waitlistSubmitBtn">
+              <span>Submit Reservation</span>
+            </button>
+            <p class="waitlist-disclaimer">
+              By signing up, you agree to receive private collection drops & VIP runway access via WhatsApp / SMS. View our privacy policy and terms of service for more info.
+            </p>
+          </div>
 
       </form>
 
       <!-- Confirmation / Success View for client-side fallback -->
       <div class="waitlist-success-view" id="waitlistSuccessView">
-        <div class="success-badge">{{ ws.success_badge_text | default: '✦ Reservation Confirmed ✦' }}</div>
-        <h2 class="success-title">{{ ws.success_title | default: "You're on the exclusive waitlist!" }}</h2>
+        <div class="success-badge">✦ Reservation Confirmed ✦</div>
+        <h2 class="success-title">You're on the exclusive waitlist!</h2>
         <p class="success-msg">
-          {{ ws.success_desc | default: 'Thank you for joining. When our private atelier drop opens, your VIP access link and priority checkout code will be dispatched directly to your WhatsApp and email.' }}
+          Thank you for joining. When our private atelier drop opens, your VIP access link and priority checkout code will be dispatched directly to your WhatsApp and email.
         </p>
         <div class="success-receipt-card" id="receiptDetails"></div>
         <div class="success-actions">
           <a href="{{ routes.root_url }}" class="success-rack-btn">
             <span>⟵</span>
-            <span>{{ ws.return_btn_text | default: 'Return to Runway Rack' }}</span>
+            <span>Return to Runway Rack</span>
           </a>
           <button type="button" class="success-secondary-btn" id="reserveAnotherBtn">
             <span>+</span>
-            <span>{{ ws.reserve_another_btn_text | default: 'Reserve Another Look' }}</span>
+            <span>Reserve Another Look</span>
           </button>
         </div>
       </div>
