@@ -1,3 +1,12 @@
+{%- comment -%}
+  ════════════════════════════════════════════════════════════════════════
+  DAWN DEFAULT HEADER (FALLBACK)
+  ════════════════════════════════════════════════════════════════════════
+  The active store header is luxury-header.liquid configured via
+  sections/header-group.json. This default Dawn header is retained as
+  a safe system fallback.
+{%- endcomment -%}
+
 <link rel="stylesheet" href="{{ 'component-list-menu.css' | asset_url }}" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="{{ 'component-search.css' | asset_url }}" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="{{ 'component-menu-drawer.css' | asset_url }}" media="print" onload="this.media='all'">
@@ -16,25 +25,9 @@
   <link rel="stylesheet" href="{{ 'component-mega-menu.css' | asset_url }}" media="print" onload="this.media='all'">
 {%- endif -%}
 
+{% render 'font-faces' %}
 <style>
-  @font-face {
-    font-family: 'Ahsing';
-    src: url('{{ "Ahsing.woff" | asset_url }}') format('woff'),
-         url('{{ "Ahsing.otf" | asset_url }}') format('opentype'),
-         url('{{ "typogama-ahsing.otf" | asset_url }}') format('opentype');
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-  }
-  @font-face {
-    font-family: 'Ragara';
-    src: url('{{ "Ragara.woff" | asset_url }}') format('woff'),
-         url('{{ "Ragara.otf" | asset_url }}') format('opentype'),
-         url('{{ "Ragara.ttf" | asset_url }}') format('truetype');
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-  }
+  /* Font faces loaded via snippets/font-faces.liquid */
 
   {%- if section.settings.logo_font_source == 'ahsing' -%}
     :root, .header__heading, .header__heading-link, .header__heading-logo {

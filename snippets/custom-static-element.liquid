@@ -18,25 +18,10 @@
 {%- assign heading_scale = s.heading_scale | default: 100 | divided_by: 100.0 -%}
 {%- assign letter_spacing = s.letter_spacing | default: 0.04 -%}
 
+{% render 'font-faces' %}
+
 <style>
-  @font-face {
-    font-family: 'Ahsing';
-    src: url('{{ "Ahsing.woff" | asset_url }}') format('woff'),
-         url('{{ "Ahsing.otf" | asset_url }}') format('opentype'),
-         url('{{ "typogama-ahsing.otf" | asset_url }}') format('opentype');
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-  }
-  @font-face {
-    font-family: 'Ragara';
-    src: url('{{ "Ragara.woff" | asset_url }}') format('woff'),
-         url('{{ "Ragara.otf" | asset_url }}') format('opentype'),
-         url('{{ "Ragara.ttf" | asset_url }}') format('truetype');
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-  }
+  /* Font faces loaded via snippets/font-faces.liquid */
 
   {%- if s.heading_font_source == 'shopify' and s.heading_font != blank -%}
     {{ s.heading_font | font_face: font_display: 'swap' }}

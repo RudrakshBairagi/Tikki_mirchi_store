@@ -18,36 +18,11 @@
 {%- endif -%}
 <script src="{{ 'atelier-waitlist.js' | asset_url }}" defer="defer"></script>
 
+{% render 'font-faces' %}
+
 <style>
-  @font-face {
-    font-family: 'Ahsing';
-    src: url('{{ "Ahsing.woff" | asset_url }}') format('woff'),
-         url('{{ "Ahsing.otf" | asset_url }}') format('opentype'),
-         url('{{ "typogama-ahsing.otf" | asset_url }}') format('opentype');
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-  }
+  /* Font faces loaded via snippets/font-faces.liquid */
 
-  @font-face {
-    font-family: 'Ragara';
-    src: url('{{ "Ragara.woff" | asset_url }}') format('woff'),
-         url('{{ "Ragara.otf" | asset_url }}') format('opentype'),
-         url('{{ "Ragara.ttf" | asset_url }}') format('truetype');
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-  }
-
-  @font-face {
-    font-family: 'Ragara';
-    src: url('{{ "Ragara-Italic.woff" | asset_url }}') format('woff'),
-         url('{{ "Ragara-Italic.otf" | asset_url }}') format('opentype'),
-         url('{{ "Ragara-Italic.ttf" | asset_url }}') format('truetype');
-    font-weight: 400;
-    font-style: italic;
-    font-display: swap;
-  }
 
   {%- if ws.title_font_source == 'shopify' and ws.title_font != blank -%}
     {{ ws.title_font | font_face: font_display: 'swap' }}

@@ -1,16 +1,10 @@
 {{ 'hanger-rack.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'hanger-rack.js' | asset_url }}" defer="defer"></script>
 
+{% render 'font-faces' %}
+
 {%- style -%}
-  @font-face {
-    font-family: 'Ahsing';
-    src: url('{{ "Ahsing.woff" | asset_url }}') format('woff'),
-         url('{{ "Ahsing.otf" | asset_url }}') format('opentype'),
-         url('{{ "typogama-ahsing.otf" | asset_url }}') format('opentype');
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-  }
+  /* Font faces loaded via snippets/font-faces.liquid */
 
   {%- if section.settings.heading_font_source == 'shopify' and section.settings.heading_font != blank -%}
     {{ section.settings.heading_font | font_face: font_display: 'swap' }}
