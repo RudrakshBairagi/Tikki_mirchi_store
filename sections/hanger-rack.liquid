@@ -46,6 +46,38 @@
       --rack-title-font: 'Ahsing', serif;
       --rack-title-weight: 400;
       --rack-title-style: normal;
+    {%- elsif section.settings.heading_font_source == 'ragara' or section.settings.heading_font_source == 'brand' -%}
+      --rack-title-font: 'Ragara', 'Italiana', Georgia, 'Times New Roman', serif;
+      --rack-title-weight: 400;
+      --rack-title-style: normal;
+    {%- elsif section.settings.heading_font_source == 'syne' -%}
+      --rack-title-font: 'Syne', sans-serif;
+      --rack-title-weight: 700;
+      --rack-title-style: normal;
+    {%- elsif section.settings.heading_font_source == 'bodoni' -%}
+      --rack-title-font: 'Bodoni Moda', serif;
+      --rack-title-weight: 400;
+      --rack-title-style: normal;
+    {%- elsif section.settings.heading_font_source == 'playfair' -%}
+      --rack-title-font: 'Playfair Display', serif;
+      --rack-title-weight: 400;
+      --rack-title-style: normal;
+    {%- elsif section.settings.heading_font_source == 'italiana' -%}
+      --rack-title-font: 'Italiana', Georgia, serif;
+      --rack-title-weight: 400;
+      --rack-title-style: normal;
+    {%- elsif section.settings.heading_font_source == 'cinzel' -%}
+      --rack-title-font: 'Cinzel', serif;
+      --rack-title-weight: 600;
+      --rack-title-style: normal;
+    {%- elsif section.settings.heading_font_source == 'cormorant' -%}
+      --rack-title-font: 'Cormorant Garamond', serif;
+      --rack-title-weight: 400;
+      --rack-title-style: normal;
+    {%- elsif section.settings.heading_font_source == 'outfit' -%}
+      --rack-title-font: 'Outfit', sans-serif;
+      --rack-title-weight: 500;
+      --rack-title-style: normal;
     {%- elsif section.settings.heading_font_source == 'custom' and section.settings.custom_heading_font != blank -%}
       --rack-title-font: '{{ section.settings.custom_heading_font }}', serif;
       --rack-title-weight: 400;
@@ -82,6 +114,34 @@
 
     --rack-heading-scale: {{ section.settings.heading_font_scale | default: 100 | divided_by: 100.0 }};
     --rack-subheading-scale: {{ section.settings.subheading_font_scale | default: 100 | divided_by: 100.0 }};
+    --rack-title-spacing: {{ section.settings.heading_letter_spacing | default: 2 }}px;
+  }
+
+  #HangerRack-{{ section.id }} {
+    position: relative;
+    {%- if section.settings.bg_mode == 'gradient' and section.settings.bg_gradient != blank -%}
+      background: {{ section.settings.bg_gradient }} !important;
+    {%- elsif section.settings.bg_mode == 'image' and section.settings.bg_image != blank -%}
+      background-image: url('{{ section.settings.bg_image | image_url: width: 2600 }}') !important;
+      background-size: cover !important;
+      background-position: center !important;
+    {%- else -%}
+      background-color: var(--rack-bg) !important;
+    {%- endif -%}
+  }
+
+  #HangerRack-{{ section.id }} .hanger-rack-bg-overlay {
+    position: absolute;
+    inset: 0;
+    background: #000000;
+    opacity: {{ section.settings.bg_overlay_opacity | default: 0 | divided_by: 100.0 }};
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  #HangerRack-{{ section.id }} .hanger-rack-container {
+    position: relative;
+    z-index: 2;
   }
 
   #HangerRack-{{ section.id }} .hanger-rack-title {
@@ -89,6 +149,7 @@
     font-weight: var(--rack-title-weight, 400) !important;
     font-style: var(--rack-title-style, normal) !important;
     font-size: calc(clamp(34px, 4.5vw, 54px) * var(--rack-heading-scale, 1)) !important;
+    letter-spacing: var(--rack-title-spacing, 0.04em) !important;
   }
 
   #HangerRack-{{ section.id }} .hanger-rack-eyebrow {
@@ -158,6 +219,7 @@
   data-card-btn-text="{{ section.settings.floating_card_btn_text | default: 'Inspect Piece' | escape }}"
   aria-label="{{ section.settings.heading | default: 'House of Royals Runway Rack' }}"
 >
+  <div class="hanger-rack-bg-overlay" aria-hidden="true"></div>
   <div class="hanger-rack-container">
     {%- if section.settings.show_waitlist_buttons != false -%}
       {%- assign default_wl_link = routes.root_url | append: 'pages/waitlist' | replace: '//', '/' -%}
@@ -470,6 +532,14 @@
       "options": [
         { "value": "ahsing", "label": "Ahsing (Typogama Couture)" },
         { "value": "brand", "label": "Brand Default (Ragara Couture)" },
+        { "value": "ragara", "label": "Ragara (Couture Serif)" },
+        { "value": "syne", "label": "Syne (Modern Luxury Bold)" },
+        { "value": "bodoni", "label": "Bodoni Moda (Editorial Vogue)" },
+        { "value": "playfair", "label": "Playfair Display (Romantic Serif)" },
+        { "value": "italiana", "label": "Italiana (Milano Couture)" },
+        { "value": "cinzel", "label": "Cinzel (Grand Roman)" },
+        { "value": "cormorant", "label": "Cormorant Garamond (Elegance)" },
+        { "value": "outfit", "label": "Outfit (Ultra Clean Sans)" },
         { "value": "shopify", "label": "Shopify Font Library (Select below)" },
         { "value": "custom", "label": "Custom Font Name (e.g. Google Font)" }
       ],
@@ -497,6 +567,16 @@
       "unit": "%",
       "label": "Heading Font Size Scale",
       "default": 100
+    },
+    {
+      "type": "range",
+      "id": "heading_letter_spacing",
+      "min": -2,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading Letter Spacing",
+      "default": 2
     },
     {
       "type": "select",
@@ -558,13 +638,46 @@
     },
     {
       "type": "header",
-      "content": "Rack Stage Colors & Dimensions"
+      "content": "Rack Stage Background & Colors"
+    },
+    {
+      "type": "select",
+      "id": "bg_mode",
+      "label": "Background Mode",
+      "options": [
+        { "value": "solid", "label": "Solid Color" },
+        { "value": "gradient", "label": "Luxury Gradient" },
+        { "value": "image", "label": "Background Image" }
+      ],
+      "default": "solid"
     },
     {
       "type": "color",
       "id": "bg_color",
       "label": "Background Color",
       "default": "#f8f8f6"
+    },
+    {
+      "type": "text",
+      "id": "bg_gradient",
+      "label": "Background Gradient (CSS)",
+      "default": "linear-gradient(135deg, #f8f8f6 0%, #ede8de 100%)",
+      "info": "Active when Gradient mode is selected."
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background Image",
+      "info": "Active when Background Image mode is selected."
+    },
+    {
+      "type": "range",
+      "id": "bg_overlay_opacity",
+      "label": "Background Darken Overlay (%)",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "default": 0
     },
     {
       "type": "color",

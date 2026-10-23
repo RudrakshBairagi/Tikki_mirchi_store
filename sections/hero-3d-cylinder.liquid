@@ -33,6 +33,11 @@
     --hero-bg: {{ section.settings.bg_color }};
     --hero-text: {{ section.settings.text_color }};
     --hero-title-color: {{ section.settings.title_color }};
+    {%- if section.settings.bg_mode == 'gradient' and section.settings.bg_gradient != blank -%}
+      background: {{ section.settings.bg_gradient }} !important;
+    {%- else -%}
+      background-color: var(--hero-bg) !important;
+    {%- endif -%}
     --cylinder-tilt: {{ section.settings.tilt_angle }}deg;
     --cylinder-perspective: {{ section.settings.perspective }}px;
     --card-width: {{ section.settings.card_width }}px;
@@ -45,6 +50,38 @@
       --hero-heading-font: {{ section.settings.heading_font.family }}, {{ section.settings.heading_font.fallback_families }};
       --hero-heading-weight: {{ section.settings.heading_font.weight }};
       --hero-heading-style: {{ section.settings.heading_font.style }};
+    {%- elsif section.settings.heading_font_source == 'ahsing' -%}
+      --hero-heading-font: 'Ahsing', serif;
+      --hero-heading-weight: 400;
+      --hero-heading-style: normal;
+    {%- elsif section.settings.heading_font_source == 'syne' -%}
+      --hero-heading-font: 'Syne', sans-serif;
+      --hero-heading-weight: 700;
+      --hero-heading-style: normal;
+    {%- elsif section.settings.heading_font_source == 'bodoni' -%}
+      --hero-heading-font: 'Bodoni Moda', serif;
+      --hero-heading-weight: 400;
+      --hero-heading-style: normal;
+    {%- elsif section.settings.heading_font_source == 'playfair' -%}
+      --hero-heading-font: 'Playfair Display', serif;
+      --hero-heading-weight: 400;
+      --hero-heading-style: normal;
+    {%- elsif section.settings.heading_font_source == 'italiana' -%}
+      --hero-heading-font: 'Italiana', Georgia, serif;
+      --hero-heading-weight: 400;
+      --hero-heading-style: normal;
+    {%- elsif section.settings.heading_font_source == 'cinzel' -%}
+      --hero-heading-font: 'Cinzel', serif;
+      --hero-heading-weight: 600;
+      --hero-heading-style: normal;
+    {%- elsif section.settings.heading_font_source == 'cormorant' -%}
+      --hero-heading-font: 'Cormorant Garamond', serif;
+      --hero-heading-weight: 400;
+      --hero-heading-style: normal;
+    {%- elsif section.settings.heading_font_source == 'outfit' -%}
+      --hero-heading-font: 'Outfit', sans-serif;
+      --hero-heading-weight: 500;
+      --hero-heading-style: normal;
     {%- elsif section.settings.heading_font_source == 'custom' and section.settings.custom_heading_font != blank -%}
       --hero-heading-font: '{{ section.settings.custom_heading_font }}', serif;
       --hero-heading-weight: 400;
@@ -255,6 +292,14 @@
       "label": "Giant Title Font Source",
       "options": [
         { "value": "brand", "label": "Brand Default (Ragara Couture)" },
+        { "value": "ahsing", "label": "Ahsing (Typogama Couture)" },
+        { "value": "syne", "label": "Syne (Modern Luxury Bold)" },
+        { "value": "bodoni", "label": "Bodoni Moda (Editorial Vogue)" },
+        { "value": "playfair", "label": "Playfair Display (Romantic Serif)" },
+        { "value": "italiana", "label": "Italiana (Milano Couture)" },
+        { "value": "cinzel", "label": "Cinzel (Grand Roman)" },
+        { "value": "cormorant", "label": "Cormorant Garamond (Elegance)" },
+        { "value": "outfit", "label": "Outfit (Ultra Clean Sans)" },
         { "value": "shopify", "label": "Shopify Font Library (Select below)" },
         { "value": "custom", "label": "Custom Font Name (e.g. Google Font)" }
       ],
@@ -345,13 +390,30 @@
     },
     {
       "type": "header",
-      "content": "Color Scheme"
+      "content": "Background & Atmosphere"
+    },
+    {
+      "type": "select",
+      "id": "bg_mode",
+      "label": "Background Mode",
+      "options": [
+        { "value": "solid", "label": "Solid Color" },
+        { "value": "gradient", "label": "Luxury Gradient" }
+      ],
+      "default": "solid"
     },
     {
       "type": "color",
       "id": "bg_color",
       "label": "Background Color",
       "default": "#0b0b0c"
+    },
+    {
+      "type": "text",
+      "id": "bg_gradient",
+      "label": "Background Gradient (CSS)",
+      "default": "linear-gradient(135deg, #0b0b0c 0%, #17151a 100%)",
+      "info": "Active when Gradient mode is selected."
     },
     {
       "type": "color",

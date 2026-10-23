@@ -57,12 +57,44 @@
       --header-logo-font: 'Ahsing', serif;
       --header-logo-weight: 400;
       --header-logo-style: normal;
+    {%- elsif section.settings.logo_font_source == 'ragara' or section.settings.logo_font_source == 'brand' -%}
+      --header-logo-font: 'Ragara', 'Italiana', Georgia, serif;
+      --header-logo-weight: 400;
+      --header-logo-style: normal;
+    {%- elsif section.settings.logo_font_source == 'syne' -%}
+      --header-logo-font: 'Syne', sans-serif;
+      --header-logo-weight: 700;
+      --header-logo-style: normal;
+    {%- elsif section.settings.logo_font_source == 'bodoni' -%}
+      --header-logo-font: 'Bodoni Moda', serif;
+      --header-logo-weight: 400;
+      --header-logo-style: normal;
+    {%- elsif section.settings.logo_font_source == 'playfair' -%}
+      --header-logo-font: 'Playfair Display', serif;
+      --header-logo-weight: 400;
+      --header-logo-style: normal;
+    {%- elsif section.settings.logo_font_source == 'italiana' -%}
+      --header-logo-font: 'Italiana', Georgia, serif;
+      --header-logo-weight: 400;
+      --header-logo-style: normal;
+    {%- elsif section.settings.logo_font_source == 'cinzel' -%}
+      --header-logo-font: 'Cinzel', serif;
+      --header-logo-weight: 600;
+      --header-logo-style: normal;
+    {%- elsif section.settings.logo_font_source == 'cormorant' -%}
+      --header-logo-font: 'Cormorant Garamond', serif;
+      --header-logo-weight: 400;
+      --header-logo-style: normal;
+    {%- elsif section.settings.logo_font_source == 'outfit' -%}
+      --header-logo-font: 'Outfit', sans-serif;
+      --header-logo-weight: 500;
+      --header-logo-style: normal;
     {%- elsif section.settings.logo_font_source == 'custom' and section.settings.custom_logo_font != blank -%}
       --header-logo-font: '{{ section.settings.custom_logo_font }}', serif;
       --header-logo-weight: 400;
       --header-logo-style: normal;
     {%- else -%}
-      --header-logo-font: 'Ragara', 'Italiana', Georgia, serif;
+      --header-logo-font: 'Ahsing', serif;
       --header-logo-weight: 400;
       --header-logo-style: normal;
     {%- endif -%}
@@ -102,10 +134,21 @@
     --header-logo-scale: {{ section.settings.logo_font_scale | default: 100 | divided_by: 100.0 }};
     --header-tagline-scale: {{ section.settings.tagline_font_scale | default: 100 | divided_by: 100.0 }};
     --header-nav-scale: {{ section.settings.nav_font_scale | default: 100 | divided_by: 100.0 }};
+    --header-logo-spacing: {{ section.settings.logo_letter_spacing | default: 0.02 }}em;
   }
 
   #LuxuryHeaderSection-{{ section.id }} .hero-editorial-masthead {
     background-color: var(--hero-bg) !important;
+  }
+
+  #LuxuryHeaderSection-{{ section.id }} #LuxuryHeader {
+    {%- if section.settings.bg_mode == 'gradient' and section.settings.bg_gradient != blank -%}
+      background: {{ section.settings.bg_gradient }} !important;
+    {%- elsif section.settings.docked_bg_color != blank -%}
+      background-color: var(--docked-bg-color) !important;
+    {%- endif -%}
+    backdrop-filter: blur({{ section.settings.backdrop_blur | default: 12 }}px) !important;
+    -webkit-backdrop-filter: blur({{ section.settings.backdrop_blur | default: 12 }}px) !important;
   }
 
   #LuxuryHeaderSection-{{ section.id }} .brand-morph-logo {
@@ -113,6 +156,8 @@
     font-weight: var(--header-logo-weight, 400) !important;
     font-style: var(--header-logo-style, normal) !important;
     font-size: calc(clamp(2.2rem, 3.2vw, 3rem) * var(--header-logo-scale, 1)) !important;
+    letter-spacing: var(--header-logo-spacing, 0.02em) !important;
+  }
   }
 
   @media (max-width: 768px) {
@@ -249,6 +294,14 @@
       "options": [
         { "value": "ahsing", "label": "Ahsing (Typogama Couture)" },
         { "value": "brand", "label": "Ragara Couture (Classic)" },
+        { "value": "ragara", "label": "Ragara (Couture Serif)" },
+        { "value": "syne", "label": "Syne (Modern Luxury Bold)" },
+        { "value": "bodoni", "label": "Bodoni Moda (Editorial Vogue)" },
+        { "value": "playfair", "label": "Playfair Display (Romantic Serif)" },
+        { "value": "italiana", "label": "Italiana (Milano Couture)" },
+        { "value": "cinzel", "label": "Cinzel (Grand Roman)" },
+        { "value": "cormorant", "label": "Cormorant Garamond (Elegance)" },
+        { "value": "outfit", "label": "Outfit (Ultra Clean Sans)" },
         { "value": "shopify", "label": "Shopify Font Library (Select below)" },
         { "value": "custom", "label": "Custom Font Name (e.g. Google Font)" }
       ],
@@ -276,6 +329,16 @@
       "unit": "%",
       "label": "Logo Font Size Scale",
       "default": 100
+    },
+    {
+      "type": "range",
+      "id": "logo_letter_spacing",
+      "min": -2,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Logo Letter Spacing",
+      "default": 1
     },
     {
       "type": "header",
@@ -390,9 +453,40 @@
       "content": "Colors & Styling"
     },
     {
+      "type": "select",
+      "id": "bg_mode",
+      "label": "Navbar Background Mode",
+      "options": [
+        { "value": "solid", "label": "Solid Color" },
+        { "value": "gradient", "label": "Luxury Gradient" }
+      ],
+      "default": "solid"
+    },
+    {
+      "type": "color",
+      "id": "docked_bg_color",
+      "label": "Docked Navbar Background Color",
+      "default": "#f8f8f6"
+    },
+    {
+      "type": "text",
+      "id": "bg_gradient",
+      "label": "Docked Navbar Background Gradient (CSS)",
+      "default": "linear-gradient(135deg, rgba(248, 248, 246, 0.95) 0%, rgba(238, 234, 226, 0.92) 100%)"
+    },
+    {
+      "type": "range",
+      "id": "backdrop_blur",
+      "label": "Glassmorphism Backdrop Blur (px)",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "default": 12
+    },
+    {
       "type": "color",
       "id": "bg_color",
-      "label": "Hero Background Color",
+      "label": "Hero Masthead Background Color",
       "default": "transparent"
     },
     {
@@ -412,12 +506,6 @@
       "id": "docked_text_color",
       "label": "Docked Navbar Text & Icon Color",
       "default": "#161517"
-    },
-    {
-      "type": "color",
-      "id": "docked_bg_color",
-      "label": "Docked Navbar Background Color",
-      "default": "#f8f8f6"
     }
   ],
   "presets": [

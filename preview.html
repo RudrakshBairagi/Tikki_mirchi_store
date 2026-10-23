@@ -563,6 +563,388 @@
       color: #121014;
     }
 
+    /* Multi-Tab Atelier Customizer Studio */
+    .studio-nav-tabs {
+      display: flex;
+      background: rgba(0, 0, 0, 0.35);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .studio-nav-tabs::-webkit-scrollbar { display: none; }
+    .studio-tab-btn {
+      flex: 1;
+      min-width: 72px;
+      padding: 10px 8px;
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: rgba(245, 242, 235, 0.6);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .studio-tab-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.03);
+    }
+    .studio-tab-btn.is-active {
+      color: #d4af37;
+      border-bottom-color: #d4af37;
+      background: rgba(212, 175, 55, 0.06);
+    }
+    .studio-tab-btn span.tab-icon {
+      font-size: 14px;
+    }
+
+    .studio-tab-pane {
+      display: none;
+      flex-direction: column;
+      flex: 1;
+      overflow-y: auto;
+    }
+    .studio-tab-pane.is-active {
+      display: flex;
+    }
+
+    /* Form Fields in Studio */
+    .studio-form-section {
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .studio-input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .studio-input-label {
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #d4af37;
+    }
+    .studio-text-input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: #fff;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: inherit;
+      outline: none;
+      box-sizing: border-box;
+      transition: border-color 0.2s ease;
+    }
+    .studio-text-input:focus {
+      border-color: #d4af37;
+      background: rgba(255, 255, 255, 0.1);
+    }
+    .studio-textarea-input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: #fff;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      font-family: inherit;
+      outline: none;
+      box-sizing: border-box;
+      resize: vertical;
+      min-height: 64px;
+    }
+    .studio-textarea-input:focus {
+      border-color: #d4af37;
+    }
+
+    /* Color Pickers & Luxury Presets */
+    .color-picker-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    .color-picker-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .color-picker-card input[type="color"] {
+      -webkit-appearance: none;
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      cursor: pointer;
+      background: none;
+      padding: 0;
+    }
+    .color-picker-card input[type="color"]::-webkit-color-swatch-wrapper {
+      padding: 0;
+    }
+    .color-picker-card input[type="color"]::-webkit-color-swatch {
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 6px;
+    }
+    .color-picker-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .color-picker-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: #f5f2eb;
+    }
+    .color-picker-hex {
+      font-size: 10px;
+      color: rgba(245, 242, 235, 0.5);
+      font-family: monospace;
+    }
+
+    /* Luxury Palette 1-Click Cards */
+    .palette-presets-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+    .palette-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 10px 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.2s ease;
+    }
+    .palette-card:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: #d4af37;
+      transform: translateY(-1px);
+    }
+    .palette-swatch {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      flex-shrink: 0;
+    }
+    .palette-name {
+      font-size: 11px;
+      font-weight: 600;
+      color: #f7f6f2;
+    }
+
+    /* Code Display Box */
+    .code-export-box {
+      background: #09080a;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      border-radius: 8px;
+      padding: 12px;
+      font-family: 'SFMono-Regular', Menlo, Monaco, Consolas, monospace;
+      font-size: 11px;
+      line-height: 1.5;
+      color: #a5d6a7;
+      max-height: 260px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    /* Static Element on Preview Page */
+    .custom-static-element-section {
+      position: relative;
+      padding: 90px 24px;
+      background: #ffffff;
+      border-top: 1px solid rgba(0, 0, 0, 0.06);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      color: #1a1819;
+      text-align: center;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+    .static-element-container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .static-element-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--header-nav-font, 'Plus Jakarta Sans', sans-serif);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--rack-accent-color, #b38728);
+      margin-bottom: 16px;
+    }
+    .static-element-heading {
+      font-family: var(--rack-title-font, 'Ahsing', serif);
+      font-size: clamp(32px, 5vw, 62px);
+      letter-spacing: 0.02em;
+      line-height: 1.1;
+      margin: 0 0 18px 0;
+      color: inherit;
+      transition: font-family 0.2s ease;
+    }
+    .static-element-subheading {
+      font-family: var(--header-nav-font, 'Plus Jakarta Sans', sans-serif);
+      font-size: clamp(14px, 1.35vw, 17px);
+      line-height: 1.65;
+      opacity: 0.82;
+      max-width: 640px;
+      margin: 0 auto 32px auto;
+    }
+    .static-element-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .static-element-btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 32px;
+      background: #1a1819;
+      color: #ffffff;
+      border-radius: 999px;
+      font-family: var(--header-nav-font, sans-serif);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+    .static-element-btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
+    .static-element-btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 26px;
+      background: transparent;
+      color: inherit;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      border-radius: 999px;
+      font-family: var(--header-nav-font, sans-serif);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+    .static-element-btn-secondary:hover {
+      background: rgba(0, 0, 0, 0.05);
+    }
+
+    /* Projects Hub Showcase Grid */
+    .projects-hub-section {
+      padding: 80px 24px 100px;
+      background: #f4f3f0;
+      border-top: 1px solid rgba(0, 0, 0, 0.06);
+    }
+    .projects-hub-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .projects-hub-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .projects-hub-title {
+      font-family: var(--rack-title-font, 'Ahsing', serif);
+      font-size: clamp(28px, 4vw, 44px);
+      letter-spacing: 0.02em;
+      margin: 0 0 10px 0;
+      color: #1a1819;
+    }
+    .projects-hub-subtitle {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 14px;
+      color: #666;
+      max-width: 580px;
+      margin: 0 auto;
+    }
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .project-card {
+      background: #ffffff;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 12px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 16px;
+      text-decoration: none;
+      color: #1a1819;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+    }
+    .project-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+      border-color: rgba(212, 175, 55, 0.5);
+    }
+    .project-card-badge {
+      display: inline-block;
+      align-self: flex-start;
+      padding: 4px 10px;
+      background: rgba(212, 175, 55, 0.15);
+      color: #9c7820;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-radius: 999px;
+    }
+    .project-card-title {
+      font-size: 18px;
+      font-weight: 700;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      margin: 0 0 6px 0;
+    }
+    .project-card-desc {
+      font-size: 13px;
+      line-height: 1.5;
+      color: #666;
+      margin: 0;
+    }
+    .project-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 600;
+      color: #b38728;
+      border-top: 1px solid rgba(0, 0, 0, 0.06);
+      padding-top: 12px;
+    }
+
     /* Toast */
     .font-toast {
       position: fixed;
@@ -572,9 +954,9 @@
       background: rgba(20, 18, 22, 0.95);
       border: 1px solid rgba(212, 175, 55, 0.5);
       color: #f7f6f2;
-      padding: 8px 16px;
+      padding: 9px 20px;
       border-radius: 999px;
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 600;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
       backdrop-filter: blur(12px);
@@ -583,7 +965,6 @@
       transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
       pointer-events: none;
     }
-
     .font-toast.is-shown {
       opacity: 1;
       transform: translateX(-50%) translateY(0);
@@ -1299,94 +1680,480 @@
     </div>
   </section>
 
+  <!-- ==========================================================================
+       UNIVERSAL CUSTOMIZABLE STATIC ELEMENT (HAUTE COUTURE BANNER)
+       ========================================================================== -->
+  <section id="CustomStaticElement-preview" class="custom-static-element-section">
+    <div class="static-element-container">
+      <div class="static-element-eyebrow">
+        <span class="eyebrow-sparkle">✦</span>
+        <span id="staticEyebrowText">TEEKHI BELLA • ATELIER COUTURE</span>
+        <span class="eyebrow-sparkle">✦</span>
+      </div>
+      <h2 class="static-element-heading" id="staticHeadingText">Archival Haute Couture 2026</h2>
+      <div class="static-element-subheading" id="staticSubheadingText">
+        Each bespoke piece is meticulously draped by master artisans, blending centuries-old Indian craftsmanship with modern architectural silhouettes.
+      </div>
+      <div class="static-element-actions">
+        <a href="#HangerRack-preview" class="static-element-btn-primary" id="staticBtnPrimary">
+          <span>Explore The Runway</span>
+          <span class="btn-arrow">⟶</span>
+        </a>
+        <a href="waitlist.html" class="static-element-btn-secondary" id="staticBtnSecondary">
+          <span>Join VIP Waitlist</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       ATELIER PROJECTS SHOWCASE HUB
+       ========================================================================== -->
+  <section class="projects-hub-section" id="ProjectsHub-preview">
+    <div class="projects-hub-container">
+      <div class="projects-hub-header">
+        <div class="static-element-eyebrow">
+          <span>✦</span>
+          <span>SHOPIFY THEME ATELIER SUITE</span>
+          <span>✦</span>
+        </div>
+        <h2 class="projects-hub-title">Every Project Created For The Shopify Store</h2>
+        <p class="projects-hub-subtitle">
+          Every single bespoke section engineered for Teekhi Bella. Fully customizable via the Shopify Theme Editor (Customize screen) or the Live Customizer below.
+        </p>
+      </div>
+
+      <div class="projects-grid">
+        <!-- Project 1: Clothes Hanger Rack -->
+        <a href="#HangerRack-preview" class="project-card">
+          <div>
+            <span class="project-card-badge">Section • Active on Page</span>
+            <h3 class="project-card-title">Clothes Hanger Rack</h3>
+            <p class="project-card-desc">
+              Physical overhead steel rail with interactive physics-driven garment sways, sound effects, bespoke swing tags, and floating couture inspection cards.
+            </p>
+          </div>
+          <div class="project-card-footer">
+            <span>Scroll & Experience</span>
+            <span>↑ Live Above</span>
+          </div>
+        </a>
+
+        <!-- Project 2: Luxury Morphing Header -->
+        <a href="#LuxuryHeader" class="project-card">
+          <div>
+            <span class="project-card-badge">Section • Active on Page</span>
+            <h3 class="project-card-title">Luxury Morphing Header</h3>
+            <p class="project-card-desc">
+              Centered couture brand wordmark with Ahsing display typography, smooth scroll morph dock, mobile luxury menu dropdown, and chili pepper cursor.
+            </p>
+          </div>
+          <div class="project-card-footer">
+            <span>Inspect Navigation</span>
+            <span>↑ Top of Page</span>
+          </div>
+        </a>
+
+        <!-- Project 3: Atelier Waitlist Page -->
+        <a href="waitlist.html" class="project-card">
+          <div>
+            <span class="project-card-badge">Page Template & Section</span>
+            <h3 class="project-card-title">Atelier Waitlist Experience</h3>
+            <p class="project-card-desc">
+              3-step VIP reservation flow with live Google Sheet webhook sync, interactive runway dress selector, Indian standard size picker, and instant confirmation.
+            </p>
+          </div>
+          <div class="project-card-footer">
+            <span>Open Waitlist Experience</span>
+            <span>Launch ⟶</span>
+          </div>
+        </a>
+
+        <!-- Project 4: Luxury Product Inspect Page -->
+        <a href="product-inspect.html" class="project-card">
+          <div>
+            <span class="project-card-badge">Product Page & Section</span>
+            <h3 class="project-card-title">Luxury Product Inspect Page</h3>
+            <p class="project-card-desc">
+              Canto/CVNT-inspired high fashion editorial inspection view with side-by-side gallery drawers, animated size guide, customer reviews, and playful cat meow audio.
+            </p>
+          </div>
+          <div class="project-card-footer">
+            <span>Inspect Product Page</span>
+            <span>Launch ⟶</span>
+          </div>
+        </a>
+
+        <!-- Project 5: Customizable Static Element -->
+        <a href="#CustomStaticElement-preview" class="project-card">
+          <div>
+            <span class="project-card-badge">Section & Snippet • Reusable</span>
+            <h3 class="project-card-title">Universal Static Element Banner</h3>
+            <p class="project-card-desc">
+              Drop-in static couture element with 100% customizable titles, font families, solid/gradient/image background, padding, and action buttons.
+            </p>
+          </div>
+          <div class="project-card-footer">
+            <span>Inspect Static Element</span>
+            <span>View Above ⟶</span>
+          </div>
+        </a>
+
+        <!-- Project 6: Hero 3D Cylinder Runway -->
+        <div class="project-card">
+          <div>
+            <span class="project-card-badge" style="background: rgba(140, 140, 160, 0.15); color: #7a7a90;">Liquid Section Ready</span>
+            <h3 class="project-card-title">Hero 3D Cylinder Runway</h3>
+            <p class="project-card-desc">
+              Auto-rotating 3D circular cylinder carousel with dynamic lighting, reflections, camera tilt, and customizable giant background couture title.
+            </p>
+          </div>
+          <div class="project-card-footer" style="color: #666;">
+            <span>sections/hero-3d-cylinder.liquid</span>
+            <span>Installed ✓</span>
+          </div>
+        </div>
+
+        <!-- Project 7: Magic Wardrobe Lookbook -->
+        <div class="project-card">
+          <div>
+            <span class="project-card-badge" style="background: rgba(140, 140, 160, 0.15); color: #7a7a90;">Liquid Section Ready</span>
+            <h3 class="project-card-title">Magic Wardrobe Lookbook</h3>
+            <p class="project-card-desc">
+              Private atelier dressing room carousel with interactive outfit selector tabs, look tags, detail cards, and auto slide cycling.
+            </p>
+          </div>
+          <div class="project-card-footer" style="color: #666;">
+            <span>sections/wardrobe-carousel.liquid</span>
+            <span>Installed ✓</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Floating Launcher Button -->
-  <button type="button" class="font-studio-launcher" id="fontStudioLauncher" title="Open Atelier Font Studio">
+  <button type="button" class="font-studio-launcher" id="fontStudioLauncher" title="Open Atelier Master Customizer">
     <span class="sparkle">✦</span>
-    <span>Font Library</span>
-    <span class="badge">Hit & Try</span>
+    <span>Master Customizer</span>
+    <span class="badge">Live Studio</span>
   </button>
 
   <!-- Backdrop -->
   <div class="font-studio-backdrop" id="fontStudioBackdrop"></div>
 
-  <!-- Slide-out Drawer Panel -->
-  <aside class="font-studio-drawer" id="fontStudioDrawer" aria-label="Atelier Font Studio">
+  <!-- Slide-out Drawer Panel: Master Atelier Customizer Studio -->
+  <aside class="font-studio-drawer" id="fontStudioDrawer" aria-label="Atelier Master Customizer Studio">
     <!-- Header -->
     <div class="font-studio-header">
       <div>
         <div class="font-studio-title">
           <span>✦</span>
-          <span>Atelier Font Studio</span>
+          <span>Atelier Master Studio</span>
         </div>
-        <div class="font-studio-subtitle">Hit & try curated couture fonts or search any Google font live</div>
+        <div class="font-studio-subtitle">Hit & try Name, Fonts, Backgrounds & Every Store Section</div>
       </div>
-      <button type="button" class="font-studio-close" id="fontStudioClose" aria-label="Close Font Studio">✕</button>
+      <button type="button" class="font-studio-close" id="fontStudioClose" aria-label="Close Customizer">✕</button>
     </div>
 
-    <!-- Target Element Switcher -->
-    <div class="font-target-section">
-      <span class="font-section-label">1. Choose part to style:</span>
-      <div class="font-target-pills" id="targetPills">
-        <button type="button" class="target-pill is-active" data-target="logo">🏷️ Brand Logo</button>
-        <button type="button" class="target-pill" data-target="rack">👑 Rack Heading</button>
-        <button type="button" class="target-pill" data-target="tagline">📜 Tagline</button>
-        <button type="button" class="target-pill" data-target="tag">👗 Swing Tags</button>
-        <button type="button" class="target-pill" data-target="nav">🧭 Navigation</button>
+    <!-- Navigation Tabs -->
+    <nav class="studio-nav-tabs" id="studioNavTabs">
+      <button type="button" class="studio-tab-btn is-active" data-tab="content">
+        <span class="tab-icon">✏️</span>
+        <span>Content</span>
+      </button>
+      <button type="button" class="studio-tab-btn" data-tab="typography">
+        <span class="tab-icon">🔤</span>
+        <span>Typography</span>
+      </button>
+      <button type="button" class="studio-tab-btn" data-tab="palette">
+        <span class="tab-icon">🎨</span>
+        <span>Colors & BG</span>
+      </button>
+      <button type="button" class="studio-tab-btn" data-tab="geometry">
+        <span class="tab-icon">📐</span>
+        <span>Geometry</span>
+      </button>
+      <button type="button" class="studio-tab-btn" data-tab="export">
+        <span class="tab-icon">📋</span>
+        <span>Export</span>
+      </button>
+    </nav>
+
+    <!-- TAB PANE 1: Content & Names -->
+    <div class="studio-tab-pane is-active" id="pane-content">
+      <div class="studio-form-section">
+        <div class="studio-input-group">
+          <label class="studio-input-label" for="inputBrandName">Brand Wordmark (Header Logo)</label>
+          <input type="text" class="studio-text-input" id="inputBrandName" value="TEEKHI BELLA" placeholder="e.g. TEEKHI BELLA, CHANEL, GUCCI">
+        </div>
+
+        <div class="studio-input-group">
+          <label class="studio-input-label" for="inputTagline">Header Tagline / Subtitle</label>
+          <input type="text" class="studio-text-input" id="inputTagline" value="Atelier Couture & Ready-to-Wear" placeholder="e.g. Atelier Couture & Ready-to-Wear">
+        </div>
+
+        <div style="height: 1px; background: rgba(255,255,255,0.08); margin: 6px 0;"></div>
+
+        <div class="studio-input-group">
+          <label class="studio-input-label" for="inputRackTitle">Clothes Rack Main Title</label>
+          <input type="text" class="studio-text-input" id="inputRackTitle" value="House of Royals" placeholder="e.g. House of Royals">
+        </div>
+
+        <div class="studio-input-group">
+          <label class="studio-input-label" for="inputRackEyebrow">Clothes Rack Eyebrow / Subhead</label>
+          <input type="text" class="studio-text-input" id="inputRackEyebrow" value="Autumn / Winter 2026 Couture Collection • Limited Atelier Run" placeholder="Eyebrow text">
+        </div>
+
+        <div style="height: 1px; background: rgba(255,255,255,0.08); margin: 6px 0;"></div>
+
+        <div class="studio-input-group">
+          <label class="studio-input-label" for="inputStaticHeading">Static Banner Element Heading</label>
+          <input type="text" class="studio-text-input" id="inputStaticHeading" value="The Heritage Atelier" placeholder="Static Element Heading">
+        </div>
+
+        <div class="studio-input-group">
+          <label class="studio-input-label" for="inputStaticEyebrow">Static Banner Eyebrow</label>
+          <input type="text" class="studio-text-input" id="inputStaticEyebrow" value="✦ Universal Static Section" placeholder="Eyebrow text">
+        </div>
+
+        <div class="studio-input-group">
+          <label class="studio-input-label" for="inputStaticSubhead">Static Banner Description</label>
+          <textarea class="studio-textarea-input" id="inputStaticSubhead" rows="2" placeholder="Description text">Handcrafted couture garments draped with architectural discipline. Fully customizable in font, background, and scale across every Shopify project.</textarea>
+        </div>
+
+        <div class="studio-input-group">
+          <label class="studio-input-label" for="inputStaticBtn">Primary Button Text</label>
+          <input type="text" class="studio-text-input" id="inputStaticBtn" value="Explore Lookbook" placeholder="Button Label">
+        </div>
       </div>
     </div>
 
-    <!-- Direct Logo Font Source Dropdown Options -->
-    <div class="font-dropdown-section" style="padding: 0 20px 14px 20px;">
-      <label for="fontQuickSelectDropdown" class="font-section-label" style="display:block; margin-bottom: 6px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: #d4af37; font-weight: 700;">2. Logo Font Source Dropdown:</label>
-      <div style="position: relative;">
-        <select id="fontQuickSelectDropdown" class="font-select-input" style="width: 100%; padding: 11px 14px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(212, 175, 55, 0.45); border-radius: 8px; color: #f5f5f5; font-size: 13px; font-weight: 600; cursor: pointer; outline: none;">
-          <option value="Ahsing" selected style="background: #141216; color: #fff;">Ahsing (Typogama Couture) — ACTIVE</option>
-          <option value="Ragara" style="background: #141216; color: #fff;">Ragara Couture (Classic)</option>
-          <option value="Syne" style="background: #141216; color: #fff;">Syne (Parisian Modern)</option>
-          <option value="Italiana" style="background: #141216; color: #fff;">Italiana (Milano Editorial)</option>
-          <option value="Bodoni Moda" style="background: #141216; color: #fff;">Bodoni Moda (Vogue Vogue)</option>
-          <option value="Playfair Display" style="background: #141216; color: #fff;">Playfair Display (Classic Luxury)</option>
-          <option value="Cormorant Garamond" style="background: #141216; color: #fff;">Cormorant Garamond (Atelier Heritage)</option>
-          <option value="Cinzel" style="background: #141216; color: #fff;">Cinzel (Roman Imperial)</option>
-          <option value="Tenor Sans" style="background: #141216; color: #fff;">Tenor Sans (Sleek Minimal)</option>
-          <option value="Pinyon Script" style="background: #141216; color: #fff;">Pinyon Script (French Signature)</option>
-        </select>
+    <!-- TAB PANE 2: Typography -->
+    <div class="studio-tab-pane" id="pane-typography">
+      <!-- Target Element Switcher -->
+      <div class="font-target-section">
+        <span class="font-section-label">1. Choose element to style:</span>
+        <div class="font-target-pills" id="targetPills">
+          <button type="button" class="target-pill is-active" data-target="logo">🏷️ Brand Logo</button>
+          <button type="button" class="target-pill" data-target="rack">👑 Rack Heading</button>
+          <button type="button" class="target-pill" data-target="static">✦ Static Banner</button>
+          <button type="button" class="target-pill" data-target="tagline">📜 Tagline</button>
+          <button type="button" class="target-pill" data-target="tag">👗 Swing Tags</button>
+          <button type="button" class="target-pill" data-target="nav">🧭 Navigation</button>
+        </div>
+      </div>
+
+      <!-- Direct Quick Font Source Dropdown Options -->
+      <div class="font-dropdown-section" style="padding: 0 20px 14px 20px;">
+        <label for="fontQuickSelectDropdown" class="font-section-label" style="display:block; margin-bottom: 6px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: #d4af37; font-weight: 700;">2. Quick Font Source Selection:</label>
+        <div style="position: relative;">
+          <select id="fontQuickSelectDropdown" class="font-select-input" style="width: 100%; padding: 11px 14px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(212, 175, 55, 0.45); border-radius: 8px; color: #f5f5f5; font-size: 13px; font-weight: 600; cursor: pointer; outline: none;">
+            <option value="Ahsing" selected style="background: #141216; color: #fff;">Ahsing (Typogama Couture) — ACTIVE</option>
+            <option value="Ragara" style="background: #141216; color: #fff;">Ragara Couture (Classic)</option>
+            <option value="Syne" style="background: #141216; color: #fff;">Syne (Parisian Modern)</option>
+            <option value="Italiana" style="background: #141216; color: #fff;">Italiana (Milano Editorial)</option>
+            <option value="Bodoni Moda" style="background: #141216; color: #fff;">Bodoni Moda (Vogue Vogue)</option>
+            <option value="Playfair Display" style="background: #141216; color: #fff;">Playfair Display (Classic Luxury)</option>
+            <option value="Cormorant Garamond" style="background: #141216; color: #fff;">Cormorant Garamond (Atelier Heritage)</option>
+            <option value="Cinzel" style="background: #141216; color: #fff;">Cinzel (Roman Imperial)</option>
+            <option value="Tenor Sans" style="background: #141216; color: #fff;">Tenor Sans (Sleek Minimal)</option>
+            <option value="Pinyon Script" style="background: #141216; color: #fff;">Pinyon Script (French Signature)</option>
+            <option value="Allura" style="background: #141216; color: #fff;">Allura (Haute Calligraphy)</option>
+            <option value="Outfit" style="background: #141216; color: #fff;">Outfit (Contemporary Minimal)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Live Search & Custom Font Input -->
+      <div class="font-search-wrap">
+        <div class="font-search-input-box">
+          <span class="font-search-icon">🔍</span>
+          <input type="text" id="fontSearchInput" placeholder="Search or try ANY font (e.g. Cinzel, Oswald, Allura)...">
+        </div>
+      </div>
+
+      <!-- Category Filter Tabs -->
+      <div class="font-category-tabs" id="categoryTabs">
+        <button type="button" class="font-cat-tab is-active" data-cat="all">All (30+)</button>
+        <button type="button" class="font-cat-tab" data-cat="runway">🌟 Curated</button>
+        <button type="button" class="font-cat-tab" data-cat="serif">🏛️ Serifs</button>
+        <button type="button" class="font-cat-tab" data-cat="script">🖋️ Cursive</button>
+        <button type="button" class="font-cat-tab" data-cat="sans">⚡ Modern Sans</button>
+        <button type="button" class="font-cat-tab" data-cat="pairings">⭐ 1-Click Pairings</button>
+      </div>
+
+      <!-- Scrollable Font Cards List -->
+      <div class="font-cards-list" id="fontCardsList"></div>
+    </div>
+
+    <!-- TAB PANE 3: Colors & Backgrounds -->
+    <div class="studio-tab-pane" id="pane-palette">
+      <div class="studio-form-section">
+        <div class="studio-input-group">
+          <label class="studio-input-label">1-Click Luxury Theme Presets</label>
+          <div class="palette-presets-grid" id="palettePresetsGrid">
+            <div class="palette-card" data-bg="#0a090b" data-accent="#d4af37" data-text="#f7f6f2" data-rail="#d4af37">
+              <span class="palette-swatch" style="background: linear-gradient(135deg, #0a090b, #d4af37);"></span>
+              <div>
+                <div class="palette-name">Noir & Gold</div>
+                <div style="font-size: 9.5px; opacity: 0.6;">Atelier Royale</div>
+              </div>
+            </div>
+            <div class="palette-card" data-bg="#120c18" data-accent="#e0a899" data-text="#fdfbf9" data-rail="#e0a899">
+              <span class="palette-swatch" style="background: linear-gradient(135deg, #120c18, #e0a899);"></span>
+              <div>
+                <div class="palette-name">Midnight Rose</div>
+                <div style="font-size: 9.5px; opacity: 0.6;">Plum & Rose Gold</div>
+              </div>
+            </div>
+            <div class="palette-card" data-bg="#08140e" data-accent="#e5d392" data-text="#f6f7f2" data-rail="#e5d392">
+              <span class="palette-swatch" style="background: linear-gradient(135deg, #08140e, #e5d392);"></span>
+              <div>
+                <div class="palette-name">Imperial Emerald</div>
+                <div style="font-size: 9.5px; opacity: 0.6;">Velvet Forest</div>
+              </div>
+            </div>
+            <div class="palette-card" data-bg="#0b101d" data-accent="#64b5f6" data-text="#f0f4f8" data-rail="#90caf9">
+              <span class="palette-swatch" style="background: linear-gradient(135deg, #0b101d, #64b5f6);"></span>
+              <div>
+                <div class="palette-name">Sapphire Night</div>
+                <div style="font-size: 9.5px; opacity: 0.6;">Deep Parisian Blue</div>
+              </div>
+            </div>
+            <div class="palette-card" data-bg="#1a120b" data-accent="#e8a87c" data-text="#fdf7f2" data-rail="#e8a87c">
+              <span class="palette-swatch" style="background: linear-gradient(135deg, #1a120b, #e8a87c);"></span>
+              <div>
+                <div class="palette-name">Cognac Amber</div>
+                <div style="font-size: 9.5px; opacity: 0.6;">Warm Leather</div>
+              </div>
+            </div>
+            <div class="palette-card" data-bg="#f7f5f0" data-accent="#8a6f27" data-text="#1a1715" data-rail="#8a6f27">
+              <span class="palette-swatch" style="background: linear-gradient(135deg, #f7f5f0, #8a6f27);"></span>
+              <div>
+                <div class="palette-name">Alabaster Silk</div>
+                <div style="font-size: 9.5px; opacity: 0.6;">Haute Day Light</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="height: 1px; background: rgba(255,255,255,0.08); margin: 6px 0;"></div>
+
+        <div class="studio-input-group">
+          <label class="studio-input-label">Custom Color Adjustments</label>
+          <div class="color-picker-grid">
+            <div class="color-picker-card">
+              <input type="color" id="pickerBgColor" value="#0a090b">
+              <div class="color-picker-info">
+                <span class="color-picker-title">Background</span>
+                <span class="color-picker-hex" id="hexBgColor">#0a090b</span>
+              </div>
+            </div>
+            <div class="color-picker-card">
+              <input type="color" id="pickerAccentColor" value="#d4af37">
+              <div class="color-picker-info">
+                <span class="color-picker-title">Gold / Accent</span>
+                <span class="color-picker-hex" id="hexAccentColor">#d4af37</span>
+              </div>
+            </div>
+            <div class="color-picker-card">
+              <input type="color" id="pickerTextColor" value="#f7f6f2">
+              <div class="color-picker-info">
+                <span class="color-picker-title">Headings & Text</span>
+                <span class="color-picker-hex" id="hexTextColor">#f7f6f2</span>
+              </div>
+            </div>
+            <div class="color-picker-card">
+              <input type="color" id="pickerRailColor" value="#d4af37">
+              <div class="color-picker-info">
+                <span class="color-picker-title">Rail & Metal</span>
+                <span class="color-picker-hex" id="hexRailColor">#d4af37</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="studio-input-group">
+          <label class="studio-input-label" for="pickerStaticBgColor">Static Banner Background</label>
+          <div class="color-picker-card">
+            <input type="color" id="pickerStaticBgColor" value="#ffffff">
+            <div class="color-picker-info">
+              <span class="color-picker-title">Banner BG Color</span>
+              <span class="color-picker-hex" id="hexStaticBgColor">#ffffff</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Live Search & Custom Font Input -->
-    <div class="font-search-wrap">
-      <div class="font-search-input-box">
-        <span class="font-search-icon">🔍</span>
-        <input type="text" id="fontSearchInput" placeholder="Search or try ANY font (e.g. Cinzel, Oswald, Allura)...">
+    <!-- TAB PANE 4: Geometry & Sizing -->
+    <div class="studio-tab-pane" id="pane-geometry">
+      <div class="studio-form-section">
+        <div class="font-slider-row">
+          <span class="font-slider-label">Font Scale</span>
+          <input type="range" class="font-slider-input" id="scaleSlider" min="70" max="150" step="2" value="100">
+          <span class="font-slider-val" id="scaleVal">100%</span>
+        </div>
+
+        <div class="font-slider-row">
+          <span class="font-slider-label">Letter Spacing</span>
+          <input type="range" class="font-slider-input" id="spacingSlider" min="-2" max="12" step="0.5" value="0">
+          <span class="font-slider-val" id="spacingVal">0px</span>
+        </div>
+
+        <div class="font-slider-row">
+          <span class="font-slider-label">Section Padding</span>
+          <input type="range" class="font-slider-input" id="paddingSlider" min="30" max="150" step="5" value="80">
+          <span class="font-slider-val" id="paddingVal">80px</span>
+        </div>
+
+        <div class="font-slider-row">
+          <span class="font-slider-label">Rail Thickness</span>
+          <input type="range" class="font-slider-input" id="railThicknessSlider" min="4" max="16" step="1" value="7">
+          <span class="font-slider-val" id="railThicknessVal">7px</span>
+        </div>
+
+        <div class="font-slider-row">
+          <span class="font-slider-label">Container Width</span>
+          <input type="range" class="font-slider-input" id="widthSlider" min="800" max="1600" step="20" value="1200">
+          <span class="font-slider-val" id="widthVal">1200px</span>
+        </div>
       </div>
     </div>
 
-    <!-- Category Filter Tabs -->
-    <div class="font-category-tabs" id="categoryTabs">
-      <button type="button" class="font-cat-tab is-active" data-cat="all">All (30+)</button>
-      <button type="button" class="font-cat-tab" data-cat="runway">🌟 Curated</button>
-      <button type="button" class="font-cat-tab" data-cat="serif">🏛️ Serifs</button>
-      <button type="button" class="font-cat-tab" data-cat="script">🖋️ Cursive</button>
-      <button type="button" class="font-cat-tab" data-cat="sans">⚡ Modern Sans</button>
-      <button type="button" class="font-cat-tab" data-cat="pairings">⭐ 1-Click Pairings</button>
+    <!-- TAB PANE 5: Export to Shopify -->
+    <div class="studio-tab-pane" id="pane-export">
+      <div class="studio-form-section">
+        <div class="studio-input-group">
+          <label class="studio-input-label">Shopify Drop-in Section Tag</label>
+          <div class="code-export-box" id="exportLiquidCode">{% section 'custom-static-element' %}
+{% section 'hanger-rack' %}</div>
+          <button type="button" class="font-copy-btn" id="copyLiquidBtn" style="margin-top: 6px;">
+            <span>📋</span>
+            <span>Copy Liquid Tag</span>
+          </button>
+        </div>
+
+        <div class="studio-input-group" style="margin-top: 10px;">
+          <label class="studio-input-label">Live CSS Custom Properties</label>
+          <div class="code-export-box" id="exportCssVars">:root {
+  --header-logo-font: 'Ahsing', serif;
+  --rack-title-font: 'Ahsing', serif;
+  --rack-bg: #0a090b;
+  --rack-accent-color: #d4af37;
+  --rack-rail-color: #d4af37;
+}</div>
+          <button type="button" class="font-copy-btn" id="copyCssBtn" style="margin-top: 6px;">
+            <span>📋</span>
+            <span>Copy CSS Variables</span>
+          </button>
+        </div>
+      </div>
     </div>
 
-    <!-- Scrollable Font Cards List -->
-    <div class="font-cards-list" id="fontCardsList"></div>
-
-    <!-- Fine-Tuning Drawer Footer -->
+    <!-- Universal Drawer Footer -->
     <div class="font-studio-footer">
-      <div class="font-slider-row">
-        <span class="font-slider-label">Font Scale</span>
-        <input type="range" class="font-slider-input" id="scaleSlider" min="70" max="150" step="2" value="100">
-        <span class="font-slider-val" id="scaleVal">100%</span>
-      </div>
-      <div class="font-slider-row">
-        <span class="font-slider-label">Letter Spacing</span>
-        <input type="range" class="font-slider-input" id="spacingSlider" min="-2" max="10" step="0.5" value="0">
-        <span class="font-slider-val" id="spacingVal">0px</span>
-      </div>
       <button type="button" class="font-copy-btn" id="copySettingsBtn">
         <span>📋</span>
         <span id="copyBtnText">Copy Current Font Name</span>
@@ -1443,6 +2210,7 @@
           logo: "'Ahsing', serif",
           tagline: "'Italiana', Georgia, serif",
           rack: "'Ahsing', 'Ragara', Georgia, serif",
+          static: "'Ahsing', serif",
           tag: "'Plus Jakarta Sans', sans-serif",
           nav: "'Plus Jakarta Sans', sans-serif"
         },
@@ -1452,6 +2220,7 @@
           logo: "'Ragara', 'Italiana', Georgia, serif",
           tagline: "'Italiana', Georgia, serif",
           rack: "'Ragara', 'Italiana', Georgia, 'Times New Roman', serif",
+          static: "'Ragara', 'Italiana', Georgia, serif",
           tag: "'Plus Jakarta Sans', sans-serif",
           nav: "'Plus Jakarta Sans', sans-serif"
         },
@@ -1461,6 +2230,7 @@
           logo: "'Bodoni Moda', serif",
           tagline: "'Pinyon Script', cursive",
           rack: "'Bodoni Moda', serif",
+          static: "'Bodoni Moda', serif",
           tag: "'Montserrat', sans-serif",
           nav: "'Montserrat', sans-serif"
         },
@@ -1470,6 +2240,7 @@
           logo: "'Cinzel', serif",
           tagline: "'Cormorant Garamond', serif",
           rack: "'Cinzel', serif",
+          static: "'Cinzel', serif",
           tag: "'Outfit', sans-serif",
           nav: "'Outfit', sans-serif"
         },
@@ -1479,6 +2250,7 @@
           logo: "'Syne', sans-serif",
           tagline: "'Italiana', serif",
           rack: "'Syne', sans-serif",
+          static: "'Syne', sans-serif",
           tag: "'Jost', sans-serif",
           nav: "'Jost', sans-serif"
         },
@@ -1488,6 +2260,7 @@
           logo: "'Playfair Display', serif",
           tagline: "'Great Vibes', cursive",
           rack: "'Playfair Display', serif",
+          static: "'Playfair Display', serif",
           tag: "'Plus Jakarta Sans', sans-serif",
           nav: "'Plus Jakarta Sans', sans-serif"
         },
@@ -1497,18 +2270,21 @@
           logo: "'Tenor Sans', sans-serif",
           tagline: "'Marcellus', serif",
           rack: "'Tenor Sans', sans-serif",
+          static: "'Tenor Sans', sans-serif",
           tag: "'Plus Jakarta Sans', sans-serif",
           nav: "'Plus Jakarta Sans', sans-serif"
         }
       ];
 
       // 2. State & Elements
-      let currentTarget = "logo"; // logo | rack | tagline | tag | nav
+      let currentTab = "content";
+      let currentTarget = "logo"; // logo | rack | static | tagline | tag | nav
       let currentCategory = "all";
       let appliedFonts = {
         logo: "'Ahsing', serif",
         tagline: "'Italiana', Georgia, serif",
-        rack: "'Ragara', 'Italiana', Georgia, 'Times New Roman', serif",
+        rack: "'Ahsing', 'Ragara', Georgia, 'Times New Roman', serif",
+        static: "'Ahsing', serif",
         tag: "'Plus Jakarta Sans', sans-serif",
         nav: "'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif"
       };
@@ -1517,18 +2293,9 @@
       const drawer = document.getElementById('fontStudioDrawer');
       const backdrop = document.getElementById('fontStudioBackdrop');
       const closeBtn = document.getElementById('fontStudioClose');
-      const searchInput = document.getElementById('fontSearchInput');
-      const cardsList = document.getElementById('fontCardsList');
-      const targetPills = document.querySelectorAll('.target-pill');
-      const catTabs = document.querySelectorAll('.font-cat-tab');
-      const scaleSlider = document.getElementById('scaleSlider');
-      const scaleVal = document.getElementById('scaleVal');
-      const spacingSlider = document.getElementById('spacingSlider');
-      const spacingVal = document.getElementById('spacingVal');
-      const copyBtn = document.getElementById('copySettingsBtn');
-      const copyBtnText = document.getElementById('copyBtnText');
+      const tabBtns = document.querySelectorAll('.studio-tab-btn');
+      const tabPanes = document.querySelectorAll('.studio-tab-pane');
       const toast = document.getElementById('fontToast');
-
       const root = document.documentElement;
 
       // 3. Drawer Toggle
@@ -1546,7 +2313,104 @@
       closeBtn?.addEventListener('click', closeDrawer);
       backdrop?.addEventListener('click', closeDrawer);
 
-      // 4. Target Switching
+      // 4. Tab Navigation Switcher
+      tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const tab = btn.dataset.tab;
+          tabBtns.forEach(b => b.classList.remove('is-active'));
+          tabPanes.forEach(p => p.classList.remove('is-active'));
+          btn.classList.add('is-active');
+          const targetPane = document.getElementById(`pane-${tab}`);
+          if (targetPane) targetPane.classList.add('is-active');
+          currentTab = tab;
+          if (tab === 'export') updateExportTab();
+        });
+      });
+
+      // 5. Toast Helper
+      function showToast(msg) {
+        if (!toast) return;
+        toast.textContent = msg;
+        toast.classList.add('is-shown');
+        setTimeout(() => {
+          toast.classList.remove('is-shown');
+        }, 1800);
+      }
+
+      // 6. TAB 1: Real-time Content & Name Binding
+      const inputBrand = document.getElementById('inputBrandName');
+      const inputTagline = document.getElementById('inputTagline');
+      const inputRackTitle = document.getElementById('inputRackTitle');
+      const inputRackEyebrow = document.getElementById('inputRackEyebrow');
+      const inputStaticHeading = document.getElementById('inputStaticHeading');
+      const inputStaticEyebrow = document.getElementById('inputStaticEyebrow');
+      const inputStaticSubhead = document.getElementById('inputStaticSubhead');
+      const inputStaticBtn = document.getElementById('inputStaticBtn');
+
+      inputBrand?.addEventListener('input', (e) => {
+        const val = e.target.value || "TEEKHI BELLA";
+        // Update main header logo
+        const logoEl = document.getElementById('BrandMorphLogo');
+        if (logoEl) {
+          const wordmark = logoEl.querySelector('.brand-wordmark');
+          if (wordmark) wordmark.textContent = val;
+          else logoEl.textContent = val;
+        }
+        // Update docked header logo if exists
+        const dockedLogo = document.querySelector('.docked-brand-logo');
+        if (dockedLogo) dockedLogo.textContent = val;
+        renderCards();
+      });
+
+      inputTagline?.addEventListener('input', (e) => {
+        const val = e.target.value;
+        const taglineEl = document.getElementById('BrandTagline');
+        if (taglineEl) taglineEl.textContent = val;
+      });
+
+      inputRackTitle?.addEventListener('input', (e) => {
+        const val = e.target.value;
+        const rackTitleEl = document.querySelector('.hanger-rack-title');
+        if (rackTitleEl) rackTitleEl.textContent = val;
+      });
+
+      inputRackEyebrow?.addEventListener('input', (e) => {
+        const val = e.target.value;
+        const rackEyebrowEl = document.querySelector('.hanger-rack-eyebrow');
+        if (rackEyebrowEl) rackEyebrowEl.textContent = val;
+      });
+
+      inputStaticHeading?.addEventListener('input', (e) => {
+        const val = e.target.value;
+        const staticHeadingEl = document.querySelector('.static-element-heading');
+        if (staticHeadingEl) staticHeadingEl.textContent = val;
+      });
+
+      inputStaticEyebrow?.addEventListener('input', (e) => {
+        const val = e.target.value;
+        const staticEyebrowEl = document.querySelector('.static-element-eyebrow');
+        if (staticEyebrowEl) staticEyebrowEl.textContent = val;
+      });
+
+      inputStaticSubhead?.addEventListener('input', (e) => {
+        const val = e.target.value;
+        const staticSubheadEl = document.querySelector('.static-element-subheading');
+        if (staticSubheadEl) staticSubheadEl.textContent = val;
+      });
+
+      inputStaticBtn?.addEventListener('input', (e) => {
+        const val = e.target.value;
+        const btnEl = document.querySelector('.static-element-btn-primary');
+        if (btnEl) btnEl.textContent = val;
+      });
+
+      // 7. TAB 2: Typography & Google Fonts
+      const searchInput = document.getElementById('fontSearchInput');
+      const cardsList = document.getElementById('fontCardsList');
+      const targetPills = document.querySelectorAll('.target-pill');
+      const catTabs = document.querySelectorAll('.font-cat-tab');
+      const quickSelect = document.getElementById('fontQuickSelectDropdown');
+
       targetPills.forEach(pill => {
         pill.addEventListener('click', () => {
           targetPills.forEach(p => p.classList.remove('is-active'));
@@ -1556,7 +2420,6 @@
         });
       });
 
-      // 5. Category Switching
       catTabs.forEach(tab => {
         tab.addEventListener('click', () => {
           catTabs.forEach(t => t.classList.remove('is-active'));
@@ -1566,12 +2429,10 @@
         });
       });
 
-      // 6. Search Input
       searchInput?.addEventListener('input', () => {
         renderCards();
       });
 
-      // 7. Dynamic Google Font Ingestion
       function loadGoogleFont(fontName) {
         const cleanName = fontName.trim().replace(/\s+/g, '+');
         const linkId = `gfont-dynamic-${cleanName.toLowerCase()}`;
@@ -1584,7 +2445,6 @@
         }
       }
 
-      // 8. Apply Font to Target
       function applyFont(fontName, familyString) {
         appliedFonts[currentTarget] = familyString;
 
@@ -1598,9 +2458,17 @@
             break;
           case 'rack':
             root.style.setProperty('--rack-title-font', familyString);
+            const rackEl = document.querySelector('.hanger-rack-title');
+            if (rackEl) rackEl.style.fontFamily = familyString;
+            break;
+          case 'static':
+            const staticEl = document.querySelector('.static-element-heading');
+            if (staticEl) staticEl.style.fontFamily = familyString;
             break;
           case 'tagline':
             root.style.setProperty('--header-tagline-font', familyString);
+            const tagEl = document.getElementById('BrandTagline');
+            if (tagEl) tagEl.style.fontFamily = familyString;
             break;
           case 'tag':
             root.style.setProperty('--rack-tag-font', familyString);
@@ -1616,8 +2484,6 @@
         renderCards();
       }
 
-      // Quick Dropdown Change Listener
-      const quickSelect = document.getElementById('fontQuickSelectDropdown');
       quickSelect?.addEventListener('change', (e) => {
         const val = e.target.value;
         const fontObj = fontLibrary.find(f => f.name.toLowerCase() === val.toLowerCase());
@@ -1626,22 +2492,10 @@
         }
       });
 
-      // 9. Toast Helper
-      function showToast(msg) {
-        if (!toast) return;
-        toast.textContent = msg;
-        toast.classList.add('is-shown');
-        setTimeout(() => {
-          toast.classList.remove('is-shown');
-        }, 1800);
-      }
-
-      // 10. Render Font Cards List
       function renderCards() {
         if (!cardsList) return;
         cardsList.innerHTML = '';
 
-        // If in Pairings Tab
         if (currentCategory === 'pairings') {
           fashionPairings.forEach(combo => {
             const card = document.createElement('div');
@@ -1649,7 +2503,7 @@
             card.innerHTML = `
               <div class="pairing-title">${combo.name}</div>
               <div class="pairing-desc">${combo.desc}</div>
-              <div class="pairing-preview" style="font-family: ${combo.logo};">Teekhi Bella</div>
+              <div class="pairing-preview" style="font-family: ${combo.logo};">${inputBrand?.value || "Teekhi Bella"}</div>
             `;
             card.addEventListener('click', () => {
               root.style.setProperty('--header-logo-font', combo.logo);
@@ -1660,9 +2514,13 @@
               root.style.setProperty('--rack-eyebrow-font', combo.nav);
               root.style.setProperty('--rack-subheading-font', combo.nav);
 
+              const staticEl = document.querySelector('.static-element-heading');
+              if (staticEl) staticEl.style.fontFamily = combo.static || combo.rack;
+
               appliedFonts.logo = combo.logo;
               appliedFonts.tagline = combo.tagline;
               appliedFonts.rack = combo.rack;
+              appliedFonts.static = combo.static || combo.rack;
               appliedFonts.tag = combo.tag;
               appliedFonts.nav = combo.nav;
 
@@ -1674,14 +2532,12 @@
         }
 
         const query = (searchInput?.value || '').trim().toLowerCase();
-
         const filtered = fontLibrary.filter(f => {
           const matchCat = (currentCategory === 'all') || (f.category === currentCategory);
           const matchQuery = !query || f.name.toLowerCase().includes(query) || f.category.toLowerCase().includes(query);
           return matchCat && matchQuery;
         });
 
-        // If user typed something not in our library, offer dynamic Google Font load
         if (query && !filtered.some(f => f.name.toLowerCase() === query)) {
           const dynamicName = searchInput.value.trim();
           const dynamicCard = document.createElement('div');
@@ -1691,7 +2547,7 @@
               <span class="font-card-name">Try Google Font: "${dynamicName}"</span>
               <span class="font-card-badge" style="background: #d4af37; color: #121014;">Custom Web Font</span>
             </div>
-            <div class="font-card-preview" style="font-family: sans-serif;">Teekhi Bella</div>
+            <div class="font-card-preview" style="font-family: sans-serif;">${inputBrand?.value || "Teekhi Bella"}</div>
             <div class="font-card-action">
               <span>Dynamic Google Font Fetch</span>
               <button type="button" class="font-card-btn">Fetch & Try</button>
@@ -1707,14 +2563,14 @@
           cardsList.appendChild(dynamicCard);
         }
 
-        // Render filtered cards
         filtered.forEach(font => {
           const isSelected = appliedFonts[currentTarget] && appliedFonts[currentTarget].includes(font.name);
           const card = document.createElement('div');
           card.className = `font-card ${isSelected ? 'is-selected' : ''}`;
 
-          let sampleText = "Teekhi Bella";
-          if (currentTarget === 'rack') sampleText = "House of Royals";
+          let sampleText = inputBrand?.value || "Teekhi Bella";
+          if (currentTarget === 'rack') sampleText = inputRackTitle?.value || "House of Royals";
+          if (currentTarget === 'static') sampleText = inputStaticHeading?.value || "The Heritage Atelier";
           if (currentTarget === 'tagline') sampleText = "Atelier Couture & Ready-to-Wear";
           if (currentTarget === 'tag') sampleText = "LOOK 01 • ₹74,500";
           if (currentTarget === 'nav') sampleText = "ATELIER • RUNWAY";
@@ -1739,7 +2595,92 @@
         });
       }
 
-      // 11. Sliders Handling
+      // 8. TAB 3: Colors & Backgrounds Handling
+      const pickerBg = document.getElementById('pickerBgColor');
+      const hexBg = document.getElementById('hexBgColor');
+      const pickerAccent = document.getElementById('pickerAccentColor');
+      const hexAccent = document.getElementById('hexAccentColor');
+      const pickerText = document.getElementById('pickerTextColor');
+      const hexText = document.getElementById('hexTextColor');
+      const pickerRail = document.getElementById('pickerRailColor');
+      const hexRail = document.getElementById('hexRailColor');
+      const pickerStaticBg = document.getElementById('pickerStaticBgColor');
+      const hexStaticBg = document.getElementById('hexStaticBgColor');
+
+      function updateThemeColors(bg, accent, text, rail) {
+        if (bg) {
+          root.style.setProperty('--rack-bg', bg);
+          const rackSection = document.querySelector('.hanger-rack-section');
+          if (rackSection) rackSection.style.background = bg;
+          if (pickerBg) pickerBg.value = bg;
+          if (hexBg) hexBg.textContent = bg;
+        }
+        if (accent) {
+          root.style.setProperty('--rack-accent-color', accent);
+          if (pickerAccent) pickerAccent.value = accent;
+          if (hexAccent) hexAccent.textContent = accent;
+        }
+        if (text) {
+          root.style.setProperty('--rack-text-color', text);
+          const rackTitle = document.querySelector('.hanger-rack-title');
+          if (rackTitle) rackTitle.style.color = text;
+          if (pickerText) pickerText.value = text;
+          if (hexText) hexText.textContent = text;
+        }
+        if (rail) {
+          root.style.setProperty('--rack-rail-color', rail);
+          if (pickerRail) pickerRail.value = rail;
+          if (hexRail) hexRail.textContent = rail;
+        }
+      }
+
+      // Palette Presets click listener
+      document.querySelectorAll('#palettePresetsGrid .palette-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const bg = card.dataset.bg;
+          const accent = card.dataset.accent;
+          const text = card.dataset.text;
+          const rail = card.dataset.rail;
+          updateThemeColors(bg, accent, text, rail);
+          showToast(`✓ Applied Palette "${card.querySelector('.palette-name')?.textContent}"`);
+        });
+      });
+
+      pickerBg?.addEventListener('input', (e) => {
+        updateThemeColors(e.target.value, null, null, null);
+      });
+
+      pickerAccent?.addEventListener('input', (e) => {
+        updateThemeColors(null, e.target.value, null, null);
+      });
+
+      pickerText?.addEventListener('input', (e) => {
+        updateThemeColors(null, null, e.target.value, null);
+      });
+
+      pickerRail?.addEventListener('input', (e) => {
+        updateThemeColors(null, null, null, e.target.value);
+      });
+
+      pickerStaticBg?.addEventListener('input', (e) => {
+        const val = e.target.value;
+        const staticSection = document.querySelector('.custom-static-element-section');
+        if (staticSection) staticSection.style.background = val;
+        if (hexStaticBg) hexStaticBg.textContent = val;
+      });
+
+      // 9. TAB 4: Geometry & Sizing Handling
+      const scaleSlider = document.getElementById('scaleSlider');
+      const scaleVal = document.getElementById('scaleVal');
+      const spacingSlider = document.getElementById('spacingSlider');
+      const spacingVal = document.getElementById('spacingVal');
+      const paddingSlider = document.getElementById('paddingSlider');
+      const paddingVal = document.getElementById('paddingVal');
+      const railThicknessSlider = document.getElementById('railThicknessSlider');
+      const railThicknessVal = document.getElementById('railThicknessVal');
+      const widthSlider = document.getElementById('widthSlider');
+      const widthVal = document.getElementById('widthVal');
+
       scaleSlider?.addEventListener('input', (e) => {
         const val = e.target.value;
         scaleVal.textContent = `${val}%`;
@@ -1748,6 +2689,9 @@
           root.style.setProperty('--header-logo-scale', ratio);
         } else if (currentTarget === 'rack') {
           root.style.setProperty('--rack-heading-scale', ratio);
+        } else if (currentTarget === 'static') {
+          const staticHeading = document.querySelector('.static-element-heading');
+          if (staticHeading) staticHeading.style.fontSize = `calc(clamp(32px, 5vw, 62px) * ${ratio})`;
         } else if (currentTarget === 'tagline') {
           root.style.setProperty('--header-tagline-scale', ratio);
         }
@@ -1765,10 +2709,74 @@
           root.style.setProperty('--rack-title-spacing', px);
           const el = document.querySelector('.hanger-rack-title');
           if (el) el.style.letterSpacing = px;
+        } else if (currentTarget === 'static') {
+          const el = document.querySelector('.static-element-heading');
+          if (el) el.style.letterSpacing = px;
         }
       });
 
-      // 12. Copy Current Font Setting
+      paddingSlider?.addEventListener('input', (e) => {
+        const val = e.target.value;
+        paddingVal.textContent = `${val}px`;
+        const staticSection = document.querySelector('.custom-static-element-section');
+        if (staticSection) {
+          staticSection.style.paddingTop = `${val}px`;
+          staticSection.style.paddingBottom = `${val}px`;
+        }
+        const rackSection = document.querySelector('.hanger-rack-section');
+        if (rackSection) {
+          rackSection.style.paddingTop = `${val}px`;
+          rackSection.style.paddingBottom = `${val}px`;
+        }
+      });
+
+      railThicknessSlider?.addEventListener('input', (e) => {
+        const val = e.target.value;
+        railThicknessVal.textContent = `${val}px`;
+        const rail = document.querySelector('.hanger-rack-rail');
+        if (rail) rail.style.height = `${val}px`;
+      });
+
+      widthSlider?.addEventListener('input', (e) => {
+        const val = e.target.value;
+        widthVal.textContent = `${val}px`;
+        const staticContainer = document.querySelector('.static-element-container');
+        if (staticContainer) staticContainer.style.maxWidth = `${val}px`;
+        const rackContainer = document.querySelector('.hanger-rack-container');
+        if (rackContainer) rackContainer.style.maxWidth = `${val}px`;
+      });
+
+      // 10. TAB 5: Export to Shopify Generation
+      function updateExportTab() {
+        const cssBox = document.getElementById('exportCssVars');
+        if (cssBox) {
+          cssBox.textContent = `:root {
+  --header-logo-font: ${appliedFonts.logo};
+  --rack-title-font: ${appliedFonts.rack};
+  --static-heading-font: ${appliedFonts.static || appliedFonts.rack};
+  --rack-bg: ${pickerBg?.value || '#0a090b'};
+  --rack-accent-color: ${pickerAccent?.value || '#d4af37'};
+  --rack-rail-color: ${pickerRail?.value || '#d4af37'};
+}`;
+        }
+      }
+
+      document.getElementById('copyLiquidBtn')?.addEventListener('click', () => {
+        const code = document.getElementById('exportLiquidCode')?.textContent || "";
+        navigator.clipboard.writeText(code).then(() => {
+          showToast("✓ Copied Liquid Tags to Clipboard!");
+        });
+      });
+
+      document.getElementById('copyCssBtn')?.addEventListener('click', () => {
+        const code = document.getElementById('exportCssVars')?.textContent || "";
+        navigator.clipboard.writeText(code).then(() => {
+          showToast("✓ Copied CSS Variables to Clipboard!");
+        });
+      });
+
+      const copyBtn = document.getElementById('copySettingsBtn');
+      const copyBtnText = document.getElementById('copyBtnText');
       copyBtn?.addEventListener('click', () => {
         const currentFam = appliedFonts[currentTarget] || 'Playfair Display';
         navigator.clipboard.writeText(currentFam).then(() => {

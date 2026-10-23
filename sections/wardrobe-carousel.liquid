@@ -18,11 +18,48 @@
     --wardrobe-accent: {{ section.settings.accent_color | default: '#c59b27' }};
     --wardrobe-dark: #1e1b1c;
     --wardrobe-card-bg: rgba(255, 255, 255, 0.94);
+    {%- if section.settings.bg_mode == 'gradient' and section.settings.bg_gradient != blank -%}
+      background: {{ section.settings.bg_gradient }} !important;
+    {%- else -%}
+      background-color: var(--wardrobe-bg) !important;
+    {%- endif -%}
 
     {%- if section.settings.heading_font_source == 'shopify' and section.settings.heading_font != blank -%}
       --wardrobe-title-font: {{ section.settings.heading_font.family }}, {{ section.settings.heading_font.fallback_families }};
       --wardrobe-title-weight: {{ section.settings.heading_font.weight }};
       --wardrobe-title-style: {{ section.settings.heading_font.style }};
+    {%- elsif section.settings.heading_font_source == 'ahsing' -%}
+      --wardrobe-title-font: 'Ahsing', serif;
+      --wardrobe-title-weight: 400;
+      --wardrobe-title-style: normal;
+    {%- elsif section.settings.heading_font_source == 'syne' -%}
+      --wardrobe-title-font: 'Syne', sans-serif;
+      --wardrobe-title-weight: 700;
+      --wardrobe-title-style: normal;
+    {%- elsif section.settings.heading_font_source == 'bodoni' -%}
+      --wardrobe-title-font: 'Bodoni Moda', serif;
+      --wardrobe-title-weight: 400;
+      --wardrobe-title-style: normal;
+    {%- elsif section.settings.heading_font_source == 'playfair' -%}
+      --wardrobe-title-font: 'Playfair Display', serif;
+      --wardrobe-title-weight: 400;
+      --wardrobe-title-style: normal;
+    {%- elsif section.settings.heading_font_source == 'italiana' -%}
+      --wardrobe-title-font: 'Italiana', Georgia, serif;
+      --wardrobe-title-weight: 400;
+      --wardrobe-title-style: normal;
+    {%- elsif section.settings.heading_font_source == 'cinzel' -%}
+      --wardrobe-title-font: 'Cinzel', serif;
+      --wardrobe-title-weight: 600;
+      --wardrobe-title-style: normal;
+    {%- elsif section.settings.heading_font_source == 'cormorant' -%}
+      --wardrobe-title-font: 'Cormorant Garamond', serif;
+      --wardrobe-title-weight: 400;
+      --wardrobe-title-style: normal;
+    {%- elsif section.settings.heading_font_source == 'outfit' -%}
+      --wardrobe-title-font: 'Outfit', sans-serif;
+      --wardrobe-title-weight: 500;
+      --wardrobe-title-style: normal;
     {%- elsif section.settings.heading_font_source == 'custom' and section.settings.custom_heading_font != blank -%}
       --wardrobe-title-font: '{{ section.settings.custom_heading_font }}', serif;
       --wardrobe-title-weight: 400;
@@ -307,6 +344,14 @@
       "label": "Heading Font Source",
       "options": [
         { "value": "brand", "label": "Brand Default (Ragara Couture)" },
+        { "value": "ahsing", "label": "Ahsing (Typogama Couture)" },
+        { "value": "syne", "label": "Syne (Modern Luxury Bold)" },
+        { "value": "bodoni", "label": "Bodoni Moda (Editorial Vogue)" },
+        { "value": "playfair", "label": "Playfair Display (Romantic Serif)" },
+        { "value": "italiana", "label": "Italiana (Milano Couture)" },
+        { "value": "cinzel", "label": "Cinzel (Grand Roman)" },
+        { "value": "cormorant", "label": "Cormorant Garamond (Elegance)" },
+        { "value": "outfit", "label": "Outfit (Ultra Clean Sans)" },
         { "value": "shopify", "label": "Shopify Font Library (Select below)" },
         { "value": "custom", "label": "Custom Font Name (e.g. Google Font)" }
       ],
@@ -412,10 +457,27 @@
       "default": 4
     },
     {
+      "type": "select",
+      "id": "bg_mode",
+      "label": "Background Mode",
+      "options": [
+        { "value": "solid", "label": "Solid Color" },
+        { "value": "gradient", "label": "Luxury Gradient" }
+      ],
+      "default": "solid"
+    },
+    {
       "type": "color",
       "id": "bg_color",
       "label": "Background Color",
       "default": "#f3f0e7"
+    },
+    {
+      "type": "text",
+      "id": "bg_gradient",
+      "label": "Background Gradient (CSS)",
+      "default": "linear-gradient(135deg, #f3f0e7 0%, #e8e2d4 100%)",
+      "info": "Active when Gradient mode is selected."
     },
     {
       "type": "color",

@@ -93,6 +93,18 @@
       --pdp-title-font: 'Ragara', 'Italiana', Georgia, serif;
     {%- elsif s.title_font_source == 'syne' -%}
       --pdp-title-font: 'Syne', sans-serif;
+    {%- elsif s.title_font_source == 'bodoni' -%}
+      --pdp-title-font: 'Bodoni Moda', serif;
+    {%- elsif s.title_font_source == 'playfair' -%}
+      --pdp-title-font: 'Playfair Display', serif;
+    {%- elsif s.title_font_source == 'italiana' -%}
+      --pdp-title-font: 'Italiana', Georgia, serif;
+    {%- elsif s.title_font_source == 'cinzel' -%}
+      --pdp-title-font: 'Cinzel', serif;
+    {%- elsif s.title_font_source == 'cormorant' -%}
+      --pdp-title-font: 'Cormorant Garamond', serif;
+    {%- elsif s.title_font_source == 'outfit' -%}
+      --pdp-title-font: 'Outfit', sans-serif;
     {%- elsif s.title_font_source == 'shopify' and s.title_font != blank -%}
       --pdp-title-font: {{ s.title_font.family }}, {{ s.title_font.fallback_families }};
     {%- elsif s.title_font_source == 'custom' and s.custom_title_font != blank -%}
@@ -100,6 +112,9 @@
     {%- else -%}
       --pdp-title-font: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
     {%- endif -%}
+
+    --pdp-title-scale: {{ s.title_font_scale | default: 100 | divided_by: 100.0 }};
+    --pdp-title-spacing: {{ s.title_letter_spacing | default: 0 }}px;
 
     --header-tagline-font: 'Italiana', Georgia, serif;
     --header-nav-font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -189,16 +204,42 @@
   }
 
   /* Dynamic CSS overrides based on section settings */
-  .product-inspect-wrapper,
-  .product-inspect-wrapper main {
-    background-color: var(--pdp-bg) !important;
+  .product-inspect-wrapper {
+    position: relative;
+    overflow: hidden;
+    {%- if s.bg_mode == 'gradient' and s.bg_gradient != blank -%}
+      background: {{ s.bg_gradient }} !important;
+    {%- elsif s.bg_mode == 'image' and s.bg_image != blank -%}
+      background-image: url('{{ s.bg_image | image_url: width: 2600 }}') !important;
+      background-size: cover !important;
+      background-position: center !important;
+    {%- else -%}
+      background-color: var(--pdp-bg) !important;
+    {%- endif -%}
     color: var(--pdp-text) !important;
+  }
+  .pdp-bg-overlay {
+    position: absolute;
+    inset: 0;
+    background: #000000;
+    opacity: {{ s.bg_overlay_opacity | default: 0 | divided_by: 100.0 }};
+    pointer-events: none;
+    z-index: 1;
+  }
+  .product-inspect-wrapper main {
+    background-color: transparent !important;
+    position: relative;
+    z-index: 2;
   }
   .ProductDetailExperience_pageSurface__LIloS {
     background-color: var(--pdp-surface) !important;
+    position: relative;
+    z-index: 2;
   }
   .ProductDetailExperience_productHeading__fwjkS {
     font-family: var(--pdp-title-font) !important;
+    font-size: calc(clamp(1.5rem, 3.2vw, 2.5rem) * var(--pdp-title-scale, 1)) !important;
+    letter-spacing: var(--pdp-title-spacing, 0) !important;
     color: var(--pdp-text) !important;
   }
   .ProductDetailExperience_priceRegular__f_WJq {
@@ -312,6 +353,7 @@
 </style>
 
 <div class="product-inspect-wrapper __variable_337fc1 __variable_9924fb __variable_68f3f8 bg-black text-white antialiased min-h-screen">
+  <div class="pdp-bg-overlay" aria-hidden="true"></div>
   <main class="min-h-screen bg-black text-white">
     <audio src="{{ s.custom_audio_url | default: 'cvnt-cat-meow.mp3' | asset_url }}" preload="auto" playsinline=""></audio>
     <span hidden="" data-cart-image="{% if s.image_1 != blank %}{{ s.image_1 | image_url: width: 600 }}{% else %}{{ 'cvnt-skirt-1.png' | asset_url }}{% endif %}"></span>

@@ -50,6 +50,9 @@
   {%- if ws.logo_font_source == 'shopify' and ws.logo_font != blank -%}
     {{ ws.logo_font | font_face: font_display: 'swap' }}
   {%- endif -%}
+  {%- if ws.title_font_source == 'shopify' and ws.title_font != blank -%}
+    {{ ws.title_font | font_face: font_display: 'swap' }}
+  {%- endif -%}
 
   :root {
     {%- if ws.logo_font_source == 'ahsing' -%}
@@ -64,6 +67,32 @@
       --header-logo-font: '{{ ws.custom_logo_font }}', serif;
     {%- else -%}
       --header-logo-font: 'Ahsing', serif;
+    {%- endif -%}
+
+    {%- if ws.title_font_source == 'ahsing' -%}
+      --wl-title-font: 'Ahsing', serif;
+    {%- elsif ws.title_font_source == 'ragara' -%}
+      --wl-title-font: 'Ragara', 'Italiana', Georgia, serif;
+    {%- elsif ws.title_font_source == 'syne' -%}
+      --wl-title-font: 'Syne', sans-serif;
+    {%- elsif ws.title_font_source == 'bodoni' -%}
+      --wl-title-font: 'Bodoni Moda', serif;
+    {%- elsif ws.title_font_source == 'playfair' -%}
+      --wl-title-font: 'Playfair Display', serif;
+    {%- elsif ws.title_font_source == 'italiana' -%}
+      --wl-title-font: 'Italiana', Georgia, serif;
+    {%- elsif ws.title_font_source == 'cinzel' -%}
+      --wl-title-font: 'Cinzel', serif;
+    {%- elsif ws.title_font_source == 'cormorant' -%}
+      --wl-title-font: 'Cormorant Garamond', serif;
+    {%- elsif ws.title_font_source == 'outfit' -%}
+      --wl-title-font: 'Outfit', sans-serif;
+    {%- elsif ws.title_font_source == 'shopify' and ws.title_font != blank -%}
+      --wl-title-font: {{ ws.title_font.family }}, {{ ws.title_font.fallback_families }};
+    {%- elsif ws.title_font_source == 'custom' and ws.custom_title_font != blank -%}
+      --wl-title-font: '{{ ws.custom_title_font }}', serif;
+    {%- else -%}
+      --wl-title-font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
     {%- endif -%}
 
     --wl-bg: {{ wl_bg }};
@@ -115,13 +144,40 @@
   }
 
   .waitlist-page {
-    background-color: var(--wl-bg) !important;
+    position: relative;
+    overflow: hidden;
+    {%- if ws.bg_mode == 'gradient' and ws.bg_gradient != blank -%}
+      background: {{ ws.bg_gradient }} !important;
+    {%- elsif ws.bg_mode == 'image' and ws.bg_image != blank -%}
+      background-image: url('{{ ws.bg_image | image_url: width: 2600 }}') !important;
+      background-size: cover !important;
+      background-position: center !important;
+    {%- else -%}
+      background-color: var(--wl-bg) !important;
+    {%- endif -%}
+  }
+  .waitlist-bg-overlay {
+    position: absolute;
+    inset: 0;
+    background: #000000;
+    opacity: {{ ws.bg_overlay_opacity | default: 0 | divided_by: 100.0 }};
+    pointer-events: none;
+    z-index: 1;
+  }
+  .waitlist-main-wrap {
+    position: relative;
+    z-index: 2;
   }
   .waitlist-form-card {
     background-color: var(--wl-card-bg) !important;
     border-color: var(--wl-border) !important;
+    position: relative;
+    z-index: 2;
   }
   .waitlist-title {
+    font-family: var(--wl-title-font, 'Plus Jakarta Sans') !important;
+    font-size: calc(clamp(2rem, 3.8vw, 2.75rem) * {{ ws.title_scale | default: 100 | divided_by: 100.0 }}) !important;
+    letter-spacing: {{ ws.title_letter_spacing | default: 0 }}px !important;
     color: var(--wl-text) !important;
   }
   .waitlist-subtitle {
@@ -140,7 +196,8 @@
   }
 </style>
 
-<div class="waitlist-page" id="atelierWaitlistSection" style="--wl-bg: {{ wl_bg }}; background-color: {{ wl_bg }};">
+<div class="waitlist-page" id="atelierWaitlistSection">
+  <div class="waitlist-bg-overlay" aria-hidden="true"></div>
   <!-- ==========================================================================
        LUXURY MORPHING HEADER (CONSISTENT WITH YOUR DREAM RACK PAGE)
        ========================================================================== -->

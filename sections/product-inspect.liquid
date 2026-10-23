@@ -87,13 +87,47 @@
     },
     {
       "type": "header",
-      "content": "Page Colors & Atmosphere"
+      "type": "header",
+      "content": "Page Background & Atmosphere"
+    },
+    {
+      "type": "select",
+      "id": "bg_mode",
+      "label": "Background Mode",
+      "options": [
+        { "value": "solid", "label": "Solid Color" },
+        { "value": "gradient", "label": "Luxury Gradient" },
+        { "value": "image", "label": "Background Image" }
+      ],
+      "default": "solid"
     },
     {
       "type": "color",
       "id": "bg_color",
       "label": "Page Background Color",
       "default": "#000000"
+    },
+    {
+      "type": "text",
+      "id": "bg_gradient",
+      "label": "Background Gradient (CSS)",
+      "default": "linear-gradient(135deg, #0e0d10 0%, #17151c 100%)",
+      "info": "Active when Gradient mode is selected."
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background Image",
+      "info": "Active when Background Image mode is selected."
+    },
+    {
+      "type": "range",
+      "id": "bg_overlay_opacity",
+      "label": "Background Darken Overlay (%)",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "default": 0
     },
     {
       "type": "color",
@@ -171,10 +205,34 @@
         { "value": "ahsing", "label": "Ahsing (Typogama Couture)" },
         { "value": "ragara", "label": "Ragara (Couture Serif)" },
         { "value": "syne", "label": "Syne (Modern Luxury)" },
+        { "value": "bodoni", "label": "Bodoni Moda (Editorial Vogue)" },
+        { "value": "playfair", "label": "Playfair Display (Romantic Serif)" },
+        { "value": "italiana", "label": "Italiana (Milano Couture)" },
+        { "value": "cinzel", "label": "Cinzel (Grand Roman)" },
+        { "value": "cormorant", "label": "Cormorant Garamond (Elegance)" },
+        { "value": "outfit", "label": "Outfit (Ultra Clean Sans)" },
         { "value": "shopify", "label": "Shopify Font Library (Select below)" },
         { "value": "custom", "label": "Custom Font Name" }
       ],
       "default": "brand"
+    },
+    {
+      "type": "range",
+      "id": "title_font_scale",
+      "label": "Product Title Font Scale (%)",
+      "min": 70,
+      "max": 160,
+      "step": 5,
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "title_letter_spacing",
+      "label": "Product Title Letter Spacing (px)",
+      "min": -2,
+      "max": 16,
+      "step": 1,
+      "default": 0
     },
     {
       "type": "font_picker",

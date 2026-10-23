@@ -1,0 +1,297 @@
+{%- render 'custom-static-element', section: section -%}
+
+{% schema %}
+{
+  "name": "Customizable Static Banner",
+  "tag": "section",
+  "class": "section-custom-static-element",
+  "settings": [
+    {
+      "type": "header",
+      "content": "1. Name & Content Customization"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow / Badge Text",
+      "default": "TEEKHI BELLA • ATELIER COUTURE"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading / Name",
+      "default": "Archival Haute Couture 2026"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading / Description",
+      "default": "Each bespoke piece is meticulously draped by master artisans, blending centuries-old Indian craftsmanship with modern architectural silhouettes."
+    },
+    {
+      "type": "header",
+      "content": "Action Buttons"
+    },
+    {
+      "type": "text",
+      "id": "btn_primary_label",
+      "label": "Primary Button Text",
+      "default": "Explore The Runway"
+    },
+    {
+      "type": "url",
+      "id": "btn_primary_url",
+      "label": "Primary Button Link"
+    },
+    {
+      "type": "text",
+      "id": "btn_secondary_label",
+      "label": "Secondary Button Text",
+      "default": "Join VIP Waitlist"
+    },
+    {
+      "type": "url",
+      "id": "btn_secondary_url",
+      "label": "Secondary Button Link"
+    },
+    {
+      "type": "header",
+      "content": "2. Font & Typography Customization"
+    },
+    {
+      "type": "select",
+      "id": "heading_font_source",
+      "label": "Heading Font Family",
+      "options": [
+        { "value": "ahsing", "label": "Ahsing (Typogama Couture)" },
+        { "value": "ragara", "label": "Ragara (Couture Serif)" },
+        { "value": "syne", "label": "Syne (Modern Luxury Bold)" },
+        { "value": "bodoni", "label": "Bodoni Moda (Editorial Vogue)" },
+        { "value": "playfair", "label": "Playfair Display (Romantic Serif)" },
+        { "value": "italiana", "label": "Italiana (Milano Couture)" },
+        { "value": "cinzel", "label": "Cinzel (Grand Roman)" },
+        { "value": "cormorant", "label": "Cormorant Garamond (Elegance)" },
+        { "value": "outfit", "label": "Outfit (Ultra Clean Sans)" },
+        { "value": "shopify", "label": "Shopify Font Library (Select below)" },
+        { "value": "custom", "label": "Custom Google Font Name" }
+      ],
+      "default": "ahsing"
+    },
+    {
+      "type": "font_picker",
+      "id": "heading_font",
+      "label": "Heading Font (Shopify Font Library)",
+      "default": "assistant_n4",
+      "info": "Active when 'Shopify Font Library' is selected above."
+    },
+    {
+      "type": "text",
+      "id": "custom_heading_font",
+      "label": "Custom Google Font Name",
+      "info": "e.g. Cinzel Decorative, Alex Brush, Spectral"
+    },
+    {
+      "type": "range",
+      "id": "heading_scale",
+      "label": "Heading Font Size Scale (%)",
+      "min": 50,
+      "max": 180,
+      "step": 5,
+      "default": 100
+    },
+    {
+      "type": "select",
+      "id": "heading_transform",
+      "label": "Heading Letter Case",
+      "options": [
+        { "value": "none", "label": "Standard (As Typed)" },
+        { "value": "uppercase", "label": "UPPERCASE" },
+        { "value": "capitalize", "label": "Capitalize Each Word" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "select",
+      "id": "body_font_source",
+      "label": "Body Font Source",
+      "options": [
+        { "value": "default", "label": "Plus Jakarta Sans (Theme Default)" },
+        { "value": "shopify", "label": "Shopify Font Library (Select below)" },
+        { "value": "custom", "label": "Custom Body Font Name" }
+      ],
+      "default": "default"
+    },
+    {
+      "type": "font_picker",
+      "id": "body_font",
+      "label": "Body Font (Shopify Font Library)",
+      "default": "assistant_n4"
+    },
+    {
+      "type": "text",
+      "id": "custom_body_font",
+      "label": "Custom Body Font Name"
+    },
+    {
+      "type": "header",
+      "content": "3. Background & Appearance Customization"
+    },
+    {
+      "type": "select",
+      "id": "bg_mode",
+      "label": "Background Mode",
+      "options": [
+        { "value": "solid", "label": "Solid Color" },
+        { "value": "gradient", "label": "Luxury Gradient" },
+        { "value": "image", "label": "Background Image" }
+      ],
+      "default": "solid"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#f8f8f6"
+    },
+    {
+      "type": "text",
+      "id": "bg_gradient",
+      "label": "Background Gradient (CSS)",
+      "default": "linear-gradient(135deg, #fbfaf8 0%, #f1ece4 100%)",
+      "info": "Active when Gradient mode is selected."
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background Image",
+      "info": "Active when Background Image mode is selected."
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Image Darken / Tint Overlay Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "bg_overlay_opacity",
+      "label": "Image Overlay Opacity (%)",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "default": 0
+    },
+    {
+      "type": "checkbox",
+      "id": "use_card_wrap",
+      "label": "Wrap Content in Glassmorphic Card Box",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Card Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "card_blur",
+      "label": "Glassmorphism Blur (px)",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "4. Colors & Details"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#1a1819"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent / Gold Color",
+      "default": "#b38728"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border & Line Divider Color",
+      "default": "rgba(0, 0, 0, 0.08)"
+    },
+    {
+      "type": "color",
+      "id": "btn_primary_bg",
+      "label": "Primary Button Background",
+      "default": "#1a1819"
+    },
+    {
+      "type": "color",
+      "id": "btn_primary_text",
+      "label": "Primary Button Text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "5. Spacing & Layout"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top (px)",
+      "min": 20,
+      "max": 180,
+      "step": 10,
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom (px)",
+      "min": 20,
+      "max": 180,
+      "step": 10,
+      "default": 80
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "container_width",
+      "label": "Container Width",
+      "options": [
+        { "value": "800", "label": "Narrow (800px)" },
+        { "value": "1100", "label": "Standard (1100px)" },
+        { "value": "1360", "label": "Wide (1360px)" },
+        { "value": "100%", "label": "Full Width (Edge to Edge)" }
+      ],
+      "default": "1100"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Customizable Static Banner",
+      "settings": {
+        "eyebrow": "TEEKHI BELLA • ATELIER COUTURE",
+        "heading": "Archival Haute Couture 2026",
+        "subheading": "Each bespoke piece is meticulously draped by master artisans, blending centuries-old Indian craftsmanship with modern architectural silhouettes.",
+        "bg_color": "#f8f8f6"
+      }
+    }
+  ]
+}
+{% endschema %}

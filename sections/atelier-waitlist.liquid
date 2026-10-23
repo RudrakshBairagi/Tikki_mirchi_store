@@ -53,7 +53,18 @@
     },
     {
       "type": "header",
-      "content": "Page Colors & Styling"
+      "content": "Page Background & Appearance"
+    },
+    {
+      "type": "select",
+      "id": "bg_mode",
+      "label": "Background Mode",
+      "options": [
+        { "value": "solid", "label": "Solid Color" },
+        { "value": "gradient", "label": "Luxury Gradient" },
+        { "value": "image", "label": "Background Image" }
+      ],
+      "default": "solid"
     },
     {
       "type": "color",
@@ -62,10 +73,89 @@
       "default": "#f8f8f6"
     },
     {
+      "type": "text",
+      "id": "bg_gradient",
+      "label": "Background Gradient (CSS)",
+      "default": "linear-gradient(135deg, #f8f8f6 0%, #ece7dc 100%)",
+      "info": "Active when Gradient mode is selected."
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background Image",
+      "info": "Active when Background Image mode is selected."
+    },
+    {
+      "type": "range",
+      "id": "bg_overlay_opacity",
+      "label": "Background Darken Overlay (%)",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "default": 0
+    },
+    {
       "type": "color",
       "id": "card_bg_color",
       "label": "Form Card Background Color",
       "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Heading Typography"
+    },
+    {
+      "type": "select",
+      "id": "title_font_source",
+      "label": "Main Heading Font Family",
+      "options": [
+        { "value": "brand", "label": "Brand Sans (Plus Jakarta Sans)" },
+        { "value": "ahsing", "label": "Ahsing (Typogama Couture)" },
+        { "value": "ragara", "label": "Ragara (Couture Serif)" },
+        { "value": "syne", "label": "Syne (Modern Luxury Bold)" },
+        { "value": "bodoni", "label": "Bodoni Moda (Editorial Vogue)" },
+        { "value": "playfair", "label": "Playfair Display (Romantic Serif)" },
+        { "value": "italiana", "label": "Italiana (Milano Couture)" },
+        { "value": "cinzel", "label": "Cinzel (Grand Roman)" },
+        { "value": "cormorant", "label": "Cormorant Garamond (Elegance)" },
+        { "value": "outfit", "label": "Outfit (Ultra Clean Sans)" },
+        { "value": "shopify", "label": "Shopify Font Library (Select below)" },
+        { "value": "custom", "label": "Custom Google Font Name" }
+      ],
+      "default": "brand"
+    },
+    {
+      "type": "font_picker",
+      "id": "title_font",
+      "label": "Heading Font (Shopify Library)",
+      "default": "assistant_n4"
+    },
+    {
+      "type": "text",
+      "id": "custom_title_font",
+      "label": "Custom Heading Font Name"
+    },
+    {
+      "type": "range",
+      "id": "title_scale",
+      "label": "Heading Font Scale (%)",
+      "min": 70,
+      "max": 160,
+      "step": 5,
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "title_letter_spacing",
+      "label": "Heading Letter Spacing (px)",
+      "min": -2,
+      "max": 16,
+      "step": 1,
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Page Colors & Styling"
     },
     {
       "type": "color",

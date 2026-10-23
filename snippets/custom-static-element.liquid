@@ -1,0 +1,275 @@
+{%- comment -%}
+  Universal Customizable Static Element Snippet
+  Supports rendering standalone or within sections.
+{%- endcomment -%}
+{%- assign el_id = section.id | default: 'static-element' -%}
+{%- assign s = section.settings -%}
+
+{%- assign bg_mode = s.bg_mode | default: 'solid' -%}
+{%- assign bg_color = s.bg_color | default: '#f8f8f6' -%}
+{%- assign bg_gradient = s.bg_gradient | default: 'linear-gradient(135deg, #fbfaf8 0%, #f1ece4 100%)' -%}
+{%- assign bg_overlay_opacity = s.bg_overlay_opacity | default: 0 -%}
+{%- assign text_color = s.text_color | default: '#1a1819' -%}
+{%- assign accent_color = s.accent_color | default: '#b38728' -%}
+{%- assign card_bg = s.card_bg | default: '#ffffff' -%}
+{%- assign border_color = s.border_color | default: 'rgba(0, 0, 0, 0.08)' -%}
+{%- assign padding_top = s.padding_top | default: 80 -%}
+{%- assign padding_bottom = s.padding_bottom | default: 80 -%}
+{%- assign heading_scale = s.heading_scale | default: 100 | divided_by: 100.0 -%}
+{%- assign letter_spacing = s.letter_spacing | default: 0.04 -%}
+
+<style>
+  @font-face {
+    font-family: 'Ahsing';
+    src: url('{{ "Ahsing.woff" | asset_url }}') format('woff'),
+         url('{{ "Ahsing.otf" | asset_url }}') format('opentype'),
+         url('{{ "typogama-ahsing.otf" | asset_url }}') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Ragara';
+    src: url('{{ "Ragara.woff" | asset_url }}') format('woff'),
+         url('{{ "Ragara.otf" | asset_url }}') format('opentype'),
+         url('{{ "Ragara.ttf" | asset_url }}') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  {%- if s.heading_font_source == 'shopify' and s.heading_font != blank -%}
+    {{ s.heading_font | font_face: font_display: 'swap' }}
+  {%- endif -%}
+  {%- if s.body_font_source == 'shopify' and s.body_font != blank -%}
+    {{ s.body_font | font_face: font_display: 'swap' }}
+  {%- endif -%}
+
+  #CustomStaticElement-{{ el_id }} {
+    --el-bg: {{ bg_color }};
+    --el-bg-gradient: {{ bg_gradient }};
+    --el-text: {{ text_color }};
+    --el-accent: {{ accent_color }};
+    --el-card-bg: {{ card_bg }};
+    --el-border: {{ border_color }};
+    --el-padding-top: {{ padding_top }}px;
+    --el-padding-bottom: {{ padding_bottom }}px;
+    --el-heading-scale: {{ heading_scale }};
+    --el-letter-spacing: {{ letter_spacing }}em;
+
+    {%- if s.heading_font_source == 'ahsing' -%}
+      --el-heading-font: 'Ahsing', serif;
+    {%- elsif s.heading_font_source == 'ragara' -%}
+      --el-heading-font: 'Ragara', 'Italiana', Georgia, serif;
+    {%- elsif s.heading_font_source == 'syne' -%}
+      --el-heading-font: 'Syne', sans-serif;
+    {%- elsif s.heading_font_source == 'bodoni' -%}
+      --el-heading-font: 'Bodoni Moda', serif;
+    {%- elsif s.heading_font_source == 'playfair' -%}
+      --el-heading-font: 'Playfair Display', serif;
+    {%- elsif s.heading_font_source == 'italiana' -%}
+      --el-heading-font: 'Italiana', Georgia, serif;
+    {%- elsif s.heading_font_source == 'cinzel' -%}
+      --el-heading-font: 'Cinzel', serif;
+    {%- elsif s.heading_font_source == 'cormorant' -%}
+      --el-heading-font: 'Cormorant Garamond', serif;
+    {%- elsif s.heading_font_source == 'outfit' -%}
+      --el-heading-font: 'Outfit', sans-serif;
+    {%- elsif s.heading_font_source == 'shopify' and s.heading_font != blank -%}
+      --el-heading-font: {{ s.heading_font.family }}, {{ s.heading_font.fallback_families }};
+    {%- elsif s.heading_font_source == 'custom' and s.custom_heading_font != blank -%}
+      --el-heading-font: '{{ s.custom_heading_font }}', serif;
+    {%- else -%}
+      --el-heading-font: 'Ahsing', serif;
+    {%- endif -%}
+
+    {%- if s.body_font_source == 'shopify' and s.body_font != blank -%}
+      --el-body-font: {{ s.body_font.family }}, {{ s.body_font.fallback_families }};
+    {%- elsif s.body_font_source == 'custom' and s.custom_body_font != blank -%}
+      --el-body-font: '{{ s.custom_body_font }}', sans-serif;
+    {%- else -%}
+      --el-body-font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    {%- endif -%}
+
+    position: relative;
+    padding-top: var(--el-padding-top);
+    padding-bottom: var(--el-padding-bottom);
+    color: var(--el-text);
+    overflow: hidden;
+
+    {%- if bg_mode == 'gradient' -%}
+      background: var(--el-bg-gradient);
+    {%- elsif bg_mode == 'image' and s.bg_image != blank -%}
+      background-image: url('{{ s.bg_image | image_url: width: 2400 }}');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    {%- else -%}
+      background-color: var(--el-bg);
+    {%- endif -%}
+  }
+
+  #CustomStaticElement-{{ el_id }} .static-element-overlay {
+    position: absolute;
+    inset: 0;
+    background: {{ s.overlay_color | default: '#000000' }};
+    opacity: {{ bg_overlay_opacity | divided_by: 100.0 }};
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  #CustomStaticElement-{{ el_id }} .static-element-container {
+    position: relative;
+    z-index: 2;
+    max-width: {{ s.container_width | default: '1280' }}px;
+    margin: 0 auto;
+    padding: 0 24px;
+    text-align: {{ s.text_alignment | default: 'center' }};
+  }
+
+  #CustomStaticElement-{{ el_id }} .static-element-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--el-body-font);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--el-accent);
+    margin-bottom: 16px;
+  }
+
+  #CustomStaticElement-{{ el_id }} .static-element-heading {
+    font-family: var(--el-heading-font);
+    font-weight: 400;
+    font-size: calc(clamp(32px, 5.2vw, 68px) * var(--el-heading-scale));
+    letter-spacing: var(--el-letter-spacing);
+    line-height: 1.1;
+    color: var(--el-text);
+    margin: 0 0 20px 0;
+    text-transform: {{ s.heading_transform | default: 'none' }};
+  }
+
+  #CustomStaticElement-{{ el_id }} .static-element-subheading {
+    font-family: var(--el-body-font);
+    font-size: clamp(14px, 1.4vw, 17px);
+    line-height: 1.65;
+    color: var(--el-text);
+    opacity: 0.85;
+    max-width: 680px;
+    margin: 0 auto 36px auto;
+  }
+
+  #CustomStaticElement-{{ el_id }} .static-element-actions {
+    display: flex;
+    align-items: center;
+    justify-content: {{ s.button_alignment | default: 'center' }};
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  #CustomStaticElement-{{ el_id }} .static-element-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 34px;
+    background: {{ s.btn_primary_bg | default: '#1a1819' }};
+    color: {{ s.btn_primary_text | default: '#ffffff' }};
+    border: 1px solid {{ s.btn_primary_border | default: '#1a1819' }};
+    border-radius: {{ s.btn_border_radius | default: 999 }}px;
+    font-family: var(--el-body-font);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  #CustomStaticElement-{{ el_id }} .static-element-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  }
+
+  #CustomStaticElement-{{ el_id }} .static-element-btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    background: transparent;
+    color: var(--el-text);
+    border: 1px solid var(--el-border);
+    border-radius: {{ s.btn_border_radius | default: 999 }}px;
+    font-family: var(--el-body-font);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  #CustomStaticElement-{{ el_id }} .static-element-btn-secondary:hover {
+    background: rgba(0, 0, 0, 0.04);
+    border-color: var(--el-text);
+  }
+
+  #CustomStaticElement-{{ el_id }} .static-element-card {
+    background: var(--el-card-bg);
+    border: 1px solid var(--el-border);
+    border-radius: {{ s.card_radius | default: 16 }}px;
+    padding: {{ s.card_padding | default: 48 }}px 36px;
+    box-shadow: {{ s.card_shadow | default: '0 12px 40px rgba(0, 0, 0, 0.05)' }};
+    backdrop-filter: blur({{ s.card_blur | default: 0 }}px);
+    max-width: 900px;
+    margin: 0 auto;
+  }
+</style>
+
+<section id="CustomStaticElement-{{ el_id }}" class="custom-static-element-section">
+  <div class="static-element-overlay" aria-hidden="true"></div>
+
+  <div class="static-element-container">
+    {%- if s.use_card_wrap == true -%}
+      <div class="static-element-card">
+    {%- endif -%}
+
+      {%- if s.eyebrow != blank -%}
+        <div class="static-element-eyebrow">
+          <span class="eyebrow-sparkle">✦</span>
+          <span>{{ s.eyebrow }}</span>
+          <span class="eyebrow-sparkle">✦</span>
+        </div>
+      {%- endif -%}
+
+      {%- if s.heading != blank -%}
+        <h2 class="static-element-heading">{{ s.heading }}</h2>
+      {%- endif -%}
+
+      {%- if s.subheading != blank -%}
+        <div class="static-element-subheading">{{ s.subheading }}</div>
+      {%- endif -%}
+
+      {%- if s.btn_primary_label != blank or s.btn_secondary_label != blank -%}
+        <div class="static-element-actions">
+          {%- if s.btn_primary_label != blank -%}
+            <a href="{{ s.btn_primary_url | default: '#' }}" class="static-element-btn-primary">
+              <span>{{ s.btn_primary_label }}</span>
+              <span class="btn-arrow">⟶</span>
+            </a>
+          {%- endif -%}
+
+          {%- if s.btn_secondary_label != blank -%}
+            <a href="{{ s.btn_secondary_url | default: '#' }}" class="static-element-btn-secondary">
+              <span>{{ s.btn_secondary_label }}</span>
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+    {%- if s.use_card_wrap == true -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
