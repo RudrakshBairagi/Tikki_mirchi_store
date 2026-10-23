@@ -11,6 +11,10 @@
   const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyf6lJGVyB4a2kx5AY51r-IpoFmwOH5I-TN53rVPCQAk_KaJ-m34qfdKlRb9thgf5UdEg/exec';
 
   document.addEventListener('DOMContentLoaded', initWaitlist);
+  document.addEventListener('shopify:section:load', initWaitlist);
+  if (document.readyState === 'interactive' || document.readyState === 'complete') {
+    initWaitlist();
+  }
 
   function initWaitlist() {
     const form = document.getElementById('atelierWaitlistForm');

@@ -1,4 +1,4 @@
-{%- assign ws = section.settings -%}
+{%- assign ws = ws | default: section.settings | default: section_settings -%}
 {%- assign wl_bg = ws.bg_color | default: '#f8f8f6' -%}
 {%- assign wl_card_bg = ws.card_bg_color | default: '#ffffff' -%}
 {%- assign wl_text = ws.text_color | default: '#1a1819' -%}
@@ -13,6 +13,17 @@
 
 {{ 'header-morph.css' | asset_url | stylesheet_tag }}
 {{ 'atelier-waitlist.css' | asset_url | stylesheet_tag }}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Italiana&family=Outfit:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+{%- if ws.title_font_source == 'custom' and ws.custom_title_font != blank -%}
+  {%- assign custom_font_slug = ws.custom_title_font | replace: ' ', '+' -%}
+  <link href="https://fonts.googleapis.com/css2?family={{ custom_font_slug }}:wght@400;600;700&display=swap" rel="stylesheet">
+{%- endif -%}
+{%- if ws.logo_font_source == 'custom' and ws.custom_logo_font != blank -%}
+  {%- assign custom_logo_slug = ws.custom_logo_font | replace: ' ', '+' -%}
+  <link href="https://fonts.googleapis.com/css2?family={{ custom_logo_slug }}:wght@400;600;700&display=swap" rel="stylesheet">
+{%- endif -%}
 <script src="{{ 'header-morph.js' | asset_url }}" defer="defer"></script>
 <script src="{{ 'atelier-waitlist.js' | asset_url }}" defer="defer"></script>
 
@@ -98,12 +109,25 @@
     --wl-bg: {{ wl_bg }};
     --wl-card-bg: {{ wl_card_bg }};
     --wl-text: {{ wl_text }};
+    --wl-text-main: {{ wl_text }};
     --wl-muted: {{ wl_muted }};
+    --wl-text-muted: {{ wl_muted }};
     --wl-accent: {{ wl_accent }};
+    --wl-accent-gold: {{ wl_accent }};
+    --wl-accent-gold-light: {{ wl_accent }};
     --wl-border: {{ wl_border }};
+    --wl-border-light: {{ wl_border }};
     --wl-input-bg: {{ wl_input_bg }};
     --wl-submit-bg: {{ wl_submit_bg }};
+    --wl-btn-bg: {{ wl_submit_bg }};
     --wl-submit-text: {{ wl_submit_text }};
+    --wl-btn-text: {{ wl_submit_text }};
+    --wl-font-serif: var(--wl-title-font, 'Plus Jakarta Sans', serif);
+    --wl-font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  #atelierWaitlistSection {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   }
 
   #atelierWaitlistSection .brand-morph-logo,
@@ -132,15 +156,6 @@
       font-size: inherit !important;
       line-height: 0.95 !important;
     }
-  }
-
-  #atelierWaitlistSection .waitlist-hero-header,
-  #atelierWaitlistSection .waitlist-hero-header *,
-  #atelierWaitlistSection .waitlist-form-card,
-  #atelierWaitlistSection .waitlist-form-card *,
-  #atelierWaitlistSection .waitlist-success-view,
-  #atelierWaitlistSection .waitlist-success-view * {
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
   }
 
   .waitlist-page {
@@ -183,12 +198,37 @@
   .waitlist-subtitle {
     color: var(--wl-muted) !important;
   }
+  .form-section-title,
+  .form-input-wrap label,
+  .dress-card-title {
+    color: var(--wl-text) !important;
+  }
+  .dresses-helper-text,
+  .dress-card-price,
+  .size-guide-hint,
+  .waitlist-disclaimer {
+    color: var(--wl-muted) !important;
+  }
   .form-input-wrap input,
   .form-input-wrap select,
   .phone-input-group {
     background-color: var(--wl-input-bg) !important;
     border-color: var(--wl-border) !important;
     color: var(--wl-text) !important;
+  }
+  .size-select-pill {
+    background-color: var(--wl-input-bg) !important;
+    border-color: var(--wl-border) !important;
+    color: var(--wl-text) !important;
+  }
+  .size-select-pill.is-active {
+    background-color: var(--wl-text) !important;
+    border-color: var(--wl-text) !important;
+    color: var(--wl-card-bg) !important;
+  }
+  .size-select-pill.is-active .size-pill-name,
+  .size-select-pill.is-active .size-pill-detail {
+    color: var(--wl-card-bg) !important;
   }
   .waitlist-submit-btn {
     background-color: var(--wl-submit-bg) !important;

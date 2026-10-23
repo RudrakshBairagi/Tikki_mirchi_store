@@ -1,4 +1,4 @@
-{%- assign s = section.settings -%}
+{%- assign s = s | default: settings | default: section.settings -%}
 
 {%- assign bg_color = s.bg_color | default: '#000000' -%}
 {%- assign surface_bg_color = s.surface_bg_color | default: '#080808' -%}

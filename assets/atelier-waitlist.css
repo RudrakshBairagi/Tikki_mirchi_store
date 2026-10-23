@@ -65,13 +65,10 @@
   -webkit-font-smoothing: antialiased;
 }
 
-.waitlist-hero-header *,
-.waitlist-form-card *,
-.waitlist-success-view *,
 .waitlist-hero-header,
 .waitlist-form-card,
 .waitlist-success-view {
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  font-family: var(--wl-font-main, 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif);
 }
 
 /* Luxury Morphing Header Consistency Overrides on Waitlist Page */

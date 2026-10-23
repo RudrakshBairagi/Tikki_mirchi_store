@@ -15,9 +15,9 @@
 {%- endstyle -%}
 
 {%- if page.handle == 'waitlist' -%}
-  {%- render 'atelier-waitlist-content' -%}
+  {%- render 'atelier-waitlist-content', ws: section.settings, section: section -%}
 {%- elsif page.handle == 'product-inspect' or page.handle == 'inspect' -%}
-  {%- render 'product-inspect-content' -%}
+  {%- render 'product-inspect-content', s: section.settings, section: section -%}
 {%- else -%}
   <div class="page-width page-width--narrow section-{{ section.id }}-padding">
     <h1 class="main-page-title page-title h0{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">

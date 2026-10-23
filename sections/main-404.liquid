@@ -1,34 +1,72 @@
+{%- liquid
+  assign is_inspect = false
+  assign is_waitlist = false
+
+  if request.path contains 'inspect' or request.path contains 'skirt'
+    assign is_inspect = true
+  elsif request.path contains 'waitlist'
+    assign is_waitlist = true
+  elsif request.design_mode
+    assign is_waitlist = true
+  endif
+-%}
+
 <script>
   (function() {
-    var p = (window.location.pathname || '').toLowerCase();
-    var h = (window.location.href || '').toLowerCase();
-    if (p.indexOf('waitlist') !== -1 || h.indexOf('waitlist') !== -1) {
-      document.title = "Waitlist — Teekhi Bella";
-      document.documentElement.classList.add('is-waitlist-mode');
-    } else if (p.indexOf('product-inspect') !== -1 || p.indexOf('inspect') !== -1 || p.indexOf('products/skirt') !== -1 || p.indexOf('product/skirt') !== -1) {
-      document.title = "cvnt's genda phool skirt — Teekhi Bella";
-      document.documentElement.classList.add('is-inspect-mode');
+    function detect404Mode() {
+      var p = (window.location.pathname || '').toLowerCase();
+      var h = (window.location.href || '').toLowerCase();
+      if (p.indexOf('waitlist') !== -1 || h.indexOf('waitlist') !== -1) {
+        document.title = "Waitlist — Teekhi Bella";
+        document.documentElement.classList.add('is-waitlist-mode');
+        document.documentElement.classList.remove('is-inspect-mode');
+      } else if (p.indexOf('product-inspect') !== -1 || p.indexOf('inspect') !== -1 || p.indexOf('products/skirt') !== -1 || p.indexOf('product/skirt') !== -1) {
+        document.title = "cvnt's genda phool skirt — Teekhi Bella";
+        document.documentElement.classList.add('is-inspect-mode');
+        document.documentElement.classList.remove('is-waitlist-mode');
+      }
     }
+    detect404Mode();
+    document.addEventListener('DOMContentLoaded', detect404Mode);
+    document.addEventListener('shopify:section:load', detect404Mode);
   })();
 </script>
 
 <style type="text/css">
-  #waitlistAutoFallback,
-  #inspectAutoFallback {
-    display: none;
-  }
-  html.is-waitlist-mode #waitlistAutoFallback {
-    display: block !important;
-  }
-  html.is-inspect-mode #inspectAutoFallback {
-    display: block !important;
-  }
-  html.is-waitlist-mode #standard404Markup,
-  html.is-waitlist-mode #inspectAutoFallback,
-  html.is-inspect-mode #standard404Markup,
-  html.is-inspect-mode #waitlistAutoFallback {
-    display: none !important;
-  }
+  {%- if is_waitlist -%}
+    #waitlistAutoFallback {
+      display: block !important;
+    }
+    #standard404Markup,
+    #inspectAutoFallback {
+      display: none !important;
+    }
+  {%- elsif is_inspect -%}
+    #inspectAutoFallback {
+      display: block !important;
+    }
+    #standard404Markup,
+    #waitlistAutoFallback {
+      display: none !important;
+    }
+  {%- else -%}
+    #waitlistAutoFallback,
+    #inspectAutoFallback {
+      display: none;
+    }
+    html.is-waitlist-mode #waitlistAutoFallback {
+      display: block !important;
+    }
+    html.is-inspect-mode #inspectAutoFallback {
+      display: block !important;
+    }
+    html.is-waitlist-mode #standard404Markup,
+    html.is-waitlist-mode #inspectAutoFallback,
+    html.is-inspect-mode #standard404Markup,
+    html.is-inspect-mode #waitlistAutoFallback {
+      display: none !important;
+    }
+  {%- endif -%}
   .template-404 .title + * {
     margin-top: 1rem;
   }
@@ -40,11 +78,11 @@
 </style>
 
 <div id="waitlistAutoFallback">
-  {%- render 'atelier-waitlist-content', section: section -%}
+  {%- render 'atelier-waitlist-content', ws: section.settings, section: section -%}
 </div>
 
 <div id="inspectAutoFallback">
-  {%- render 'product-inspect-content', section: section -%}
+  {%- render 'product-inspect-content', s: section.settings, section: section -%}
 </div>
 
 <div id="standard404Markup">
