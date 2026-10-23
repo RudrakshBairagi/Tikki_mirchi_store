@@ -1,0 +1,318 @@
+{%- style -%}
+  @font-face {
+    font-family: 'Ahsing';
+    src: url('{{ "Ahsing.woff" | asset_url }}') format('woff'),
+         url('{{ "Ahsing.otf" | asset_url }}') format('opentype'),
+         url('{{ "typogama-ahsing.otf" | asset_url }}') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Ragara';
+    src: url('{{ "Ragara.woff" | asset_url }}') format('woff'),
+         url('{{ "Ragara.otf" | asset_url }}') format('opentype'),
+         url('{{ "Ragara.ttf" | asset_url }}') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  {%- if section.settings.font_source == 'shopify' and section.settings.font_picker != blank -%}
+    {{ section.settings.font_picker | font_face: font_display: 'swap' }}
+  {%- endif -%}
+
+  #RackEyebrow-{{ section.id }} {
+    {%- if section.settings.bg_transparent -%}
+      background: transparent !important;
+    {%- elsif section.settings.bg_mode == 'gradient' and section.settings.bg_gradient != blank -%}
+      background: {{ section.settings.bg_gradient }} !important;
+    {%- else -%}
+      background-color: {{ section.settings.bg_color | default: '#FDDDED' }} !important;
+    {%- endif -%}
+    padding-top: {{ section.settings.padding_top | default: 35 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | default: 6 }}px;
+    text-align: {{ section.settings.text_alignment | default: 'center' }};
+  }
+
+  #RackEyebrow-{{ section.id }} .rack-eyebrow-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: {% if section.settings.text_alignment == 'left' %}flex-start{% elsif section.settings.text_alignment == 'right' %}flex-end{% else %}center{% endif %};
+    gap: 12px;
+  }
+
+  #RackEyebrow-{{ section.id }} .rack-eyebrow-text {
+    {%- if section.settings.font_source == 'shopify' and section.settings.font_picker != blank -%}
+      font-family: {{ section.settings.font_picker.family }}, {{ section.settings.font_picker.fallback_families }};
+    {%- elsif section.settings.font_source == 'ahsing' -%}
+      font-family: 'Ahsing', serif;
+    {%- elsif section.settings.font_source == 'ragara' -%}
+      font-family: 'Ragara', 'Italiana', Georgia, serif;
+    {%- elsif section.settings.font_source == 'syne' -%}
+      font-family: 'Syne', sans-serif;
+    {%- elsif section.settings.font_source == 'bodoni' -%}
+      font-family: 'Bodoni Moda', serif;
+    {%- elsif section.settings.font_source == 'playfair' -%}
+      font-family: 'Playfair Display', serif;
+    {%- elsif section.settings.font_source == 'italiana' -%}
+      font-family: 'Italiana', Georgia, serif;
+    {%- elsif section.settings.font_source == 'cinzel' -%}
+      font-family: 'Cinzel', serif;
+    {%- elsif section.settings.font_source == 'cormorant' -%}
+      font-family: 'Cormorant Garamond', serif;
+    {%- elsif section.settings.font_source == 'outfit' -%}
+      font-family: 'Outfit', sans-serif;
+    {%- elsif section.settings.font_source == 'custom' and section.settings.custom_font != blank -%}
+      font-family: '{{ section.settings.custom_font }}', sans-serif;
+    {%- else -%}
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    {%- endif -%}
+
+    font-size: {{ section.settings.font_size | default: 13 }}px;
+    font-weight: {{ section.settings.font_weight | default: 600 }};
+    font-style: {{ section.settings.font_style | default: 'normal' }};
+    letter-spacing: {{ section.settings.letter_spacing | default: 3 }}px;
+    text-transform: {{ section.settings.text_transform | default: 'uppercase' }};
+    color: {{ section.settings.text_color | default: '#67574E' }};
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  #RackEyebrow-{{ section.id }} .rack-eyebrow-sparkle {
+    color: {{ section.settings.sparkle_color | default: '#b38728' }};
+    font-size: calc({{ section.settings.font_size | default: 13 }}px * 0.95);
+    display: inline-block;
+    vertical-align: middle;
+  }
+{%- endstyle -%}
+
+<section id="RackEyebrow-{{ section.id }}" class="section-rack-eyebrow" {{ section.shopify_attributes }}>
+  <div class="rack-eyebrow-container">
+    {%- if section.settings.show_sparkles -%}
+      <span class="rack-eyebrow-sparkle sparkle-left" aria-hidden="true">{{ section.settings.sparkle_icon_left | default: '✦' }}</span>
+    {%- endif -%}
+
+    <span class="rack-eyebrow-text">{{ section.settings.text | default: 'Pretty with a by the way' }}</span>
+
+    {%- if section.settings.show_sparkles -%}
+      <span class="rack-eyebrow-sparkle sparkle-right" aria-hidden="true">{{ section.settings.sparkle_icon_right | default: '✦' }}</span>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Rack Eyebrow",
+  "tag": "section",
+  "class": "section-rack-eyebrow-wrapper",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Eyebrow Text Content"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Eyebrow Text",
+      "default": "Pretty with a by the way"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sparkles",
+      "label": "Show Sparkles ✦",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "sparkle_icon_left",
+      "label": "Left Sparkle Symbol",
+      "default": "✦"
+    },
+    {
+      "type": "text",
+      "id": "sparkle_icon_right",
+      "label": "Right Sparkle Symbol",
+      "default": "✦"
+    },
+    {
+      "type": "color",
+      "id": "sparkle_color",
+      "label": "Sparkle Accent Color",
+      "default": "#b38728"
+    },
+    {
+      "type": "header",
+      "content": "Typography & Font Design"
+    },
+    {
+      "type": "select",
+      "id": "font_source",
+      "label": "Font Family Source",
+      "options": [
+        { "value": "brand", "label": "Brand Sans (Plus Jakarta Sans)" },
+        { "value": "ahsing", "label": "Ahsing (Typogama Couture)" },
+        { "value": "ragara", "label": "Ragara (Couture Serif)" },
+        { "value": "syne", "label": "Syne (Modern Luxury)" },
+        { "value": "bodoni", "label": "Bodoni Moda (Editorial Vogue)" },
+        { "value": "playfair", "label": "Playfair Display (Romantic Serif)" },
+        { "value": "italiana", "label": "Italiana (Milano Couture)" },
+        { "value": "cinzel", "label": "Cinzel (Grand Roman)" },
+        { "value": "cormorant", "label": "Cormorant Garamond (Elegance)" },
+        { "value": "outfit", "label": "Outfit (Ultra Clean Sans)" },
+        { "value": "shopify", "label": "Shopify Font Library (Select below)" },
+        { "value": "custom", "label": "Custom Font Name" }
+      ],
+      "default": "brand"
+    },
+    {
+      "type": "font_picker",
+      "id": "font_picker",
+      "label": "Shopify Font Picker",
+      "default": "assistant_n4",
+      "info": "Active when 'Shopify Font Library' is selected above."
+    },
+    {
+      "type": "text",
+      "id": "custom_font",
+      "label": "Custom Google Font Name",
+      "info": "e.g. Montserrat, Playfair Display, Cinzel"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Font Size (px)",
+      "min": 10,
+      "max": 32,
+      "step": 1,
+      "default": 13
+    },
+    {
+      "type": "select",
+      "id": "font_weight",
+      "label": "Font Weight",
+      "options": [
+        { "value": "300", "label": "300 (Light)" },
+        { "value": "400", "label": "400 (Regular)" },
+        { "value": "500", "label": "500 (Medium)" },
+        { "value": "600", "label": "600 (Semi-Bold)" },
+        { "value": "700", "label": "700 (Bold)" },
+        { "value": "800", "label": "800 (Extra Bold)" }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "select",
+      "id": "font_style",
+      "label": "Font Style",
+      "options": [
+        { "value": "normal", "label": "Normal" },
+        { "value": "italic", "label": "Italic" }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "range",
+      "id": "letter_spacing",
+      "label": "Letter Spacing (px)",
+      "min": 0,
+      "max": 12,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "select",
+      "id": "text_transform",
+      "label": "Text Case",
+      "options": [
+        { "value": "uppercase", "label": "UPPERCASE" },
+        { "value": "capitalize", "label": "Capitalize Each Word" },
+        { "value": "lowercase", "label": "lowercase" },
+        { "value": "none", "label": "Normal (As Typed)" }
+      ],
+      "default": "uppercase"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text Alignment",
+      "options": [
+        { "value": "center", "label": "Center" },
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Colors & Spacing"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#67574E"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#FDDDED"
+    },
+    {
+      "type": "checkbox",
+      "id": "bg_transparent",
+      "label": "Transparent Background",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "bg_mode",
+      "label": "Background Mode",
+      "options": [
+        { "value": "solid", "label": "Solid Color" },
+        { "value": "gradient", "label": "CSS Gradient" }
+      ],
+      "default": "solid"
+    },
+    {
+      "type": "text",
+      "id": "bg_gradient",
+      "label": "CSS Gradient",
+      "default": "linear-gradient(135deg, #FDDDED 0%, #fbe8f2 100%)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top (px)",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom (px)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "default": 6
+    }
+  ],
+  "presets": [
+    {
+      "name": "Pretty with a by the way (Eyebrow)",
+      "settings": {
+        "text": "Pretty with a by the way",
+        "bg_color": "#FDDDED",
+        "text_color": "#67574E"
+      }
+    }
+  ]
+}
+{% endschema %}

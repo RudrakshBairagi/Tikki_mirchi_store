@@ -1,0 +1,297 @@
+{%- style -%}
+  @font-face {
+    font-family: 'Ahsing';
+    src: url('{{ "Ahsing.woff" | asset_url }}') format('woff'),
+         url('{{ "Ahsing.otf" | asset_url }}') format('opentype'),
+         url('{{ "typogama-ahsing.otf" | asset_url }}') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Ragara';
+    src: url('{{ "Ragara.woff" | asset_url }}') format('woff'),
+         url('{{ "Ragara.otf" | asset_url }}') format('opentype'),
+         url('{{ "Ragara.ttf" | asset_url }}') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  {%- if section.settings.font_source == 'shopify' and section.settings.font_picker != blank -%}
+    {{ section.settings.font_picker | font_face: font_display: 'swap' }}
+  {%- endif -%}
+
+  #RackSubheading-{{ section.id }} {
+    {%- if section.settings.bg_transparent -%}
+      background: transparent !important;
+    {%- elsif section.settings.bg_mode == 'gradient' and section.settings.bg_gradient != blank -%}
+      background: {{ section.settings.bg_gradient }} !important;
+    {%- else -%}
+      background-color: {{ section.settings.bg_color | default: '#FDDDED' }} !important;
+    {%- endif -%}
+    padding-top: {{ section.settings.padding_top | default: 4 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | default: 24 }}px;
+    text-align: {{ section.settings.text_alignment | default: 'center' }};
+  }
+
+  #RackSubheading-{{ section.id }} .rack-subheading-container {
+    max-width: {{ section.settings.max_width | default: 700 }}px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  #RackSubheading-{{ section.id }} .rack-subheading-text {
+    {%- if section.settings.font_source == 'shopify' and section.settings.font_picker != blank -%}
+      font-family: {{ section.settings.font_picker.family }}, {{ section.settings.font_picker.fallback_families }};
+    {%- elsif section.settings.font_source == 'ahsing' -%}
+      font-family: 'Ahsing', serif;
+    {%- elsif section.settings.font_source == 'ragara' -%}
+      font-family: 'Ragara', 'Italiana', Georgia, serif;
+    {%- elsif section.settings.font_source == 'syne' -%}
+      font-family: 'Syne', sans-serif;
+    {%- elsif section.settings.font_source == 'bodoni' -%}
+      font-family: 'Bodoni Moda', serif;
+    {%- elsif section.settings.font_source == 'playfair' -%}
+      font-family: 'Playfair Display', serif;
+    {%- elsif section.settings.font_source == 'italiana' -%}
+      font-family: 'Italiana', Georgia, serif;
+    {%- elsif section.settings.font_source == 'cinzel' -%}
+      font-family: 'Cinzel', serif;
+    {%- elsif section.settings.font_source == 'cormorant' -%}
+      font-family: 'Cormorant Garamond', serif;
+    {%- elsif section.settings.font_source == 'outfit' -%}
+      font-family: 'Outfit', sans-serif;
+    {%- elsif section.settings.font_source == 'custom' and section.settings.custom_font != blank -%}
+      font-family: '{{ section.settings.custom_font }}', sans-serif;
+    {%- else -%}
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    {%- endif -%}
+
+    font-size: {{ section.settings.font_size_desktop | default: 16 }}px;
+    font-weight: {{ section.settings.font_weight | default: 400 }};
+    font-style: {{ section.settings.font_style | default: 'normal' }};
+    letter-spacing: {{ section.settings.letter_spacing | default: 0 }}px;
+    line-height: {{ section.settings.line_height | default: 140 | divided_by: 100.0 }};
+    color: {{ section.settings.text_color | default: '#67574E' }};
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    #RackSubheading-{{ section.id }} .rack-subheading-text {
+      font-size: {{ section.settings.font_size_mobile | default: 14 }}px;
+    }
+  }
+{%- endstyle -%}
+
+<section id="RackSubheading-{{ section.id }}" class="section-rack-subheading" {{ section.shopify_attributes }}>
+  <div class="rack-subheading-container">
+    <p class="rack-subheading-text">
+      {{ section.settings.subheading | default: 'Your Teekhi Bella outfit' }}
+    </p>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Rack Subheading",
+  "tag": "section",
+  "class": "section-rack-subheading-wrapper",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Subheading Content"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading / Description Text",
+      "default": "Your Teekhi Bella outfit"
+    },
+    {
+      "type": "header",
+      "content": "Typography & Font Design"
+    },
+    {
+      "type": "select",
+      "id": "font_source",
+      "label": "Font Family Source",
+      "options": [
+        { "value": "shopify", "label": "Shopify Font Library (Select below)" },
+        { "value": "brand", "label": "Brand Sans (Plus Jakarta Sans)" },
+        { "value": "ahsing", "label": "Ahsing (Typogama Couture)" },
+        { "value": "ragara", "label": "Ragara (Couture Serif)" },
+        { "value": "syne", "label": "Syne (Modern Luxury)" },
+        { "value": "bodoni", "label": "Bodoni Moda (Editorial Vogue)" },
+        { "value": "playfair", "label": "Playfair Display (Romantic Serif)" },
+        { "value": "italiana", "label": "Italiana (Milano Couture)" },
+        { "value": "cinzel", "label": "Cinzel (Grand Roman)" },
+        { "value": "cormorant", "label": "Cormorant Garamond (Elegance)" },
+        { "value": "outfit", "label": "Outfit (Ultra Clean Sans)" },
+        { "value": "custom", "label": "Custom Font Name" }
+      ],
+      "default": "shopify"
+    },
+    {
+      "type": "font_picker",
+      "id": "font_picker",
+      "label": "Shopify Font Picker",
+      "default": "nothing_you_could_do_n4",
+      "info": "Active when 'Shopify Font Library' is selected above."
+    },
+    {
+      "type": "text",
+      "id": "custom_font",
+      "label": "Custom Google Font Name",
+      "info": "e.g. Italianno, Great Vibes, Cormorant Garamond"
+    },
+    {
+      "type": "range",
+      "id": "font_size_desktop",
+      "label": "Font Size Desktop (px)",
+      "min": 12,
+      "max": 42,
+      "step": 1,
+      "default": 17
+    },
+    {
+      "type": "range",
+      "id": "font_size_mobile",
+      "label": "Font Size Mobile (px)",
+      "min": 11,
+      "max": 30,
+      "step": 1,
+      "default": 15
+    },
+    {
+      "type": "select",
+      "id": "font_weight",
+      "label": "Font Weight",
+      "options": [
+        { "value": "300", "label": "300 (Light)" },
+        { "value": "400", "label": "400 (Regular)" },
+        { "value": "500", "label": "500 (Medium)" },
+        { "value": "600", "label": "600 (Semi-Bold)" },
+        { "value": "700", "label": "700 (Bold)" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "select",
+      "id": "font_style",
+      "label": "Font Style",
+      "options": [
+        { "value": "normal", "label": "Normal" },
+        { "value": "italic", "label": "Italic" }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "range",
+      "id": "letter_spacing",
+      "label": "Letter Spacing (px)",
+      "min": -1,
+      "max": 10,
+      "step": 0.5,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "line_height",
+      "label": "Line Height (%)",
+      "min": 100,
+      "max": 200,
+      "step": 5,
+      "default": 140
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Max Width (px)",
+      "min": 300,
+      "max": 1200,
+      "step": 50,
+      "default": 700
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text Alignment",
+      "options": [
+        { "value": "center", "label": "Center" },
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Colors & Spacing"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#67574E"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#FDDDED"
+    },
+    {
+      "type": "checkbox",
+      "id": "bg_transparent",
+      "label": "Transparent Background",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "bg_mode",
+      "label": "Background Mode",
+      "options": [
+        { "value": "solid", "label": "Solid Color" },
+        { "value": "gradient", "label": "CSS Gradient" }
+      ],
+      "default": "solid"
+    },
+    {
+      "type": "text",
+      "id": "bg_gradient",
+      "label": "CSS Gradient",
+      "default": "linear-gradient(135deg, #FDDDED 0%, #fbe8f2 100%)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top (px)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom (px)",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "default": 24
+    }
+  ],
+  "presets": [
+    {
+      "name": "Your Teekhi Bella Outfit (Subheading)",
+      "settings": {
+        "subheading": "Your Teekhi Bella outfit",
+        "font_source": "shopify",
+        "bg_color": "#FDDDED",
+        "text_color": "#67574E"
+      }
+    }
+  ]
+}
+{% endschema %}

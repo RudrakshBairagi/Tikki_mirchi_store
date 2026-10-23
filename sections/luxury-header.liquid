@@ -242,11 +242,6 @@
               <span class="dropdown-link-arrow">⟶</span>
             </a>
             <div class="dropdown-nav-divider"></div>
-            <a href="{{ section.settings.link_inspect_url | default: '/pages/product-inspect' }}" class="dropdown-nav-link dropdown-link-inspect" role="menuitem">
-              <span class="dropdown-link-label">{{ section.settings.link_inspect_label | default: 'INSPECT PIECE ✦' }}</span>
-              <span class="dropdown-link-arrow">⟶</span>
-            </a>
-            <div class="dropdown-nav-divider"></div>
             <a href="{{ section.settings.link_2_url | default: '/pages/waitlist' }}" class="dropdown-nav-link dropdown-link-waitlist" role="menuitem">
               <span class="dropdown-link-label">{{ section.settings.link_2_label | default: 'WAITLIST ✦' }}</span>
               <span class="dropdown-link-arrow">⟶</span>
@@ -257,7 +252,6 @@
         <!-- Desktop Navigation (Visible on Desktop) -->
         <nav class="desktop-nav" aria-label="Primary Navigation">
           <a href="{{ section.settings.link_1_url | default: routes.root_url }}" class="nav-link header-nav-home">{{ section.settings.link_1_label | default: 'HOME' }}</a>
-          <a href="{{ section.settings.link_inspect_url | default: '/pages/product-inspect' }}" class="nav-link header-nav-inspect">{{ section.settings.link_inspect_label | default: 'INSPECT PIECE ✦' }}</a>
           <a href="{{ section.settings.link_2_url | default: '/pages/waitlist' }}" class="nav-link header-nav-waitlist">{{ section.settings.link_2_label | default: 'WAITLIST ✦' }}</a>
         </nav>
       </div>
@@ -470,25 +464,14 @@
     },
     {
       "type": "text",
-      "id": "link_inspect_label",
-      "label": "Link 2 Label (Inspect Piece)",
-      "default": "INSPECT PIECE ✦"
-    },
-    {
-      "type": "url",
-      "id": "link_inspect_url",
-      "label": "Link 2 URL"
-    },
-    {
-      "type": "text",
       "id": "link_2_label",
-      "label": "Link 3 Label (Waitlist)",
+      "label": "Link 2 Label (Waitlist)",
       "default": "WAITLIST ✦"
     },
     {
       "type": "url",
       "id": "link_2_url",
-      "label": "Link 3 URL"
+      "label": "Link 2 URL"
     },
     {
       "type": "header",

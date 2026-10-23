@@ -1,5 +1,37 @@
 {
   "sections": {
+    "rack_eyebrow": {
+      "type": "rack-eyebrow",
+      "settings": {
+        "text": "Pretty with a by the way",
+        "show_sparkles": true,
+        "text_color": "#67574E",
+        "bg_color": "#FDDDED",
+        "font_size": 13,
+        "letter_spacing": 3
+      }
+    },
+    "rack_heading": {
+      "type": "rack-heading",
+      "settings": {
+        "heading": "Your Dream Rack",
+        "font_source": "ahsing",
+        "text_color": "#67574E",
+        "bg_color": "#FDDDED",
+        "font_size_desktop": 48
+      }
+    },
+    "rack_subheading": {
+      "type": "rack-subheading",
+      "settings": {
+        "subheading": "Your Teekhi Bella outfit",
+        "font_source": "shopify",
+        "font_picker": "nothing_you_could_do_n4",
+        "text_color": "#67574E",
+        "bg_color": "#FDDDED",
+        "font_size_desktop": 17
+      }
+    },
     "hanger_rack": {
       "type": "hanger-rack",
       "blocks": {
@@ -76,7 +108,7 @@
         "eyebrow": "Pretty with a bite",
         "heading": "Your Dream Rack",
         "subheading": "Pick your teekhi bella outfit",
-        "show_waitlist_buttons": false,
+        "show_waitlist_buttons": true,
         "waitlist_btn_text": "Join the waitlist",
         "waitlist_url": "",
         "inspect_url": "",
@@ -120,7 +152,10 @@
         "enable_nudge": true,
         "enable_drag": true,
         "padding_top": 60,
-        "padding_bottom": 80
+        "padding_bottom": 80,
+        "show_header": false,
+        "show_top_waitlist_btn": true,
+        "show_bottom_waitlist_btn": true
       }
     },
     "custom_static_banner": {
@@ -225,6 +260,9 @@
     }
   },
   "order": [
+    "rack_eyebrow",
+    "rack_heading",
+    "rack_subheading",
     "hanger_rack",
     "custom_static_banner",
     "hero_3d_cylinder",
