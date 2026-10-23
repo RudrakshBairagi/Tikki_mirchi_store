@@ -216,6 +216,18 @@
   }
 {%- endstyle -%}
 
+{%- liquid
+  assign is_home = false
+  if request.page_type == 'index' or template.name == 'index'
+    assign is_home = true
+  endif
+
+  assign is_waitlist = false
+  if request.path contains 'waitlist' or template.suffix == 'waitlist' or page.handle == 'waitlist'
+    assign is_waitlist = true
+  endif
+-%}
+
 <div id="LuxuryHeaderSection-{{ section.id }}" class="luxury-header-section-wrapper">
   <!-- ==========================================================================
        1. LUXURY NAVIGATION BAR (UNIFIED ACROSS ALL STORE PAGES)
@@ -237,12 +249,12 @@
 
           <!-- Luxury Dropdown Menu -->
           <div id="LuxuryMenuDropdown" class="luxury-menu-dropdown" role="menu" aria-label="Navigation Menu" aria-hidden="true">
-            <a href="{{ section.settings.link_1_url | default: routes.root_url }}" class="dropdown-nav-link dropdown-link-home" role="menuitem">
+            <a href="{{ section.settings.link_1_url | default: routes.root_url }}" class="dropdown-nav-link dropdown-link-home{% if is_home %} is-active{% endif %}" role="menuitem">
               <span class="dropdown-link-label">{{ section.settings.link_1_label | default: 'HOME' }}</span>
               <span class="dropdown-link-arrow">⟶</span>
             </a>
             <div class="dropdown-nav-divider"></div>
-            <a href="{{ section.settings.link_2_url | default: '/pages/waitlist' }}" class="dropdown-nav-link dropdown-link-waitlist" role="menuitem">
+            <a href="{{ section.settings.link_2_url | default: '/pages/waitlist' }}" class="dropdown-nav-link dropdown-link-waitlist{% if is_waitlist %} is-active{% endif %}" role="menuitem">
               <span class="dropdown-link-label">{{ section.settings.link_2_label | default: 'WAITLIST ✦' }}</span>
               <span class="dropdown-link-arrow">⟶</span>
             </a>
@@ -251,8 +263,8 @@
 
         <!-- Desktop Navigation (Visible on Desktop) -->
         <nav class="desktop-nav" aria-label="Primary Navigation">
-          <a href="{{ section.settings.link_1_url | default: routes.root_url }}" class="nav-link header-nav-home">{{ section.settings.link_1_label | default: 'HOME' }}</a>
-          <a href="{{ section.settings.link_2_url | default: '/pages/waitlist' }}" class="nav-link header-nav-waitlist">{{ section.settings.link_2_label | default: 'WAITLIST ✦' }}</a>
+          <a href="{{ section.settings.link_1_url | default: routes.root_url }}" class="nav-link header-nav-home{% if is_home %} is-active{% endif %}">{{ section.settings.link_1_label | default: 'HOME' }}</a>
+          <a href="{{ section.settings.link_2_url | default: '/pages/waitlist' }}" class="nav-link header-nav-waitlist{% if is_waitlist %} is-active{% endif %}">{{ section.settings.link_2_label | default: 'WAITLIST ✦' }}</a>
         </nav>
       </div>
 

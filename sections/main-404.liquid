@@ -88,10 +88,6 @@
 {%- assign wl_input_bg = ws.input_bg_color | default: '#fafaf8' -%}
 {%- assign wl_submit_bg = ws.submit_btn_bg | default: '#1a1819' -%}
 {%- assign wl_submit_text = ws.submit_btn_text | default: '#ffffff' -%}
-{%- assign header_logo_text = ws.header_logo_text | default: 'Teekhi Bella' -%}
-{%- assign logo_font_size = ws.logo_font_size | default: 38 -%}
-
-{{ 'header-morph.css' | asset_url | stylesheet_tag }}
 {{ 'atelier-waitlist.css' | asset_url | stylesheet_tag }}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -100,11 +96,6 @@
   {%- assign custom_font_slug = ws.custom_title_font | replace: ' ', '+' -%}
   <link href="https://fonts.googleapis.com/css2?family={{ custom_font_slug }}:wght@400;600;700&display=swap" rel="stylesheet">
 {%- endif -%}
-{%- if ws.logo_font_source == 'custom' and ws.custom_logo_font != blank -%}
-  {%- assign custom_logo_slug = ws.custom_logo_font | replace: ' ', '+' -%}
-  <link href="https://fonts.googleapis.com/css2?family={{ custom_logo_slug }}:wght@400;600;700&display=swap" rel="stylesheet">
-{%- endif -%}
-<script src="{{ 'header-morph.js' | asset_url }}" defer="defer"></script>
 <script src="{{ 'atelier-waitlist.js' | asset_url }}" defer="defer"></script>
 
 <style>
@@ -138,9 +129,6 @@
     font-display: swap;
   }
 
-  {%- if ws.logo_font_source == 'shopify' and ws.logo_font != blank -%}
-    {{ ws.logo_font | font_face: font_display: 'swap' }}
-  {%- endif -%}
   {%- if ws.title_font_source == 'shopify' and ws.title_font != blank -%}
     {{ ws.title_font | font_face: font_display: 'swap' }}
   {%- endif -%}
@@ -148,19 +136,6 @@
   :root,
   #atelierWaitlistSection,
   .waitlist-page {
-    {%- if ws.logo_font_source == 'ahsing' -%}
-      --header-logo-font: 'Ahsing', serif;
-    {%- elsif ws.logo_font_source == 'ragara' -%}
-      --header-logo-font: 'Ragara', 'Italiana', Georgia, serif;
-    {%- elsif ws.logo_font_source == 'syne' -%}
-      --header-logo-font: 'Syne', sans-serif;
-    {%- elsif ws.logo_font_source == 'shopify' and ws.logo_font != blank -%}
-      --header-logo-font: {{ ws.logo_font.family }}, {{ ws.logo_font.fallback_families }};
-    {%- elsif ws.logo_font_source == 'custom' and ws.custom_logo_font != blank -%}
-      --header-logo-font: '{{ ws.custom_logo_font }}', serif;
-    {%- else -%}
-      --header-logo-font: 'Ahsing', serif;
-    {%- endif -%}
 
     {%- if ws.title_font_source == 'ahsing' -%}
       --wl-title-font: 'Ahsing', serif;
@@ -212,33 +187,6 @@
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   }
 
-  #atelierWaitlistSection .brand-morph-logo,
-  #atelierWaitlistSection .brand-wordmark {
-    font-family: var(--header-logo-font, 'Ahsing', serif) !important;
-    text-transform: none !important;
-    letter-spacing: 0.02em !important;
-    font-size: {{ logo_font_size }}px !important;
-  }
-
-  @media (max-width: 768px) {
-    #atelierWaitlistSection .brand-morph-logo {
-      font-size: clamp(2.35rem, 7.8vw, 3.1rem) !important;
-    }
-    #atelierWaitlistSection .brand-wordmark {
-      font-size: inherit !important;
-      line-height: 0.95 !important;
-    }
-  }
-
-  @media (max-width: 480px) {
-    #atelierWaitlistSection .brand-morph-logo {
-      font-size: clamp(2.25rem, 8.2vw, 2.85rem) !important;
-    }
-    #atelierWaitlistSection .brand-wordmark {
-      font-size: inherit !important;
-      line-height: 0.95 !important;
-    }
-  }
 
   .waitlist-page {
     position: relative;
@@ -685,69 +633,6 @@
   "tag": "section",
   "class": "section-main-404-waitlist",
   "settings": [
-    {
-      "type": "header",
-      "content": "Brand & Header"
-    },
-    {
-      "type": "text",
-      "id": "header_logo_text",
-      "label": "Header Brand / Logo Text",
-      "default": "Teekhi Bella"
-    },
-    {
-      "type": "select",
-      "id": "logo_font_source",
-      "label": "Header Logo Font Source",
-      "options": [
-        {
-          "value": "ahsing",
-          "label": "Ahsing (Typogama Couture)"
-        },
-        {
-          "value": "ragara",
-          "label": "Ragara (Couture Serif)"
-        },
-        {
-          "value": "syne",
-          "label": "Syne (Modern Luxury)"
-        },
-        {
-          "value": "brand",
-          "label": "Brand Default (Plus Jakarta Sans)"
-        },
-        {
-          "value": "shopify",
-          "label": "Shopify Font Library (Select below)"
-        },
-        {
-          "value": "custom",
-          "label": "Custom Font Name"
-        }
-      ],
-      "default": "ahsing"
-    },
-    {
-      "type": "font_picker",
-      "id": "logo_font",
-      "label": "Logo Font (Shopify Library)",
-      "default": "assistant_n4",
-      "info": "Active when 'Shopify Font Library' is selected above."
-    },
-    {
-      "type": "text",
-      "id": "custom_logo_font",
-      "label": "Custom Logo Font Name"
-    },
-    {
-      "type": "range",
-      "id": "logo_font_size",
-      "label": "Logo Font Size (px)",
-      "min": 24,
-      "max": 60,
-      "step": 2,
-      "default": 38
-    },
     {
       "type": "header",
       "content": "Page Background & Appearance"

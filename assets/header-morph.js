@@ -18,6 +18,24 @@
     }
 
     initMobileDropdown();
+    highlightActiveNav();
+  }
+
+  function highlightActiveNav() {
+    try {
+      const p = (window.location.pathname || '').toLowerCase();
+      const h = (window.location.href || '').toLowerCase();
+      const isWaitlist = p.indexOf('waitlist') !== -1 || h.indexOf('waitlist') !== -1;
+      const isHome = !isWaitlist && (p === '' || p === '/' || p.endsWith('/preview.html') || p.endsWith('/index.html') || p.endsWith('.myshopify.com/'));
+
+      if (isWaitlist) {
+        document.querySelectorAll('.header-nav-waitlist, .dropdown-link-waitlist').forEach(function(el) { el.classList.add('is-active'); });
+        document.querySelectorAll('.header-nav-home, .dropdown-link-home').forEach(function(el) { el.classList.remove('is-active'); });
+      } else if (isHome) {
+        document.querySelectorAll('.header-nav-home, .dropdown-link-home').forEach(function(el) { el.classList.add('is-active'); });
+        document.querySelectorAll('.header-nav-waitlist, .dropdown-link-waitlist').forEach(function(el) { el.classList.remove('is-active'); });
+      }
+    } catch (e) {}
   }
 
   function initMobileDropdown() {

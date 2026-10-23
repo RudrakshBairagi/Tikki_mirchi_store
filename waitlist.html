@@ -95,7 +95,7 @@
   <!-- ==========================================================================
        LUXURY MORPHING HEADER (CONSISTENT WITH YOUR DREAM RACK PAGE)
        ========================================================================== -->
-  <header id="LuxuryHeader" class="luxury-header scrolled-down" style="--docked-bg-color: rgba(248, 248, 246, 0.96); --docked-text-color: #161517; --header-border-docked: rgba(0, 0, 0, 0.08);">
+  <header id="LuxuryHeader" class="luxury-header scrolled-down">
     <div class="luxury-header__inner">
       <!-- Left: Navigation Links (Dropdown on Mobile + Direct Links on Desktop) -->
       <div class="luxury-header__left">
@@ -117,7 +117,7 @@
               <span class="dropdown-link-arrow">⟶</span>
             </a>
             <div class="dropdown-nav-divider"></div>
-            <a href="waitlist.html" class="dropdown-nav-link dropdown-link-waitlist" role="menuitem">
+            <a href="waitlist.html" class="dropdown-nav-link dropdown-link-waitlist is-active" role="menuitem">
               <span class="dropdown-link-label">WAITLIST ✦</span>
               <span class="dropdown-link-arrow">⟶</span>
             </a>
@@ -127,7 +127,7 @@
         <!-- Desktop Navigation (Visible on Desktop) -->
         <nav class="desktop-nav" aria-label="Primary Navigation">
           <a href="preview.html" class="nav-link header-nav-home">HOME</a>
-          <a href="waitlist.html" class="nav-link header-nav-waitlist">WAITLIST ✦</a>
+          <a href="waitlist.html" class="nav-link header-nav-waitlist is-active">WAITLIST ✦</a>
         </nav>
       </div>
 
@@ -142,6 +142,7 @@
       <div class="luxury-header__right" aria-hidden="true"></div>
     </div>
   </header>
+  <div class="luxury-header-spacer" aria-hidden="true"></div>
 
   <main class="waitlist-main-wrap">
     <!-- Hero Header -->
