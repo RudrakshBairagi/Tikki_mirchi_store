@@ -13,6 +13,7 @@
   "sections": {
     "announcement-bar": {
       "type": "announcement-bar",
+      "disabled": true,
       "blocks": {
         "announcement-bar-0": {
           "type": "announcement",
@@ -65,15 +66,14 @@
         "docked_bg_color": "#000000",
         "bg_gradient": "linear-gradient(135deg, rgba(248, 248, 246, 0.95) 0%, rgba(238, 234, 226, 0.92) 100%)",
         "backdrop_blur": 12,
-        "bg_color": "#f8f8f6",
-        "text_color": "#000000",
-        "title_color": "#161517",
+        "bg_color": "#000000",
+        "text_color": "#FFFFFF",
+        "title_color": "#FFFFFF",
         "docked_text_color": "#FFFFFF"
       }
     }
   },
   "order": [
-    "announcement-bar",
     "luxury_header"
   ]
 }

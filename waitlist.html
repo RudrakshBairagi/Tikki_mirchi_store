@@ -42,6 +42,11 @@
 
     :root {
       --header-logo-font: 'Ahsing', serif;
+      --header-bg-docked: #000000;
+      --docked-bg-color: #000000;
+      --docked-text-color: #ffffff;
+      --header-border-docked: rgba(255, 255, 255, 0.08);
+      --brand-docked-color: #ffffff;
     }
 
     /* Custom Chili Cursor */
@@ -54,6 +59,20 @@
     .nav-link, .menu-toggle, .header-action-btn, .dropdown-nav-link, .btn-waitlist-submit {
       cursor: url('assets/chili-cursor-32.png') 0 0, pointer !important;
       cursor: -webkit-image-set(url('assets/chili-cursor-32.png') 1x, url('assets/chili-cursor-64.png') 2x) 0 0, pointer !important;
+    }
+
+    #LuxuryHeader {
+      background-color: #000000 !important;
+      color: #ffffff !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    }
+
+    #LuxuryHeader .brand-morph-logo,
+    #LuxuryHeader .brand-wordmark,
+    #LuxuryHeader .nav-link,
+    #LuxuryHeader .header-action-btn,
+    #LuxuryHeader .btn-label {
+      color: #ffffff !important;
     }
 
     .brand-morph-logo,

@@ -39,13 +39,14 @@
   --luxury-header-height: 80px;
   --header-ease: cubic-bezier(0.5, 0, 0, 1);
   --header-duration: 0.8s;
-  --brand-hero-color: #161517;
-  --brand-docked-color: #161517;
-  --docked-text-color: #161517;
-  --hero-text: #161517;
-  --hero-title-color: #161517;
-  --header-bg-docked: rgba(248, 248, 246, 0.96);
-  --header-border-docked: rgba(0, 0, 0, 0.08);
+  --brand-hero-color: #ffffff;
+  --brand-docked-color: #ffffff;
+  --docked-text-color: #ffffff;
+  --hero-text: #ffffff;
+  --hero-title-color: #ffffff;
+  --header-bg-docked: #000000;
+  --docked-bg-color: #000000;
+  --header-border-docked: rgba(255, 255, 255, 0.08);
 }
 
 /* ==========================================================================
@@ -412,7 +413,24 @@
 .luxury-header-spacer {
   display: block !important;
   width: 100% !important;
-  height: var(--luxury-header-height, 84px) !important;
+  height: var(--luxury-header-height, 80px) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+}
+
+/* Suppress unwanted white bars and announcement sections across all pages */
+#shopify-section-announcement-bar,
+.announcement-bar-section,
+.utility-bar {
+  display: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: none !important;
 }
 
 /* ==========================================================================

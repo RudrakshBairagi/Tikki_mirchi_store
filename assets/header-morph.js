@@ -29,24 +29,13 @@
 
   function updateAnnouncementBarOffset() {
     try {
-      const annBar = document.querySelector('.utility-bar, .announcement-bar-section, #shopify-section-announcement-bar');
       const header = document.querySelector('.luxury-header');
       const spacer = document.querySelector('.luxury-header-spacer');
       if (!header) return;
 
-      if (annBar && annBar.offsetHeight > 0 && window.getComputedStyle(annBar).display !== 'none') {
-        const annHeight = annBar.offsetHeight;
-        const scrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
-        const topOffset = Math.max(0, annHeight - scrollY);
-        header.style.top = topOffset + 'px';
-        if (spacer) {
-          spacer.style.height = (header.offsetHeight || 80) + 'px';
-        }
-      } else {
-        header.style.top = '0px';
-        if (spacer) {
-          spacer.style.height = (header.offsetHeight || 80) + 'px';
-        }
+      header.style.top = '0px';
+      if (spacer) {
+        spacer.style.height = (header.offsetHeight || 80) + 'px';
       }
     } catch (e) {}
   }
