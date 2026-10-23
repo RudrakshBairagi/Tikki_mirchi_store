@@ -337,7 +337,9 @@
   <div class="hanger-rack-bg-overlay" aria-hidden="true"></div>
   <div class="hanger-rack-container">
     {%- assign show_top = false -%}
-    {%- if section.settings.show_top_waitlist_btn != false and section.settings.show_waitlist_buttons != false -%}
+    {%- if section.settings.show_top_waitlist_btn != false -%}
+      {%- assign show_top = true -%}
+    {%- elsif section.settings.show_waitlist_buttons != false -%}
       {%- assign show_top = true -%}
     {%- endif -%}
     {%- if show_top -%}
@@ -574,7 +576,9 @@
       </div>
 
       {%- assign show_bottom = false -%}
-      {%- if section.settings.show_bottom_waitlist_btn != false and section.settings.show_waitlist_buttons != false -%}
+      {%- if section.settings.show_bottom_waitlist_btn != false -%}
+        {%- assign show_bottom = true -%}
+      {%- elsif section.settings.show_waitlist_buttons != false -%}
         {%- assign show_bottom = true -%}
       {%- endif -%}
       {%- if show_bottom -%}
