@@ -1,44 +1,143 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
-    "luxury_header": {
-      "type": "luxury-header",
+    "hanger_rack": {
+      "type": "hanger-rack",
+      "blocks": {
+        "look_1": {
+          "type": "garment",
+          "settings": {
+            "product": "",
+            "title": "Archival Manuscript Corset Gown",
+            "tag": "LOOK 01",
+            "price": "\u20b974,500",
+            "link": ""
+          }
+        },
+        "look_2": {
+          "type": "garment",
+          "settings": {
+            "product": "",
+            "title": "Heritage Mural Mirror Lehenga",
+            "tag": "LOOK 02",
+            "price": "\u20b91,25,000",
+            "link": ""
+          }
+        },
+        "look_3": {
+          "type": "garment",
+          "settings": {
+            "product": "",
+            "title": "Rose-Coral Shimmer Saree Gown",
+            "tag": "LOOK 03",
+            "price": "\u20b998,000",
+            "link": ""
+          }
+        },
+        "look_4": {
+          "type": "garment",
+          "settings": {
+            "product": "",
+            "title": "Midnight Botanical Co-ord Set",
+            "tag": "LOOK 04",
+            "price": "\u20b992,000",
+            "link": ""
+          }
+        },
+        "look_5": {
+          "type": "garment",
+          "settings": {
+            "product": "",
+            "title": "Bordeaux Peplum Halter Gown",
+            "tag": "LOOK 05",
+            "price": "\u20b91,10,000",
+            "link": ""
+          }
+        },
+        "look_6": {
+          "type": "garment",
+          "settings": {
+            "product": "",
+            "title": "Scarlet Blossom Twist-Knot Gown",
+            "tag": "LOOK 06",
+            "price": "\u20b986,000",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "look_1",
+        "look_2",
+        "look_3",
+        "look_4",
+        "look_5",
+        "look_6"
+      ],
       "settings": {
-        "heading": "Teekhi Bella",
-        "logo_font_source": "ahsing",
-        "logo_font": "bayon_n4",
-        "custom_logo_font": "",
-        "logo_font_scale": 100,
-        "logo_letter_spacing": 0,
-        "tagline": ".",
-        "tagline_font_source": "brand",
-        "tagline_font": "assistant_n4",
-        "custom_tagline_font": "",
-        "tagline_font_scale": 100,
-        "nav_font_source": "brand",
-        "nav_font": "assistant_n4",
-        "custom_nav_font": "",
-        "nav_font_scale": 100,
-        "link_1_label": "HOME",
-        "link_1_url": "/",
-        "link_2_label": "WAITLIST ✦",
-        "link_2_url": "/pages/waitlist",
+        "eyebrow": "Pretty with a bite",
+        "heading": "Your Dream Rack",
+        "subheading": "Pick your teekhi bella outfit",
+        "show_waitlist_buttons": false,
+        "waitlist_btn_text": "Join the waitlist",
+        "waitlist_url": "",
+        "inspect_url": "",
+        "heading_font_source": "ahsing",
+        "heading_font": "gloock_n4",
+        "custom_heading_font": "",
+        "heading_font_scale": 100,
+        "heading_letter_spacing": 2,
+        "body_font_source": "shopify",
+        "body_font": "nothing_you_could_do_n4",
+        "custom_body_font": "",
+        "subheading_font_scale": 115,
+        "tag_font_source": "brand",
+        "tag_font": "assistant_n4",
+        "custom_tag_font": "",
         "bg_mode": "solid",
-        "docked_bg_color": "#000000",
-        "bg_gradient": "linear-gradient(135deg, rgba(248, 248, 246, 0.95) 0%, rgba(238, 234, 226, 0.92) 100%)",
-        "backdrop_blur": 12,
-        "bg_color": "#f8f8f6",
-        "text_color": "#161517",
-        "title_color": "#161517",
-        "docked_text_color": "#FFFFFF"
+        "bg_color": "#FDDDED",
+        "bg_gradient": "linear-gradient(135deg, #f8f8f6 0%, #ede8de 100%)",
+        "bg_overlay_opacity": 0,
+        "rail_color": "#67574E",
+        "hanger_color": "#6b727c",
+        "text_color": "#67574E",
+        "accent_color": "#2a2529",
+        "rail_thickness": 6,
+        "floating_card_title": "Couture Piece",
+        "floating_card_btn_text": "Inspect Piece",
+        "floating_card_bg": "#1a1819",
+        "floating_card_text": "#ffffff",
+        "floating_card_accent": "#000000",
+        "floating_card_border": "#333333",
+        "hint_text": "Hover to sway \u2022 Drag along the rack",
+        "hint_icon_left": "\u27f5",
+        "hint_icon_right": "\u27f6",
+        "show_tuning_panel": true,
+        "sway_intensity": 4,
+        "spring_speed": 5,
+        "damping_rate": 5,
+        "hit_force": 5,
+        "part_spread": 130,
+        "item_width": 130,
+        "enable_nudge": true,
+        "enable_drag": true,
+        "padding_top": 60,
+        "padding_bottom": 80
+      }
+    },
+    "custom_static_banner": {
+      "type": "custom-static-element",
+      "settings": {
+        "eyebrow": "TEEKHI BELLA \u2022 ATELIER COUTURE",
+        "heading": "Archival Haute Couture 2026",
+        "subheading": "Each bespoke piece is meticulously draped by master artisans, blending centuries-old Indian craftsmanship with modern architectural silhouettes.",
+        "btn_primary_label": "Explore The Runway",
+        "btn_primary_url": "/pages/product-inspect",
+        "btn_secondary_label": "Join VIP Waitlist",
+        "btn_secondary_url": "/pages/waitlist",
+        "heading_font_source": "ahsing",
+        "bg_mode": "solid",
+        "bg_color": "#ffffff",
+        "accent_color": "#b38728",
+        "text_color": "#1a1819"
       }
     },
     "hero_3d_cylinder": {
@@ -97,167 +196,38 @@
         "card_4",
         "card_5"
       ],
-      "disabled": true,
+      "disabled": false,
       "settings": {
         "show_cylinder": false,
         "heading": "TEEKHI BELLA",
         "heading_accent": "",
-        "heading_font_source": "brand",
-        "heading_font": "assistant_n4",
-        "custom_heading_font": "",
-        "heading_font_scale": 100,
-        "meta_font_source": "brand",
-        "meta_font": "assistant_n4",
-        "custom_meta_font": "",
         "topbar_left": "TEEKHI BELLA",
         "topbar_center": "",
         "topbar_right": "",
         "cta_label": "Join The Waitlist",
         "cta_link": "#waitlist",
-        "bg_mode": "solid",
         "bg_color": "#f8f8f6",
-        "bg_gradient": "linear-gradient(135deg, #0b0b0c 0%, #17151a 100%)",
         "text_color": "#2a2529",
         "title_color": "#2a2529",
         "auto_rotate_speed": 14,
         "tilt_angle": -7,
-        "perspective": 1100,
-        "card_width": 220,
-        "card_height": 260,
-        "card_radius": 4,
-        "card_gap": 30,
-        "enable_lighting": true,
-        "enable_reflection": false,
-        "reflection_opacity": 25
+        "perspective": 1100
       }
     },
-    "hanger_rack": {
-      "type": "hanger-rack",
-      "blocks": {
-        "look_1": {
-          "type": "garment",
-          "settings": {
-            "product": "",
-            "title": "Archival Manuscript Corset Gown",
-            "tag": "LOOK 01",
-            "price": "₹74,500",
-            "link": ""
-          }
-        },
-        "look_2": {
-          "type": "garment",
-          "settings": {
-            "product": "",
-            "title": "Heritage Mural Mirror Lehenga",
-            "tag": "LOOK 02",
-            "price": "₹1,25,000",
-            "link": ""
-          }
-        },
-        "look_3": {
-          "type": "garment",
-          "settings": {
-            "product": "",
-            "title": "Rose-Coral Shimmer Saree Gown",
-            "tag": "LOOK 03",
-            "price": "₹98,000",
-            "link": ""
-          }
-        },
-        "look_4": {
-          "type": "garment",
-          "settings": {
-            "product": "",
-            "title": "Midnight Botanical Co-ord Set",
-            "tag": "LOOK 04",
-            "price": "₹92,000",
-            "link": ""
-          }
-        },
-        "look_5": {
-          "type": "garment",
-          "settings": {
-            "product": "",
-            "title": "Bordeaux Peplum Halter Gown",
-            "tag": "LOOK 05",
-            "price": "₹1,10,000",
-            "link": ""
-          }
-        },
-        "look_6": {
-          "type": "garment",
-          "settings": {
-            "product": "",
-            "title": "Scarlet Blossom Twist-Knot Gown",
-            "tag": "LOOK 06",
-            "price": "₹86,000",
-            "link": ""
-          }
-        }
-      },
-      "block_order": [
-        "look_1",
-        "look_2",
-        "look_3",
-        "look_4",
-        "look_5",
-        "look_6"
-      ],
+    "atelier_waitlist": {
+      "type": "atelier-waitlist",
       "settings": {
-        "eyebrow": "Pretty with a bite",
-        "heading": "Your Dream Rack",
-        "subheading": "Pick your teekhi bella outfit",
-        "show_waitlist_buttons": false,
-        "waitlist_btn_text": "Join the waitlist",
-        "waitlist_url": "",
-        "inspect_url": "",
-        "heading_font_source": "ahsing",
-        "heading_font": "gloock_n4",
-        "custom_heading_font": "",
-        "heading_font_scale": 100,
-        "heading_letter_spacing": 2,
-        "body_font_source": "shopify",
-        "body_font": "nothing_you_could_do_n4",
-        "custom_body_font": "",
-        "subheading_font_scale": 115,
-        "tag_font_source": "brand",
-        "tag_font": "assistant_n4",
-        "custom_tag_font": "",
-        "bg_mode": "solid",
-        "bg_color": "#FDDDED",
-        "bg_gradient": "linear-gradient(135deg, #f8f8f6 0%, #ede8de 100%)",
-        "bg_overlay_opacity": 0,
-        "rail_color": "#67574E",
-        "hanger_color": "#6b727c",
-        "text_color": "#67574E",
-        "accent_color": "#2a2529",
-        "rail_thickness": 6,
-        "floating_card_title": "Couture Piece",
-        "floating_card_btn_text": "Inspect Piece",
-        "floating_card_bg": "#1a1819",
-        "floating_card_text": "#ffffff",
-        "floating_card_accent": "#000000",
-        "floating_card_border": "#333333",
-        "hint_text": "Hover to sway • Drag along the rack",
-        "hint_icon_left": "⟵",
-        "hint_icon_right": "⟶",
-        "show_tuning_panel": true,
-        "sway_intensity": 4,
-        "spring_speed": 5,
-        "damping_rate": 5,
-        "hit_force": 5,
-        "part_spread": 130,
-        "item_width": 130,
-        "enable_nudge": true,
-        "enable_drag": true,
-        "padding_top": 60,
-        "padding_bottom": 80
+        "eyebrow": "Summer Atelier 2026",
+        "title": "Sign up to our waitlist!",
+        "subtitle": "Complete the form below to reserve your bespoke piece from our exclusive runway drop.",
+        "bg_color": "#f8f8f6"
       }
     }
   },
   "order": [
-    "luxury_header",
+    "hanger_rack",
+    "custom_static_banner",
     "hero_3d_cylinder",
-    "hanger_rack"
+    "atelier_waitlist"
   ]
 }

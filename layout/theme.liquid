@@ -41,21 +41,9 @@
     </script>
     <style>
       html.is-waitlist-mode #standard404Markup,
-      html.is-waitlist-mode .header-group,
-      html.is-waitlist-mode .footer-group,
-      html.is-waitlist-mode #shopify-section-announcement-bar,
-      html.is-waitlist-mode .announcement-bar-section,
-      html.is-waitlist-mode .header-wrapper,
       html.is-inspect-mode #standard404Markup,
-      html.is-inspect-mode .header-group,
-      html.is-inspect-mode .footer-group,
-      html.is-inspect-mode #shopify-section-announcement-bar,
-      html.is-inspect-mode .announcement-bar-section,
-      html.is-inspect-mode .header-wrapper,
-      body.template-page--product-inspect .header-group,
-      body.template-page--product-inspect .footer-group,
-      body.template-product--inspect .header-group,
-      body.template-product--inspect .footer-group {
+      html.is-waitlist-mode .header-wrapper:not(.luxury-header),
+      html.is-inspect-mode .header-wrapper:not(.luxury-header) {
         display: none !important;
       }
       html.is-waitlist-mode #waitlistAutoFallback {

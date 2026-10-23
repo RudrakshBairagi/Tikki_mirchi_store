@@ -158,7 +158,6 @@
     font-size: calc(clamp(2.2rem, 3.2vw, 3rem) * var(--header-logo-scale, 1)) !important;
     letter-spacing: var(--header-logo-spacing, 0.02em) !important;
   }
-  }
 
   @media (max-width: 768px) {
     #LuxuryHeaderSection-{{ section.id }} .brand-morph-logo {
@@ -219,7 +218,7 @@
 
 <div id="LuxuryHeaderSection-{{ section.id }}" class="luxury-header-section-wrapper">
   <!-- ==========================================================================
-       1. LUXURY NAVIGATION BAR (SOPHIE & LUCIE INSPIRED)
+       1. LUXURY NAVIGATION BAR (UNIFIED ACROSS ALL STORE PAGES)
        ========================================================================== -->
   <header id="LuxuryHeader" class="luxury-header scrolled-down">
     <div class="luxury-header__inner">
@@ -233,13 +232,18 @@
               <span></span>
               <span></span>
             </span>
-            <span class="btn-label">MENU</span>
+            <span class="btn-label">{{ section.settings.menu_toggle_label | default: 'MENU' }}</span>
           </button>
 
           <!-- Luxury Dropdown Menu -->
           <div id="LuxuryMenuDropdown" class="luxury-menu-dropdown" role="menu" aria-label="Navigation Menu" aria-hidden="true">
             <a href="{{ section.settings.link_1_url | default: routes.root_url }}" class="dropdown-nav-link dropdown-link-home" role="menuitem">
               <span class="dropdown-link-label">{{ section.settings.link_1_label | default: 'HOME' }}</span>
+              <span class="dropdown-link-arrow">⟶</span>
+            </a>
+            <div class="dropdown-nav-divider"></div>
+            <a href="{{ section.settings.link_inspect_url | default: '/pages/product-inspect' }}" class="dropdown-nav-link dropdown-link-inspect" role="menuitem">
+              <span class="dropdown-link-label">{{ section.settings.link_inspect_label | default: 'INSPECT PIECE ✦' }}</span>
               <span class="dropdown-link-arrow">⟶</span>
             </a>
             <div class="dropdown-nav-divider"></div>
@@ -253,6 +257,7 @@
         <!-- Desktop Navigation (Visible on Desktop) -->
         <nav class="desktop-nav" aria-label="Primary Navigation">
           <a href="{{ section.settings.link_1_url | default: routes.root_url }}" class="nav-link header-nav-home">{{ section.settings.link_1_label | default: 'HOME' }}</a>
+          <a href="{{ section.settings.link_inspect_url | default: '/pages/product-inspect' }}" class="nav-link header-nav-inspect">{{ section.settings.link_inspect_label | default: 'INSPECT PIECE ✦' }}</a>
           <a href="{{ section.settings.link_2_url | default: '/pages/waitlist' }}" class="nav-link header-nav-waitlist">{{ section.settings.link_2_label | default: 'WAITLIST ✦' }}</a>
         </nav>
       </div>
@@ -264,8 +269,28 @@
         </a>
       </div>
 
-      <!-- Right: Clean Minimal Zone (Utility icons removed) -->
-      <div class="luxury-header__right" aria-hidden="true"></div>
+      <!-- Right: Utility Actions (Search & Cart) -->
+      <div class="luxury-header__right">
+        {%- if section.settings.show_search != false -%}
+          <a href="{{ routes.search_url }}" class="header-action-btn search-toggle-btn" aria-label="Search" title="{{ section.settings.search_placeholder | default: 'Search' }}">
+            <svg class="search-icon-svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </a>
+        {%- endif -%}
+
+        {%- if section.settings.show_cart != false -%}
+          <a href="{{ routes.cart_url }}" class="header-action-btn cart-btn" aria-label="Cart">
+            <svg class="cart-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <path d="M16 10a4 4 0 0 1-8 0"></path>
+            </svg>
+            <span class="cart-count-badge" id="CartCountBadge">{{ cart.item_count | default: 0 }}</span>
+          </a>
+        {%- endif -%}
+      </div>
     </div>
   </header>
   <div class="luxury-header-spacer" aria-hidden="true"></div>
@@ -424,29 +449,68 @@
     },
     {
       "type": "header",
-      "content": "Navigation Links"
+      "content": "Navigation Links & Menu"
+    },
+    {
+      "type": "text",
+      "id": "menu_toggle_label",
+      "label": "Mobile Menu Button Label",
+      "default": "MENU"
     },
     {
       "type": "text",
       "id": "link_1_label",
-      "label": "Homepage Button Label",
+      "label": "Link 1 Label (Home)",
       "default": "HOME"
     },
     {
       "type": "url",
       "id": "link_1_url",
-      "label": "Homepage Button URL"
+      "label": "Link 1 URL"
+    },
+    {
+      "type": "text",
+      "id": "link_inspect_label",
+      "label": "Link 2 Label (Inspect Piece)",
+      "default": "INSPECT PIECE ✦"
+    },
+    {
+      "type": "url",
+      "id": "link_inspect_url",
+      "label": "Link 2 URL"
     },
     {
       "type": "text",
       "id": "link_2_label",
-      "label": "Waitlist Button Label",
+      "label": "Link 3 Label (Waitlist)",
       "default": "WAITLIST ✦"
     },
     {
       "type": "url",
       "id": "link_2_url",
-      "label": "Waitlist Button URL"
+      "label": "Link 3 URL"
+    },
+    {
+      "type": "header",
+      "content": "Utility Actions (Search & Cart)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "Enable Search Icon & Input",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Search Input Placeholder",
+      "default": "Search atelier couture, gowns, lehengas..."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cart",
+      "label": "Enable Cart Icon & Badge",
+      "default": true
     },
     {
       "type": "header",
