@@ -271,24 +271,32 @@
 
     // Minimalist Form Support (Bhawya Suri Aesthetic + Google Sheets Integration)
     const minimalForm = document.getElementById('waitlistMinimalForm');
-    const minimalInput = document.getElementById('minimalEmailInput');
+    const minimalEmail = document.getElementById('waitlistEmail') || document.getElementById('minimalEmailInput');
+    const minimalPhone = document.getElementById('waitlistPhone');
+    const minimalState = document.getElementById('waitlistState');
+    const minimalInterest = document.getElementById('waitlistInterest');
+    const minimalSizeInput = document.getElementById('waitlistPreferredSize');
     const minimalSubmitBtn = document.getElementById('minimalSubmitBtn');
     const minimalSuccess = document.getElementById('waitlistMinimalSuccess');
-    const vipToggle = document.getElementById('waitlistVipToggle');
-    const vipDrawer = document.getElementById('waitlistVipDrawer');
     const successModal = document.getElementById('waitlistSuccessModal');
     const modalCloseBtn = document.getElementById('modalCloseBtn');
     const modalDoneBtn = document.getElementById('modalDoneBtn');
 
-    // VIP Drawer Toggle
-    if (vipToggle && vipDrawer) {
-      vipToggle.addEventListener('click', (e) => {
-        e.preventDefault();
-        const isOpen = !vipDrawer.hidden;
-        vipDrawer.hidden = isOpen;
-        vipToggle.setAttribute('aria-expanded', String(!isOpen));
+    // Capsule size selection pills (supports both .waitlist-size-btn and new .wl-size-pill)
+    const capsuleSizeBtns = document.querySelectorAll('.waitlist-size-btn, .wl-size-pill');
+    capsuleSizeBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        capsuleSizeBtns.forEach((b) => {
+          b.classList.remove('is-active');
+          b.classList.remove('is-selected');
+        });
+        btn.classList.add('is-active');
+        btn.classList.add('is-selected');
+        if (minimalSizeInput) {
+          minimalSizeInput.value = btn.dataset.size || btn.textContent.trim();
+        }
       });
-    }
+    });
 
     // Modal Close handlers
     if (modalCloseBtn) {
@@ -328,21 +336,39 @@
     if (minimalForm) {
       minimalForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const email = minimalInput?.value?.trim();
+        const email = minimalEmail?.value?.trim();
         if (!email || !email.includes('@')) {
-          minimalInput?.focus();
+          minimalEmail?.focus();
           triggerToast('Please enter a valid email address');
           return;
         }
 
-        const vipName = document.getElementById('vipName')?.value?.trim() || '';
-        const vipPhone = document.getElementById('vipPhone')?.value?.trim() || '';
-        const vipCity = document.getElementById('vipCity')?.value?.trim() || '';
-        const vipSize = document.getElementById('vipSize')?.value || 'Standard';
+        const phoneVal = minimalPhone ? minimalPhone.value.replace(/[^0-9]/g, '') : '';
+        if (minimalPhone && phoneVal.length < 10) {
+          minimalPhone.focus();
+          triggerToast('Please enter a valid 10-digit WhatsApp number');
+          return;
+        }
+
+        const stateVal = minimalState ? minimalState.value : '';
+        if (minimalState && !stateVal) {
+          minimalState.focus();
+          triggerToast('Please select your state');
+          return;
+        }
+
+        const interestVal = minimalInterest ? minimalInterest.value : '';
+        if (minimalInterest && !interestVal) {
+          minimalInterest.focus();
+          triggerToast('Please choose your piece of interest');
+          return;
+        }
+
+        const sizeVal = minimalSizeInput ? minimalSizeInput.value : 'M (UK 10)';
 
         if (minimalSubmitBtn) {
           minimalSubmitBtn.disabled = true;
-          minimalSubmitBtn.innerHTML = `<span>...</span>`;
+          minimalSubmitBtn.innerHTML = `<span>Securing Your Access...</span>`;
         }
 
         const code = 'TB-IN-' + Math.floor(100000 + Math.random() * 900000);
@@ -350,18 +376,19 @@
 
         const payload = {
           code: code,
-          name: vipName || email.split('@')[0],
-          fullName: vipName || email.split('@')[0],
           email: email,
-          phone: vipPhone ? '+91 ' + vipPhone : 'N/A',
-          whatsapp: vipPhone ? '+91 ' + vipPhone : 'N/A',
-          city: vipCity || 'N/A',
-          size: vipSize,
-          dresses: 'Minimalist Runway Access Waitlist',
-          selectedLooks: 'Minimalist Runway Access Waitlist',
+          phone: phoneVal ? '+91 ' + phoneVal : 'N/A',
+          whatsapp: phoneVal ? '+91 ' + phoneVal : 'N/A',
+          state: stateVal || 'N/A',
+          interest: interestVal || 'Runway Look',
+          pieceOfInterest: interestVal || 'Runway Look',
+          dresses: interestVal || 'Runway Look',
+          selectedLooks: interestVal || 'Runway Look',
+          size: sizeVal,
+          preferredSize: sizeVal,
           date: timestamp,
           timestamp: timestamp,
-          source: 'Minimalist Waitlist (Bhawya Suri Style)'
+          source: 'Teekhi Bella Minimalist Waitlist'
         };
 
         // 1. Post to Google Sheet via Apps Script Webhook
@@ -387,18 +414,36 @@
           } catch (nlErr) {}
         }
 
-        // 3. UI Update: hide the input line, show minimal success
-        const line = minimalForm.querySelector('.waitlist-nl-line');
-        if (line) line.style.display = 'none';
-        if (vipToggle) vipToggle.style.display = 'none';
-        if (vipDrawer) vipDrawer.style.display = 'none';
-        if (minimalSuccess) minimalSuccess.hidden = false;
+        // 3. UI Update: hide the input fields, show minimal success
+        const grid = minimalForm.querySelector('.waitlist-capsule-grid') || minimalForm.querySelector('.waitlist-nl-line');
+        const submitWrap = minimalForm.querySelector('.waitlist-capsule-submit');
+        if (grid) grid.style.display = 'none';
+        if (submitWrap) submitWrap.style.display = 'none';
 
-        // 4. Pop-up Modal + Toast
+        // Hide new split-layout form fields too
+        minimalForm.querySelectorAll('.wl-field, .wl-submit-btn, .wl-privacy-note, .wl-selected-look-badge').forEach((el) => {
+          el.style.display = 'none';
+        });
+
+        const successSummary = document.getElementById('successSummaryText');
+        if (successSummary) {
+          successSummary.innerHTML = `Your priority spot for <strong>${escapeHtml(interestVal)}</strong> (Size: ${escapeHtml(sizeVal)}) is confirmed. VIP alerts will be sent to <strong>+91 ${escapeHtml(phoneVal)}</strong> (${escapeHtml(stateVal)}).`;
+        }
+
+        if (minimalSuccess) {
+          minimalSuccess.hidden = false;
+          minimalSuccess.style.display = 'block';
+        }
+
+        // 4. Update and show Pop-up Modal + Toast
         if (successModal) {
+          const modalP = successModal.querySelector('.modal-card p');
+          if (modalP) {
+            modalP.innerHTML = `Your spot for <strong>${escapeHtml(interestVal)}</strong> (Size: ${escapeHtml(sizeVal)}) is secured.<br><small style="color:rgba(255,255,255,0.7);margin-top:8px;display:block;">VIP drop link will be sent to +91 ${escapeHtml(phoneVal)} (${escapeHtml(stateVal)}).</small>`;
+          }
           successModal.hidden = false;
         }
-        triggerToast("✦ You're on the list! Reservation confirmed.");
+        triggerToast("✦ Reservation Confirmed! You're on the list.");
       });
     }
 

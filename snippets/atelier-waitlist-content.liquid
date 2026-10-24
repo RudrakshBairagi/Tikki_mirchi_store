@@ -514,84 +514,127 @@
   </main>
 {%- else -%}
   <main class="waitlist-page-content">
-    <!-- Minimalist Bhawya Suri Aesthetic Hero with Desktop Artwork Background -->
+    <!-- Minimalist Aesthetic Hero with Desktop Artwork Background -->
     <section class="waitlist-hero-minimal" {%- if ws.bg_image != blank -%}style="background-image: url('{{ ws.bg_image | image_url: width: 2600 }}');"{%- else -%}style="background-image: url('{{ 'background.jpg' | asset_url }}');"{%- endif -%}>
       <div class="waitlist-minimal-overlay" aria-hidden="true" style="opacity: {{ ws.bg_overlay_opacity | default: 25 | divided_by: 100.0 }};"></div>
 
       <div class="waitlist-minimal-inner">
-        {%- assign eyebrow_text = ws.eyebrow | default: 'Summer Atelier 2026' -%}
-        {%- if eyebrow_text != blank -%}
-          <div class="waitlist-minimal-eyebrow">
-            <span>✦</span>
-            <span>{{ eyebrow_text }}</span>
-            <span>✦</span>
-          </div>
-        {%- endif -%}
-
         <h1 class="waitlist-minimal-title">{{ ws.title | default: 'Sign Up For Exclusive Access' }}</h1>
-        {%- assign subtitle_text = ws.subtitle | default: 'Be first to reserve your bespoke couture piece from our upcoming limited runway drop.' -%}
-        {%- if subtitle_text != blank -%}
-          <p class="waitlist-minimal-subtitle">{{ subtitle_text }}</p>
-        {%- endif -%}
+        <p class="waitlist-minimal-subtitle">{{ ws.subtitle | default: 'Select your piece of interest and reserve your private runway drop access.' }}</p>
 
-        <!-- Signature Single-Line Minimalist Form (Bhawya Suri Style) -->
-        <div class="waitlist-nl-form-wrap">
-          <form id="waitlistMinimalForm" class="waitlist-minimal-form" novalidate>
-            <div class="waitlist-nl-line">
-              <svg class="waitlist-nl-icon" viewBox="0 0 44 24" aria-hidden="true">
-                <rect x="0.6" y="0.6" width="42.8" height="22.8"/>
-                <path d="M0.6 0.6 22 15.5 43.4 0.6M0.6 23.4 16 11.8M43.4 23.4 28 11.8"/>
-              </svg>
-              <input
-                type="email"
-                id="minimalEmailInput"
-                class="waitlist-nl-input"
-                placeholder="{{ ws.email_placeholder | default: 'Sign Up For Exclusive Access' }}"
-                autocomplete="email"
-                required
-              >
-              <button type="submit" class="waitlist-nl-button" id="minimalSubmitBtn">{{ ws.submit_btn_text | default: 'Submit' }}</button>
-            </div>
+        <!-- Minimalist Multi-Field Capsule Form -->
+        <div class="waitlist-capsule-card">
+          <form id="waitlistMinimalForm" class="waitlist-capsule-form" novalidate>
+            <div class="waitlist-capsule-grid">
+              
+              <!-- 1. Email Address -->
+              <div class="waitlist-capsule-field grid-span-2">
+                <label for="waitlistEmail">Email Address *</label>
+                <input
+                  type="email"
+                  id="waitlistEmail"
+                  placeholder="{{ ws.email_placeholder | default: 'yourname@example.com' }}"
+                  autocomplete="email"
+                  required
+                >
+              </div>
 
-            <!-- VIP Expand Option -->
-            <button type="button" class="waitlist-vip-toggle" id="waitlistVipToggle" aria-expanded="false">
-              ✦ Prefer bespoke sizing & WhatsApp alerts? (Click to add)
-            </button>
-
-            <!-- Collapsible VIP Drawer -->
-            <div class="waitlist-vip-drawer" id="waitlistVipDrawer" hidden>
-              <div class="vip-grid">
-                <div class="vip-field">
-                  <label for="vipName">{{ ws.name_label | default: 'Full Name' }}</label>
-                  <input type="text" id="vipName" placeholder="{{ ws.name_placeholder | default: 'Enter your full name' }}">
-                </div>
-                <div class="vip-field">
-                  <label for="vipPhone">{{ ws.phone_label | default: 'WhatsApp Number (+91)' }}</label>
-                  <input type="tel" id="vipPhone" placeholder="98765 43210" maxlength="10">
-                </div>
-                <div class="vip-field">
-                  <label for="vipCity">{{ ws.city_label | default: 'City' }}</label>
-                  <input type="text" id="vipCity" placeholder="{{ ws.city_placeholder | default: 'e.g. Mumbai / Delhi' }}">
-                </div>
-                <div class="vip-field">
-                  <label for="vipSize">Preferred Size</label>
-                  <select id="vipSize">
-                    <option value="XS">XS (UK 6 / Bust 32")</option>
-                    <option value="S">S (UK 8 / Bust 34")</option>
-                    <option value="M" selected>M (UK 10 / Bust 36")</option>
-                    <option value="L">L (UK 12 / Bust 38")</option>
-                    <option value="XL">XL (UK 14 / Bust 40")</option>
-                    <option value="Custom">Custom Atelier Fit</option>
-                  </select>
+              <!-- 2. Phone Number (+91 WhatsApp) -->
+              <div class="waitlist-capsule-field">
+                <label for="waitlistPhone">Phone Number (WhatsApp VIP) *</label>
+                <div class="waitlist-capsule-phone">
+                  <span class="phone-prefix">+91</span>
+                  <input
+                    type="tel"
+                    id="waitlistPhone"
+                    placeholder="98765 43210"
+                    maxlength="10"
+                    pattern="[0-9]{10}"
+                    required
+                  >
                 </div>
               </div>
+
+              <!-- 3. State -->
+              <div class="waitlist-capsule-field">
+                <label for="waitlistState">State / UT *</label>
+                <select id="waitlistState" required>
+                  <option value="" disabled selected>Select Your State</option>
+                  <option value="Andhra Pradesh">Andhra Pradesh</option>
+                  <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                  <option value="Assam">Assam</option>
+                  <option value="Bihar">Bihar</option>
+                  <option value="Chhattisgarh">Chhattisgarh</option>
+                  <option value="Delhi">Delhi (NCR)</option>
+                  <option value="Goa">Goa</option>
+                  <option value="Gujarat">Gujarat</option>
+                  <option value="Haryana">Haryana</option>
+                  <option value="Himachal Pradesh">Himachal Pradesh</option>
+                  <option value="Jharkhand">Jharkhand</option>
+                  <option value="Karnataka">Karnataka</option>
+                  <option value="Kerala">Kerala</option>
+                  <option value="Madhya Pradesh">Madhya Pradesh</option>
+                  <option value="Maharashtra">Maharashtra</option>
+                  <option value="Manipur">Manipur</option>
+                  <option value="Meghalaya">Meghalaya</option>
+                  <option value="Mizoram">Mizoram</option>
+                  <option value="Nagaland">Nagaland</option>
+                  <option value="Odisha">Odisha</option>
+                  <option value="Punjab">Punjab</option>
+                  <option value="Rajasthan">Rajasthan</option>
+                  <option value="Sikkim">Sikkim</option>
+                  <option value="Tamil Nadu">Tamil Nadu</option>
+                  <option value="Telangana">Telangana</option>
+                  <option value="Tripura">Tripura</option>
+                  <option value="Uttar Pradesh">Uttar Pradesh</option>
+                  <option value="Uttarakhand">Uttarakhand</option>
+                  <option value="West Bengal">West Bengal</option>
+                  <option value="Other / International">Other / International</option>
+                </select>
+              </div>
+
+              <!-- 4. Piece of Interest (Choose 1 out of the 5) -->
+              <div class="waitlist-capsule-field grid-span-2">
+                <label for="waitlistInterest">Piece of Interest (Choose 1 of 5 Runway Looks) *</label>
+                <select id="waitlistInterest" required>
+                  <option value="" disabled selected>Select the piece you are reserving</option>
+                  <option value="Archival Manuscript Corset Gown">1. Archival Manuscript Corset Gown</option>
+                  <option value="Heritage Mural Mirror Lehenga">2. Heritage Mural Mirror Lehenga</option>
+                  <option value="Rose-Coral Shimmer Saree Gown">3. Rose-Coral Shimmer Saree Gown</option>
+                  <option value="Midnight Botanical Co-ord Set">4. Midnight Botanical Co-ord Set</option>
+                  <option value="Bordeaux Peplum Halter Gown">5. Bordeaux Peplum Halter Gown</option>
+                </select>
+              </div>
+
+              <!-- 5. Preferred Sizing -->
+              <div class="waitlist-capsule-field grid-span-2">
+                <label>Preferred Sizing *</label>
+                <div class="waitlist-size-pills" role="radiogroup" aria-label="Preferred Size">
+                  <button type="button" class="waitlist-size-btn" data-size="XS (UK 6)">XS</button>
+                  <button type="button" class="waitlist-size-btn" data-size="S (UK 8)">S</button>
+                  <button type="button" class="waitlist-size-btn is-active" data-size="M (UK 10)">M</button>
+                  <button type="button" class="waitlist-size-btn" data-size="L (UK 12)">L</button>
+                  <button type="button" class="waitlist-size-btn" data-size="XL (UK 14)">XL</button>
+                  <button type="button" class="waitlist-size-btn" data-size="Custom (Made-to-Measure)">Custom Fit</button>
+                </div>
+                <input type="hidden" id="waitlistPreferredSize" value="M (UK 10)">
+              </div>
+
+            </div>
+
+            <!-- Submit Button -->
+            <div class="waitlist-capsule-submit">
+              <button type="submit" class="waitlist-capsule-submit-btn" id="minimalSubmitBtn">
+                <span>{{ ws.submit_btn_text | default: 'Reserve Exclusive Access' }}</span>
+                <span>⟶</span>
+              </button>
             </div>
 
             <!-- Inline Success Confirmation -->
             <div class="waitlist-minimal-success" id="waitlistMinimalSuccess" hidden>
               <div class="success-sparkle-icon">✦</div>
               <h2 class="success-title">{{ ws.success_title | default: "You're on the exclusive waitlist!" }}</h2>
-              <p class="success-text">{{ ws.success_msg | default: "Thank you for reserving your spot. We'll send you private VIP drop access before the public launch." }}</p>
+              <p class="success-text" id="successSummaryText">{{ ws.success_msg | default: "Thank you for reserving your spot. We'll send your private VIP drop access via WhatsApp and email before the public launch." }}</p>
             </div>
           </form>
 
@@ -614,7 +657,7 @@
       <button class="modal-close-btn" id="modalCloseBtn" aria-label="Close">✕</button>
       <span class="modal-sparkle">✦</span>
       <h3>{{ ws.modal_heading | default: 'Reservation Confirmed' }}</h3>
-      <p>{{ ws.modal_subtext | default: 'Your spot for the Summer Atelier 2026 collection is secured.' }}</p>
+      <p>{{ ws.modal_subtext | default: 'Your spot for the Teekhi Bella Couture collection is secured.' }}</p>
       <div class="modal-receipt-badge">VIP DROP ACCESS: ACTIVE</div>
       <button class="modal-action-btn" id="modalDoneBtn">Return to Store</button>
     </div>

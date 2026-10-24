@@ -6,11 +6,11 @@
         "form_style": "minimal",
         "bg_mode": "image",
         "bg_overlay_opacity": 25,
-        "eyebrow": "Summer Atelier 2026",
+        "eyebrow": "",
         "title": "Sign Up For Exclusive Access",
-        "subtitle": "Be first to reserve your bespoke couture piece from our upcoming limited runway drop.",
-        "email_placeholder": "Sign Up For Exclusive Access",
-        "submit_btn_text": "Submit"
+        "subtitle": "Select your piece of interest and reserve your private runway drop access.",
+        "email_placeholder": "yourname@example.com",
+        "submit_btn_text": "Reserve Exclusive Access"
       }
     }
   },

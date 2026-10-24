@@ -807,35 +807,211 @@ body:has(#atelierWaitlistSection) .brand-wordmark {
 }
 
 .waitlist-minimal-eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  color: #d4af37;
-  margin-bottom: 18px;
+  display: none !important;
 }
 
 .waitlist-minimal-title {
   font-family: var(--wl-title-font, 'Plus Jakarta Sans', serif);
-  font-size: clamp(28px, 4vw, 44px);
+  font-size: clamp(28px, 4vw, 42px);
   font-weight: 500;
   letter-spacing: 0.04em;
   line-height: 1.2;
-  margin: 0 0 14px 0;
+  margin: 0 0 10px 0;
   color: #ffffff;
   text-shadow: 0 2px 10px rgba(0,0,0,0.3);
 }
 
 .waitlist-minimal-subtitle {
-  font-size: clamp(14px, 1.6vw, 16px);
-  line-height: 1.6;
+  font-size: clamp(13px, 1.5vw, 15px);
+  line-height: 1.5;
   color: rgba(255, 255, 255, 0.88);
-  margin: 0 auto 36px auto;
+  margin: 0 auto 20px auto;
   max-width: 520px;
   text-shadow: 0 1px 6px rgba(0,0,0,0.4);
+}
+
+/* Minimalist Multi-Field Capsule Card */
+.waitlist-capsule-card {
+  background: rgba(18, 16, 20, 0.72);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 16px;
+  padding: 30px 28px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+  text-align: left;
+  margin-top: 10px;
+}
+
+.waitlist-capsule-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.waitlist-capsule-grid .grid-span-2 {
+  grid-column: span 2;
+}
+
+.waitlist-capsule-field label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 7px;
+}
+
+.waitlist-capsule-field input,
+.waitlist-capsule-field select {
+  width: 100%;
+  box-sizing: border-box;
+  background: rgba(255, 255, 255, 0.09);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 8px;
+  padding: 12px 14px;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  outline: none;
+  transition: border-color 0.2s ease, background 0.2s ease;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.waitlist-capsule-field select {
+  cursor: pointer;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 14px;
+  padding-right: 36px;
+}
+
+.waitlist-capsule-field select option {
+  background: #18171a;
+  color: #ffffff;
+}
+
+.waitlist-capsule-field input:focus,
+.waitlist-capsule-field select:focus {
+  border-color: #ffffff;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.waitlist-capsule-field input::placeholder {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.waitlist-capsule-phone {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.09);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: border-color 0.2s ease;
+}
+
+.waitlist-capsule-phone:focus-within {
+  border-color: #ffffff;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.waitlist-capsule-phone .phone-prefix {
+  padding: 12px 12px 12px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  border-right: 1px solid rgba(255, 255, 255, 0.18);
+  user-select: none;
+}
+
+.waitlist-capsule-phone input {
+  border: 0 !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+  padding: 12px 14px;
+}
+
+.waitlist-size-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.waitlist-size-btn {
+  flex: 1 1 auto;
+  min-width: 48px;
+  background: rgba(255, 255, 255, 0.09);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 6px;
+  padding: 9px 12px;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.waitlist-size-btn:hover {
+  border-color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.waitlist-size-btn.is-active {
+  background: #ffffff !important;
+  color: #121014 !important;
+  font-weight: 700;
+  border-color: #ffffff !important;
+}
+
+.waitlist-capsule-submit {
+  margin-top: 22px;
+}
+
+.waitlist-capsule-submit-btn {
+  width: 100%;
+  background: #ffffff;
+  color: #111111;
+  border: 0;
+  border-radius: 8px;
+  padding: 14px 20px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.waitlist-capsule-submit-btn:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.18);
+}
+
+@media (max-width: 640px) {
+  .waitlist-capsule-card {
+    padding: 22px 16px;
+  }
+  .waitlist-capsule-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .waitlist-capsule-grid .grid-span-2 {
+    grid-column: span 1;
+  }
 }
 
 /* The signature single-line input container */
