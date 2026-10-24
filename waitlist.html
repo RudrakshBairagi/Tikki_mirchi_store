@@ -126,7 +126,7 @@
     .wl-split-overlay {
       position: absolute;
       inset: 0;
-      background: rgba(0, 0, 0, 0.55);
+      background: rgba(0, 0, 0, 0.2);
       z-index: 1;
       pointer-events: none;
     }
@@ -154,13 +154,14 @@
     }
 
     .wl-left-title {
-      font-family: 'Italiana', 'Playfair Display', Georgia, serif;
-      font-size: clamp(36px, 3.8vw, 54px);
+      font-family: 'Ahsing', serif;
+      font-size: clamp(38px, 4.2vw, 58px);
       font-weight: 400;
-      line-height: 1.1;
+      line-height: 1.05;
       color: #ffffff;
       margin: 0 0 14px 0;
-      letter-spacing: 0.01em;
+      letter-spacing: 0.03em;
+      text-shadow: 0 2px 16px rgba(0,0,0,0.5);
     }
 
     .wl-left-sub {
@@ -182,71 +183,83 @@
     .wl-look-card {
       position: relative;
       flex: 1 1 0;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 10px;
-      overflow: hidden;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      overflow: visible;
       cursor: pointer;
-      transition: all 0.25s ease;
+      transition: transform 0.25s ease;
       outline: none;
     }
 
     .wl-look-card:hover {
-      background: rgba(255,255,255,0.12);
-      border-color: rgba(255,255,255,0.4);
-      transform: translateY(-3px);
+      transform: translateY(-6px);
     }
 
     .wl-look-card.is-selected {
-      background: rgba(255,255,255,0.18);
-      border-color: #ffffff;
-      box-shadow: 0 0 0 2px rgba(255,255,255,0.3);
+      background: transparent;
+    }
+
+    /* Thin white underline for selected card */
+    .wl-look-card.is-selected::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 10%;
+      width: 80%;
+      height: 1.5px;
+      background: #ffffff;
+      border-radius: 2px;
     }
 
     .wl-look-img-wrap {
       width: 100%;
-      aspect-ratio: 3/4;
+      aspect-ratio: 3/5;
       overflow: hidden;
       display: flex;
       align-items: flex-end;
       justify-content: center;
-      background: rgba(0,0,0,0.2);
+      background: transparent;
     }
 
     .wl-look-img-wrap img {
-      width: 100%;
+      width: 90%;
       height: 100%;
       object-fit: contain;
-      object-position: bottom;
+      object-position: bottom center;
       transition: transform 0.35s ease;
+      filter: drop-shadow(0 6px 20px rgba(0,0,0,0.45));
     }
 
     .wl-look-card:hover .wl-look-img-wrap img {
-      transform: scale(1.04);
+      transform: scale(1.06) translateY(-4px);
     }
 
     .wl-look-info {
-      padding: 8px 8px 6px;
+      padding: 10px 4px 4px;
       display: flex;
       flex-direction: column;
-      gap: 2px;
+      gap: 3px;
+      text-align: center;
     }
 
     .wl-look-num {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 9px;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      color: rgba(255,255,255,0.45);
-      text-transform: uppercase;
+      font-family: 'Ahsing', serif;
+      font-size: 22px;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      color: rgba(255,255,255,0.9);
+      line-height: 1;
+      text-shadow: 0 1px 8px rgba(0,0,0,0.6);
     }
 
     .wl-look-name {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 10px;
-      font-weight: 500;
-      color: rgba(255,255,255,0.9);
-      line-height: 1.35;
+      font-size: 9.5px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.4;
+      letter-spacing: 0.03em;
     }
 
     .wl-look-check {
@@ -285,15 +298,15 @@
       padding: 60px 32px;
     }
 
-    /* Frosted glass card behind form */
+    /* Frosted glass card behind form — lighter so bg shows through */
     .wl-right-panel::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: rgba(8, 7, 10, 0.68);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border-left: 1px solid rgba(255,255,255,0.1);
+      background: rgba(6, 5, 8, 0.52);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-left: 1px solid rgba(255,255,255,0.08);
     }
 
     .wl-form {
