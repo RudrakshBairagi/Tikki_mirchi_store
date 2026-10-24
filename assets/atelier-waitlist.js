@@ -359,8 +359,7 @@
 
         const interestVal = minimalInterest ? minimalInterest.value : '';
         if (minimalInterest && !interestVal) {
-          minimalInterest.focus();
-          triggerToast('Please choose your piece of interest');
+          triggerToast('Please select at least one runway piece');
           return;
         }
 

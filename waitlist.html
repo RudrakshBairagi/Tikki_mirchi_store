@@ -126,7 +126,7 @@
     .wl-split-overlay {
       position: absolute;
       inset: 0;
-      background: rgba(0, 0, 0, 0.2);
+      background: linear-gradient(to right, rgba(0, 0, 0, 0.32) 0%, rgba(0, 0, 0, 0.12) 55%, transparent 100%);
       z-index: 1;
       pointer-events: none;
     }
@@ -135,49 +135,59 @@
     .wl-left-panel {
       position: relative;
       z-index: 2;
-      flex: 1 1 55%;
-      padding: 60px 40px 60px 56px;
+      flex: 1 1 56%;
+      padding: 30px 44px 34px 56px;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: space-between;
       color: #ffffff;
+    }
+
+    .wl-left-header {
+      margin-bottom: auto;
     }
 
     .wl-left-eyebrow {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.22em;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 10.5px;
+      font-weight: 600;
+      letter-spacing: 0.28em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.6);
-      margin: 0 0 16px 0;
+      color: #ffffff;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
+      margin: 0 0 8px 0;
     }
 
     .wl-left-title {
-      font-family: 'Ahsing', serif;
-      font-size: clamp(38px, 4.2vw, 58px);
-      font-weight: 400;
-      line-height: 1.05;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: clamp(20px, 2.1vw, 28px);
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      line-height: 1.3;
       color: #ffffff;
-      margin: 0 0 14px 0;
-      letter-spacing: 0.03em;
-      text-shadow: 0 2px 16px rgba(0,0,0,0.5);
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8), 0 1px 3px rgba(0, 0, 0, 0.95);
+      margin: 0 0 8px 0;
     }
 
     .wl-left-sub {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 13px;
-      color: rgba(255,255,255,0.65);
-      line-height: 1.6;
-      margin: 0 0 32px 0;
-      max-width: 380px;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 11.5px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      color: rgba(255, 255, 255, 0.92);
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.85);
+      line-height: 1.5;
+      margin: 0 0 14px 0;
+      max-width: 440px;
     }
 
     /* Looks grid: horizontal strip of 5 cards */
     .wl-looks-grid {
       display: flex;
-      gap: 10px;
+      gap: 12px;
       align-items: flex-end;
+      margin-top: 18px;
     }
 
     .wl-look-card {
@@ -188,8 +198,9 @@
       border-radius: 0;
       overflow: visible;
       cursor: pointer;
-      transition: transform 0.25s ease;
+      transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.4, 1), opacity 0.25s ease;
       outline: none;
+      padding-bottom: 8px;
     }
 
     .wl-look-card:hover {
@@ -197,20 +208,9 @@
     }
 
     .wl-look-card.is-selected {
-      background: transparent;
+      transform: translateY(-4px);
     }
 
-    /* Thin white underline for selected card */
-    .wl-look-card.is-selected::after {
-      content: '';
-      position: absolute;
-      bottom: -8px;
-      left: 10%;
-      width: 80%;
-      height: 1.5px;
-      background: #ffffff;
-      border-radius: 2px;
-    }
 
     .wl-look-img-wrap {
       width: 100%;
@@ -227,47 +227,70 @@
       height: 100%;
       object-fit: contain;
       object-position: bottom center;
-      transition: transform 0.35s ease;
-      filter: drop-shadow(0 6px 20px rgba(0,0,0,0.45));
+      transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.4, 1), filter 0.35s ease;
+      filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.45));
     }
 
     .wl-look-card:hover .wl-look-img-wrap img {
-      transform: scale(1.06) translateY(-4px);
+      transform: scale(1.05) translateY(-3px);
+    }
+
+    .wl-look-card.is-selected .wl-look-img-wrap img {
+      filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.25)) drop-shadow(0 8px 20px rgba(0, 0, 0, 0.6));
     }
 
     .wl-look-info {
-      padding: 10px 4px 4px;
+      padding: 6px 6px 7px;
       display: flex;
       flex-direction: column;
       gap: 3px;
       text-align: center;
+      background: rgba(18, 14, 16, 0.72);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      margin-top: 6px;
+      transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+    }
+
+    .wl-look-card:hover .wl-look-info {
+      background: rgba(18, 14, 16, 0.85);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .wl-look-card.is-selected .wl-look-info {
+      background: rgba(18, 14, 16, 0.94);
+      border-color: rgba(255, 255, 255, 0.55);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
     }
 
     .wl-look-num {
-      font-family: 'Ahsing', serif;
-      font-size: 22px;
-      font-weight: 400;
-      letter-spacing: 0.04em;
-      color: rgba(255,255,255,0.9);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      color: #ffffff;
       line-height: 1;
-      text-shadow: 0 1px 8px rgba(0,0,0,0.6);
+      margin-bottom: 1px;
     }
 
     .wl-look-name {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 9.5px;
-      font-weight: 400;
-      color: rgba(255,255,255,0.65);
-      line-height: 1.4;
-      letter-spacing: 0.03em;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 8.5px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.95);
+      line-height: 1.3;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
 
     .wl-look-check {
       position: absolute;
-      top: 8px;
-      right: 8px;
-      width: 22px;
-      height: 22px;
+      top: 6px;
+      right: 6px;
+      width: 20px;
+      height: 20px;
       background: #ffffff;
       color: #000000;
       border-radius: 50%;
@@ -277,8 +300,10 @@
       font-size: 11px;
       font-weight: 700;
       opacity: 0;
-      transform: scale(0.6);
-      transition: all 0.2s ease;
+      transform: scale(0.5);
+      transition: all 0.22s cubic-bezier(0.2, 0.8, 0.4, 1);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+      z-index: 3;
     }
 
     .wl-look-card.is-selected .wl-look-check {
@@ -286,7 +311,7 @@
       transform: scale(1);
     }
 
-    /* RIGHT PANEL — minimalist form */
+    /* RIGHT PANEL — minimalist form with light frosted glass for crisp black typography */
     .wl-right-panel {
       position: relative;
       z-index: 2;
@@ -295,18 +320,19 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 60px 32px;
+      padding: 48px 32px;
     }
 
-    /* Frosted glass card behind form — lighter so bg shows through */
+    /* Luminous light frosted glass panel */
     .wl-right-panel::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: rgba(6, 5, 8, 0.52);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      border-left: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-left: 1px solid rgba(0, 0, 0, 0.08);
+      box-shadow: -8px 0 32px rgba(0, 0, 0, 0.08);
     }
 
     .wl-form {
@@ -315,50 +341,37 @@
       width: 100%;
     }
 
-    /* Selected look badge */
-    .wl-selected-look-badge {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 20px;
-      padding: 5px 12px;
-      margin-bottom: 24px;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 11px;
-      color: rgba(255,255,255,0.8);
-      letter-spacing: 0.04em;
-    }
-
-    .wl-badge-dot {
-      width: 6px;
-      height: 6px;
-      background: #fff;
-      border-radius: 50%;
-      flex-shrink: 0;
-      animation: pulse-dot 2s infinite;
-    }
-
-    @keyframes pulse-dot {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.4; }
-    }
-
     /* Form field */
     .wl-field {
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
-    .wl-field label {
+    .wl-field-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 7px;
+    }
+
+    .wl-field label,
+    .wl-field-header label {
       display: block;
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 10px;
+      font-size: 9.5px;
       font-weight: 600;
-      letter-spacing: 0.16em;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.55);
-      margin-bottom: 7px;
+      color: rgba(0, 0, 0, 0.7);
+      margin: 0;
+    }
+
+    .wl-select-hint {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(0, 0, 0, 0.45);
     }
 
     .wl-field input,
@@ -366,12 +379,12 @@
       width: 100%;
       background: transparent;
       border: none;
-      border-bottom: 1px solid rgba(255,255,255,0.28);
-      color: #ffffff;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.24);
+      color: #000000;
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 14px;
-      font-weight: 400;
-      padding: 8px 0;
+      font-size: 13.5px;
+      font-weight: 500;
+      padding: 7px 0;
       outline: none;
       transition: border-color 0.2s ease;
       -webkit-appearance: none;
@@ -380,7 +393,7 @@
     }
 
     .wl-field select {
-      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.5)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='rgba(0,0,0,0.6)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
       background-repeat: no-repeat;
       background-position: right 2px center;
       background-size: 14px;
@@ -388,17 +401,72 @@
     }
 
     .wl-field select option {
-      background: #111013;
-      color: #ffffff;
+      background: #ffffff;
+      color: #000000;
     }
 
     .wl-field input:focus,
     .wl-field select:focus {
-      border-bottom-color: #ffffff;
+      border-bottom-color: #000000;
     }
 
     .wl-field input::placeholder {
-      color: rgba(255,255,255,0.3);
+      color: rgba(0, 0, 0, 0.38);
+      font-size: 13px;
+    }
+
+    /* Multi-piece selection chips */
+    .wl-pieces-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .wl-piece-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(0, 0, 0, 0.03);
+      border: 1px solid rgba(0, 0, 0, 0.22);
+      color: rgba(0, 0, 0, 0.75);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      padding: 5px 9px;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      outline: none;
+    }
+
+    .wl-piece-chip:hover {
+      border-color: rgba(0, 0, 0, 0.6);
+      color: #000000;
+      background: rgba(0, 0, 0, 0.06);
+    }
+
+    .wl-piece-chip.is-selected {
+      background: #000000;
+      border-color: #000000;
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    .wl-chip-check {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 700;
+      opacity: 0;
+      max-width: 0;
+      overflow: hidden;
+      transition: all 0.18s ease;
+    }
+
+    .wl-piece-chip.is-selected .wl-chip-check {
+      opacity: 1;
+      max-width: 12px;
     }
 
     /* Phone row */
@@ -406,89 +474,91 @@
       display: flex;
       align-items: baseline;
       gap: 10px;
-      border-bottom: 1px solid rgba(255,255,255,0.28);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.24);
       transition: border-color 0.2s ease;
     }
 
     .wl-phone-row:focus-within {
-      border-bottom-color: #ffffff;
+      border-bottom-color: #000000;
     }
 
     .wl-phone-cc {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 14px;
-      color: rgba(255,255,255,0.5);
+      font-size: 13.5px;
+      color: rgba(0, 0, 0, 0.55);
       flex-shrink: 0;
-      padding: 8px 0;
+      padding: 7px 0;
       user-select: none;
+      font-weight: 500;
     }
 
     .wl-phone-row input {
       border: none !important;
       flex: 1;
-      padding: 8px 0;
+      padding: 7px 0;
     }
 
     /* Size pills */
     .wl-size-row {
       display: flex;
-      gap: 8px;
+      gap: 6px;
       flex-wrap: wrap;
-      margin-top: 4px;
+      margin-top: 5px;
     }
 
     .wl-size-pill {
-      background: transparent;
-      border: 1px solid rgba(255,255,255,0.28);
-      color: rgba(255,255,255,0.7);
+      background: rgba(0, 0, 0, 0.03);
+      border: 1px solid rgba(0, 0, 0, 0.22);
+      color: rgba(0, 0, 0, 0.75);
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 500;
-      letter-spacing: 0.06em;
-      padding: 6px 16px;
+      letter-spacing: 0.08em;
+      padding: 6px 14px;
       border-radius: 2px;
       cursor: pointer;
       transition: all 0.18s ease;
     }
 
     .wl-size-pill:hover {
-      border-color: rgba(255,255,255,0.65);
-      color: #ffffff;
+      border-color: rgba(0, 0, 0, 0.6);
+      color: #000000;
+      background: rgba(0, 0, 0, 0.06);
     }
 
     .wl-size-pill.is-selected {
-      background: #ffffff;
-      border-color: #ffffff;
-      color: #000000;
-      font-weight: 700;
+      background: #000000;
+      border-color: #000000;
+      color: #ffffff;
+      font-weight: 600;
     }
 
     /* Submit */
     .wl-submit-btn {
       width: 100%;
-      background: #ffffff;
-      color: #000000;
+      background: #000000;
+      color: #ffffff;
       border: none;
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.18em;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
       padding: 14px 20px;
-      margin-top: 8px;
+      margin-top: 12px;
       cursor: pointer;
       transition: all 0.22s ease;
       border-radius: 2px;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
+      gap: 8px;
     }
 
     .wl-submit-btn:hover {
-      background: rgba(255,255,255,0.88);
+      background: #222222;
       transform: translateY(-1px);
-      box-shadow: 0 8px 28px rgba(0,0,0,0.35);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
     }
 
     .wl-submit-btn:disabled {
@@ -499,10 +569,10 @@
 
     .wl-privacy-note {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 10px;
-      color: rgba(255,255,255,0.32);
+      font-size: 9.5px;
+      color: rgba(0, 0, 0, 0.45);
       text-align: center;
-      margin-top: 12px;
+      margin-top: 10px;
       letter-spacing: 0.04em;
     }
 
@@ -520,22 +590,24 @@
 
     .wl-success-icon {
       font-size: 24px;
-      color: rgba(255,255,255,0.8);
+      color: #000000;
       margin-bottom: 12px;
     }
 
     .wl-success-title {
-      font-family: 'Italiana', Georgia, serif;
-      font-size: 22px;
-      color: #ffffff;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #000000;
       margin: 0 0 8px 0;
-      font-weight: 400;
     }
 
     .wl-success-sub {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 13px;
-      color: rgba(255,255,255,0.6);
+      font-size: 12.5px;
+      color: rgba(0, 0, 0, 0.7);
       line-height: 1.6;
       margin: 0;
     }
@@ -546,17 +618,17 @@
         flex-direction: column;
       }
       .wl-left-panel {
-        padding: 48px 24px 32px;
+        padding: 44px 24px 28px;
       }
       .wl-right-panel {
         flex: none;
         max-width: 100%;
         width: 100%;
-        padding: 40px 24px 48px;
+        padding: 36px 24px 44px;
       }
       .wl-right-panel::before {
         border-left: none;
-        border-top: 1px solid rgba(255,255,255,0.1);
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
       }
       .wl-looks-grid {
         overflow-x: auto;
@@ -569,13 +641,13 @@
 
     @media (max-width: 480px) {
       .wl-left-panel {
-        padding: 36px 20px 24px;
+        padding: 32px 20px 20px;
       }
       .wl-look-card {
         flex: 0 0 100px;
       }
       .wl-left-title {
-        font-size: 32px;
+        font-size: 20px;
       }
     }
   </style>
@@ -640,13 +712,15 @@
 
       <!-- LEFT: Outfit Showcase -->
       <div class="wl-left-panel">
-        <p class="wl-left-eyebrow">The Edit — 5 Looks</p>
-        <h1 class="wl-left-title">Sign Up For<br>Exclusive Access</h1>
-        <p class="wl-left-sub">Reserve your private access to the runway drop. Tap a look to choose your piece.</p>
+        <div class="wl-left-header">
+          <p class="wl-left-eyebrow">The Edit — 5 Looks</p>
+          <h1 class="wl-left-title">Sign Up For<br>Exclusive Access</h1>
+          <p class="wl-left-sub">Select one or more runway pieces to reserve your priority allocation. Tap outfits to select or unselect.</p>
+        </div>
 
-        <!-- 5 Outfit Cards — clicking one also selects the piece in the form -->
+        <!-- 5 Outfit Cards — clicking any look toggles selection (multi-select supported) -->
         <div class="wl-looks-grid">
-          <div class="wl-look-card" data-value="Archival Manuscript Corset Gown" tabindex="0" role="button" aria-pressed="false">
+          <div class="wl-look-card is-selected" data-value="Archival Manuscript Corset Gown" tabindex="0" role="button" aria-pressed="true" title="Click to toggle selection">
             <div class="wl-look-img-wrap">
               <img src="assets/hanger-look-1.png" alt="Archival Manuscript Corset Gown" loading="lazy">
             </div>
@@ -657,7 +731,7 @@
             <div class="wl-look-check" aria-hidden="true">✓</div>
           </div>
 
-          <div class="wl-look-card" data-value="Heritage Mural Mirror Lehenga" tabindex="0" role="button" aria-pressed="false">
+          <div class="wl-look-card" data-value="Heritage Mural Mirror Lehenga" tabindex="0" role="button" aria-pressed="false" title="Click to toggle selection">
             <div class="wl-look-img-wrap">
               <img src="assets/hanger-look-2.png" alt="Heritage Mural Mirror Lehenga" loading="lazy">
             </div>
@@ -668,7 +742,7 @@
             <div class="wl-look-check" aria-hidden="true">✓</div>
           </div>
 
-          <div class="wl-look-card" data-value="Rose-Coral Shimmer Saree Gown" tabindex="0" role="button" aria-pressed="false">
+          <div class="wl-look-card" data-value="Rose-Coral Shimmer Saree Gown" tabindex="0" role="button" aria-pressed="false" title="Click to toggle selection">
             <div class="wl-look-img-wrap">
               <img src="assets/hanger-look-3.png" alt="Rose-Coral Shimmer Saree Gown" loading="lazy">
             </div>
@@ -679,7 +753,7 @@
             <div class="wl-look-check" aria-hidden="true">✓</div>
           </div>
 
-          <div class="wl-look-card" data-value="Midnight Botanical Co-ord Set" tabindex="0" role="button" aria-pressed="false">
+          <div class="wl-look-card" data-value="Midnight Botanical Co-ord Set" tabindex="0" role="button" aria-pressed="false" title="Click to toggle selection">
             <div class="wl-look-img-wrap">
               <img src="assets/hanger-look-4.png" alt="Midnight Botanical Co-ord Set" loading="lazy">
             </div>
@@ -690,7 +764,7 @@
             <div class="wl-look-check" aria-hidden="true">✓</div>
           </div>
 
-          <div class="wl-look-card" data-value="Bordeaux Peplum Halter Gown" tabindex="0" role="button" aria-pressed="false">
+          <div class="wl-look-card" data-value="Bordeaux Peplum Halter Gown" tabindex="0" role="button" aria-pressed="false" title="Click to toggle selection">
             <div class="wl-look-img-wrap">
               <img src="assets/hanger-look-5.png" alt="Bordeaux Peplum Halter Gown" loading="lazy">
             </div>
@@ -706,12 +780,6 @@
       <!-- RIGHT: Minimalist Form Panel -->
       <div class="wl-right-panel">
         <form id="waitlistMinimalForm" class="wl-form" novalidate>
-
-          <!-- Selected Look indicator badge -->
-          <div class="wl-selected-look-badge" id="wlSelectedLookBadge" style="display:none;">
-            <span class="wl-badge-dot"></span>
-            <span id="wlSelectedLookText">No look selected</span>
-          </div>
 
           <!-- Email -->
           <div class="wl-field">
@@ -766,17 +834,35 @@
             </select>
           </div>
 
-          <!-- Piece of Interest (also set by outfit card clicks) -->
+          <!-- Pieces of Interest: Multi-Select Chips (Synced with outfit cards) -->
           <div class="wl-field">
-            <label for="waitlistInterest">Piece of Interest</label>
-            <select id="waitlistInterest" required>
-              <option value="" disabled selected>Choose a runway look</option>
-              <option value="Archival Manuscript Corset Gown">01 — Archival Manuscript Corset Gown</option>
-              <option value="Heritage Mural Mirror Lehenga">02 — Heritage Mural Mirror Lehenga</option>
-              <option value="Rose-Coral Shimmer Saree Gown">03 — Rose-Coral Shimmer Saree Gown</option>
-              <option value="Midnight Botanical Co-ord Set">04 — Midnight Botanical Co-ord Set</option>
-              <option value="Bordeaux Peplum Halter Gown">05 — Bordeaux Peplum Halter Gown</option>
-            </select>
+            <div class="wl-field-header">
+              <label>Pieces of Interest</label>
+              <span class="wl-select-hint">Select Multiple</span>
+            </div>
+            <div class="wl-pieces-chips" id="wlPiecesChips">
+              <button type="button" class="wl-piece-chip is-selected" data-value="Archival Manuscript Corset Gown" data-index="01">
+                <span class="wl-chip-check">✓</span>
+                <span class="wl-chip-text">01 Archival Gown</span>
+              </button>
+              <button type="button" class="wl-piece-chip" data-value="Heritage Mural Mirror Lehenga" data-index="02">
+                <span class="wl-chip-check">✓</span>
+                <span class="wl-chip-text">02 Mirror Lehenga</span>
+              </button>
+              <button type="button" class="wl-piece-chip" data-value="Rose-Coral Shimmer Saree Gown" data-index="03">
+                <span class="wl-chip-check">✓</span>
+                <span class="wl-chip-text">03 Saree Gown</span>
+              </button>
+              <button type="button" class="wl-piece-chip" data-value="Midnight Botanical Co-ord Set" data-index="04">
+                <span class="wl-chip-check">✓</span>
+                <span class="wl-chip-text">04 Botanical Set</span>
+              </button>
+              <button type="button" class="wl-piece-chip" data-value="Bordeaux Peplum Halter Gown" data-index="05">
+                <span class="wl-chip-check">✓</span>
+                <span class="wl-chip-text">05 Halter Gown</span>
+              </button>
+            </div>
+            <input type="hidden" id="waitlistInterest" value="Archival Manuscript Corset Gown">
           </div>
 
           <!-- Sizing — no Custom Fit -->
@@ -825,65 +911,77 @@
 
   <script src="assets/header-morph.js"></script>
 
-  <!-- Look card → form interaction -->
+  <!-- Look card ↔ form multi-selection synchronization -->
   <script>
     (function () {
       const cards = document.querySelectorAll('.wl-look-card');
-      const interestSelect = document.getElementById('waitlistInterest');
-      const badge = document.getElementById('wlSelectedLookBadge');
-      const badgeText = document.getElementById('wlSelectedLookText');
+      const chips = document.querySelectorAll('.wl-piece-chip');
+      const hiddenInput = document.getElementById('waitlistInterest');
 
-      cards.forEach(function(card) {
-        card.addEventListener('click', function() {
-          // Deselect all
-          cards.forEach(function(c) {
-            c.classList.remove('is-selected');
-            c.setAttribute('aria-pressed', 'false');
-          });
-          // Select this one
-          card.classList.add('is-selected');
-          card.setAttribute('aria-pressed', 'true');
-          // Sync to select dropdown
-          var val = card.dataset.value;
-          if (interestSelect) interestSelect.value = val;
-          // Show badge
-          if (badge && badgeText) {
-            badgeText.textContent = val;
-            badge.style.display = 'flex';
-          }
+      // Set of selected look values (supports multiple dresses)
+      const selectedValues = new Set(['Archival Manuscript Corset Gown']);
+
+      function updateSelection() {
+        // 1. Sync cards
+        cards.forEach(function (c) {
+          const val = c.dataset.value;
+          const isSel = selectedValues.has(val);
+          c.classList.toggle('is-selected', isSel);
+          c.setAttribute('aria-pressed', isSel ? 'true' : 'false');
         });
 
-        // Keyboard accessibility
-        card.addEventListener('keydown', function(e) {
+        // 2. Sync chips
+        chips.forEach(function (chip) {
+          const val = chip.dataset.value;
+          chip.classList.toggle('is-selected', selectedValues.has(val));
+        });
+
+        // 3. Update hidden input
+        const arr = Array.from(selectedValues);
+        if (hiddenInput) {
+          hiddenInput.value = arr.join(', ');
+        }
+      }
+
+      function togglePiece(val) {
+        if (!val) return;
+        if (selectedValues.has(val)) {
+          selectedValues.delete(val);
+        } else {
+          selectedValues.add(val);
+        }
+        updateSelection();
+      }
+
+      // Card click & keyboard
+      cards.forEach(function (card) {
+        card.addEventListener('click', function () {
+          togglePiece(card.dataset.value);
+        });
+        card.addEventListener('keydown', function (e) {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
-            card.click();
+            togglePiece(card.dataset.value);
           }
         });
       });
 
-      // Also: when dropdown changes, sync the card highlight
-      if (interestSelect) {
-        interestSelect.addEventListener('change', function() {
-          var val = interestSelect.value;
-          cards.forEach(function(c) {
-            var isMatch = c.dataset.value === val;
-            c.classList.toggle('is-selected', isMatch);
-            c.setAttribute('aria-pressed', isMatch ? 'true' : 'false');
-          });
-          if (badge && badgeText && val) {
-            badgeText.textContent = val;
-            badge.style.display = 'flex';
-          }
+      // Chip click
+      chips.forEach(function (chip) {
+        chip.addEventListener('click', function () {
+          togglePiece(chip.dataset.value);
         });
-      }
+      });
+
+      // Initial state sync
+      updateSelection();
 
       // Size pills
       var sizePills = document.querySelectorAll('.wl-size-pill');
       var sizeInput = document.getElementById('waitlistPreferredSize');
-      sizePills.forEach(function(pill) {
-        pill.addEventListener('click', function() {
-          sizePills.forEach(function(p) { p.classList.remove('is-selected'); });
+      sizePills.forEach(function (pill) {
+        pill.addEventListener('click', function () {
+          sizePills.forEach(function (p) { p.classList.remove('is-selected'); });
           pill.classList.add('is-selected');
           if (sizeInput) sizeInput.value = pill.dataset.size;
         });
