@@ -436,9 +436,9 @@
 
         // 4. Update and show Pop-up Modal + Toast
         if (successModal) {
-          const modalP = successModal.querySelector('.modal-card p');
+          const modalP = successModal.querySelector('#modalSpotText') || successModal.querySelector('.modal-card p.modal-desc') || successModal.querySelector('.modal-card p');
           if (modalP) {
-            modalP.innerHTML = `Your spot for <strong>${escapeHtml(interestVal)}</strong> (Size: ${escapeHtml(sizeVal)}) is secured.<br><small style="color:rgba(255,255,255,0.7);margin-top:8px;display:block;">VIP drop link will be sent to +91 ${escapeHtml(phoneVal)} (${escapeHtml(stateVal)}).</small>`;
+            modalP.innerHTML = `Your spot for <strong>${escapeHtml(interestVal)}</strong> (Size: ${escapeHtml(sizeVal)}) is secured.<br><small style="color:#666666;margin-top:8px;display:block;font-size:12px;line-height:1.5;">VIP drop link will be sent to +91 ${escapeHtml(phoneVal)} (${escapeHtml(stateVal)}).</small>`;
           }
           successModal.hidden = false;
         }

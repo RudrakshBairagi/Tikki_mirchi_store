@@ -1215,7 +1215,7 @@ body:has(#atelierWaitlistSection) .brand-wordmark {
   line-height: 1.5;
 }
 
-/* Luxury Modal Pop-up */
+/* Luxury Modal Pop-up — Minimalist Frosted Glass Aesthetic */
 .waitlist-success-modal {
   position: fixed;
   inset: 0;
@@ -1233,29 +1233,33 @@ body:has(#atelierWaitlistSection) .brand-wordmark {
 .waitlist-success-modal .modal-backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.72);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .waitlist-success-modal .modal-card {
   position: relative;
   z-index: 2;
-  background: #141314;
-  color: #ffffff;
-  border: 1px solid rgba(212, 175, 55, 0.35);
-  border-radius: 16px;
-  padding: 40px 32px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  color: #000000;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  padding: 42px 36px 36px;
   max-width: 440px;
   width: 100%;
   text-align: center;
-  box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
   animation: modalPop 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  box-sizing: border-box;
 }
 
 @keyframes modalPop {
-  from { opacity: 0; transform: scale(0.92); }
-  to { opacity: 1; transform: scale(1); }
+  from { opacity: 0; transform: scale(0.94) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
 }
 
 .modal-close-btn {
@@ -1264,67 +1268,92 @@ body:has(#atelierWaitlistSection) .brand-wordmark {
   right: 18px;
   background: transparent;
   border: 0;
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 18px;
+  color: #666666;
+  font-size: 16px;
   cursor: pointer;
-  padding: 4px;
+  padding: 6px;
+  line-height: 1;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .modal-close-btn:hover {
-  color: #ffffff;
+  color: #000000;
+  transform: scale(1.1);
 }
 
 .modal-sparkle {
-  display: block;
-  font-size: 32px;
-  color: #d4af37;
-  margin-bottom: 12px;
+  display: inline-block;
+  font-size: 22px;
+  color: #000000;
+  margin-bottom: 8px;
+  line-height: 1;
 }
 
 .modal-card h3 {
-  font-family: var(--wl-title-font, 'Plus Jakarta Sans', serif);
-  font-size: 24px;
-  margin: 0 0 10px 0;
-  color: #ffffff;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #000000;
+  margin: 0 0 14px 0;
+  line-height: 1.3;
 }
 
 .modal-card p {
-  font-size: 14px;
-  line-height: 1.6;
-  color: rgba(255, 255, 255, 0.8);
-  margin: 0 0 24px 0;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13px;
+  line-height: 1.65;
+  color: #333333;
+  margin: 0 0 20px 0;
+  font-weight: 400;
+}
+
+.modal-card p strong {
+  color: #000000;
+  font-weight: 600;
 }
 
 .modal-receipt-badge {
   display: inline-block;
-  background: rgba(212, 175, 55, 0.15);
-  color: #d4af37;
-  border: 1px solid rgba(212, 175, 55, 0.4);
+  background: #000000;
+  color: #ffffff;
+  border: none;
   padding: 6px 14px;
-  border-radius: 20px;
-  font-size: 11px;
-  letter-spacing: 0.14em;
+  border-radius: 4px;
+  font-size: 10px;
+  letter-spacing: 0.18em;
   font-weight: 600;
+  text-transform: uppercase;
   margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .modal-action-btn {
   width: 100%;
-  background: #ffffff;
-  color: #000000;
+  background: #000000;
+  color: #ffffff;
   border: 0;
-  border-radius: 8px;
-  padding: 13px 20px;
-  font-size: 13px;
+  border-radius: 4px;
+  padding: 14px 20px;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 11.5px;
   font-weight: 600;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   cursor: pointer;
-  transition: opacity 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
 }
 
 .modal-action-btn:hover {
-  opacity: 0.9;
+  background: #222222;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
 }
 
 /* Floating Toast */
@@ -1333,18 +1362,19 @@ body:has(#atelierWaitlistSection) .brand-wordmark {
   bottom: 30px;
   left: 50%;
   transform: translateX(-50%) translateY(100px);
-  background: #181718;
+  background: #000000;
   color: #ffffff;
-  border: 1px solid #d4af37;
-  padding: 14px 24px;
-  border-radius: 30px;
-  font-size: 13px;
-  letter-spacing: 0.05em;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.08em;
   display: flex;
   align-items: center;
   gap: 10px;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.5);
-  z-index: 99999;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+  z-index: 100000;
   opacity: 0;
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
   pointer-events: none;

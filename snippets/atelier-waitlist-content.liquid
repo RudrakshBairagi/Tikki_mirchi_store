@@ -655,10 +655,12 @@
     <div class="modal-card">
       <button class="modal-close-btn" id="modalCloseBtn" aria-label="Close">✕</button>
       <span class="modal-sparkle">✦</span>
-      <h3>{{ ws.modal_heading | default: 'Reservation Confirmed' }}</h3>
-      <p>{{ ws.modal_subtext | default: 'Your spot for the Teekhi Bella Couture collection is secured.' }}</p>
+      <div class="modal-eyebrow">Teekhi Bella Atelier</div>
+      <h3 class="modal-title">{{ ws.modal_heading | default: 'Reservation Confirmed' }}</h3>
+      <div class="modal-divider"></div>
+      <p id="modalSpotText" class="modal-desc">{{ ws.modal_subtext | default: 'Your spot for the Teekhi Bella collection is secured.' }}</p>
       <div class="modal-receipt-badge">VIP DROP ACCESS: ACTIVE</div>
-      <button class="modal-action-btn" id="modalDoneBtn">Return to Store</button>
+      <button class="modal-action-btn" id="modalDoneBtn">Return to Store <span aria-hidden="true">→</span></button>
     </div>
   </div>
 {%- endif -%}
