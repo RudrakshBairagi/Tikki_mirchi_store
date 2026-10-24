@@ -6,21 +6,24 @@
      ═══════════════════════════════════════════════════════════════════════ -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Waitlist — Teekhi Bella</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Italiana&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Italiana&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="assets/header-morph.css">
   <link rel="stylesheet" href="assets/atelier-waitlist.css">
   <style>
     @font-face {
       font-family: 'Ahsing';
       src: url('assets/Ahsing.woff') format('woff'),
-           url('assets/Ahsing.otf') format('opentype'),
-           url('assets/typogama-ahsing.otf') format('opentype');
+        url('assets/Ahsing.otf') format('opentype'),
+        url('assets/typogama-ahsing.otf') format('opentype');
       font-weight: 400;
       font-style: normal;
       font-display: swap;
@@ -29,8 +32,8 @@
     @font-face {
       font-family: 'Ragara';
       src: url('assets/Ragara.woff') format('woff'),
-           url('assets/Ragara.otf') format('opentype'),
-           url('assets/Ragara.ttf') format('truetype');
+        url('assets/Ragara.otf') format('opentype'),
+        url('assets/Ragara.ttf') format('truetype');
       font-weight: 400;
       font-style: normal;
       font-display: swap;
@@ -39,8 +42,8 @@
     @font-face {
       font-family: 'Ragara';
       src: url('assets/Ragara-Italic.woff') format('woff'),
-           url('assets/Ragara-Italic.otf') format('opentype'),
-           url('assets/Ragara-Italic.ttf') format('truetype');
+        url('assets/Ragara-Italic.otf') format('opentype'),
+        url('assets/Ragara-Italic.ttf') format('truetype');
       font-weight: 400;
       font-style: italic;
       font-display: swap;
@@ -56,13 +59,24 @@
     }
 
     /* Custom Chili Cursor */
-    html, body {
+    html,
+    body {
       cursor: url('assets/chili-cursor-32.png') 0 0, auto !important;
       cursor: -webkit-image-set(url('assets/chili-cursor-32.png') 1x, url('assets/chili-cursor-64.png') 2x) 0 0, auto !important;
     }
 
-    a, button, [role="button"], input, select, textarea, label,
-    .nav-link, .menu-toggle, .header-action-btn, .dropdown-nav-link, .btn-waitlist-submit {
+    a,
+    button,
+    [role="button"],
+    input,
+    select,
+    textarea,
+    label,
+    .nav-link,
+    .menu-toggle,
+    .header-action-btn,
+    .dropdown-nav-link,
+    .btn-waitlist-submit {
       cursor: url('assets/chili-cursor-32.png') 0 0, pointer !important;
       cursor: -webkit-image-set(url('assets/chili-cursor-32.png') 1x, url('assets/chili-cursor-64.png') 2x) 0 0, pointer !important;
     }
@@ -92,6 +106,7 @@
       .brand-morph-logo {
         font-size: clamp(2.35rem, 7.8vw, 3.1rem) !important;
       }
+
       .brand-wordmark {
         font-size: inherit !important;
         line-height: 0.95 !important;
@@ -102,6 +117,7 @@
       .brand-morph-logo {
         font-size: clamp(2.25rem, 8.2vw, 2.85rem) !important;
       }
+
       .brand-wordmark {
         font-size: inherit !important;
         line-height: 0.95 !important;
@@ -111,7 +127,9 @@
     /* ================================================================
        SPLIT WAITLIST LAYOUT
        ================================================================ */
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     .wl-split-section {
       position: relative;
@@ -240,29 +258,30 @@
     }
 
     .wl-look-info {
-      padding: 6px 6px 7px;
+      padding: 7px 8px 8px;
       display: flex;
       flex-direction: column;
       gap: 3px;
       text-align: center;
-      background: rgba(18, 14, 16, 0.72);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      background: #000000;
       border-radius: 6px;
-      border: 1px solid rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.18);
       margin-top: 6px;
-      transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+      transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
     }
 
     .wl-look-card:hover .wl-look-info {
-      background: rgba(18, 14, 16, 0.85);
-      border-color: rgba(255, 255, 255, 0.3);
+      background: #000000;
+      border-color: rgba(255, 255, 255, 0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55);
     }
 
     .wl-look-card.is-selected .wl-look-info {
-      background: rgba(18, 14, 16, 0.94);
-      border-color: rgba(255, 255, 255, 0.55);
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+      background: #000000;
+      border-color: #ffffff;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6), 0 0 0 1px #ffffff;
     }
 
     .wl-look-num {
@@ -584,8 +603,15 @@
     }
 
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .wl-success-icon {
@@ -617,23 +643,28 @@
       .wl-split-section {
         flex-direction: column;
       }
+
       .wl-left-panel {
         padding: 44px 24px 28px;
       }
+
       .wl-right-panel {
         flex: none;
         max-width: 100%;
         width: 100%;
         padding: 36px 24px 44px;
       }
+
       .wl-right-panel::before {
         border-left: none;
         border-top: 1px solid rgba(255, 255, 255, 0.1);
       }
+
       .wl-looks-grid {
         overflow-x: auto;
         padding-bottom: 8px;
       }
+
       .wl-look-card {
         flex: 0 0 120px;
       }
@@ -643,15 +674,18 @@
       .wl-left-panel {
         padding: 32px 20px 20px;
       }
+
       .wl-look-card {
         flex: 0 0 100px;
       }
+
       .wl-left-title {
         font-size: 20px;
       }
     }
   </style>
 </head>
+
 <body class="waitlist-page" style="background-color: #0d0c10; margin: 0; padding: 0;">
 
   <!-- ==========================================================================
@@ -663,7 +697,8 @@
       <div class="luxury-header__left">
         <!-- Mobile Menu Dropdown Wrapper (Visible on Phone) -->
         <div class="menu-dropdown-wrapper">
-          <button class="header-action-btn menu-toggle" id="HeaderMenuToggle" aria-label="Toggle Navigation Menu" type="button" aria-expanded="false" aria-haspopup="true" aria-controls="LuxuryMenuDropdown">
+          <button class="header-action-btn menu-toggle" id="HeaderMenuToggle" aria-label="Toggle Navigation Menu"
+            type="button" aria-expanded="false" aria-haspopup="true" aria-controls="LuxuryMenuDropdown">
             <span class="hamburger-icon" aria-hidden="true">
               <span></span>
               <span></span>
@@ -673,7 +708,8 @@
           </button>
 
           <!-- Luxury Dropdown Menu -->
-          <div id="LuxuryMenuDropdown" class="luxury-menu-dropdown" role="menu" aria-label="Navigation Menu" aria-hidden="true">
+          <div id="LuxuryMenuDropdown" class="luxury-menu-dropdown" role="menu" aria-label="Navigation Menu"
+            aria-hidden="true">
             <a href="preview.html" class="dropdown-nav-link dropdown-link-home" role="menuitem">
               <span class="dropdown-link-label">HOME</span>
               <span class="dropdown-link-arrow">⟶</span>
@@ -713,14 +749,16 @@
       <!-- LEFT: Outfit Showcase -->
       <div class="wl-left-panel">
         <div class="wl-left-header">
-          <p class="wl-left-eyebrow">The Edit — 5 Looks</p>
+
           <h1 class="wl-left-title">Sign Up For<br>Exclusive Access</h1>
-          <p class="wl-left-sub">Select one or more runway pieces to reserve your priority allocation. Tap outfits to select or unselect.</p>
+          <p class="wl-left-sub">Select one or more runway pieces to reserve your priority allocation. Tap outfits to
+            select or unselect.</p>
         </div>
 
         <!-- 5 Outfit Cards — clicking any look toggles selection (multi-select supported) -->
         <div class="wl-looks-grid">
-          <div class="wl-look-card is-selected" data-value="Archival Manuscript Corset Gown" tabindex="0" role="button" aria-pressed="true" title="Click to toggle selection">
+          <div class="wl-look-card is-selected" data-value="Archival Manuscript Corset Gown" tabindex="0" role="button"
+            aria-pressed="true" title="Click to toggle selection">
             <div class="wl-look-img-wrap">
               <img src="assets/hanger-look-1.png" alt="Archival Manuscript Corset Gown" loading="lazy">
             </div>
@@ -731,7 +769,8 @@
             <div class="wl-look-check" aria-hidden="true">✓</div>
           </div>
 
-          <div class="wl-look-card" data-value="Heritage Mural Mirror Lehenga" tabindex="0" role="button" aria-pressed="false" title="Click to toggle selection">
+          <div class="wl-look-card" data-value="Heritage Mural Mirror Lehenga" tabindex="0" role="button"
+            aria-pressed="false" title="Click to toggle selection">
             <div class="wl-look-img-wrap">
               <img src="assets/hanger-look-2.png" alt="Heritage Mural Mirror Lehenga" loading="lazy">
             </div>
@@ -742,7 +781,8 @@
             <div class="wl-look-check" aria-hidden="true">✓</div>
           </div>
 
-          <div class="wl-look-card" data-value="Rose-Coral Shimmer Saree Gown" tabindex="0" role="button" aria-pressed="false" title="Click to toggle selection">
+          <div class="wl-look-card" data-value="Rose-Coral Shimmer Saree Gown" tabindex="0" role="button"
+            aria-pressed="false" title="Click to toggle selection">
             <div class="wl-look-img-wrap">
               <img src="assets/hanger-look-3.png" alt="Rose-Coral Shimmer Saree Gown" loading="lazy">
             </div>
@@ -753,7 +793,8 @@
             <div class="wl-look-check" aria-hidden="true">✓</div>
           </div>
 
-          <div class="wl-look-card" data-value="Midnight Botanical Co-ord Set" tabindex="0" role="button" aria-pressed="false" title="Click to toggle selection">
+          <div class="wl-look-card" data-value="Midnight Botanical Co-ord Set" tabindex="0" role="button"
+            aria-pressed="false" title="Click to toggle selection">
             <div class="wl-look-img-wrap">
               <img src="assets/hanger-look-4.png" alt="Midnight Botanical Co-ord Set" loading="lazy">
             </div>
@@ -764,7 +805,8 @@
             <div class="wl-look-check" aria-hidden="true">✓</div>
           </div>
 
-          <div class="wl-look-card" data-value="Bordeaux Peplum Halter Gown" tabindex="0" role="button" aria-pressed="false" title="Click to toggle selection">
+          <div class="wl-look-card" data-value="Bordeaux Peplum Halter Gown" tabindex="0" role="button"
+            aria-pressed="false" title="Click to toggle selection">
             <div class="wl-look-img-wrap">
               <img src="assets/hanger-look-5.png" alt="Bordeaux Peplum Halter Gown" loading="lazy">
             </div>
@@ -789,10 +831,11 @@
 
           <!-- Phone -->
           <div class="wl-field">
-            <label for="waitlistPhone">Phone (WhatsApp VIP)</label>
+            <label for="waitlistPhone">Phone</label>
             <div class="wl-phone-row">
               <span class="wl-phone-cc">+91</span>
-              <input type="tel" id="waitlistPhone" placeholder="98765 43210" maxlength="10" pattern="[0-9]{10}" required>
+              <input type="tel" id="waitlistPhone" placeholder="98765 43210" maxlength="10" pattern="[0-9]{10}"
+                required>
             </div>
           </div>
 
@@ -841,7 +884,8 @@
               <span class="wl-select-hint">Select Multiple</span>
             </div>
             <div class="wl-pieces-chips" id="wlPiecesChips">
-              <button type="button" class="wl-piece-chip is-selected" data-value="Archival Manuscript Corset Gown" data-index="01">
+              <button type="button" class="wl-piece-chip is-selected" data-value="Archival Manuscript Corset Gown"
+                data-index="01">
                 <span class="wl-chip-check">✓</span>
                 <span class="wl-chip-text">01 Archival Gown</span>
               </button>
@@ -883,7 +927,7 @@
             Reserve Access <span aria-hidden="true">→</span>
           </button>
 
-          <p class="wl-privacy-note">Your details are kept private. VIP access only.</p>
+          <p class="wl-privacy-note">Your details are kept private.</p>
 
           <!-- Inline success state -->
           <div class="wl-success-inline" id="waitlistMinimalSuccess" style="display:none;">
@@ -991,4 +1035,5 @@
 
   <script src="assets/atelier-waitlist.js"></script>
 </body>
+
 </html>
