@@ -86,12 +86,16 @@
     overflow: hidden;
     {%- if ws.bg_mode == 'gradient' and ws.bg_gradient != blank -%}
       background: {{ ws.bg_gradient }} !important;
-    {%- elsif ws.bg_mode == 'image' and ws.bg_image != blank -%}
-      background-image: url('{{ ws.bg_image | image_url: width: 2600 }}') !important;
+    {%- elsif ws.bg_mode == 'solid' -%}
+      background-color: var(--wl-bg) !important;
+    {%- else -%}
+      {%- if ws.bg_image != blank -%}
+        background-image: url('{{ ws.bg_image | image_url: width: 2600 }}') !important;
+      {%- else -%}
+        background-image: url('{{ "background.jpg" | asset_url }}') !important;
+      {%- endif -%}
       background-size: cover !important;
       background-position: center !important;
-    {%- else -%}
-      background-color: var(--wl-bg) !important;
     {%- endif -%}
   }
   .waitlist-bg-overlay {
@@ -166,7 +170,8 @@
   <!-- ==========================================================================
        MAIN WAITLIST INTERACTIVE EXPERIENCE
        ========================================================================== -->
-  <main class="waitlist-main-wrap">
+  {%- if ws.form_style == 'card' -%}
+<main class="waitlist-main-wrap">
     
     <!-- Hero Header -->
     <div class="waitlist-hero-header">
@@ -498,4 +503,121 @@
 
     </div>
   </main>
+{%- elsif ws.form_style == 'google_form' and ws.google_form_url != blank -%}
+  <main class="waitlist-page-content">
+    <section class="waitlist-hero-minimal" {%- if ws.bg_image != blank -%}style="background-image: url('{{ ws.bg_image | image_url: width: 2600 }}');"{%- else -%}style="background-image: url('{{ 'background.jpg' | asset_url }}');"{%- endif -%}>
+      <div class="waitlist-minimal-overlay" aria-hidden="true" style="opacity: {{ ws.bg_overlay_opacity | default: 25 | divided_by: 100.0 }};"></div>
+      <div class="waitlist-minimal-inner" style="max-width: 800px; width: 100%;">
+        <iframe src="{{ ws.google_form_url }}" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0" style="border-radius: 12px; background: rgba(255,255,255,0.95);">Loading…</iframe>
+      </div>
+    </section>
+  </main>
+{%- else -%}
+  <main class="waitlist-page-content">
+    <!-- Minimalist Bhawya Suri Aesthetic Hero with Desktop Artwork Background -->
+    <section class="waitlist-hero-minimal" {%- if ws.bg_image != blank -%}style="background-image: url('{{ ws.bg_image | image_url: width: 2600 }}');"{%- else -%}style="background-image: url('{{ 'background.jpg' | asset_url }}');"{%- endif -%}>
+      <div class="waitlist-minimal-overlay" aria-hidden="true" style="opacity: {{ ws.bg_overlay_opacity | default: 25 | divided_by: 100.0 }};"></div>
+
+      <div class="waitlist-minimal-inner">
+        {%- assign eyebrow_text = ws.eyebrow | default: 'Summer Atelier 2026' -%}
+        {%- if eyebrow_text != blank -%}
+          <div class="waitlist-minimal-eyebrow">
+            <span>✦</span>
+            <span>{{ eyebrow_text }}</span>
+            <span>✦</span>
+          </div>
+        {%- endif -%}
+
+        <h1 class="waitlist-minimal-title">{{ ws.title | default: 'Sign Up For Exclusive Access' }}</h1>
+        {%- assign subtitle_text = ws.subtitle | default: 'Be first to reserve your bespoke couture piece from our upcoming limited runway drop.' -%}
+        {%- if subtitle_text != blank -%}
+          <p class="waitlist-minimal-subtitle">{{ subtitle_text }}</p>
+        {%- endif -%}
+
+        <!-- Signature Single-Line Minimalist Form (Bhawya Suri Style) -->
+        <div class="waitlist-nl-form-wrap">
+          <form id="waitlistMinimalForm" class="waitlist-minimal-form" novalidate>
+            <div class="waitlist-nl-line">
+              <svg class="waitlist-nl-icon" viewBox="0 0 44 24" aria-hidden="true">
+                <rect x="0.6" y="0.6" width="42.8" height="22.8"/>
+                <path d="M0.6 0.6 22 15.5 43.4 0.6M0.6 23.4 16 11.8M43.4 23.4 28 11.8"/>
+              </svg>
+              <input
+                type="email"
+                id="minimalEmailInput"
+                class="waitlist-nl-input"
+                placeholder="{{ ws.email_placeholder | default: 'Sign Up For Exclusive Access' }}"
+                autocomplete="email"
+                required
+              >
+              <button type="submit" class="waitlist-nl-button" id="minimalSubmitBtn">{{ ws.submit_btn_text | default: 'Submit' }}</button>
+            </div>
+
+            <!-- VIP Expand Option -->
+            <button type="button" class="waitlist-vip-toggle" id="waitlistVipToggle" aria-expanded="false">
+              ✦ Prefer bespoke sizing & WhatsApp alerts? (Click to add)
+            </button>
+
+            <!-- Collapsible VIP Drawer -->
+            <div class="waitlist-vip-drawer" id="waitlistVipDrawer" hidden>
+              <div class="vip-grid">
+                <div class="vip-field">
+                  <label for="vipName">{{ ws.name_label | default: 'Full Name' }}</label>
+                  <input type="text" id="vipName" placeholder="{{ ws.name_placeholder | default: 'Enter your full name' }}">
+                </div>
+                <div class="vip-field">
+                  <label for="vipPhone">{{ ws.phone_label | default: 'WhatsApp Number (+91)' }}</label>
+                  <input type="tel" id="vipPhone" placeholder="98765 43210" maxlength="10">
+                </div>
+                <div class="vip-field">
+                  <label for="vipCity">{{ ws.city_label | default: 'City' }}</label>
+                  <input type="text" id="vipCity" placeholder="{{ ws.city_placeholder | default: 'e.g. Mumbai / Delhi' }}">
+                </div>
+                <div class="vip-field">
+                  <label for="vipSize">Preferred Size</label>
+                  <select id="vipSize">
+                    <option value="XS">XS (UK 6 / Bust 32")</option>
+                    <option value="S">S (UK 8 / Bust 34")</option>
+                    <option value="M" selected>M (UK 10 / Bust 36")</option>
+                    <option value="L">L (UK 12 / Bust 38")</option>
+                    <option value="XL">XL (UK 14 / Bust 40")</option>
+                    <option value="Custom">Custom Atelier Fit</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Inline Success Confirmation -->
+            <div class="waitlist-minimal-success" id="waitlistMinimalSuccess" hidden>
+              <div class="success-sparkle-icon">✦</div>
+              <h2 class="success-title">{{ ws.success_title | default: "You're on the exclusive waitlist!" }}</h2>
+              <p class="success-text">{{ ws.success_msg | default: "Thank you for reserving your spot. We'll send you private VIP drop access before the public launch." }}</p>
+            </div>
+          </form>
+
+          <!-- Hidden Shopify customer newsletter form for sync -->
+          <form method="post" action="/contact#contact_form" id="shopifyNewsletterFallback" style="display:none;" accept-charset="UTF-8">
+            <input type="hidden" name="form_type" value="customer">
+            <input type="hidden" name="utf8" value="✓">
+            <input type="hidden" name="contact[tags]" value="newsletter, waitlist">
+            <input type="email" name="contact[email]" value="">
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Luxury Modal Pop-up -->
+  <div class="waitlist-success-modal" id="waitlistSuccessModal" role="dialog" aria-modal="true" hidden>
+    <div class="modal-backdrop"></div>
+    <div class="modal-card">
+      <button class="modal-close-btn" id="modalCloseBtn" aria-label="Close">✕</button>
+      <span class="modal-sparkle">✦</span>
+      <h3>{{ ws.modal_heading | default: 'Reservation Confirmed' }}</h3>
+      <p>{{ ws.modal_subtext | default: 'Your spot for the Summer Atelier 2026 collection is secured.' }}</p>
+      <div class="modal-receipt-badge">VIP DROP ACCESS: ACTIVE</div>
+      <button class="modal-action-btn" id="modalDoneBtn">Return to Store</button>
+    </div>
+  </div>
+{%- endif -%}
 </div>

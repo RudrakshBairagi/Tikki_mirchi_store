@@ -269,6 +269,139 @@
       }
     }
 
+    // Minimalist Form Support (Bhawya Suri Aesthetic + Google Sheets Integration)
+    const minimalForm = document.getElementById('waitlistMinimalForm');
+    const minimalInput = document.getElementById('minimalEmailInput');
+    const minimalSubmitBtn = document.getElementById('minimalSubmitBtn');
+    const minimalSuccess = document.getElementById('waitlistMinimalSuccess');
+    const vipToggle = document.getElementById('waitlistVipToggle');
+    const vipDrawer = document.getElementById('waitlistVipDrawer');
+    const successModal = document.getElementById('waitlistSuccessModal');
+    const modalCloseBtn = document.getElementById('modalCloseBtn');
+    const modalDoneBtn = document.getElementById('modalDoneBtn');
+
+    // VIP Drawer Toggle
+    if (vipToggle && vipDrawer) {
+      vipToggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        const isOpen = !vipDrawer.hidden;
+        vipDrawer.hidden = isOpen;
+        vipToggle.setAttribute('aria-expanded', String(!isOpen));
+      });
+    }
+
+    // Modal Close handlers
+    if (modalCloseBtn) {
+      modalCloseBtn.addEventListener('click', () => {
+        if (successModal) successModal.hidden = true;
+      });
+    }
+    if (modalDoneBtn) {
+      modalDoneBtn.addEventListener('click', () => {
+        if (successModal) successModal.hidden = true;
+      });
+    }
+    if (successModal) {
+      const backdrop = successModal.querySelector('.modal-backdrop');
+      backdrop?.addEventListener('click', () => {
+        successModal.hidden = true;
+      });
+    }
+
+    // Toast Notification Trigger
+    function triggerToast(message) {
+      let toast = document.getElementById('waitlistToast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'waitlistToast';
+        toast.className = 'waitlist-toast';
+        document.body.appendChild(toast);
+      }
+      toast.innerHTML = `<span>✦</span><span>${escapeHtml(message)}</span>`;
+      toast.classList.add('is-visible');
+      setTimeout(() => {
+        toast.classList.remove('is-visible');
+      }, 4500);
+    }
+
+    // Minimal Form Submit Handler
+    if (minimalForm) {
+      minimalForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = minimalInput?.value?.trim();
+        if (!email || !email.includes('@')) {
+          minimalInput?.focus();
+          triggerToast('Please enter a valid email address');
+          return;
+        }
+
+        const vipName = document.getElementById('vipName')?.value?.trim() || '';
+        const vipPhone = document.getElementById('vipPhone')?.value?.trim() || '';
+        const vipCity = document.getElementById('vipCity')?.value?.trim() || '';
+        const vipSize = document.getElementById('vipSize')?.value || 'Standard';
+
+        if (minimalSubmitBtn) {
+          minimalSubmitBtn.disabled = true;
+          minimalSubmitBtn.innerHTML = `<span>...</span>`;
+        }
+
+        const code = 'TB-IN-' + Math.floor(100000 + Math.random() * 900000);
+        const timestamp = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+
+        const payload = {
+          code: code,
+          name: vipName || email.split('@')[0],
+          fullName: vipName || email.split('@')[0],
+          email: email,
+          phone: vipPhone ? '+91 ' + vipPhone : 'N/A',
+          whatsapp: vipPhone ? '+91 ' + vipPhone : 'N/A',
+          city: vipCity || 'N/A',
+          size: vipSize,
+          dresses: 'Minimalist Runway Access Waitlist',
+          selectedLooks: 'Minimalist Runway Access Waitlist',
+          date: timestamp,
+          timestamp: timestamp,
+          source: 'Minimalist Waitlist (Bhawya Suri Style)'
+        };
+
+        // 1. Post to Google Sheet via Apps Script Webhook
+        try {
+          fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify(payload)
+          }).catch(console.warn);
+        } catch (err) {}
+
+        // 2. Also send to Shopify Newsletter endpoint if customer form present
+        const shopifyNlForm = document.getElementById('shopifyNewsletterFallback');
+        if (shopifyNlForm) {
+          const nlEmailInput = shopifyNlForm.querySelector('input[type="email"]');
+          if (nlEmailInput) nlEmailInput.value = email;
+          try {
+            fetch(shopifyNlForm.action || '/contact', {
+              method: 'POST',
+              body: new FormData(shopifyNlForm)
+            }).catch(console.warn);
+          } catch (nlErr) {}
+        }
+
+        // 3. UI Update: hide the input line, show minimal success
+        const line = minimalForm.querySelector('.waitlist-nl-line');
+        if (line) line.style.display = 'none';
+        if (vipToggle) vipToggle.style.display = 'none';
+        if (vipDrawer) vipDrawer.style.display = 'none';
+        if (minimalSuccess) minimalSuccess.hidden = false;
+
+        // 4. Pop-up Modal + Toast
+        if (successModal) {
+          successModal.hidden = false;
+        }
+        triggerToast("✦ You're on the list! Reservation confirmed.");
+      });
+    }
+
     // Reserve Another Look Handler
     if (reserveAnotherBtn) {
       reserveAnotherBtn.addEventListener('click', () => {
