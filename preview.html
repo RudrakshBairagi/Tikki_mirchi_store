@@ -975,6 +975,339 @@
       opacity: 1;
       transform: translateX(-50%) translateY(0);
     }
+
+    /* ================================================================
+       TEEKHI BELLA — WAITLIST COUTURE AESTHETIC INTEGRATION
+       ================================================================ */
+
+    /* 1. Body & Atmosphere */
+    body {
+      background-color: #0d0c10 !important;
+      color: #ffffff;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
+    }
+
+    /* 2. Hanger Rack Section on Illustrated Red Room Background */
+    .hanger-rack-section {
+      background-color: #141216 !important;
+      background-image: url('assets/background.jpg') !important;
+      background-size: cover !important;
+      background-position: center !important;
+      background-repeat: no-repeat !important;
+      position: relative !important;
+      min-height: calc(100vh - 76px);
+      padding-top: 48px !important;
+      padding-bottom: 72px !important;
+      overflow: hidden;
+    }
+
+    .hanger-rack-bg-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.45) 0%,
+        rgba(0, 0, 0, 0.16) 35%,
+        rgba(0, 0, 0, 0.52) 100%
+      );
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .hanger-rack-container {
+      position: relative;
+      z-index: 2;
+    }
+
+    /* 3. Editorial Header (Matching waitlist.html) */
+    .hanger-rack-header {
+      margin-bottom: 20px !important;
+    }
+
+    .hanger-rack-eyebrow {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
+      font-size: 11px !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.28em !important;
+      text-transform: uppercase !important;
+      color: #ffffff !important;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
+      margin-bottom: 12px !important;
+    }
+
+    .hanger-rack-title {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
+      font-size: clamp(34px, 4.4vw, 54px) !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.18em !important;
+      text-transform: uppercase !important;
+      color: #ffffff !important;
+      line-height: 1.15 !important;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8), 0 1px 3px rgba(0, 0, 0, 0.95);
+      margin: 0 0 12px 0 !important;
+    }
+
+    .hanger-rack-subheading {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
+      font-size: 13px !important;
+      font-weight: 500 !important;
+      letter-spacing: 0.06em !important;
+      color: rgba(255, 255, 255, 0.92) !important;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.85);
+      max-width: 480px !important;
+      margin: 0 auto !important;
+      line-height: 1.6 !important;
+    }
+
+    /* 4. Waitlist Buttons (Top & Bottom) — Solid Black High-Fashion Capsule */
+    .rack-waitlist-btn {
+      background: #000000 !important;
+      color: #ffffff !important;
+      border: 1px solid rgba(255, 255, 255, 0.24) !important;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
+      font-size: 11.5px !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.18em !important;
+      text-transform: uppercase !important;
+      padding: 12px 28px !important;
+      border-radius: 999px !important;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
+      transition: all 0.25s ease !important;
+    }
+
+    .rack-waitlist-btn:hover {
+      background: #1a1a1a !important;
+      border-color: #ffffff !important;
+      transform: translateY(-2px) !important;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.65) !important;
+    }
+
+    .rack-waitlist-btn .btn-arrow {
+      color: #ffffff !important;
+      font-size: 13px !important;
+      transition: transform 0.25s ease !important;
+    }
+
+    .rack-waitlist-btn:hover .btn-arrow {
+      transform: translateX(4px) !important;
+    }
+
+    /* 5. Garment Swing Tags — Matching Solid Black Look Cards from waitlist.html */
+    .tag-body {
+      background: #000000 !important;
+      border: 1px solid rgba(255, 255, 255, 0.18) !important;
+      border-radius: 6px !important;
+      padding: 7px 12px !important;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55) !important;
+      color: #ffffff !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+
+    .tag-code {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
+      font-size: 9px !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.16em !important;
+      color: #ffffff !important;
+      text-transform: uppercase !important;
+    }
+
+    .tag-name {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
+      font-size: 10px !important;
+      font-weight: 600 !important;
+      color: #ffffff !important;
+      letter-spacing: 0.06em !important;
+    }
+
+    .tag-price {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
+      font-size: 9.5px !important;
+      font-weight: 500 !important;
+      color: rgba(255, 255, 255, 0.75) !important;
+    }
+
+    .tag-thread {
+      background: rgba(255, 255, 255, 0.35) !important;
+    }
+
+    /* 6. Lower Haute Couture Banner & Projects Hub (Clean Minimalist Black/Dark Aesthetic) */
+    .custom-static-element-section {
+      background: #0a090c !important;
+      border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+      color: #ffffff !important;
+      padding: 70px 24px !important;
+    }
+
+    .static-element-eyebrow {
+      font-family: 'Plus Jakarta Sans', sans-serif !important;
+      font-size: 10.5px !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.28em !important;
+      color: rgba(255, 255, 255, 0.75) !important;
+      margin-bottom: 14px !important;
+    }
+
+    .static-element-heading {
+      font-family: 'Plus Jakarta Sans', sans-serif !important;
+      font-size: clamp(28px, 3.8vw, 44px) !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.14em !important;
+      text-transform: uppercase !important;
+      color: #ffffff !important;
+      margin-bottom: 16px !important;
+    }
+
+    .static-element-subheading {
+      font-family: 'Plus Jakarta Sans', sans-serif !important;
+      font-size: 13.5px !important;
+      line-height: 1.7 !important;
+      color: rgba(255, 255, 255, 0.75) !important;
+      max-width: 620px !important;
+      margin: 0 auto 28px auto !important;
+    }
+
+    .static-element-btn-primary {
+      background: #ffffff !important;
+      color: #000000 !important;
+      font-family: 'Plus Jakarta Sans', sans-serif !important;
+      font-size: 11.5px !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.18em !important;
+      text-transform: uppercase !important;
+      border-radius: 4px !important;
+      padding: 13px 26px !important;
+      border: 1px solid #ffffff !important;
+      text-decoration: none !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 8px !important;
+      transition: all 0.2s ease !important;
+    }
+
+    .static-element-btn-primary:hover {
+      background: #e5e5e5 !important;
+      transform: translateY(-2px) !important;
+    }
+
+    .static-element-btn-secondary {
+      background: transparent !important;
+      color: #ffffff !important;
+      font-family: 'Plus Jakarta Sans', sans-serif !important;
+      font-size: 11.5px !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.18em !important;
+      text-transform: uppercase !important;
+      border-radius: 4px !important;
+      padding: 13px 26px !important;
+      border: 1px solid rgba(255, 255, 255, 0.3) !important;
+      text-decoration: none !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      transition: all 0.2s ease !important;
+    }
+
+    .static-element-btn-secondary:hover {
+      border-color: #ffffff !important;
+      background: rgba(255, 255, 255, 0.08) !important;
+      transform: translateY(-2px) !important;
+    }
+
+    .projects-hub-section {
+      background: #080709 !important;
+      color: #ffffff !important;
+      padding: 80px 24px !important;
+    }
+
+    .projects-hub-title {
+      font-family: 'Plus Jakarta Sans', sans-serif !important;
+      font-size: clamp(26px, 3.4vw, 38px) !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.14em !important;
+      text-transform: uppercase !important;
+      color: #ffffff !important;
+      margin-bottom: 12px !important;
+    }
+
+    .projects-hub-subtitle {
+      font-family: 'Plus Jakarta Sans', sans-serif !important;
+      font-size: 13px !important;
+      color: rgba(255, 255, 255, 0.7) !important;
+      max-width: 580px !important;
+      margin: 0 auto 40px auto !important;
+    }
+
+    .project-card {
+      background: rgba(255, 255, 255, 0.04) !important;
+      border: 1px solid rgba(255, 255, 255, 0.08) !important;
+      border-radius: 8px !important;
+      color: #ffffff !important;
+      transition: all 0.25s ease !important;
+    }
+
+    .project-card:hover {
+      background: rgba(255, 255, 255, 0.08) !important;
+      border-color: rgba(255, 255, 255, 0.3) !important;
+      transform: translateY(-3px) !important;
+    }
+
+    .project-card-badge {
+      font-family: 'Plus Jakarta Sans', sans-serif !important;
+      font-size: 9.5px !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.16em !important;
+      text-transform: uppercase !important;
+      color: rgba(255, 255, 255, 0.6) !important;
+    }
+
+    .project-card-title {
+      font-family: 'Plus Jakarta Sans', sans-serif !important;
+      font-size: 17px !important;
+      font-weight: 600 !important;
+      color: #ffffff !important;
+      letter-spacing: 0.06em !important;
+    }
+
+    .project-card-desc {
+      font-family: 'Plus Jakarta Sans', sans-serif !important;
+      font-size: 12.5px !important;
+      color: rgba(255, 255, 255, 0.7) !important;
+      line-height: 1.6 !important;
+    }
+
+    .project-card-footer {
+      font-family: 'Plus Jakarta Sans', sans-serif !important;
+      font-size: 11px !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.12em !important;
+      text-transform: uppercase !important;
+      border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+      color: rgba(255, 255, 255, 0.8) !important;
+    }
+
+    /* 7. Live Customizer Launcher button */
+    .font-studio-launcher {
+      background: #000000 !important;
+      border: 1px solid rgba(255, 255, 255, 0.22) !important;
+      color: #ffffff !important;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6) !important;
+    }
+
+    .font-studio-launcher:hover {
+      border-color: #ffffff !important;
+      background: #1a1a1a !important;
+    }
+
+    .font-studio-launcher .sparkle {
+      color: #ffffff !important;
+    }
+
+    .font-studio-launcher .badge {
+      background: rgba(255, 255, 255, 0.15) !important;
+      color: #ffffff !important;
+    }
   </style>
 </head>
 <body>
@@ -1013,7 +1346,7 @@
 
         <!-- Desktop Navigation (Visible on Desktop) -->
         <nav class="desktop-nav" aria-label="Primary Navigation">
-          <a href="preview.html" class="nav-link header-nav-home">HOME</a>
+          <a href="preview.html" class="nav-link header-nav-home is-active">HOME</a>
           <a href="waitlist.html" class="nav-link header-nav-waitlist">WAITLIST ✦</a>
         </nav>
       </div>
@@ -1046,35 +1379,23 @@
     data-sound1="assets/sound_1.mp3"
     data-sound2="assets/sound_2.mp3"
     data-sound3="assets/sound_3.mp3"
-    style="
-      --rack-bg: #f8f8f6;
-      --rack-rail-color: #7d858f;
-      --rack-hanger-color: #6b727c;
-      --rack-text-color: #1a1819;
-      --rack-accent-color: #b38728;
-      --rack-item-width: 130px;
-      --rack-padding-top: 70px;
-      --rack-padding-bottom: 95px;
-    "
   >
+    <div class="hanger-rack-bg-overlay" aria-hidden="true"></div>
     <div class="hanger-rack-container">
       <!-- Editorial Rack Header Section (Eyebrow -> Title -> Subheading) -->
       <div class="hanger-rack-header">
         <div class="hanger-rack-eyebrow">
-          <span class="rack-eyebrow-sparkle">✦</span>
           <span>Pretty with a bite</span>
-          <span class="rack-eyebrow-sparkle">✦</span>
         </div>
         <h2 class="hanger-rack-title">Your Dream Rack</h2>
-        <p class="hanger-rack-subheading" style="font-family: 'Nothing You Could Do', cursive; font-size: 24px;">Pick your teekhi bella outfit</p>
+        <p class="hanger-rack-subheading">Select a piece to inspect details, drape, and priority allocation.</p>
       </div>
 
       <!-- Top Waitlist Call To Action (Below Header, Above Rack Track) -->
       <div class="rack-waitlist-btn-wrap-top">
         <a href="waitlist.html" class="rack-waitlist-btn" title="Join the Exclusive Waitlist">
-          <span class="btn-sparkle">✦</span>
           <span>Join the waitlist</span>
-          <span class="btn-arrow">⟶</span>
+          <span class="btn-arrow" aria-hidden="true">→</span>
         </a>
       </div>
 
@@ -1678,9 +1999,8 @@
         <!-- Bottom Waitlist Call To Action (Under the Racks) -->
         <div class="rack-waitlist-btn-wrap-bottom">
           <a href="waitlist.html" class="rack-waitlist-btn" title="Join the Exclusive Waitlist">
-            <span class="btn-sparkle">✦</span>
             <span>Join the waitlist</span>
-            <span class="btn-arrow">⟶</span>
+            <span class="btn-arrow" aria-hidden="true">→</span>
           </a>
         </div>
       </div>
