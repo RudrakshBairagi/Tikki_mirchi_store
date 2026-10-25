@@ -7,7 +7,7 @@
 {%- assign wl_border = ws.border_color | default: '#e2e0da' -%}
 {%- assign wl_input_bg = ws.input_bg_color | default: '#fafaf8' -%}
 {%- assign wl_submit_bg = ws.submit_btn_bg | default: '#1a1819' -%}
-{%- assign wl_submit_text = ws.submit_btn_text | default: '#ffffff' -%}
+{%- assign wl_submit_text = ws.submit_btn_text_color | default: '#ffffff' -%}
 {{ 'atelier-waitlist.css' | asset_url | stylesheet_tag }}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -421,29 +421,29 @@
           </div>
 
           <div class="size-pills-row">
-            <button type="button" class="size-select-pill" data-size='{{ ws.size_pill_1_name | default: "XS" }} ({{ ws.size_pill_1_detail | default: "Bust 32\"" }})'>
+            <button type="button" class="size-select-pill" data-size="{{ ws.size_pill_1_name | default: 'XS' }} ({{ ws.size_pill_1_detail | default: 'Bust 32 in' }})">
               <span class="size-pill-name">{{ ws.size_pill_1_name | default: 'XS' }}</span>
-              <span class="size-pill-detail">{{ ws.size_pill_1_detail | default: 'Bust 32"' }}</span>
+              <span class="size-pill-detail">{{ ws.size_pill_1_detail | default: 'Bust 32 in' }}</span>
             </button>
-            <button type="button" class="size-select-pill" data-size='{{ ws.size_pill_2_name | default: "S" }} ({{ ws.size_pill_2_detail | default: "Bust 34\"" }})'>
+            <button type="button" class="size-select-pill" data-size="{{ ws.size_pill_2_name | default: 'S' }} ({{ ws.size_pill_2_detail | default: 'Bust 34 in' }})">
               <span class="size-pill-name">{{ ws.size_pill_2_name | default: 'S' }}</span>
-              <span class="size-pill-detail">{{ ws.size_pill_2_detail | default: 'Bust 34"' }}</span>
+              <span class="size-pill-detail">{{ ws.size_pill_2_detail | default: 'Bust 34 in' }}</span>
             </button>
-            <button type="button" class="size-select-pill is-active" data-size='{{ ws.size_pill_3_name | default: "M" }} ({{ ws.size_pill_3_detail | default: "Bust 36\"" }})'>
+            <button type="button" class="size-select-pill is-active" data-size="{{ ws.size_pill_3_name | default: 'M' }} ({{ ws.size_pill_3_detail | default: 'Bust 36 in' }})">
               <span class="size-pill-name">{{ ws.size_pill_3_name | default: 'M' }}</span>
-              <span class="size-pill-detail">{{ ws.size_pill_3_detail | default: 'Bust 36"' }}</span>
+              <span class="size-pill-detail">{{ ws.size_pill_3_detail | default: 'Bust 36 in' }}</span>
             </button>
-            <button type="button" class="size-select-pill" data-size='{{ ws.size_pill_4_name | default: "L" }} ({{ ws.size_pill_4_detail | default: "Bust 38\"" }})'>
+            <button type="button" class="size-select-pill" data-size="{{ ws.size_pill_4_name | default: 'L' }} ({{ ws.size_pill_4_detail | default: 'Bust 38 in' }})">
               <span class="size-pill-name">{{ ws.size_pill_4_name | default: 'L' }}</span>
-              <span class="size-pill-detail">{{ ws.size_pill_4_detail | default: 'Bust 38"' }}</span>
+              <span class="size-pill-detail">{{ ws.size_pill_4_detail | default: 'Bust 38 in' }}</span>
             </button>
-            <button type="button" class="size-select-pill" data-size='{{ ws.size_pill_5_name | default: "XL" }} ({{ ws.size_pill_5_detail | default: "Bust 40\"" }})'>
+            <button type="button" class="size-select-pill" data-size="{{ ws.size_pill_5_name | default: 'XL' }} ({{ ws.size_pill_5_detail | default: 'Bust 40 in' }})">
               <span class="size-pill-name">{{ ws.size_pill_5_name | default: 'XL' }}</span>
-              <span class="size-pill-detail">{{ ws.size_pill_5_detail | default: 'Bust 40"' }}</span>
+              <span class="size-pill-detail">{{ ws.size_pill_5_detail | default: 'Bust 40 in' }}</span>
             </button>
-            <button type="button" class="size-select-pill" data-size='{{ ws.size_pill_6_name | default: "XXL" }} ({{ ws.size_pill_6_detail | default: "Bust 42\"" }})'>
+            <button type="button" class="size-select-pill" data-size="{{ ws.size_pill_6_name | default: 'XXL' }} ({{ ws.size_pill_6_detail | default: 'Bust 42 in' }})">
               <span class="size-pill-name">{{ ws.size_pill_6_name | default: 'XXL' }}</span>
-              <span class="size-pill-detail">{{ ws.size_pill_6_detail | default: 'Bust 42"' }}</span>
+              <span class="size-pill-detail">{{ ws.size_pill_6_detail | default: 'Bust 42 in' }}</span>
             </button>
             <button type="button" class="size-select-pill" data-size="{{ ws.size_pill_custom_name | default: 'Custom' }} ({{ ws.size_pill_custom_detail | default: 'Made-to-Measure' }})" data-is-custom="true">
               <span class="size-pill-name">{{ ws.size_pill_custom_name | default: 'Custom' }}</span>
@@ -458,7 +458,7 @@
               <input
                 type="text"
                 id="customMeasurementsInput"
-                placeholder="{{ ws.custom_measurements_placeholder | default: 'e.g. Bust 35, Waist 28, Hips 38, Height 5\'6&quot;' }}"
+                placeholder="{{ ws.custom_measurements_placeholder | default: 'e.g. Bust 35, Waist 28, Hips 38, Height 5ft 6in' }}"
               >
             </div>
           </div>
