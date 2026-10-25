@@ -296,7 +296,70 @@
           minimalSizeInput.value = btn.dataset.size || btn.textContent.trim();
         }
       });
+    // Look card ↔ Chip multi-selection synchronization
+    const wlCards = document.querySelectorAll('.wl-look-card');
+    const wlChips = document.querySelectorAll('.wl-piece-chip');
+    const selectedLooks = new Set();
+
+    wlCards.forEach((c) => {
+      if (c.classList.contains('is-selected') && c.dataset.value) {
+        selectedLooks.add(c.dataset.value);
+      }
     });
+    if (selectedLooks.size === 0) {
+      const firstCard = document.querySelector('.wl-look-card');
+      if (firstCard && firstCard.dataset.value) {
+        selectedLooks.add(firstCard.dataset.value);
+      } else {
+        selectedLooks.add('Archival Manuscript Corset Gown');
+      }
+    }
+
+    function syncLooksSelection() {
+      wlCards.forEach((c) => {
+        const val = c.dataset.value;
+        const isSel = selectedLooks.has(val);
+        c.classList.toggle('is-selected', isSel);
+        c.setAttribute('aria-pressed', isSel ? 'true' : 'false');
+      });
+
+      wlChips.forEach((chip) => {
+        const val = chip.dataset.value;
+        chip.classList.toggle('is-selected', selectedLooks.has(val));
+      });
+
+      if (minimalInterest) {
+        minimalInterest.value = Array.from(selectedLooks).join(', ');
+      }
+    }
+
+    function toggleLookPiece(val) {
+      if (!val) return;
+      if (selectedLooks.has(val)) {
+        selectedLooks.delete(val);
+      } else {
+        selectedLooks.add(val);
+      }
+      syncLooksSelection();
+    }
+
+    wlCards.forEach((card) => {
+      card.addEventListener('click', () => toggleLookPiece(card.dataset.value));
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggleLookPiece(card.dataset.value);
+        }
+      });
+    });
+
+    wlChips.forEach((chip) => {
+      chip.addEventListener('click', () => toggleLookPiece(chip.dataset.value));
+    });
+
+    if (wlCards.length > 0 || wlChips.length > 0) {
+      syncLooksSelection();
+    }
 
     // Modal Close handlers
     if (modalCloseBtn) {

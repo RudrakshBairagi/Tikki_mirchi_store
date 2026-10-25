@@ -514,137 +514,240 @@
   </main>
 {%- else -%}
   <main class="waitlist-page-content">
-    <!-- Minimalist Aesthetic Hero with Desktop Artwork Background -->
-    <section class="waitlist-hero-minimal" {%- if ws.bg_image != blank -%}style="background-image: url('{{ ws.bg_image | image_url: width: 2600 }}');"{%- else -%}style="background-image: url('{{ 'background.jpg' | asset_url }}');"{%- endif -%}>
-      <div class="waitlist-minimal-overlay" aria-hidden="true" style="opacity: {{ ws.bg_overlay_opacity | default: 25 | divided_by: 100.0 }};"></div>
+    {%- assign hero_bg_image = ws.bg_image | default: nil -%}
+    <section
+      class="wl-split-section"
+      style="{%- if hero_bg_image != blank -%}background-image: url('{{ hero_bg_image | image_url: width: 2600 }}');{%- else -%}background-image: url('{{ "background.jpg" | asset_url }}');{%- endif -%}"
+    >
+      <div class="wl-split-overlay" aria-hidden="true" style="opacity: {{ ws.bg_overlay_opacity | default: 0 | divided_by: 100.0 }};"></div>
 
-      <div class="waitlist-minimal-inner">
-        <h1 class="waitlist-minimal-title">{{ ws.title | default: 'Sign Up For Exclusive Access' }}</h1>
-        <p class="waitlist-minimal-subtitle">{{ ws.subtitle | default: 'Select your piece of interest and reserve your private runway drop access.' }}</p>
+      <!-- LEFT: Outfit Showcase -->
+      <div class="wl-left-panel">
+        <div class="wl-left-header">
+          {%- if ws.eyebrow != blank -%}
+            <div class="wl-left-eyebrow">{{ ws.eyebrow }}</div>
+          {%- endif -%}
+          <h1 class="wl-left-title">{{ ws.title | default: 'Sign Up For<br>Exclusive Access' }}</h1>
+          <p class="wl-left-sub">{{ ws.subtitle | default: 'Select one or more teekhi bella pieces. Tap outfits to select or unselect.' }}</p>
+        </div>
 
-        <!-- Minimalist Multi-Field Capsule Form -->
-        <div class="waitlist-capsule-card">
-          <form id="waitlistMinimalForm" class="waitlist-capsule-form" novalidate>
-            <div class="waitlist-capsule-grid">
-              
-              <!-- 1. Email Address -->
-              <div class="waitlist-capsule-field grid-span-2">
-                <label for="waitlistEmail">Email Address *</label>
-                <input
-                  type="email"
-                  id="waitlistEmail"
-                  placeholder="{{ ws.email_placeholder | default: 'yourname@example.com' }}"
-                  autocomplete="email"
-                  required
-                >
-              </div>
-
-              <!-- 2. Phone Number (+91 WhatsApp) -->
-              <div class="waitlist-capsule-field">
-                <label for="waitlistPhone">Phone Number (WhatsApp VIP) *</label>
-                <div class="waitlist-capsule-phone">
-                  <span class="phone-prefix">+91</span>
-                  <input
-                    type="tel"
-                    id="waitlistPhone"
-                    placeholder="98765 43210"
-                    maxlength="10"
-                    pattern="[0-9]{10}"
-                    required
-                  >
-                </div>
-              </div>
-
-              <!-- 3. State -->
-              <div class="waitlist-capsule-field">
-                <label for="waitlistState">State / UT *</label>
-                <select id="waitlistState" required>
-                  <option value="" disabled selected>Select Your State</option>
-                  <option value="Andhra Pradesh">Andhra Pradesh</option>
-                  <option value="Arunachal Pradesh">Arunachal Pradesh</option>
-                  <option value="Assam">Assam</option>
-                  <option value="Bihar">Bihar</option>
-                  <option value="Chhattisgarh">Chhattisgarh</option>
-                  <option value="Delhi">Delhi (NCR)</option>
-                  <option value="Goa">Goa</option>
-                  <option value="Gujarat">Gujarat</option>
-                  <option value="Haryana">Haryana</option>
-                  <option value="Himachal Pradesh">Himachal Pradesh</option>
-                  <option value="Jharkhand">Jharkhand</option>
-                  <option value="Karnataka">Karnataka</option>
-                  <option value="Kerala">Kerala</option>
-                  <option value="Madhya Pradesh">Madhya Pradesh</option>
-                  <option value="Maharashtra">Maharashtra</option>
-                  <option value="Manipur">Manipur</option>
-                  <option value="Meghalaya">Meghalaya</option>
-                  <option value="Mizoram">Mizoram</option>
-                  <option value="Nagaland">Nagaland</option>
-                  <option value="Odisha">Odisha</option>
-                  <option value="Punjab">Punjab</option>
-                  <option value="Rajasthan">Rajasthan</option>
-                  <option value="Sikkim">Sikkim</option>
-                  <option value="Tamil Nadu">Tamil Nadu</option>
-                  <option value="Telangana">Telangana</option>
-                  <option value="Tripura">Tripura</option>
-                  <option value="Uttar Pradesh">Uttar Pradesh</option>
-                  <option value="Uttarakhand">Uttarakhand</option>
-                  <option value="West Bengal">West Bengal</option>
-                  <option value="Other / International">Other / International</option>
-                </select>
-              </div>
-
-              <!-- 4. Piece of Interest (Choose 1 out of the 5) -->
-              <div class="waitlist-capsule-field grid-span-2">
-                <label for="waitlistInterest">Piece of Interest (Choose 1 of 5 Runway Looks) *</label>
-                <select id="waitlistInterest" required>
-                  <option value="" disabled selected>Select the piece you are reserving</option>
-                  <option value="Archival Manuscript Corset Gown">1. Archival Manuscript Corset Gown</option>
-                  <option value="Heritage Mural Mirror Lehenga">2. Heritage Mural Mirror Lehenga</option>
-                  <option value="Rose-Coral Shimmer Saree Gown">3. Rose-Coral Shimmer Saree Gown</option>
-                  <option value="Midnight Botanical Co-ord Set">4. Midnight Botanical Co-ord Set</option>
-                  <option value="Bordeaux Peplum Halter Gown">5. Bordeaux Peplum Halter Gown</option>
-                </select>
-              </div>
-
-              <!-- 5. Preferred Sizing -->
-              <div class="waitlist-capsule-field grid-span-2">
-                <label>Preferred Sizing *</label>
-                <div class="waitlist-size-pills" role="radiogroup" aria-label="Preferred Size">
-                  <button type="button" class="waitlist-size-btn" data-size="XS (UK 6)">XS</button>
-                  <button type="button" class="waitlist-size-btn" data-size="S (UK 8)">S</button>
-                  <button type="button" class="waitlist-size-btn is-active" data-size="M (UK 10)">M</button>
-                  <button type="button" class="waitlist-size-btn" data-size="L (UK 12)">L</button>
-                  <button type="button" class="waitlist-size-btn" data-size="XL (UK 14)">XL</button>
-                </div>
-                <input type="hidden" id="waitlistPreferredSize" value="M (UK 10)">
-              </div>
-
+        <!-- 5 Outfit Cards — clicking any look toggles selection (multi-select supported) -->
+        <div class="wl-looks-grid">
+          {%- comment -%} Look 01 {%- endcomment -%}
+          {%- assign look_1_title = ws.dress_1_title | default: 'Archival Manuscript Corset Gown' -%}
+          {%- assign look_1_img = ws.dress_1_img | default: nil -%}
+          <div class="wl-look-card is-selected" data-value="{{ look_1_title | escape }}" tabindex="0" role="button" aria-pressed="true" title="Click to toggle selection">
+            <div class="wl-look-img-wrap">
+              {%- if look_1_img != blank -%}
+                <img src="{{ look_1_img | image_url: width: 600 }}" alt="{{ look_1_title | escape }}" loading="lazy">
+              {%- else -%}
+                <img src="{{ 'hanger-look-1.png' | asset_url }}" alt="{{ look_1_title | escape }}" loading="lazy">
+              {%- endif -%}
             </div>
+            <div class="wl-look-info">
+              <span class="wl-look-num">01</span>
+              <span class="wl-look-name">{{ look_1_title | replace: ' Corset Gown', '<br>Corset Gown' | replace: ' Lehenga', '<br>Lehenga' | replace: ' Saree Gown', '<br>Saree Gown' | replace: ' Co-ord Set', '<br>Co-ord Set' | replace: ' Halter Gown', '<br>Halter Gown' }}</span>
+            </div>
+            <div class="wl-look-check" aria-hidden="true">✓</div>
+          </div>
 
-            <!-- Submit Button -->
-            <div class="waitlist-capsule-submit">
-              <button type="submit" class="waitlist-capsule-submit-btn" id="minimalSubmitBtn">
-                <span>{{ ws.submit_btn_text | default: 'Reserve Exclusive Access' }}</span>
-                <span>⟶</span>
+          {%- comment -%} Look 02 {%- endcomment -%}
+          {%- assign look_2_title = ws.dress_2_title | default: 'Heritage Mural Mirror Lehenga' -%}
+          {%- assign look_2_img = ws.dress_2_img | default: nil -%}
+          <div class="wl-look-card" data-value="{{ look_2_title | escape }}" tabindex="0" role="button" aria-pressed="false" title="Click to toggle selection">
+            <div class="wl-look-img-wrap">
+              {%- if look_2_img != blank -%}
+                <img src="{{ look_2_img | image_url: width: 600 }}" alt="{{ look_2_title | escape }}" loading="lazy">
+              {%- else -%}
+                <img src="{{ 'hanger-look-2.png' | asset_url }}" alt="{{ look_2_title | escape }}" loading="lazy">
+              {%- endif -%}
+            </div>
+            <div class="wl-look-info">
+              <span class="wl-look-num">02</span>
+              <span class="wl-look-name">{{ look_2_title | replace: ' Mirror Lehenga', '<br>Mirror Lehenga' | replace: ' Lehenga', '<br>Lehenga' }}</span>
+            </div>
+            <div class="wl-look-check" aria-hidden="true">✓</div>
+          </div>
+
+          {%- comment -%} Look 03 {%- endcomment -%}
+          {%- assign look_3_title = ws.dress_3_title | default: 'Rose-Coral Shimmer Saree Gown' -%}
+          {%- assign look_3_img = ws.dress_3_img | default: nil -%}
+          <div class="wl-look-card" data-value="{{ look_3_title | escape }}" tabindex="0" role="button" aria-pressed="false" title="Click to toggle selection">
+            <div class="wl-look-img-wrap">
+              {%- if look_3_img != blank -%}
+                <img src="{{ look_3_img | image_url: width: 600 }}" alt="{{ look_3_title | escape }}" loading="lazy">
+              {%- else -%}
+                <img src="{{ 'hanger-look-3.png' | asset_url }}" alt="{{ look_3_title | escape }}" loading="lazy">
+              {%- endif -%}
+            </div>
+            <div class="wl-look-info">
+              <span class="wl-look-num">03</span>
+              <span class="wl-look-name">{{ look_3_title | replace: ' Saree Gown', '<br>Saree Gown' }}</span>
+            </div>
+            <div class="wl-look-check" aria-hidden="true">✓</div>
+          </div>
+
+          {%- comment -%} Look 04 {%- endcomment -%}
+          {%- assign look_4_title = ws.dress_4_title | default: 'Midnight Botanical Co-ord Set' -%}
+          {%- assign look_4_img = ws.dress_4_img | default: nil -%}
+          <div class="wl-look-card" data-value="{{ look_4_title | escape }}" tabindex="0" role="button" aria-pressed="false" title="Click to toggle selection">
+            <div class="wl-look-img-wrap">
+              {%- if look_4_img != blank -%}
+                <img src="{{ look_4_img | image_url: width: 600 }}" alt="{{ look_4_title | escape }}" loading="lazy">
+              {%- else -%}
+                <img src="{{ 'hanger-look-4.png' | asset_url }}" alt="{{ look_4_title | escape }}" loading="lazy">
+              {%- endif -%}
+            </div>
+            <div class="wl-look-info">
+              <span class="wl-look-num">04</span>
+              <span class="wl-look-name">{{ look_4_title | replace: ' Co-ord Set', '<br>Co-ord Set' }}</span>
+            </div>
+            <div class="wl-look-check" aria-hidden="true">✓</div>
+          </div>
+
+          {%- comment -%} Look 05 {%- endcomment -%}
+          {%- assign look_5_title = ws.dress_5_title | default: 'Bordeaux Peplum Halter Gown' -%}
+          {%- assign look_5_img = ws.dress_5_img | default: nil -%}
+          <div class="wl-look-card" data-value="{{ look_5_title | escape }}" tabindex="0" role="button" aria-pressed="false" title="Click to toggle selection">
+            <div class="wl-look-img-wrap">
+              {%- if look_5_img != blank -%}
+                <img src="{{ look_5_img | image_url: width: 600 }}" alt="{{ look_5_title | escape }}" loading="lazy">
+              {%- else -%}
+                <img src="{{ 'hanger-look-5.png' | asset_url }}" alt="{{ look_5_title | escape }}" loading="lazy">
+              {%- endif -%}
+            </div>
+            <div class="wl-look-info">
+              <span class="wl-look-num">05</span>
+              <span class="wl-look-name">{{ look_5_title | replace: ' Halter Gown', '<br>Halter Gown' }}</span>
+            </div>
+            <div class="wl-look-check" aria-hidden="true">✓</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Minimalist Form Panel -->
+      <div class="wl-right-panel">
+        <form id="waitlistMinimalForm" class="wl-form" novalidate>
+
+          <!-- Email -->
+          <div class="wl-field">
+            <label for="waitlistEmail">{{ ws.email_label | default: 'Email' | replace: ' *', '' | replace: ' Address', '' }}</label>
+            <input type="email" id="waitlistEmail" placeholder="{{ ws.email_placeholder | default: 'your@email.com' }}" autocomplete="email" required>
+          </div>
+
+          <!-- Phone -->
+          <div class="wl-field">
+            <label for="waitlistPhone">{{ ws.phone_label | default: 'Phone' | replace: ' *', '' | replace: ' Number', '' | replace: ' (WhatsApp VIP Access)', '' }}</label>
+            <div class="wl-phone-row">
+              <span class="wl-phone-cc">{{ ws.phone_prefix | default: '+91' }}</span>
+              <input type="tel" id="waitlistPhone" placeholder="98765 43210" maxlength="10" pattern="[0-9]{10}" required>
+            </div>
+          </div>
+
+          <!-- State -->
+          <div class="wl-field">
+            <label for="waitlistState">{{ ws.state_label | default: 'State' | replace: ' *', '' | replace: ' / UT', '' }}</label>
+            <select id="waitlistState" required>
+              <option value="" disabled selected>Select state</option>
+              <option value="Andhra Pradesh">Andhra Pradesh</option>
+              <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+              <option value="Assam">Assam</option>
+              <option value="Bihar">Bihar</option>
+              <option value="Chhattisgarh">Chhattisgarh</option>
+              <option value="Delhi">Delhi (NCR)</option>
+              <option value="Goa">Goa</option>
+              <option value="Gujarat">Gujarat</option>
+              <option value="Haryana">Haryana</option>
+              <option value="Himachal Pradesh">Himachal Pradesh</option>
+              <option value="Jharkhand">Jharkhand</option>
+              <option value="Karnataka">Karnataka</option>
+              <option value="Kerala">Kerala</option>
+              <option value="Madhya Pradesh">Madhya Pradesh</option>
+              <option value="Maharashtra">Maharashtra</option>
+              <option value="Manipur">Manipur</option>
+              <option value="Meghalaya">Meghalaya</option>
+              <option value="Mizoram">Mizoram</option>
+              <option value="Nagaland">Nagaland</option>
+              <option value="Odisha">Odisha</option>
+              <option value="Punjab">Punjab</option>
+              <option value="Rajasthan">Rajasthan</option>
+              <option value="Sikkim">Sikkim</option>
+              <option value="Tamil Nadu">Tamil Nadu</option>
+              <option value="Telangana">Telangana</option>
+              <option value="Tripura">Tripura</option>
+              <option value="Uttar Pradesh">Uttar Pradesh</option>
+              <option value="Uttarakhand">Uttarakhand</option>
+              <option value="West Bengal">West Bengal</option>
+              <option value="Other / International">Other / International</option>
+            </select>
+          </div>
+
+          <!-- Pieces of Interest: Multi-Select Chips (Synced with outfit cards) -->
+          <div class="wl-field">
+            <div class="wl-field-header">
+              <label>Pieces of Interest</label>
+              <span class="wl-select-hint">Select Multiple</span>
+            </div>
+            <div class="wl-pieces-chips" id="wlPiecesChips">
+              <button type="button" class="wl-piece-chip is-selected" data-value="{{ look_1_title | escape }}" data-index="01">
+                <span class="wl-chip-check">✓</span>
+                <span class="wl-chip-text">01 Archival Gown</span>
+              </button>
+              <button type="button" class="wl-piece-chip" data-value="{{ look_2_title | escape }}" data-index="02">
+                <span class="wl-chip-check">✓</span>
+                <span class="wl-chip-text">02 Mirror Lehenga</span>
+              </button>
+              <button type="button" class="wl-piece-chip" data-value="{{ look_3_title | escape }}" data-index="03">
+                <span class="wl-chip-check">✓</span>
+                <span class="wl-chip-text">03 Saree Gown</span>
+              </button>
+              <button type="button" class="wl-piece-chip" data-value="{{ look_4_title | escape }}" data-index="04">
+                <span class="wl-chip-check">✓</span>
+                <span class="wl-chip-text">04 Botanical Set</span>
+              </button>
+              <button type="button" class="wl-piece-chip" data-value="{{ look_5_title | escape }}" data-index="05">
+                <span class="wl-chip-check">✓</span>
+                <span class="wl-chip-text">05 Halter Gown</span>
               </button>
             </div>
+            <input type="hidden" id="waitlistInterest" value="{{ look_1_title | escape }}">
+          </div>
 
-            <!-- Inline Success Confirmation -->
-            <div class="waitlist-minimal-success" id="waitlistMinimalSuccess" hidden>
-              <div class="success-sparkle-icon">✦</div>
-              <h2 class="success-title">{{ ws.success_title | default: "You're on the exclusive waitlist!" }}</h2>
-              <p class="success-text" id="successSummaryText">{{ ws.success_msg | default: "Thank you for reserving your spot. We'll send your private VIP drop access via WhatsApp and email before the public launch." }}</p>
+          <!-- Sizing -->
+          <div class="wl-field">
+            <label>Preferred Size</label>
+            <div class="wl-size-row" role="radiogroup" aria-label="Preferred size">
+              <button type="button" class="wl-size-pill" data-size="XS (UK 6)">XS</button>
+              <button type="button" class="wl-size-pill" data-size="S (UK 8)">S</button>
+              <button type="button" class="wl-size-pill is-selected" data-size="M (UK 10)">M</button>
+              <button type="button" class="wl-size-pill" data-size="L (UK 12)">L</button>
+              <button type="button" class="wl-size-pill" data-size="XL (UK 14)">XL</button>
             </div>
-          </form>
+            <input type="hidden" id="waitlistPreferredSize" value="M (UK 10)">
+          </div>
 
-          <!-- Hidden Shopify customer newsletter form for sync -->
-          <form method="post" action="/contact#contact_form" id="shopifyNewsletterFallback" style="display:none;" accept-charset="UTF-8">
-            <input type="hidden" name="form_type" value="customer">
-            <input type="hidden" name="utf8" value="✓">
-            <input type="hidden" name="contact[tags]" value="newsletter, waitlist">
-            <input type="email" name="contact[email]" value="">
-          </form>
-        </div>
+          <!-- Submit -->
+          <button type="submit" class="wl-submit-btn" id="minimalSubmitBtn">
+            {{ ws.submit_btn_text | default: 'Reserve Access' }} <span aria-hidden="true">→</span>
+          </button>
+
+          <p class="wl-privacy-note">{{ ws.disclaimer_text | default: 'Your details are kept private.' }}</p>
+
+          <!-- Inline success state -->
+          <div class="wl-success-inline" id="waitlistMinimalSuccess" style="display:none;">
+            <div class="wl-success-icon">✦</div>
+            <p class="wl-success-title">{{ ws.success_title | default: "You're on the list." }}</p>
+            <p class="wl-success-sub" id="successSummaryText"></p>
+          </div>
+        </form>
+
+        <!-- Hidden Shopify customer newsletter form for sync -->
+        <form method="post" action="/contact#contact_form" id="shopifyNewsletterFallback" style="display:none;" accept-charset="UTF-8">
+          <input type="hidden" name="form_type" value="customer">
+          <input type="hidden" name="utf8" value="✓">
+          <input type="hidden" name="contact[tags]" value="newsletter, waitlist">
+          <input type="email" name="contact[email]" value="">
+        </form>
       </div>
     </section>
   </main>
