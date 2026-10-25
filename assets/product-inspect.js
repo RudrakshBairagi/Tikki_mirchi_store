@@ -10,7 +10,7 @@
 
   function initCVNTExperience() {
     // 1. Audio / Meow
-    const meowAudio = new Audio(window.__cvntMeowAudioUrl || 'assets/cvnt/cat-meow.mp3');
+    const meowAudio = new Audio(window.__cvntMeowAudioUrl || 'assets/cat-meow.mp3');
     const meowButtons = document.querySelectorAll('.MeowButton_button__GaaqF, .ProductDetailExperience_meowButtonViewport__Ql2VU, .ProductDetailExperience_meowButtonSlider__nA63E');
     meowButtons.forEach(btn => {
       btn.addEventListener('click', (e) => {
