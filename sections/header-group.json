@@ -74,6 +74,7 @@
     }
   },
   "order": [
+    "announcement-bar",
     "luxury_header"
   ]
 }

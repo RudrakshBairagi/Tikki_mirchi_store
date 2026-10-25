@@ -12,9 +12,14 @@
     "main": {
       "type": "atelier-waitlist",
       "settings": {
+        "form_style": "minimal",
+        "bg_mode": "image",
+        "bg_overlay_opacity": 25,
         "eyebrow": "",
         "title": "Sign Up For Exclusive Access",
-        "subtitle": "Select your piece of interest and reserve your private runway drop access."
+        "subtitle": "Select your piece of interest and reserve your private runway drop access.",
+        "email_placeholder": "yourname@example.com",
+        "submit_btn_text": "Reserve Exclusive Access"
       }
     }
   },
