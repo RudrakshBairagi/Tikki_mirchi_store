@@ -14,12 +14,12 @@
       "settings": {
         "form_style": "minimal",
         "bg_mode": "image",
-        "bg_overlay_opacity": 25,
-        "eyebrow": "",
-        "title": "Sign Up For Exclusive Access",
-        "subtitle": "Select your piece of interest and reserve your private runway drop access.",
-        "email_placeholder": "yourname@example.com",
-        "submit_btn_text": "Reserve Exclusive Access"
+        "bg_overlay_opacity": 0,
+        "eyebrow": "Summer Atelier 2026",
+        "title": "Sign up to our waitlist!",
+        "subtitle": "Complete the form below to reserve your bespoke piece from our exclusive runway drop.",
+        "email_placeholder": "name@example.com",
+        "submit_btn_text": "Submit Reservation"
       }
     }
   },

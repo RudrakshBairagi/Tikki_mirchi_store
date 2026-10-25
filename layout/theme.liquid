@@ -55,6 +55,27 @@
       html.is-inspect-mode #inspectAutoFallback {
         display: block !important;
       }
+      /* Clean 100vh full-screen experience for waitlist — hide footer */
+      html.is-waitlist-mode footer,
+      html.is-waitlist-mode .footer,
+      html.is-waitlist-mode .footer-section,
+      html.is-waitlist-mode [id*="footer"],
+      html.is-waitlist-mode .section-footer {
+        display: none !important;
+      }
+      /* Custom Chili Cursor */
+      html, body {
+        cursor: url('{{ "chili-cursor-32.png" | asset_url }}') 0 0, auto !important;
+        cursor: -webkit-image-set(url('{{ "chili-cursor-32.png" | asset_url }}') 1x, url('{{ "chili-cursor-64.png" | asset_url }}') 2x) 0 0, auto !important;
+      }
+      a, button, [role="button"], input, select, textarea, label,
+      .nav-link, .menu-toggle, .header-action-btn, .rack-card-action,
+      .hanger-item, .card-inspect-btn, .dropdown-nav-link,
+      .btn-waitlist-submit, .size-select-pill, .look-btn, .chip-select-btn,
+      .wl-look-card, .btn-submit-reservation {
+        cursor: url('{{ "chili-cursor-32.png" | asset_url }}') 0 0, pointer !important;
+        cursor: -webkit-image-set(url('{{ "chili-cursor-32.png" | asset_url }}') 1x, url('{{ "chili-cursor-64.png" | asset_url }}') 2x) 0 0, pointer !important;
+      }
     </style>
 
     {% if page_description %}
