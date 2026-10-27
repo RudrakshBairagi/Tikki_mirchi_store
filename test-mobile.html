@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mobile Preview Test (430x860)</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #0f1012;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      padding: 20px 0;
+    }
+    .header-bar {
+      color: #8e8e93;
+      font-size: 13px;
+      margin-bottom: 14px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .phone-frame {
+      width: 430px;
+      height: 860px;
+      background: #000;
+      border-radius: 54px;
+      box-shadow: 0 0 0 12px #222, 0 0 0 14px #333, 0 30px 80px rgba(0,0,0,0.8);
+      overflow: hidden;
+      position: relative;
+    }
+    .phone-notch {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 126px;
+      height: 30px;
+      background: #000;
+      border-radius: 20px;
+      z-index: 99999;
+      pointer-events: none;
+    }
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="header-bar">✦ iPhone 15 Pro Max Studio Viewport (430 × 860) ✦</div>
+  <div class="phone-frame">
+    <div class="phone-notch"></div>
+    <iframe src="preview.html" id="mobileFrame" title="Mobile Closet Preview"></iframe>
+  </div>
+</body>
+</html>

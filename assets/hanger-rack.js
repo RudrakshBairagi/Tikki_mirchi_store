@@ -95,7 +95,7 @@ class HangerRack {
 
   init() {
     this.setupAudio();
-    this.setupFloatingCard();
+    this.setupBenchOutfitTitle();
     this.bindPointerVelocity();
     this.bindGarmentInteractions();
 
@@ -105,19 +105,31 @@ class HangerRack {
 
     this.bindTrackScrollMomentum();
 
+    this.updateAlcoveBounds();
     this.updateTrackAlignment();
 
     // Start the rod and clothing rack from the middle
     this.centerInitialPosition();
     requestAnimationFrame(() => {
       this.centerInitialPosition();
+      this.updateAlcoveBounds();
     });
 
     window.addEventListener('resize', () => {
+      this.updateAlcoveBounds();
       this.updateTrackAlignment();
     }, { passive: true });
 
+    if (window.ResizeObserver && this.section) {
+      this.resizeObserver = new ResizeObserver(() => {
+        this.updateAlcoveBounds();
+        this.updateTrackAlignment();
+      });
+      this.resizeObserver.observe(this.section);
+    }
+
     window.addEventListener('load', () => {
+      this.updateAlcoveBounds();
       if (!this.hasUserScrolled) {
         this.centerInitialPosition();
       }
@@ -125,6 +137,57 @@ class HangerRack {
 
     // Initial wake to settle garments
     this.wakePhysics();
+  }
+
+  updateAlcoveBounds() {
+    if (!this.section) return;
+    const rect = this.section.getBoundingClientRect();
+    const cw = rect.width;
+    const ch = rect.height;
+    if (!cw || !ch) return;
+
+    // Native resolution of assets/background_final.png is 1536 x 2681
+    const imgW = 1536;
+    const imgH = 2681;
+    const imgRatio = imgW / imgH;
+    const containerRatio = cw / ch;
+
+    let rw, rh, ox;
+    if (containerRatio >= imgRatio) {
+      // Width constrained (Desktop, wide screens, or standard preview aspect ratios)
+      rw = cw;
+      rh = imgH * (cw / imgW);
+      ox = 0;
+    } else {
+      // Height constrained (Tall phone screens)
+      rh = ch;
+      rw = imgW * (ch / imgH);
+      ox = (cw - rw) / 2;
+    }
+
+    const scale = rw / imgW;
+    // Exactly at the red line reference markers:
+    // Left teal board inner edge: x=412 at top rail, x=430 at bottom
+    // Right teal board inner edge: x=1128 at top rail, x=1126 at bottom
+    const topLeft = Math.max(0, ox + 412 * scale);
+    const topRight = Math.min(cw, ox + 1128 * scale);
+    const botLeft = Math.max(0, ox + 430 * scale);
+    const botRight = Math.min(cw, ox + 1126 * scale);
+
+    const clipValue = `polygon(${topLeft.toFixed(1)}px 0px, ${topRight.toFixed(1)}px 0px, ${botRight.toFixed(1)}px 100%, ${botLeft.toFixed(1)}px 100%)`;
+    this.section.style.setProperty('--alcove-clip', clipValue);
+
+    // Fixed vertical anchor for the hanging rod (y=595px in native background)
+    const rodTop = 595 * scale - 12;
+    this.section.style.setProperty('--rod-top', `${rodTop.toFixed(1)}px`);
+
+    // Yellow bench outfit title anchor: positioned on front tufted face of yellow ottoman (y=1940px in native background)
+    const benchTitleTop = 1940 * scale;
+    this.section.style.setProperty('--bench-title-top', `${benchTitleTop.toFixed(1)}px`);
+
+    // Ground the 'Join the Waitlist' button right below yellow bench cushion, towards the base (y=2160px in native background)
+    const btnTop = 2160 * scale;
+    this.section.style.setProperty('--btn-top', `${btnTop.toFixed(1)}px`);
   }
 
   centerInitialPosition() {
@@ -136,6 +199,7 @@ class HangerRack {
       this.trackWrap.style.scrollBehavior = 'auto';
       this.trackWrap.scrollLeft = Math.round(maxScroll / 2);
       this.scrollLeft = this.trackWrap.scrollLeft;
+      this.trackWrap.scrollTop = 0;
       requestAnimationFrame(() => {
         this.trackWrap.style.scrollBehavior = prevBehavior;
         setTimeout(() => {
@@ -416,87 +480,114 @@ class HangerRack {
   }
 
   /* --------------------------------------------------------------------------
-     1. Atelier Floating Detail Card (Atelier Pop-Up beside hovered garment)
+     1. Atelier Yellow Bench Outfit Title Display (Six Caps Typography)
      -------------------------------------------------------------------------- */
-  setupFloatingCard() {
-    let card = this.stage.querySelector(':scope > .hanger-floating-card');
-    if (!card) {
-      card = document.createElement('div');
-      card.className = 'hanger-floating-card';
-      card.setAttribute('aria-hidden', 'true');
-      const isHtmlOrFile = (window.location.pathname.endsWith('.html') || window.location.protocol === 'file:');
-      const defaultInspect = isHtmlOrFile ? 'product-inspect.html' : '/pages/product-inspect';
-      const cardTitle = this.section.dataset.cardTitle || 'Couture Piece';
-      const cardBtnText = this.section.dataset.cardBtnText || 'Inspect Piece';
-      card.innerHTML = `
-        <h3 class="floating-card-title">${cardTitle}</h3>
-        <a href="${defaultInspect}" class="floating-card-link">
-          <span>${cardBtnText}</span>
-          <span class="card-arrow">→</span>
-        </a>
-      `;
-      this.stage.appendChild(card);
+  setupBenchOutfitTitle() {
+    let container = this.section.querySelector('.hanger-rack-container') || this.section;
+    let titleEl = this.section.querySelector('.hanger-bench-outfit-title');
+    if (!titleEl) {
+      titleEl = document.createElement('a');
+      titleEl.className = 'hanger-bench-outfit-title';
+      titleEl.id = 'BenchOutfitTitle';
+      titleEl.href = 'product-inspect.html';
+      titleEl.title = 'Inspect Atelier Look';
+      titleEl.innerHTML = '<span class="bench-outfit-text">Teekhi Bella Outfit 1</span>';
+      container.appendChild(titleEl);
+    }
+    this.benchOutfitTitle = titleEl;
+    this.benchOutfitText = titleEl.querySelector('.bench-outfit-text') || titleEl;
+
+    // Direct inspect link clicking with audio feedback
+    this.benchOutfitTitle.addEventListener('click', () => {
+      this.playDressSound();
+    });
+
+    // Hidden initially: do NOT show until an outfit is being seen in front view
+    this.hideBenchOutfitTitle();
+  }
+
+  showBenchOutfitTitle(g, index) {
+    if (!this.benchOutfitTitle) {
+      this.setupBenchOutfitTitle();
+    }
+    this.updateBenchOutfitTitle(g, index);
+    if (this.benchOutfitTitle) {
+      this.benchOutfitTitle.classList.add('is-visible');
+    }
+  }
+
+  hideBenchOutfitTitle() {
+    if (this.benchOutfitTitle) {
+      this.benchOutfitTitle.classList.remove('is-visible');
+    }
+  }
+
+  updateBenchOutfitTitle(g, index) {
+    if (!this.benchOutfitTitle) {
+      this.setupBenchOutfitTitle();
+    }
+    if (!this.benchOutfitTitle || !this.benchOutfitText) return;
+
+    const outfitNum = (index !== undefined && index !== null && index >= 0) ? index + 1 : 1;
+    let displayName = `Teekhi Bella Outfit ${outfitNum}`;
+    if (g && g.el && g.el.dataset.outfitName) {
+      displayName = g.el.dataset.outfitName;
     }
 
-    this.card = card;
-    this.cardTitle = card.querySelector('.floating-card-title');
-    this.cardLink = card.querySelector('.floating-card-link');
+    if (this.benchOutfitText.textContent.trim() !== displayName) {
+      this.benchOutfitText.style.opacity = '0';
+      this.benchOutfitText.style.transform = 'translateY(3px)';
+      setTimeout(() => {
+        this.benchOutfitText.textContent = displayName;
+        this.benchOutfitText.style.opacity = '1';
+        this.benchOutfitText.style.transform = 'translateY(0)';
+      }, 70);
+    }
 
-    // Clicking anywhere on the card tile navigates to the inspect piece page
-    this.card.addEventListener('click', (e) => {
-      if (e.target.closest('.floating-card-link')) return;
-      if (this.cardLink && this.cardLink.href) {
-        window.location.href = this.cardLink.href;
+    const isHtmlOrFile = (window.location.pathname.endsWith('.html') || window.location.protocol === 'file:');
+    const defaultInspect = isHtmlOrFile ? 'product-inspect.html' : '/pages/product-inspect';
+    let targetLink = (g && g.link) || defaultInspect;
+    if (!targetLink || targetLink === '#' || targetLink.includes('waitlist') || targetLink.includes('/products/skirt')) {
+      targetLink = defaultInspect;
+    }
+    this.benchOutfitTitle.href = targetLink;
+  }
+
+  getClosestCenterGarmentIndex() {
+    if (!this.trackWrap || !this.garments || !this.garments.length) return 0;
+    const wrapRect = this.trackWrap.getBoundingClientRect();
+    const centerX = wrapRect.left + wrapRect.width / 2;
+    let closestIndex = 0;
+    let minDistance = Infinity;
+
+    this.garments.forEach((g, idx) => {
+      const gRect = g.el.getBoundingClientRect();
+      const gCenterX = gRect.left + gRect.width / 2;
+      const dist = Math.abs(gCenterX - centerX);
+      if (dist < minDistance) {
+        minDistance = dist;
+        closestIndex = idx;
       }
     });
+    return closestIndex;
+  }
 
-    this.card.addEventListener('pointerenter', () => {
-      clearTimeout(this.leaveTimeout);
-    });
-    this.card.addEventListener('pointerleave', (e) => {
-      if (e.pointerType === 'touch') return;
-      this.queueClearHover();
-    });
+  // Legacy compatibility: floating pop-up cards are hidden in favor of yellow bench title
+  setupFloatingCard() {
+    this.setupBenchOutfitTitle();
   }
 
   showFloatingCard(g) {
-    if (!this.card || !g) return;
-
-    this.cardTitle.textContent = g.title || 'Couture Piece';
-    const isHtmlOrFile = (window.location.pathname.endsWith('.html') || window.location.protocol === 'file:');
-    const defaultInspect = isHtmlOrFile ? 'product-inspect.html' : '/pages/product-inspect';
-    
-    // Direct "Inspect Piece" clicks to the product inspect description page
-    let targetLink = g.link;
-    if (!targetLink || targetLink === '#' || targetLink === '' || targetLink.includes('waitlist') || targetLink.includes('/products/skirt')) {
-      targetLink = defaultInspect;
-    }
-    this.cardLink.href = targetLink;
-
-    // Smart positioning relative to stage and garment
-    const gRect = g.el.getBoundingClientRect();
-    const stageRect = this.stage.getBoundingClientRect();
-    const cardWidth = (this.card && this.card.offsetWidth) || (window.innerWidth <= 640 ? 180 : 220);
-
-    // Prefer placing to the right of the dress; if close to edge, place to the left
-    let left = gRect.right - stageRect.left + 14;
-    if (left + cardWidth > stageRect.width - 20) {
-      left = gRect.left - stageRect.left - cardWidth - 14;
-    }
-    left = Math.max(16, Math.min(stageRect.width - cardWidth - 16, left));
-
-    const top = Math.max(40, Math.min(stageRect.height - 150, gRect.top - stageRect.top + 70));
-
-    this.card.style.left = `${left.toFixed(1)}px`;
-    this.card.style.top = `${top.toFixed(1)}px`;
-    this.card.classList.add('is-active');
-    this.card.setAttribute('aria-hidden', 'false');
+    const idx = this.garments.indexOf(g);
+    this.updateBenchOutfitTitle(g, idx >= 0 ? idx : 0);
   }
 
   hideFloatingCard() {
-    if (this.card) {
-      this.card.classList.remove('is-active');
-      this.card.setAttribute('aria-hidden', 'true');
+    if (this.hoveredIndex < 0) {
+      const centerIdx = this.getClosestCenterGarmentIndex();
+      if (this.garments[centerIdx]) {
+        this.updateBenchOutfitTitle(this.garments[centerIdx], centerIdx);
+      }
     }
   }
 
@@ -683,6 +774,9 @@ class HangerRack {
       }
     });
 
+    // Reveal the outfit name on the yellow sofa now that the outfit is in front view!
+    this.showBenchOutfitTitle(this.garments[activeIndex], activeIndex);
+
     this.showFloatingCard(this.garments[activeIndex]);
     this.wakePhysics();
   }
@@ -701,6 +795,9 @@ class HangerRack {
         g.el.classList.remove('is-hovered');
       });
 
+      // Hide outfit name from yellow sofa since outfit is no longer in front view
+      this.hideBenchOutfitTitle();
+
       this.hideFloatingCard();
 
       // Physics loop continues naturally: clothes sway and damp down to rest
@@ -714,6 +811,11 @@ class HangerRack {
     let lastScroll = this.trackWrap.scrollLeft;
 
     this.trackWrap.addEventListener('scroll', () => {
+      // Guarantee the dressing rack never moves vertically
+      if (this.trackWrap.scrollTop !== 0) {
+        this.trackWrap.scrollTop = 0;
+      }
+
       const currentScroll = this.trackWrap.scrollLeft;
       const delta = currentScroll - lastScroll;
       lastScroll = currentScroll;
@@ -735,6 +837,25 @@ class HangerRack {
         g.vel = Math.max(-0.015, Math.min(0.015, g.vel));
       }
       this.wakePhysics();
+
+      // Only show/update bench outfit title if an outfit is currently in front view!
+      if (this.hoveredIndex >= 0 && this.garments[this.hoveredIndex]) {
+        this.updateBenchOutfitTitle(this.garments[this.hoveredIndex], this.hoveredIndex);
+      } else {
+        this.hideBenchOutfitTitle();
+      }
+    }, { passive: true });
+
+    this.trackWrap.addEventListener('touchmove', () => {
+      if (this.trackWrap.scrollTop !== 0) {
+        this.trackWrap.scrollTop = 0;
+      }
+    }, { passive: true });
+
+    this.trackWrap.addEventListener('wheel', () => {
+      if (this.trackWrap.scrollTop !== 0) {
+        this.trackWrap.scrollTop = 0;
+      }
     }, { passive: true });
   }
 
@@ -744,6 +865,9 @@ class HangerRack {
     const onPointerMove = (e) => {
       if (!this.isDragging) return;
       e.preventDefault();
+      if (wrap.scrollTop !== 0) {
+        wrap.scrollTop = 0;
+      }
       const x = e.pageX - wrap.offsetLeft;
       const walk = (x - this.startX) * 1.2;
 
@@ -784,11 +908,13 @@ class HangerRack {
       this.hasMovedSignificantly = false;
       this.startX = e.pageX - wrap.offsetLeft;
       this.scrollLeft = wrap.scrollLeft;
+      wrap.scrollTop = 0;
       wrap.classList.add('is-dragging');
       window.addEventListener('pointermove', onPointerMove, { passive: false });
     };
 
     wrap.addEventListener('pointerdown', onPointerDown);
+    this.stage?.addEventListener('pointerdown', onPointerDown);
     window.addEventListener('pointerup', onPointerUp);
     window.addEventListener('pointercancel', onPointerUp);
   }

@@ -78,6 +78,10 @@
       --header-tagline-font: {{ section.settings.tagline_font.family }}, {{ section.settings.tagline_font.fallback_families }};
       --header-tagline-weight: {{ section.settings.tagline_font.weight }};
       --header-tagline-style: {{ section.settings.tagline_font.style }};
+    {%- elsif section.settings.tagline_font_source == 'sixcaps' or section.settings.tagline_font_source == 'brand' -%}
+      --header-tagline-font: 'Six Caps', sans-serif;
+      --header-tagline-weight: 400;
+      --header-tagline-style: normal;
     {%- elsif section.settings.tagline_font_source == 'ahsing' -%}
       --header-tagline-font: 'Ahsing', serif;
       --header-tagline-weight: 400;
@@ -87,9 +91,9 @@
       --header-tagline-weight: 400;
       --header-tagline-style: italic;
     {%- else -%}
-      --header-tagline-font: 'Italiana', Georgia, serif;
+      --header-tagline-font: 'Six Caps', sans-serif;
       --header-tagline-weight: 400;
-      --header-tagline-style: italic;
+      --header-tagline-style: normal;
     {%- endif -%}
 
     {%- if section.settings.nav_font_source == 'shopify' and section.settings.nav_font != blank -%}
@@ -176,8 +180,15 @@
   #LuxuryHeaderSection-{{ section.id }} .brand-tagline {
     font-family: var(--header-tagline-font) !important;
     font-weight: var(--header-tagline-weight, 400) !important;
-    font-style: var(--header-tagline-style, italic) !important;
-    font-size: calc(clamp(13px, 1.35vw, 16px) * var(--header-tagline-scale, 1)) !important;
+    font-style: var(--header-tagline-style, normal) !important;
+    font-size: calc(clamp(13px, 1.4vw, 16px) * var(--header-tagline-scale, 1)) !important;
+    letter-spacing: 0.12em !important;
+    text-transform: uppercase !important;
+    line-height: 1 !important;
+    display: block !important;
+    color: #ffffff !important;
+    margin-top: 2px !important;
+    text-align: center !important;
   }
 
   #LuxuryHeaderSection-{{ section.id }} .luxury-header,
@@ -264,6 +275,7 @@
       <div class="luxury-header__center brand-morph-zone">
         <a href="{{ routes.root_url }}" class="brand-morph-logo is-visible" id="BrandMorphLogo" aria-label="{{ section.settings.heading | default: 'Teekhi Bella' }}">
           <span class="brand-wordmark">{{ section.settings.heading | default: 'Teekhi Bella' }}</span>
+          <span class="brand-tagline">{{ section.settings.tagline | default: 'PRETTY WITH A BITE' }}</span>
         </a>
       </div>
 

@@ -259,6 +259,7 @@
   pointer-events: auto;
   cursor: pointer;
   display: inline-flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   white-space: nowrap;
@@ -286,6 +287,18 @@
   line-height: 0.88;
   text-transform: none;
   text-align: center;
+}
+
+.brand-morph-logo .brand-tagline {
+  display: block;
+  font-family: 'Six Caps', sans-serif !important;
+  font-size: 15px;
+  line-height: 1;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #ffffff !important;
+  text-align: center;
+  margin-top: 2px;
 }
 
 .luxury-header.scrolled-down .nav-link {

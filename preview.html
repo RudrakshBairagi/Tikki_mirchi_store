@@ -12,7 +12,7 @@
   <title>Teekhi Bella — Atelier Runway & Dress Rack</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Allura&family=Bellefair&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Castoro+Titling&family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Serif+Display:ital@0;1&family=Forum&family=Great+Vibes&family=Italiana&family=Italianno&family=Jost:ital,wght@0,400;0,500;0,600;1,400&family=Marcellus&family=Montserrat:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@400;500;600;700&family=Parisienne&family=Pinyon+Script&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Prata&family=Spectral:ital,wght@0,400;0,600;1,400&family=Syne:wght@400;600;700;800&family=Tenor+Sans&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Allura&family=Bellefair&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Castoro+Titling&family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Serif+Display:ital@0;1&family=Forum&family=Great+Vibes&family=Italiana&family=Italianno&family=Jost:ital,wght@0,400;0,500;0,600;1,400&family=Marcellus&family=Montserrat:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@400;500;600;700&family=Parisienne&family=Pinyon+Script&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Prata&family=Six+Caps&family=Spectral:ital,wght@0,400;0,600;1,400&family=Syne:wght@400;600;700;800&family=Tenor+Sans&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/header-morph.css">
   <link rel="stylesheet" href="assets/hanger-rack.css?v=studio">
   <style>
@@ -26,12 +26,22 @@
       font-display: swap;
     }
 
+    @font-face {
+      font-family: 'Six Caps';
+      src: url('assets/SixCaps.ttf') format('truetype'),
+           url('https://fonts.gstatic.com/s/sixcaps/v23/6ae_4KGrU7VR7bNmabcS.ttf') format('truetype');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
     :root {
       --header-logo-font: 'Ahsing', serif;
-      --header-tagline-font: 'Italiana', Georgia, serif;
+      --header-tagline-font: 'Six Caps', sans-serif;
       --header-nav-font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      --rack-title-font: 'Ragara', 'Italiana', Georgia, 'Times New Roman', serif;
-      --rack-eyebrow-font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --rack-title-font: 'Six Caps', sans-serif;
+      --rack-btn-font: 'Six Caps', sans-serif;
+      --rack-eyebrow-font: 'Six Caps', sans-serif;
       --rack-subheading-font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
       --rack-tag-font: 'Plus Jakarta Sans', sans-serif;
 
@@ -40,7 +50,7 @@
       --rack-heading-scale: 1;
       --rack-subheading-scale: 1;
       --header-logo-spacing: 0.02em;
-      --rack-title-spacing: 0.04em;
+      --rack-title-spacing: 0.08em;
     }
 
     /* Custom Chili Cursor */
@@ -987,107 +997,375 @@
       font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
     }
 
-    /* 2. Hanger Rack Section with Rich Atelier Crimson Color Palette (Colors matching background.jpg) */
+    /* 2. Custom Wardrobe Closet Hero Section (Figma Mobile Design) */
     .hanger-rack-section {
-      background-color: #78221e !important;
-      background-image:
-        radial-gradient(ellipse 85% 55% at 50% 20%, rgba(196, 56, 48, 0.38) 0%, transparent 68%),
-        radial-gradient(circle at 50% 36%, rgba(217, 135, 132, 0.14) 0%, transparent 50%),
-        radial-gradient(ellipse 110% 70% at 50% 100%, #1e0505 0%, transparent 70%),
-        linear-gradient(180deg, #3d0d0b 0%, #681a17 22%, #892d28 48%, #6d1e1b 74%, #260605 100%) !important;
+      background-color: #1a221d !important;
+      background-image: url('assets/background_final.png') !important;
+      background-size: cover !important;
+      background-position: center top !important;
+      background-repeat: no-repeat !important;
       position: relative !important;
-      min-height: calc(100vh - 76px);
-      padding-top: 48px !important;
-      padding-bottom: 72px !important;
+      min-height: calc(100dvh - 80px) !important;
+      padding-top: clamp(20px, 4vh, 40px) !important;
+      padding-bottom: clamp(24px, 4.5vh, 44px) !important;
       overflow: hidden;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: space-between !important;
+      box-sizing: border-box !important;
     }
 
     .hanger-rack-bg-overlay {
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(circle at 50% 50%, transparent 55%, rgba(18, 4, 4, 0.45) 100%),
-        linear-gradient(to bottom, rgba(0, 0, 0, 0.28) 0%, transparent 22%, transparent 72%, rgba(0, 0, 0, 0.42) 100%);
-      pointer-events: none;
-      z-index: 1;
+      display: none !important;
     }
 
     .hanger-rack-container {
       position: relative;
       z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+      min-height: calc(100dvh - 140px);
+      width: 100%;
+      max-width: 100%;
+      margin: 0 auto;
+      box-sizing: border-box;
     }
 
-    /* 3. Editorial Header (Matching waitlist.html) */
+    /* 3. Editorial Header — 'YOUR DREAM RACK' (Six Caps) */
     .hanger-rack-header {
-      margin-bottom: 20px !important;
+      margin: 0 auto clamp(8px, 2vh, 18px) auto !important;
+      padding: 0 16px !important;
+      text-align: center !important;
+      z-index: 5;
     }
 
     .hanger-rack-eyebrow {
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
-      font-size: 11px !important;
-      font-weight: 600 !important;
-      letter-spacing: 0.28em !important;
-      text-transform: uppercase !important;
-      color: #ffffff !important;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
-      margin-bottom: 12px !important;
+      display: none !important;
     }
 
     .hanger-rack-title {
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
-      font-size: clamp(34px, 4.4vw, 54px) !important;
-      font-weight: 700 !important;
-      letter-spacing: 0.18em !important;
+      font-family: 'Six Caps', sans-serif !important;
+      font-size: clamp(54px, 14vw, 84px) !important;
+      font-weight: 400 !important;
+      letter-spacing: 0.08em !important;
       text-transform: uppercase !important;
       color: #ffffff !important;
-      line-height: 1.15 !important;
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8), 0 1px 3px rgba(0, 0, 0, 0.95);
-      margin: 0 0 12px 0 !important;
+      line-height: 0.9 !important;
+      margin: 0 auto !important;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
     }
 
     .hanger-rack-subheading {
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
-      font-size: 13px !important;
-      font-weight: 500 !important;
-      letter-spacing: 0.06em !important;
-      color: rgba(255, 255, 255, 0.92) !important;
-      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.85);
-      max-width: 480px !important;
-      margin: 0 auto !important;
-      line-height: 1.6 !important;
+      display: none !important;
     }
 
-    /* 4. Waitlist Buttons (Top & Bottom) — Solid Black High-Fashion Capsule */
+    .rack-waitlist-btn-wrap-top {
+      display: none !important;
+    }
+
+    .hanger-rail-bar {
+      display: none !important;
+    }
+
+    .hanger-rack-hint {
+      display: none !important;
+    }
+
+    .hanger-rack-stage {
+      position: absolute !important;
+      top: var(--rod-top, calc(22.4% - 10px)) !important;
+      left: 0 !important;
+      right: 0 !important;
+      width: 100% !important;
+      margin: 0 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: flex-start !important;
+      align-items: center !important;
+      z-index: 4 !important;
+      overflow: visible !important;
+      touch-action: pan-x !important;
+      overscroll-behavior: none !important;
+    }
+
+    .hanger-rack-track-wrap {
+      width: 100%;
+      overflow-x: auto !important;
+      overflow-y: hidden !important;
+      touch-action: pan-x !important;
+      overscroll-behavior-y: none !important;
+      overscroll-behavior-x: contain !important;
+      padding-top: 10px !important;
+      padding-bottom: 24px !important;
+      clip-path: var(--alcove-clip, polygon(26.8% 0%, 73.4% 0%, 73.0% 100%, 27.8% 100%)) !important;
+      -webkit-clip-path: var(--alcove-clip, polygon(26.8% 0%, 73.4% 0%, 73.0% 100%, 27.8% 100%)) !important;
+    }
+
+    .hanger-rack-track {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: clamp(8px, 1.2vw, 16px);
+      padding: 0 40px;
+      touch-action: pan-x !important;
+      overflow-y: hidden !important;
+    }
+
+    .hanger-bench-outfit-title {
+      position: absolute !important;
+      left: 50% !important;
+      transform: translateX(-50%) translateY(4px) !important;
+      top: var(--bench-title-top, 72%) !important;
+      z-index: 15 !important;
+      text-decoration: none !important;
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+      width: max-content !important;
+      max-width: 27% !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      pointer-events: none !important;
+      cursor: pointer !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      transition: opacity 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), visibility 0.3s ease !important;
+    }
+
+    .hanger-bench-outfit-title.is-visible,
+    .hanger-rack-container:has(.hanger-item.is-hovered) .hanger-bench-outfit-title,
+    .hanger-rack-container:has(.hanger-item.is-popped-out) .hanger-bench-outfit-title {
+      opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: auto !important;
+      transform: translateX(-50%) translateY(0) !important;
+    }
+
+    .hanger-bench-outfit-title.is-visible:hover,
+    .hanger-bench-outfit-title:hover {
+      transform: translateX(-50%) translateY(0) scale(1.03) !important;
+    }
+
+    .bench-outfit-text {
+      font-family: 'Six Caps', sans-serif !important;
+      font-size: clamp(18px, 4.8vw, 25px) !important;
+      font-weight: 400 !important;
+      letter-spacing: 0.02em !important;
+      line-height: 0.9 !important;
+      color: #000000 !important;
+      text-align: center !important;
+      white-space: nowrap !important;
+      user-select: none !important;
+      -webkit-user-select: none !important;
+      transition: opacity 0.22s ease, transform 0.22s ease !important;
+    }
+
+    /* Disable old pop-up floating cards completely */
+    .hanger-floating-card {
+      display: none !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+
+    .rack-waitlist-btn-wrap-bottom {
+      position: absolute !important;
+      left: 0 !important;
+      right: 0 !important;
+      bottom: clamp(14px, 2.8vh, 28px) !important;
+      top: auto !important;
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+      z-index: 12 !important;
+      width: 100% !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      pointer-events: auto !important;
+    }
+
+    @media (min-width: 769px) {
+      .hanger-item {
+        width: clamp(96px, 8vw, 122px) !important;
+        flex: 0 0 clamp(96px, 8vw, 122px) !important;
+      }
+      .hanger-garment-img {
+        max-height: clamp(260px, 36vh, 320px) !important;
+        width: auto !important;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .font-studio-launcher,
+      .font-studio-drawer,
+      .font-studio-backdrop {
+        display: none !important;
+      }
+      .hanger-rack-section {
+        background-color: #1a221d !important;
+        background-image: url('assets/background_final.png') !important;
+        background-size: cover !important;
+        background-position: center top !important;
+        background-repeat: no-repeat !important;
+        min-height: calc(100dvh - 60px) !important;
+        height: calc(100dvh - 60px) !important;
+        max-height: calc(100dvh - 60px) !important;
+        position: relative !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        display: block !important;
+        box-sizing: border-box !important;
+      }
+      .hanger-rack-container {
+        position: relative !important;
+        width: 100% !important;
+        height: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        display: block !important;
+      }
+      .hanger-rack-header {
+        position: absolute !important;
+        top: clamp(8px, 2vh, 18px) !important;
+        left: 0 !important;
+        right: 0 !important;
+        margin: 0 auto !important;
+        padding: 0 16px !important;
+        text-align: center !important;
+        z-index: 10 !important;
+      }
+      .hanger-rack-title {
+        font-family: 'Six Caps', sans-serif !important;
+        font-size: clamp(52px, 13.5vw, 70px) !important;
+        line-height: 0.9 !important;
+        letter-spacing: 0.08em !important;
+        color: #ffffff !important;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6) !important;
+      }
+      .hanger-rack-stage {
+        position: absolute !important;
+        top: var(--rod-top, calc(22.94% - 10px)) !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        z-index: 5 !important;
+        overflow: visible !important;
+        touch-action: pan-x !important;
+        overscroll-behavior: none !important;
+      }
+      .hanger-rack-track-wrap {
+        width: 100% !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        -webkit-overflow-scrolling: touch !important;
+        scrollbar-width: none !important;
+        -ms-overflow-style: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        cursor: grab !important;
+        touch-action: pan-x !important;
+        overscroll-behavior-y: none !important;
+        overscroll-behavior-x: contain !important;
+        clip-path: var(--alcove-clip, polygon(26.8% 0%, 73.4% 0%, 73.0% 100%, 27.8% 100%)) !important;
+        -webkit-clip-path: var(--alcove-clip, polygon(26.8% 0%, 73.4% 0%, 73.0% 100%, 27.8% 100%)) !important;
+      }
+      .hanger-rack-track-wrap::-webkit-scrollbar {
+        display: none !important;
+      }
+      .hanger-rack-track {
+        display: flex !important;
+        justify-content: flex-start !important;
+        align-items: flex-start !important;
+        gap: clamp(14px, 3.5vw, 22px) !important;
+        padding: 0 calc(50vw - 65px) !important;
+        width: max-content !important;
+        min-width: 100% !important;
+        margin: 0 !important;
+        touch-action: pan-x !important;
+        overflow-y: hidden !important;
+      }
+      .hanger-item {
+        width: clamp(118px, 32vw, 138px) !important;
+        flex: 0 0 clamp(118px, 32vw, 138px) !important;
+        display: block !important;
+        opacity: 1 !important;
+        transform-origin: 50% 0px !important;
+        -webkit-transform-origin: 50% 0px !important;
+        user-select: none !important;
+        -webkit-user-select: none !important;
+        touch-action: pan-x !important;
+      }
+      .hanger-item .hanger-wire-wrapper {
+        width: 95px !important;
+        height: 52px !important;
+        margin: 0 auto -22px auto !important;
+      }
+      .hanger-item .hanger-wire-svg {
+        stroke: #d0c5b4 !important;
+      }
+      .hanger-item .hanger-wire-svg path {
+        stroke: #d0c5b4 !important;
+      }
+      .hanger-garment-img {
+        height: clamp(280px, 38vh, 340px) !important;
+        width: auto !important;
+        max-width: none !important;
+        object-fit: contain !important;
+      }
+      .rack-waitlist-btn-wrap-bottom {
+        position: absolute !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: clamp(14px, 2.8vh, 28px) !important;
+        top: auto !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        z-index: 12 !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        pointer-events: auto !important;
+      }
+    }
+
+    /* 4. 'JOIN THE WAITLIST' Pill Button Style */
+
     .rack-waitlist-btn {
       background: #000000 !important;
       color: #ffffff !important;
-      border: 1px solid rgba(255, 255, 255, 0.24) !important;
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
-      font-size: 11.5px !important;
-      font-weight: 600 !important;
-      letter-spacing: 0.18em !important;
+      border: 1px solid rgba(255, 255, 255, 0.22) !important;
+      font-family: 'Six Caps', sans-serif !important;
+      font-size: clamp(26px, 7vw, 34px) !important;
+      font-weight: 400 !important;
+      letter-spacing: 0.08em !important;
       text-transform: uppercase !important;
-      padding: 12px 28px !important;
-      border-radius: 999px !important;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
-      transition: all 0.25s ease !important;
+      padding: 10px 44px 8px 44px !important;
+      border-radius: 9999px !important;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7) !important;
+      transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+      text-decoration: none !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      line-height: 1 !important;
     }
 
     .rack-waitlist-btn:hover {
-      background: #1a1a1a !important;
-      border-color: #ffffff !important;
-      transform: translateY(-2px) !important;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.65) !important;
+      background: #151515 !important;
+      border-color: rgba(255, 255, 255, 0.5) !important;
+      transform: scale(1.03) !important;
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.85) !important;
     }
 
-    .rack-waitlist-btn .btn-arrow {
-      color: #ffffff !important;
-      font-size: 13px !important;
-      transition: transform 0.25s ease !important;
-    }
-
-    .rack-waitlist-btn:hover .btn-arrow {
-      transform: translateX(4px) !important;
+    .rack-waitlist-btn .btn-arrow,
+    .rack-waitlist-btn .btn-sparkle {
+      display: none !important;
     }
 
     /* 5. Garment Swing Tags — Matching Solid Black Look Cards from waitlist.html */
@@ -1353,6 +1631,7 @@
       <div class="luxury-header__center brand-morph-zone">
         <a href="preview.html" class="brand-morph-logo is-visible" id="BrandMorphLogo">
           <span class="brand-wordmark">Teekhi Bella</span>
+          <span class="brand-tagline">PRETTY WITH A BITE</span>
         </a>
       </div>
 
@@ -1380,21 +1659,9 @@
   >
     <div class="hanger-rack-bg-overlay" aria-hidden="true"></div>
     <div class="hanger-rack-container">
-      <!-- Editorial Rack Header Section (Eyebrow -> Title -> Subheading) -->
+      <!-- Editorial Rack Header Section (Clean Figma Mockup: Title Only) -->
       <div class="hanger-rack-header">
-        <div class="hanger-rack-eyebrow">
-          <span>Pretty with a bite</span>
-        </div>
-        <h2 class="hanger-rack-title">Your Dream Rack</h2>
-        <p class="hanger-rack-subheading">Select a piece to inspect details, drape, and priority allocation.</p>
-      </div>
-
-      <!-- Top Waitlist Call To Action (Below Header, Above Rack Track) -->
-      <div class="rack-waitlist-btn-wrap-top">
-        <a href="waitlist.html" class="rack-waitlist-btn" title="Join the Exclusive Waitlist">
-          <span>Join the waitlist</span>
-          <span class="btn-arrow" aria-hidden="true">→</span>
-        </a>
+        <h2 class="hanger-rack-title">YOUR DREAM RACK</h2>
       </div>
 
       <div class="hanger-rack-stage" tabindex="0">
@@ -1410,7 +1677,7 @@
             </div>
             
             <!-- Look 1 -->
-            <div class="hanger-item" data-index="0" data-title="Archival Manuscript Corset Gown" data-price="₹74,500" data-tag="LOOK 01" data-link="product-inspect.html">
+            <div class="hanger-item" data-index="0" data-title="Archival Manuscript Corset Gown" data-outfit-name="Teekhi Bella Outfit 1" data-price="₹74,500" data-tag="LOOK 01" data-link="product-inspect.html">
               <div class="hanger-assembly">
                 <div class="hanger-wire-wrapper" aria-hidden="true">
                   <!-- Slender Side View Hanger (Visible at rest on rail) -->
@@ -1506,7 +1773,7 @@
             </div>
 
             <!-- Look 2 -->
-            <div class="hanger-item" data-index="1" data-title="Heritage Mural Mirror Lehenga" data-price="₹1,25,000" data-tag="LOOK 02" data-link="product-inspect.html">
+            <div class="hanger-item" data-index="1" data-title="Heritage Mural Mirror Lehenga" data-outfit-name="Teekhi Bella Outfit 2" data-price="₹1,25,000" data-tag="LOOK 02" data-link="product-inspect.html">
               <div class="hanger-assembly">
                 <div class="hanger-wire-wrapper" aria-hidden="true">
                   <!-- Slender Side View Hanger (Visible at rest on rail) -->
@@ -1602,7 +1869,7 @@
             </div>
 
             <!-- Look 3 -->
-            <div class="hanger-item" data-index="2" data-title="Rose-Coral Shimmer Saree Gown" data-price="₹98,000" data-tag="LOOK 03" data-link="product-inspect.html">
+            <div class="hanger-item" data-index="2" data-title="Rose-Coral Shimmer Saree Gown" data-outfit-name="Teekhi Bella Outfit 3" data-price="₹98,000" data-tag="LOOK 03" data-link="product-inspect.html">
               <div class="hanger-assembly">
                 <div class="hanger-wire-wrapper" aria-hidden="true">
                   <!-- Slender Side View Hanger (Visible at rest on rail) -->
@@ -1698,7 +1965,7 @@
             </div>
 
             <!-- Look 4 -->
-            <div class="hanger-item" data-index="3" data-title="Midnight Botanical Co-ord Set" data-price="₹92,000" data-tag="LOOK 04" data-link="product-inspect.html">
+            <div class="hanger-item" data-index="3" data-title="Midnight Botanical Co-ord Set" data-outfit-name="Teekhi Bella Outfit 4" data-price="₹92,000" data-tag="LOOK 04" data-link="product-inspect.html">
               <div class="hanger-assembly">
                 <div class="hanger-wire-wrapper" aria-hidden="true">
                   <!-- Slender Side View Hanger (Visible at rest on rail) -->
@@ -1794,7 +2061,7 @@
             </div>
 
             <!-- Look 5 -->
-            <div class="hanger-item" data-index="4" data-title="Bordeaux Peplum Halter Gown" data-price="₹1,10,000" data-tag="LOOK 05" data-link="product-inspect.html">
+            <div class="hanger-item" data-index="4" data-title="Bordeaux Peplum Halter Gown" data-outfit-name="Teekhi Bella Outfit 5" data-price="₹1,10,000" data-tag="LOOK 05" data-link="product-inspect.html">
               <div class="hanger-assembly">
                 <div class="hanger-wire-wrapper" aria-hidden="true">
                   <!-- Slender Side View Hanger (Visible at rest on rail) -->
@@ -1888,103 +2155,6 @@
                 </a>
               </div>
             </div>
-
-            <!-- Look 6 -->
-            <div class="hanger-item" data-index="5" data-title="Scarlet Blossom Twist-Knot Gown" data-price="₹86,500" data-tag="LOOK 06" data-link="product-inspect.html">
-              <div class="hanger-assembly">
-                <div class="hanger-wire-wrapper" aria-hidden="true">
-                  <!-- Slender Side View Hanger (Visible at rest on rail) -->
-                  <svg
-                    class="hanger-wire-svg hanger-wire-side"
-                    viewBox="0 0 64 84"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M 32 4 C 22 4, 15 11, 15 20 C 15 29, 26 34, 32 39 L 32 47"
-                      stroke="currentColor"
-                      stroke-width="2.4"
-                      stroke-linecap="round"
-                      class="hook-curve"
-                    />
-                    <path
-                      d="M 32 4 C 36 4, 38 6, 38 8"
-                      stroke="currentColor"
-                      stroke-width="2.2"
-                      stroke-linecap="round"
-                    />
-                    <path
-                      d="M 23 76 C 27 62, 29 53, 32 47 C 35 53, 37 62, 41 76"
-                      stroke="currentColor"
-                      stroke-width="2.4"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                    <path
-                      d="M 24 76 L 40 76"
-                      stroke="currentColor"
-                      stroke-width="1.8"
-                      stroke-linecap="round"
-                    />
-                  </svg>
-
-                  <!-- Wide Front View Hanger (Revealed on hover) -->
-                  <svg
-                    class="hanger-wire-svg hanger-wire-front"
-                    viewBox="0 0 160 84"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M 80 4 C 70 4, 63 11, 63 20 C 63 29, 74 34, 80 39 L 80 47"
-                      stroke="currentColor"
-                      stroke-width="2.4"
-                      stroke-linecap="round"
-                      class="hook-curve"
-                    />
-                    <path
-                      d="M 80 4 C 84 4, 86 6, 86 8"
-                      stroke="currentColor"
-                      stroke-width="2.2"
-                      stroke-linecap="round"
-                    />
-                    <path
-                      d="M 12 76 L 80 47 L 148 76"
-                      stroke="currentColor"
-                      stroke-width="2.4"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                    <path
-                      d="M 15 76 L 145 76"
-                      stroke="currentColor"
-                      stroke-width="1.8"
-                      stroke-linecap="round"
-                    />
-                  </svg>
-                </div>
-                <div class="hanger-garment-wrap">
-                  <div class="hanger-garment-inner">
-                    <img src="assets/hanger-look-6-side.png" alt="Scarlet Blossom Twist-Knot Gown — Side Profile" class="hanger-garment-img garment-side-img" width="126" height="510">
-                    <img src="assets/hanger-look-6.png" alt="Scarlet Blossom Twist-Knot Gown — Front Profile" class="hanger-garment-img garment-front-img" width="185" height="510">
-                    <div class="hanger-garment-shadow" aria-hidden="true"></div>
-                  </div>
-                </div>
-                <!-- Swing Tag -->
-                <div class="hanger-swing-tag" aria-hidden="true">
-                  <div class="tag-thread"></div>
-                  <div class="tag-body">
-                    <span class="tag-code">LOOK 06</span>
-                    <span class="tag-name">Blossom Knot</span>
-                    <span class="tag-price">₹86,500</span>
-                  </div>
-                </div>
-                <a href="product-inspect.html" class="hanger-action-hitbox" aria-label="Inspect Look 6">
-                  <span class="sr-only">Inspect Look 6</span>
-                </a>
-              </div>
-            </div>
-
           </div>
         </div>
 
@@ -1994,13 +2164,18 @@
           <span class="hint-icon">⟶</span>
         </div>
 
-        <!-- Bottom Waitlist Call To Action (Under the Racks) -->
-        <div class="rack-waitlist-btn-wrap-bottom">
-          <a href="waitlist.html" class="rack-waitlist-btn" title="Join the Exclusive Waitlist">
-            <span>Join the waitlist</span>
-            <span class="btn-arrow" aria-hidden="true">→</span>
-          </a>
-        </div>
+      </div>
+
+      <!-- Yellow Bench Outfit Title Display (Six Caps Typography) -->
+      <a href="product-inspect.html" class="hanger-bench-outfit-title" id="BenchOutfitTitle" title="Inspect Outfit">
+        <span class="bench-outfit-text">Teekhi Bella Outfit 1</span>
+      </a>
+
+      <!-- Bottom Waitlist Call To Action (Under Yellow Bench) -->
+      <div class="rack-waitlist-btn-wrap-bottom">
+        <a href="waitlist.html" class="rack-waitlist-btn" title="Join the Exclusive Waitlist">
+          <span>JOIN THE WAITLIST</span>
+        </a>
       </div>
     </div>
   </section>
@@ -2490,7 +2665,7 @@
   <div class="font-toast" id="fontToast">✓ Font Applied</div>
 
   <script src="assets/header-morph.js"></script>
-  <script src="assets/hanger-rack.js?v=studio"></script>
+  <script src="assets/hanger-rack.js?v=bench-title-v4"></script>
   <script>
     (function() {
       // 1. Atelier Curated Font Library Database

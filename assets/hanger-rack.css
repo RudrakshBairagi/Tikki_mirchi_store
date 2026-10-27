@@ -90,8 +90,11 @@
 /* Scrollable / Draggable Track Container */
 .hanger-rack-track-wrap {
   width: 100%;
-  overflow-x: auto;
-  overflow-y: visible;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  touch-action: pan-x !important;
+  overscroll-behavior-y: none !important;
+  overscroll-behavior-x: contain !important;
   padding-top: 14px; /* Space for hooks touching the rail */
   padding-bottom: 95px;
   cursor: grab;
@@ -101,6 +104,9 @@
   -webkit-perspective: 1200px;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
+  /* Alcove clipping window: strictly bounded by the teal cabinet boards */
+  clip-path: var(--alcove-clip, polygon(26.8% 0%, 73.4% 0%, 73.0% 100%, 27.8% 100%));
+  -webkit-clip-path: var(--alcove-clip, polygon(26.8% 0%, 73.4% 0%, 73.0% 100%, 27.8% 100%));
 }
 
 .hanger-rack-track-wrap.is-dragging {
@@ -407,78 +413,65 @@
 }
 
 /* ==========================================================================
-   Atelier Floating Detail Card (Pops out beside hovered outfit)
+   Yellow Bench Outfit Title Display (Six Caps Typography — Matching Mockup)
+   Only visible when viewing an outfit's front view!
    ========================================================================== */
 
-.hanger-floating-card {
-  position: absolute;
-  z-index: 100;
-  width: max-content;
-  min-width: 170px;
-  max-width: 240px;
-  background: rgba(255, 255, 255, 0.96);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 8px;
-  padding: 14px 18px 13px;
-  box-shadow: 0 18px 40px -10px rgba(26, 24, 25, 0.16), 0 3px 12px rgba(0, 0, 0, 0.04);
-  opacity: 0;
-  transform: translateY(8px);
-  pointer-events: none;
-  transition: opacity 0.32s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.32s cubic-bezier(0.2, 0.8, 0.2, 1);
-  box-sizing: border-box;
-  text-align: left;
-}
-
-.hanger-floating-card.is-active {
-  opacity: 1 !important;
-  transform: translateY(0) !important;
-  pointer-events: auto !important;
+.hanger-bench-outfit-title {
+  position: absolute !important;
+  left: 50% !important;
+  transform: translateX(-50%) translateY(4px) !important;
+  top: var(--bench-title-top, 72%) !important;
+  z-index: 15 !important;
+  text-decoration: none !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  width: max-content !important;
+  max-width: 27% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  pointer-events: none !important;
   cursor: pointer !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transition: opacity 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), visibility 0.3s ease !important;
 }
 
-.floating-card-title {
-  margin: 0 0 10px 0;
-  font-family: var(--rack-title-font, 'Ragara', 'Italiana', Georgia, serif);
-  font-size: 17px;
-  font-weight: 400;
-  line-height: 1.25;
-  color: #1a1819;
-  letter-spacing: 0.015em;
-  white-space: normal;
-  word-break: break-word;
+.hanger-bench-outfit-title.is-visible,
+.hanger-rack-container:has(.hanger-item.is-hovered) .hanger-bench-outfit-title,
+.hanger-rack-container:has(.hanger-item.is-popped-out) .hanger-bench-outfit-title {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  transform: translateX(-50%) translateY(0) !important;
 }
 
-.floating-card-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  font-family: var(--rack-eyebrow-font, 'Plus Jakarta Sans', sans-serif);
-  font-size: 10.5px;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #1a1819;
-  text-decoration: none;
-  border-bottom: 1px solid rgba(26, 24, 25, 0.28);
-  padding-bottom: 2px;
-  transition: color 0.22s ease, border-color 0.22s ease;
+.hanger-bench-outfit-title.is-visible:hover,
+.hanger-bench-outfit-title:hover {
+  transform: translateX(-50%) translateY(0) scale(1.03) !important;
 }
 
-.floating-card-link:hover {
-  color: var(--rack-accent-color, #b38728);
-  border-color: var(--rack-accent-color, #b38728);
+.bench-outfit-text {
+  font-family: 'Six Caps', sans-serif !important;
+  font-size: clamp(18px, 4.8vw, 25px) !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.02em !important;
+  line-height: 0.9 !important;
+  color: #000000 !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  transition: opacity 0.22s ease, transform 0.22s ease !important;
 }
 
-.card-arrow {
-  display: inline-block;
-  font-size: 12px;
-  transition: transform 0.25s ease;
-}
-
-.floating-card-link:hover .card-arrow {
-  transform: translateX(4px);
+/* Old Floating Detail Cards: Completely disabled as requested */
+.hanger-floating-card {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
 /* ==========================================================================
@@ -607,36 +600,140 @@
 
 @media (max-width: 768px) {
   .hanger-rack-section {
-    padding-top: 40px;
-    padding-bottom: 50px;
+    background-color: #1a221d !important;
+    background-image: url('background_final.png') !important;
+    background-size: cover !important;
+    background-position: center top !important;
+    background-repeat: no-repeat !important;
+    min-height: calc(100dvh - 60px) !important;
+    height: calc(100dvh - 60px) !important;
+    max-height: calc(100dvh - 60px) !important;
+    position: relative !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    display: block !important;
+    box-sizing: border-box !important;
+  }
+
+  .hanger-rack-bg-overlay {
+    display: none !important;
+  }
+
+  .hanger-rack-container {
+    position: relative !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block !important;
+    box-sizing: border-box !important;
+  }
+
+  .hanger-rack-header {
+    position: absolute !important;
+    top: clamp(8px, 2vh, 18px) !important;
+    left: 0 !important;
+    right: 0 !important;
+    margin: 0 auto !important;
+    padding: 0 16px !important;
+    text-align: center !important;
+    z-index: 10 !important;
+  }
+
+  .hanger-rack-eyebrow,
+  .hanger-rack-subheading,
+  .rack-waitlist-btn-wrap-top,
+  .hanger-rail-bar,
+  .hanger-rack-hint {
+    display: none !important;
   }
 
   .hanger-rack-title {
-    font-size: 32px;
+    font-family: 'Six Caps', sans-serif !important;
+    font-size: clamp(52px, 13.5vw, 72px) !important;
+    font-weight: 400 !important;
+    letter-spacing: 0.08em !important;
+    text-transform: uppercase !important;
+    color: #ffffff !important;
+    line-height: 0.9 !important;
+    margin: 0 auto !important;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6) !important;
   }
 
-  .hanger-rack-subheading {
-    font-size: 13px;
+  .hanger-rack-stage {
+    position: absolute !important;
+    top: var(--rod-top, calc(22.94% - 10px)) !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    z-index: 5 !important;
+    overflow: visible !important;
+    touch-action: pan-x !important;
+    overscroll-behavior: none !important;
+  }
+
+  .hanger-rack-track-wrap {
+    width: 100% !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    cursor: grab !important;
+    touch-action: pan-x !important;
+    overscroll-behavior-y: none !important;
+    overscroll-behavior-x: contain !important;
+    clip-path: var(--alcove-clip, polygon(26.8% 0%, 73.4% 0%, 73.0% 100%, 27.8% 100%)) !important;
+    -webkit-clip-path: var(--alcove-clip, polygon(26.8% 0%, 73.4% 0%, 73.0% 100%, 27.8% 100%)) !important;
+  }
+
+  .hanger-rack-track-wrap::-webkit-scrollbar {
+    display: none !important;
   }
 
   .hanger-rack-track {
-    justify-content: flex-start;
-    padding: 0 20px;
-    gap: 14px;
-  }
-
-  .hanger-rail-bar {
-    top: 10px;
+    display: flex !important;
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+    gap: clamp(14px, 3.5vw, 22px) !important;
+    padding: 0 calc(50vw - 65px) !important;
+    width: max-content !important;
+    min-width: 100% !important;
+    margin: 0 !important;
   }
 
   .hanger-item {
-    width: 160px;
+    width: clamp(118px, 32vw, 138px) !important;
+    flex: 0 0 clamp(118px, 32vw, 138px) !important;
+    display: block !important;
+    opacity: 1 !important;
+    transform-origin: 50% 0px !important;
+    -webkit-transform-origin: 50% 0px !important;
+    user-select: none !important;
+    -webkit-user-select: none !important;
   }
 
   .hanger-wire-wrapper {
-    width: 125px;
-    height: 65px;
-    margin-bottom: -28px;
+    width: 95px !important;
+    height: 52px !important;
+    margin: 0 auto -22px auto !important;
+  }
+
+  .hanger-wire-svg,
+  .hanger-wire-svg path {
+    stroke: #d0c5b4 !important;
+  }
+
+  .hanger-garment-img {
+    height: clamp(280px, 38vh, 340px) !important;
+    width: auto !important;
+    max-width: none !important;
+    object-fit: contain !important;
   }
 
   .hanger-swing-tag {
@@ -647,6 +744,54 @@
   .tag-body {
     padding: 4px 8px;
     min-width: 75px;
+  }
+
+  .rack-waitlist-btn-wrap-bottom {
+    position: absolute !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: clamp(14px, 2.8vh, 28px) !important;
+    top: auto !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    z-index: 12 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    pointer-events: auto !important;
+  }
+
+  .rack-waitlist-btn {
+    background: #000000 !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.22) !important;
+    font-family: 'Six Caps', sans-serif !important;
+    font-size: clamp(26px, 7vw, 34px) !important;
+    font-weight: 400 !important;
+    letter-spacing: 0.08em !important;
+    text-transform: uppercase !important;
+    padding: 10px 44px 8px 44px !important;
+    border-radius: 9999px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7) !important;
+    transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    line-height: 1 !important;
+  }
+
+  .rack-waitlist-btn:hover {
+    background: #151515 !important;
+    border-color: rgba(255, 255, 255, 0.5) !important;
+    transform: scale(1.03) !important;
+    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.85) !important;
+  }
+
+  .rack-waitlist-btn .btn-arrow,
+  .rack-waitlist-btn .btn-sparkle {
+    display: none !important;
   }
 }
 
@@ -878,9 +1023,16 @@
 .rack-waitlist-btn-wrap-bottom {
   display: flex;
   justify-content: center;
-  margin-top: 38px;
-  position: relative;
-  z-index: 10;
+  align-items: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: clamp(14px, 2.8vh, 28px);
+  top: auto;
+  z-index: 12;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 .rack-waitlist-btn {

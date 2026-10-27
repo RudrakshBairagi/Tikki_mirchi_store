@@ -78,12 +78,16 @@
       --rack-title-font: 'Outfit', sans-serif;
       --rack-title-weight: 500;
       --rack-title-style: normal;
+    {%- elsif section.settings.heading_font_source == 'sixcaps' -%}
+      --rack-title-font: 'Six Caps', sans-serif;
+      --rack-title-weight: 400;
+      --rack-title-style: normal;
     {%- elsif section.settings.heading_font_source == 'custom' and section.settings.custom_heading_font != blank -%}
       --rack-title-font: '{{ section.settings.custom_heading_font }}', serif;
       --rack-title-weight: 400;
       --rack-title-style: normal;
     {%- else -%}
-      --rack-title-font: 'Ragara', 'Italiana', Georgia, 'Times New Roman', serif;
+      --rack-title-font: 'Six Caps', sans-serif;
       --rack-title-weight: 400;
       --rack-title-style: normal;
     {%- endif -%}
@@ -91,6 +95,9 @@
     {%- if section.settings.body_font_source == 'shopify' and section.settings.body_font != blank -%}
       --rack-eyebrow-font: {{ section.settings.body_font.family }}, {{ section.settings.body_font.fallback_families }};
       --rack-subheading-font: {{ section.settings.body_font.family }}, {{ section.settings.body_font.fallback_families }};
+    {%- elsif section.settings.body_font_source == 'sixcaps' -%}
+      --rack-eyebrow-font: 'Six Caps', sans-serif;
+      --rack-subheading-font: 'Six Caps', sans-serif;
     {%- elsif section.settings.body_font_source == 'ahsing' -%}
       --rack-eyebrow-font: 'Ahsing', serif;
       --rack-subheading-font: 'Ahsing', serif;
@@ -98,7 +105,7 @@
       --rack-eyebrow-font: '{{ section.settings.custom_body_font }}', sans-serif;
       --rack-subheading-font: '{{ section.settings.custom_body_font }}', sans-serif;
     {%- else -%}
-      --rack-eyebrow-font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --rack-eyebrow-font: 'Six Caps', sans-serif;
       --rack-subheading-font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
     {%- endif -%}
 
@@ -114,6 +121,8 @@
 
     {%- if section.settings.btn_font_source == 'shopify' and section.settings.btn_font != blank -%}
       --rack-btn-font: {{ section.settings.btn_font.family }}, {{ section.settings.btn_font.fallback_families }};
+    {%- elsif section.settings.btn_font_source == 'sixcaps' -%}
+      --rack-btn-font: 'Six Caps', sans-serif;
     {%- elsif section.settings.btn_font_source == 'ahsing' -%}
       --rack-btn-font: 'Ahsing', serif;
     {%- elsif section.settings.btn_font_source == 'ragara' -%}
@@ -135,12 +144,14 @@
     {%- elsif section.settings.btn_font_source == 'custom' and section.settings.custom_btn_font != blank -%}
       --rack-btn-font: '{{ section.settings.custom_btn_font }}', sans-serif;
     {%- else -%}
-      --rack-btn-font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --rack-btn-font: 'Six Caps', sans-serif;
     {%- endif -%}
 
     {%- if section.settings.separate_bottom_btn_styles -%}
       {%- if section.settings.bottom_btn_font_source == 'shopify' and section.settings.bottom_btn_font != blank -%}
         --rack-btn-bottom-font: {{ section.settings.bottom_btn_font.family }}, {{ section.settings.bottom_btn_font.fallback_families }};
+      {%- elsif section.settings.bottom_btn_font_source == 'sixcaps' -%}
+        --rack-btn-bottom-font: 'Six Caps', sans-serif;
       {%- elsif section.settings.bottom_btn_font_source == 'ahsing' -%}
         --rack-btn-bottom-font: 'Ahsing', serif;
       {%- elsif section.settings.bottom_btn_font_source == 'ragara' -%}
@@ -162,7 +173,7 @@
       {%- elsif section.settings.bottom_btn_font_source == 'custom' and section.settings.bottom_custom_btn_font != blank -%}
         --rack-btn-bottom-font: '{{ section.settings.bottom_custom_btn_font }}', sans-serif;
       {%- else -%}
-        --rack-btn-bottom-font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+        --rack-btn-bottom-font: 'Six Caps', sans-serif;
       {%- endif -%}
     {%- endif -%}
 
@@ -174,14 +185,20 @@
 
   #HangerRack-{{ section.id }} {
     position: relative;
-    {%- if section.settings.bg_mode == 'gradient' and section.settings.bg_gradient != blank -%}
+    {%- if section.settings.bg_mode == 'wardrobe' -%}
+      background-image: url('{{ "background_final.png" | asset_url }}') !important;
+      background-size: cover !important;
+      background-position: center top !important;
+    {%- elsif section.settings.bg_mode == 'gradient' and section.settings.bg_gradient != blank -%}
       background: {{ section.settings.bg_gradient }} !important;
     {%- elsif section.settings.bg_mode == 'image' and section.settings.bg_image != blank -%}
       background-image: url('{{ section.settings.bg_image | image_url: width: 2600 }}') !important;
       background-size: cover !important;
-      background-position: center !important;
+      background-position: center top !important;
     {%- else -%}
-      background-color: var(--rack-bg) !important;
+      background-image: url('{{ "background_final.png" | asset_url }}') !important;
+      background-size: cover !important;
+      background-position: center top !important;
     {%- endif -%}
   }
 
@@ -439,6 +456,7 @@
                 class="hanger-item"
                 data-index="{{ forloop.index0 }}"
                 data-title="{{ dress_title | escape }}"
+                data-outfit-name="{{ block.settings.outfit_name | default: 'Teekhi Bella Outfit ' | append: forloop.index }}"
                 data-price="{{ dress_price | escape }}"
                 data-tag="{{ block.settings.tag | default: 'LOOK ' | append: look_num }}"
                 data-link="{{ dress_link }}"
@@ -575,30 +593,31 @@
         <span class="hint-icon">{{ section.settings.hint_icon_right | default: '⟶' }}</span>
       </div>
 
-      {%- assign show_bottom = false -%}
-      {%- if section.settings.show_bottom_waitlist_btn != false -%}
-        {%- assign show_bottom = true -%}
-      {%- elsif section.settings.show_waitlist_buttons != false -%}
-        {%- assign show_bottom = true -%}
-      {%- endif -%}
-      {%- if show_bottom -%}
-        {%- assign default_wl_link = routes.root_url | append: 'pages/waitlist' | replace: '//', '/' -%}
-        {%- if section.settings.waitlist_url != blank -%}
-          {%- assign default_wl_link = section.settings.waitlist_url -%}
-        {%- endif -%}
-        <div class="rack-waitlist-btn-wrap-bottom">
-          <a href="{{ default_wl_link }}" class="rack-waitlist-btn" title="Join the exclusive atelier waitlist">
-            {%- if section.settings.show_btn_sparkle != false -%}
-              <span class="btn-sparkle" aria-hidden="true">{{ section.settings.btn_sparkle_icon | default: '✦' }}</span>
-            {%- endif -%}
-            <span>{{ section.settings.bottom_waitlist_btn_text | default: section.settings.waitlist_btn_text | default: 'Join the waitlist' }}</span>
-            {%- if section.settings.show_btn_arrow != false -%}
-              <span class="btn-arrow" aria-hidden="true">{{ section.settings.btn_arrow_icon | default: '⟶' }}</span>
-            {%- endif -%}
-          </a>
-        </div>
-      {%- endif -%}
+      </div>
     </div>
+
+    <!-- Yellow Bench Outfit Title Display (Six Caps Typography) -->
+    <a href="{{ routes.root_url | append: 'pages/product-inspect' | replace: '//', '/' }}" class="hanger-bench-outfit-title" id="BenchOutfitTitle" title="Inspect Atelier Look">
+      <span class="bench-outfit-text">Teekhi Bella Outfit 1</span>
+    </a>
+
+    {%- if show_bottom -%}
+      {%- assign default_wl_link = routes.root_url | append: 'pages/waitlist' | replace: '//', '/' -%}
+      {%- if section.settings.waitlist_url != blank -%}
+        {%- assign default_wl_link = section.settings.waitlist_url -%}
+      {%- endif -%}
+      <div class="rack-waitlist-btn-wrap-bottom">
+        <a href="{{ default_wl_link }}" class="rack-waitlist-btn" title="Join the exclusive atelier waitlist">
+          {%- if section.settings.show_btn_sparkle != false -%}
+            <span class="btn-sparkle" aria-hidden="true">{{ section.settings.btn_sparkle_icon | default: '✦' }}</span>
+          {%- endif -%}
+          <span>{{ section.settings.bottom_waitlist_btn_text | default: section.settings.waitlist_btn_text | default: 'Join the waitlist' }}</span>
+          {%- if section.settings.show_btn_arrow != false -%}
+            <span class="btn-arrow" aria-hidden="true">{{ section.settings.btn_arrow_icon | default: '⟶' }}</span>
+          {%- endif -%}
+        </a>
+      </div>
+    {%- endif -%}
   </div>
 </section>
 
@@ -723,6 +742,7 @@
       "id": "btn_font_source",
       "label": "Button Font Family",
       "options": [
+        { "value": "sixcaps", "label": "Six Caps (Tall Condensed — New Brand Standard)" },
         { "value": "brand", "label": "Brand Sans (Plus Jakarta Sans)" },
         { "value": "ahsing", "label": "Ahsing (Typogama Couture)" },
         { "value": "ragara", "label": "Ragara (Couture Serif)" },
@@ -736,7 +756,7 @@
         { "value": "shopify", "label": "Shopify Font Library (Select below)" },
         { "value": "custom", "label": "Custom Font Name" }
       ],
-      "default": "brand"
+      "default": "sixcaps"
     },
     {
       "type": "font_picker",
@@ -897,6 +917,7 @@
       "id": "bottom_btn_font_source",
       "label": "Bottom Button Font Family",
       "options": [
+        { "value": "sixcaps", "label": "Six Caps (Tall Condensed — New Brand Standard)" },
         { "value": "brand", "label": "Brand Sans (Plus Jakarta Sans)" },
         { "value": "ahsing", "label": "Ahsing (Typogama Couture)" },
         { "value": "ragara", "label": "Ragara (Couture Serif)" },
@@ -910,7 +931,7 @@
         { "value": "shopify", "label": "Shopify Font Library (Select below)" },
         { "value": "custom", "label": "Custom Font Name" }
       ],
-      "default": "brand"
+      "default": "sixcaps"
     },
     {
       "type": "font_picker",
@@ -1074,6 +1095,7 @@
       "id": "heading_font_source",
       "label": "Heading Font Source",
       "options": [
+        { "value": "sixcaps", "label": "Six Caps (Tall Condensed — New Brand Standard)" },
         { "value": "ahsing", "label": "Ahsing (Typogama Couture)" },
         { "value": "brand", "label": "Brand Default (Ragara Couture)" },
         { "value": "ragara", "label": "Ragara (Couture Serif)" },
@@ -1087,7 +1109,7 @@
         { "value": "shopify", "label": "Shopify Font Library (Select below)" },
         { "value": "custom", "label": "Custom Font Name (e.g. Google Font)" }
       ],
-      "default": "brand"
+      "default": "sixcaps"
     },
     {
       "type": "font_picker",
@@ -1199,11 +1221,12 @@
       "id": "bg_mode",
       "label": "Background Mode",
       "options": [
+        { "value": "wardrobe", "label": "Custom Wardrobe Closet (background_final.png)" },
         { "value": "solid", "label": "Solid Color" },
         { "value": "gradient", "label": "Luxury Gradient" },
         { "value": "image", "label": "Background Image" }
       ],
-      "default": "solid"
+      "default": "wardrobe"
     },
     {
       "type": "color",
