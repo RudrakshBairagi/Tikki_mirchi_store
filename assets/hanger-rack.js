@@ -507,10 +507,23 @@ class HangerRack {
       container.appendChild(btnWrap);
     }
 
-    // Direct inspect link clicking with audio feedback
-    this.benchOutfitTitle.addEventListener('click', () => {
+    // Direct inspect link clicking: smoothly scroll to waitlist form and preselect look
+    this.benchOutfitTitle.addEventListener('click', (e) => {
+      e.preventDefault();
       this.playDressSound();
+      const activeIdx = this.hoveredIndex >= 0 ? this.hoveredIndex : 0;
+      const currentLook = this.garments[activeIdx];
+      const lookTitle = (currentLook && currentLook.title) || '';
+      window.selectOutfitAndScrollToWaitlist(lookTitle, activeIdx);
     });
+
+    const bottomBtn = this.section.querySelector('.rack-waitlist-btn');
+    if (bottomBtn) {
+      bottomBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.scrollToWaitlistForm();
+      });
+    }
 
     // Hidden initially: do NOT show until an outfit is being seen in front view
     this.hideBenchOutfitTitle();
@@ -554,13 +567,7 @@ class HangerRack {
       }, 70);
     }
 
-    const isHtmlOrFile = (window.location.pathname.endsWith('.html') || window.location.protocol === 'file:');
-    const defaultInspect = isHtmlOrFile ? 'product-inspect.html' : '/pages/product-inspect';
-    let targetLink = (g && g.link) || defaultInspect;
-    if (!targetLink || targetLink === '#' || targetLink.includes('waitlist') || targetLink.includes('/products/skirt')) {
-      targetLink = defaultInspect;
-    }
-    this.benchOutfitTitle.href = targetLink;
+    this.benchOutfitTitle.href = '#waitlistReservationSection';
   }
 
   getClosestCenterGarmentIndex() {
@@ -706,8 +713,8 @@ class HangerRack {
         hitbox.addEventListener('pointerenter', handleEnter);
         hitbox.addEventListener('mouseenter', handleEnter);
         hitbox.addEventListener('click', (e) => {
+          e.preventDefault();
           if (this.hasMovedSignificantly) {
-            e.preventDefault();
             e.stopPropagation();
             return;
           }
@@ -718,6 +725,11 @@ class HangerRack {
           if (this.hoveredIndex !== index) {
             this.setHovered(index, e);
           }
+
+          // Pre-select this outfit in waitlist form and scroll down to it
+          const garment = this.garments[index];
+          const lookTitle = (garment && garment.title) || itemEl.dataset.title || '';
+          window.selectOutfitAndScrollToWaitlist(lookTitle, index);
         });
       }
     });
@@ -1148,6 +1160,153 @@ class HangerRack {
   }
 }
 
+// Global Smooth Scroll & Look Sync Helpers
+window.scrollToWaitlistForm = function () {
+  const formSection = document.getElementById('waitlistReservationSection');
+  if (formSection) {
+    formSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setTimeout(() => {
+      const nameInput = document.getElementById('waitlistFullName');
+      if (nameInput) nameInput.focus();
+    }, 450);
+  }
+};
+
+window.selectOutfitAndScrollToWaitlist = function (lookTitle, index) {
+  const formSection = document.getElementById('waitlistReservationSection');
+  if (formSection) {
+    const chips = formSection.querySelectorAll('.wl-piece-chip');
+    chips.forEach((chip) => {
+      const chipIdx = parseInt(chip.dataset.index, 10);
+      const chipVal = (chip.dataset.value || '').toLowerCase();
+      const titleVal = (lookTitle || '').toLowerCase();
+      if (chipIdx === (index + 1) || (titleVal && chipVal && (chipVal.includes(titleVal) || titleVal.includes(chipVal)))) {
+        chip.classList.add('is-selected');
+      }
+    });
+  }
+  window.scrollToWaitlistForm();
+};
+
+// Inline Waitlist Form Submission & State Controller
+function initInlineWaitlistForm() {
+  const form = document.getElementById('atelierInlineWaitlistForm');
+  if (!form || form.dataset.bound) return;
+  form.dataset.bound = 'true';
+
+  // Chip Multi-Selection
+  const chips = form.querySelectorAll('.wl-piece-chip');
+  chips.forEach((chip) => {
+    chip.addEventListener('click', () => {
+      chip.classList.toggle('is-selected');
+    });
+  });
+
+  // Size Single Selection
+  const sizePills = form.querySelectorAll('.wl-size-pill');
+  const sizeInput = form.querySelector('#waitlistPreferredSize');
+  sizePills.forEach((pill) => {
+    pill.addEventListener('click', () => {
+      sizePills.forEach((p) => p.classList.remove('is-selected'));
+      pill.classList.add('is-selected');
+      if (sizeInput) sizeInput.value = pill.dataset.size || pill.textContent.trim();
+    });
+  });
+
+  // Google Script Webhook Submission
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const fullNameInput = form.querySelector('#waitlistFullName');
+    const emailInput = form.querySelector('#waitlistEmail');
+    const phoneInput = form.querySelector('#waitlistPhone');
+    const stateInput = form.querySelector('#waitlistState');
+
+    const fullName = fullNameInput ? fullNameInput.value.trim() : '';
+    const email = emailInput ? emailInput.value.trim() : '';
+    const cleanPhone = phoneInput ? phoneInput.value.replace(/[^0-9]/g, '') : '';
+    const state = stateInput ? stateInput.value : '';
+    const size = sizeInput ? sizeInput.value : 'M';
+
+    if (!fullName) {
+      alert('Please enter your full name.');
+      fullNameInput?.focus();
+      return;
+    }
+    if (!email) {
+      alert('Please enter your email.');
+      emailInput?.focus();
+      return;
+    }
+    if (cleanPhone.length < 10) {
+      alert('Please enter a valid 10-digit Indian mobile number.');
+      phoneInput?.focus();
+      return;
+    }
+    if (!state) {
+      alert('Please select your state.');
+      stateInput?.focus();
+      return;
+    }
+
+    const selectedChips = Array.from(form.querySelectorAll('.wl-piece-chip.is-selected'));
+    if (selectedChips.length === 0) {
+      alert('Please select at least one piece of interest.');
+      return;
+    }
+
+    const selectedLooks = selectedChips.map((c) => c.dataset.value || c.textContent.trim()).join(' | ');
+
+    const submitBtn = form.querySelector('#waitlistSubmitBtn');
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span>SUBMITTING RESERVATION... ✦</span>';
+    }
+
+    const code = 'TB-IN-' + Math.floor(100000 + Math.random() * 900000);
+    const timestamp = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+
+    const payload = {
+      code: code,
+      name: fullName,
+      fullName: fullName,
+      email: email,
+      phone: '+91 ' + cleanPhone,
+      whatsapp: '+91 ' + cleanPhone,
+      state: state,
+      size: size,
+      dresses: selectedLooks,
+      selectedLooks: selectedLooks,
+      looks: selectedLooks,
+      date: timestamp,
+      timestamp: timestamp
+    };
+
+    try {
+      await fetch('https://script.google.com/macros/s/AKfycbyf6lJGVyB4a2kx5AY51r-IpoFmwOH5I-TN53rVPCQAk_KaJ-m34qfdKlRb9thgf5UdEg/exec', {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
+      });
+    } catch (err) {
+      console.warn('Google Sheet Webhook dispatch:', err);
+    }
+
+    if (submitBtn) {
+      submitBtn.style.display = 'none';
+    }
+    const successBox = form.querySelector('#waitlistSuccessNotification');
+    const details = form.querySelector('#waitlistSuccessDetails');
+    if (successBox) {
+      if (details) {
+        details.innerHTML = `Thank you <strong>${fullName}</strong>! Your reservation code <strong>${code}</strong> is confirmed. We will reach out on WhatsApp/SMS with priority drop access for <em>${selectedLooks}</em>.`;
+      }
+      successBox.style.display = 'block';
+    }
+  });
+}
+
 // Automatic Initialization for Shopify Themes
 function initHangerRacks() {
   document.querySelectorAll('.hanger-rack-section').forEach((section) => {
@@ -1156,6 +1315,7 @@ function initHangerRacks() {
       section.dataset.initialized = 'true';
     }
   });
+  initInlineWaitlistForm();
 }
 
 if (document.readyState === 'loading') {
@@ -1171,4 +1331,5 @@ document.addEventListener('shopify:section:load', (event) => {
     new HangerRack(section);
     section.dataset.initialized = 'true';
   }
+  initInlineWaitlistForm();
 });
