@@ -300,19 +300,22 @@
 }
 
 .hanger-item.is-hovered .hanger-wire-wrapper,
-.hanger-item.is-popped-out .hanger-wire-wrapper {
+.hanger-item.is-popped-out .hanger-wire-wrapper,
+.hanger-item.is-selected .hanger-wire-wrapper {
   width: 195px;
   color: #1a1c20;
 }
 
 .hanger-item.is-hovered .hanger-wire-side,
-.hanger-item.is-popped-out .hanger-wire-side {
+.hanger-item.is-popped-out .hanger-wire-side,
+.hanger-item.is-selected .hanger-wire-side {
   opacity: 0;
   transform: translateX(-50%) rotateY(-40deg);
 }
 
 .hanger-item.is-hovered .hanger-wire-front,
-.hanger-item.is-popped-out .hanger-wire-front {
+.hanger-item.is-popped-out .hanger-wire-front,
+.hanger-item.is-selected .hanger-wire-front {
   opacity: 1;
   transform: translateX(-50%) rotateY(0deg);
 }
@@ -347,8 +350,9 @@
 }
 
 .hanger-item.is-hovered .hanger-garment-inner,
-.hanger-item.is-popped-out .hanger-garment-inner {
-  /* Forward 3D pivot on hover, revealing front profile */
+.hanger-item.is-popped-out .hanger-garment-inner,
+.hanger-item.is-selected .hanger-garment-inner {
+  /* Forward 3D pivot on hover/select, revealing front profile */
   transform: rotateY(0deg) scale(1.04);
   filter: drop-shadow(0 22px 38px rgba(18, 14, 18, 0.2));
 }
@@ -374,7 +378,7 @@
   transition: opacity 0.42s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.4s ease;
 }
 
-/* Front profile image (revealed seamlessly on hover) */
+/* Front profile image (revealed seamlessly on hover/select) */
 .garment-front-img {
   position: absolute;
   top: 0;
@@ -387,13 +391,15 @@
 
 /* Smooth turnover states */
 .hanger-item.is-hovered .garment-side-img,
-.hanger-item.is-popped-out .garment-side-img {
+.hanger-item.is-popped-out .garment-side-img,
+.hanger-item.is-selected .garment-side-img {
   opacity: 0;
   transform: rotateY(-35deg);
 }
 
 .hanger-item.is-hovered .garment-front-img,
-.hanger-item.is-popped-out .garment-front-img {
+.hanger-item.is-popped-out .garment-front-img,
+.hanger-item.is-selected .garment-front-img {
   opacity: 1;
   transform: translateX(-50%) rotateY(0deg);
 }
@@ -415,7 +421,8 @@
 }
 
 .hanger-item.is-hovered .hanger-garment-shadow,
-.hanger-item.is-popped-out .hanger-garment-shadow {
+.hanger-item.is-popped-out .hanger-garment-shadow,
+.hanger-item.is-selected .hanger-garment-shadow {
   width: 220px;
   opacity: 0.85;
   transform: translateX(-50%) translateY(4px);
@@ -449,7 +456,8 @@
 
 .hanger-bench-outfit-title.is-visible,
 .hanger-rack-container:has(.hanger-item.is-hovered) .hanger-bench-outfit-title,
-.hanger-rack-container:has(.hanger-item.is-popped-out) .hanger-bench-outfit-title {
+.hanger-rack-container:has(.hanger-item.is-popped-out) .hanger-bench-outfit-title,
+.hanger-rack-container:has(.hanger-item.is-selected) .hanger-bench-outfit-title {
   opacity: 1 !important;
   visibility: visible !important;
   pointer-events: auto !important;

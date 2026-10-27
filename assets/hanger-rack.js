@@ -66,6 +66,7 @@ class HangerRack {
     this.isInitialCentering = false;
     this.hasUserScrolled = false;
     this.railFadeInterval = null;
+    this.selectedIndex = -1;
 
     // Build garment physical models
     this.garments = this.itemEls.map((el, index) => {
@@ -118,6 +119,9 @@ class HangerRack {
     window.addEventListener('resize', () => {
       this.updateAlcoveBounds();
       this.updateTrackAlignment();
+      if (this.selectedIndex >= 0) {
+        this.alignSelectedToScreenCenter(this.selectedIndex);
+      }
     }, { passive: true });
 
     if (window.ResizeObserver && this.section) {
@@ -679,193 +683,157 @@ class HangerRack {
   }
 
   /* --------------------------------------------------------------------------
-     4. Garment Parting, Pop-Out & Tactile "Hit" Physics
+     4. Clothing Selection & Middle of Screen Alignment Engine (Glitch-Free)
      -------------------------------------------------------------------------- */
   bindGarmentInteractions() {
     this.garments.forEach((g, index) => {
       const itemEl = g.el;
 
-      // Mouse and pointer hover detection
-      const handleEnter = (e) => {
+      // Mouse/Pointer hover: gentle natural cloth pendulum sway and fabric sound
+      // (NO X-axis translating on hover — prevents the pointerleave/mouseenter jitter glitch loop!)
+      const handlePointerEnter = (e) => {
         if (this.isDragging || (e && e.pointerType === 'touch')) return;
-        this.setHovered(index, e);
+        this.playDressSound();
+
+        const sweepX = (e && e.movementX) ? e.movementX : (Math.random() > 0.5 ? 3 : -3);
+        const clampedSweep = Math.max(-8, Math.min(8, sweepX));
+        g.vel += clampedSweep * 0.0012 * this.physicsConfig.swayFactor;
+        g.vel = Math.max(-0.015, Math.min(0.015, g.vel));
+        this.wakePhysics();
       };
 
-      itemEl.addEventListener('pointerenter', handleEnter);
-      itemEl.addEventListener('mouseenter', handleEnter);
-      itemEl.addEventListener('pointermove', handleEnter);
+      itemEl.addEventListener('pointerenter', handlePointerEnter);
+      itemEl.addEventListener('mouseenter', handlePointerEnter);
 
-      // Touch / mouse contact with dress
-      itemEl.addEventListener('pointerdown', () => {
-        this.playDressSound();
-      }, { passive: true });
-
-      itemEl.addEventListener('pointerleave', (e) => {
-        if (e && e.pointerType === 'touch') return;
-        this.queueClearHover();
-      });
-      itemEl.addEventListener('mouseleave', () => {
-        this.queueClearHover();
-      });
-
-      // Hitbox click handling & touch tap support
-      // Click handling on clothes & touch tap support: NEVER redirect, keep user right here on the rack!
-      const handleGarmentClick = (e) => {
+      // SELECTING A CLOTHING: click / touch tap changes X axis to the middle of the screen!
+      const handleGarmentSelect = (e) => {
         e.preventDefault();
         e.stopPropagation();
         if (this.hasMovedSignificantly) return;
 
         this.playDressSound();
-
-        // Keep user right here on the rack: activate front view & center to middle of rack
-        this.setHovered(index, e);
-
-        // Pre-select outfit chip in background without scrolling or redirecting anywhere
-        const garment = this.garments[index];
-        const lookTitle = (garment && garment.title) || itemEl.dataset.title || '';
-        if (window.selectOutfitInWaitlistOnly) {
-          window.selectOutfitInWaitlistOnly(lookTitle, index);
-        }
+        this.selectClothing(index);
       };
 
       const hitbox = itemEl.querySelector('.hanger-action-hitbox');
       if (hitbox) {
-        hitbox.addEventListener('pointerenter', handleEnter);
-        hitbox.addEventListener('mouseenter', handleEnter);
-        hitbox.addEventListener('click', handleGarmentClick);
+        hitbox.addEventListener('click', handleGarmentSelect);
       }
-      itemEl.addEventListener('click', handleGarmentClick);
+      itemEl.addEventListener('click', handleGarmentSelect);
     });
 
-    // When pointer leaves the entire track or section
-    this.trackWrap.addEventListener('pointerleave', (e) => {
-      if (e.pointerType === 'touch') return;
-      this.queueClearHover();
-    });
-
-    // Touch tap outside dismisses active state
+    // Clicking anywhere outside clothes on the stage deselects and returns to resting state
     this.section.addEventListener('pointerdown', (e) => {
-      if (e.pointerType === 'touch' && !e.target.closest('.hanger-item') && !e.target.closest('.hanger-floating-card')) {
-        this.queueClearHover();
+      if (
+        !e.target.closest('.hanger-item') &&
+        !e.target.closest('.hanger-bench-outfit-title') &&
+        !e.target.closest('.rack-waitlist-btn') &&
+        !e.target.closest('.atelier-waitlist-card')
+      ) {
+        if (this.selectedIndex !== -1) {
+          this.selectClothing(-1);
+        }
       }
     });
   }
 
-  setHovered(activeIndex, e) {
-    clearTimeout(this.leaveTimeout);
-    if (this.hoveredIndex === activeIndex) return;
-    this.hoveredIndex = activeIndex;
+  selectClothing(index) {
+    this.selectedIndex = index;
+    this.alignSelectedToScreenCenter(this.selectedIndex);
 
-    // Play Sound 1 or Sound 2 when browsing through or touching one of the dresses
-    this.playDressSound();
-
-    const { spread, spreadStep, hitForce, swayFactor } = this.physicsConfig;
-
-    // Directional sweep velocity from cursor entry
-    const sweepX = (e && e.movementX) ? e.movementX : (Math.random() > 0.5 ? 4 : -4);
-    const clampedSweep = Math.max(-12, Math.min(12, sweepX));
-
-    // Calculate rack center and garment positions to readjust front view outfit to middle of rack
-    const trackWidth = this.track ? this.track.offsetWidth : 650;
-    const trackCenter = trackWidth / 2;
-
-    const activeGarment = this.garments[activeIndex];
-    const activeUnshiftedCenter = activeGarment ? (activeGarment.el.offsetLeft + activeGarment.el.offsetWidth / 2) : trackCenter;
-    // The exact shift required to move active garment to the horizontal center of the rack design
-    const activeCenterShift = trackCenter - activeUnshiftedCenter;
-
-    // Front view garment takes ~175px width, so clearance to left and right neighbors is ~140px
-    const frontHalfClearance = 140;
-    const neighborStep = 45;
-
-    this.garments.forEach((g, idx) => {
-      const itemUnshiftedCenter = g.el.offsetLeft + g.el.offsetWidth / 2;
-
-      if (idx === activeIndex) {
-        // 1. Hovered outfit takes center stage right in the middle of the rack design!
-        g.el.style.setProperty('--part-shift', `${activeCenterShift.toFixed(1)}px`);
-        g.el.style.setProperty('--rack-z', '40');
-        g.el.classList.add('is-popped-out');
-        g.el.classList.add('is-hovered');
-
-        // Hovered outfit receives crisp directional entry impulse
-        g.vel += clampedSweep * 0.0016 * swayFactor;
-        g.vel = Math.max(-0.016, Math.min(0.016, g.vel));
-      } else {
-        // 2. Garments to the left part gracefully to the left of the center;
-        //    garments to the right part gracefully to the right of the center!
-        let targetCenter;
-        const dist = Math.abs(idx - activeIndex);
-        const direction = idx < activeIndex ? -1 : 1;
-
-        if (idx < activeIndex) {
-          const leftSteps = activeIndex - 1 - idx;
-          targetCenter = trackCenter - frontHalfClearance - (leftSteps * neighborStep);
-          // Don't shift further right than resting position
-          targetCenter = Math.min(targetCenter, itemUnshiftedCenter - 15);
-        } else {
-          const rightSteps = idx - activeIndex - 1;
-          targetCenter = trackCenter + frontHalfClearance + (rightSteps * neighborStep);
-          // Don't shift further left than resting position
-          targetCenter = Math.max(targetCenter, itemUnshiftedCenter + 15);
-        }
-
-        // Keep parted garments gracefully within track rail bounds
-        targetCenter = Math.max(35, Math.min(trackWidth - 35, targetCenter));
-
-        const shiftPx = targetCenter - itemUnshiftedCenter;
-
-        g.el.style.setProperty('--part-shift', `${shiftPx.toFixed(1)}px`);
-        g.el.style.setProperty('--rack-z', `${Math.max(1, 20 - dist)}`);
-        g.el.classList.remove('is-popped-out');
-        g.el.classList.remove('is-hovered');
-
-        // Tactile contact bump to neighbors
-        if (dist === 1) {
-          g.vel += direction * hitForce * swayFactor; // Immediate neighbor tactile hit
-        } else if (dist === 2) {
-          g.vel += direction * (hitForce * 0.38) * swayFactor; // Secondary ripple wave to next dress
-        }
-
-        // Strict safety clamp: prevents garments from ever flying off screen
-        g.vel = Math.max(-0.018, Math.min(0.018, g.vel));
+    if (this.selectedIndex >= 0) {
+      const activeGarment = this.garments[this.selectedIndex];
+      const lookTitle = (activeGarment && activeGarment.title) || '';
+      if (window.selectOutfitInWaitlistOnly) {
+        window.selectOutfitInWaitlistOnly(lookTitle, this.selectedIndex);
       }
-    });
-
-    // If track is overflowing horizontally (e.g. mobile or narrow screen), also smoothly center in viewport
-    if (this.trackWrap && this.track && this.track.scrollWidth > this.trackWrap.clientWidth + 4) {
-      const scrollTarget = activeUnshiftedCenter - (this.trackWrap.clientWidth / 2);
-      this.trackWrap.scrollTo({ left: Math.max(0, scrollTarget), behavior: 'smooth' });
     }
-
-    // Reveal the outfit name on the yellow sofa now that the outfit is in front view!
-    this.showBenchOutfitTitle(this.garments[activeIndex], activeIndex);
-
-    this.showFloatingCard(this.garments[activeIndex]);
-    this.wakePhysics();
   }
 
-  queueClearHover() {
-    clearTimeout(this.leaveTimeout);
-    // 260ms unhover debounce to allow comfortable cursor transition to floating card
-    this.leaveTimeout = setTimeout(() => {
-      this.hoveredIndex = -1;
-
-      // Smoothly slide all parted clothes back to original resting rail slots
+  alignSelectedToScreenCenter(index) {
+    // If no clothing is selected (-1), smoothly glide all clothes back to resting slots
+    if (index < 0 || !this.garments[index]) {
       this.garments.forEach((g) => {
         g.el.style.setProperty('--part-shift', '0px');
         g.el.style.setProperty('--rack-z', '1');
+        g.el.classList.remove('is-selected');
         g.el.classList.remove('is-popped-out');
         g.el.classList.remove('is-hovered');
       });
-
-      // Hide outfit name from yellow sofa since outfit is no longer in front view
       this.hideBenchOutfitTitle();
+      this.wakePhysics();
+      return;
+    }
 
-      this.hideFloatingCard();
+    // Screen / Wrap middle coordinate
+    const wrapWidth = this.trackWrap ? this.trackWrap.clientWidth : window.innerWidth;
+    const scrollLeft = this.trackWrap ? this.trackWrap.scrollLeft : 0;
+    const targetCanvasCenter = (wrapWidth / 2) + scrollLeft;
 
-      // Physics loop continues naturally: clothes sway and damp down to rest
-    }, 260);
+    // Layout offset of the track inside wrap
+    const trackOffsetLeft = this.track ? this.track.offsetLeft : 0;
+
+    // Resting center of the selected garment inside wrap (screen)
+    const activeGarment = this.garments[index];
+    const activeRestingCenter = trackOffsetLeft + activeGarment.el.offsetLeft + (activeGarment.el.offsetWidth / 2);
+
+    // Exact shift required to change its X axis to the middle of the screen!
+    const activeShift = targetCanvasCenter - activeRestingCenter;
+
+    // Symmetrical clearance for the front view gown:
+    const clearance = 135;
+    const neighborStep = 42;
+
+    this.garments.forEach((g, idx) => {
+      const itemRestingCenter = trackOffsetLeft + g.el.offsetLeft + (g.el.offsetWidth / 2);
+
+      if (idx === index) {
+        // Selected clothing: positioned right at the middle of the screen!
+        g.el.style.setProperty('--part-shift', `${activeShift.toFixed(1)}px`);
+        g.el.style.setProperty('--rack-z', '40');
+        g.el.classList.add('is-selected');
+        g.el.classList.add('is-popped-out');
+        g.el.classList.remove('is-hovered');
+
+        // Tactile impulse
+        g.vel += 0.003 * this.physicsConfig.swayFactor;
+        g.vel = Math.max(-0.015, Math.min(0.015, g.vel));
+      } else if (idx < index) {
+        // Parted to the left of the middle of the screen
+        const leftSteps = index - 1 - idx;
+        const targetScreenX = targetCanvasCenter - clearance - (leftSteps * neighborStep);
+        const shiftPx = targetScreenX - itemRestingCenter;
+
+        g.el.style.setProperty('--part-shift', `${shiftPx.toFixed(1)}px`);
+        g.el.style.setProperty('--rack-z', `${Math.max(1, 20 - Math.abs(idx - index))}`);
+        g.el.classList.remove('is-selected');
+        g.el.classList.remove('is-popped-out');
+        g.el.classList.remove('is-hovered');
+      } else {
+        // Parted to the right of the middle of the screen
+        const rightSteps = idx - index - 1;
+        const targetScreenX = targetCanvasCenter + clearance + (rightSteps * neighborStep);
+        const shiftPx = targetScreenX - itemRestingCenter;
+
+        g.el.style.setProperty('--part-shift', `${shiftPx.toFixed(1)}px`);
+        g.el.style.setProperty('--rack-z', `${Math.max(1, 20 - Math.abs(idx - index))}`);
+        g.el.classList.remove('is-selected');
+        g.el.classList.remove('is-popped-out');
+        g.el.classList.remove('is-hovered');
+      }
+    });
+
+    // Reveal outfit name on the yellow sofa
+    this.showBenchOutfitTitle(activeGarment, index);
+    this.wakePhysics();
+  }
+
+  setHovered(activeIndex, e) {
+    this.selectClothing(activeIndex);
+  }
+
+  queueClearHover() {
+    // Unhover no longer resets selected dress - selection stays stable in the middle of the screen!
   }
 
   /* --------------------------------------------------------------------------
@@ -935,7 +903,7 @@ class HangerRack {
       const x = e.pageX - wrap.offsetLeft;
       const walk = (x - this.startX) * 1.2;
 
-      if (Math.abs(walk) > 3) {
+      if (Math.abs(walk) > 10) {
         this.hasMovedSignificantly = true;
         // Play Sound 3 when sliding along the metal bar
         this.startRailSlideSound();
@@ -1366,9 +1334,12 @@ function initInlineWaitlistForm() {
 
 // Automatic Initialization for Shopify Themes
 function initHangerRacks() {
+  window.HangerRackInstances = window.HangerRackInstances || [];
   document.querySelectorAll('.hanger-rack-section').forEach((section) => {
     if (!section.dataset.initialized) {
-      new HangerRack(section);
+      const inst = new HangerRack(section);
+      window.HangerRackInstances.push(inst);
+      section.__hangerRack = inst;
       section.dataset.initialized = 'true';
     }
   });
