@@ -497,6 +497,16 @@ class HangerRack {
     this.benchOutfitTitle = titleEl;
     this.benchOutfitText = titleEl.querySelector('.bench-outfit-text') || titleEl;
 
+    let btnWrap = this.section.querySelector('.rack-waitlist-btn-wrap-bottom');
+    if (!btnWrap) {
+      btnWrap = document.createElement('div');
+      btnWrap.className = 'rack-waitlist-btn-wrap-bottom';
+      const isHtmlOrFile = (window.location.pathname.endsWith('.html') || window.location.protocol === 'file:');
+      const wlLink = isHtmlOrFile ? 'waitlist.html' : '/pages/waitlist';
+      btnWrap.innerHTML = `<a href="${wlLink}" class="rack-waitlist-btn" title="Join the Exclusive Waitlist"><span>JOIN THE WAITLIST</span></a>`;
+      container.appendChild(btnWrap);
+    }
+
     // Direct inspect link clicking with audio feedback
     this.benchOutfitTitle.addEventListener('click', () => {
       this.playDressSound();

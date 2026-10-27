@@ -754,23 +754,16 @@
       <span class="bench-outfit-text">Teekhi Bella Outfit 1</span>
     </a>
 
-    {%- if show_bottom -%}
-      {%- assign default_wl_link = routes.root_url | append: 'pages/waitlist' | replace: '//', '/' -%}
-      {%- if section.settings.waitlist_url != blank -%}
-        {%- assign default_wl_link = section.settings.waitlist_url -%}
-      {%- endif -%}
-      <div class="rack-waitlist-btn-wrap-bottom">
-        <a href="{{ default_wl_link }}" class="rack-waitlist-btn" title="Join the exclusive atelier waitlist">
-          {%- if section.settings.show_btn_sparkle != false -%}
-            <span class="btn-sparkle" aria-hidden="true">{{ section.settings.btn_sparkle_icon | default: '✦' }}</span>
-          {%- endif -%}
-          <span>{{ section.settings.bottom_waitlist_btn_text | default: section.settings.waitlist_btn_text | default: 'Join the waitlist' }}</span>
-          {%- if section.settings.show_btn_arrow != false -%}
-            <span class="btn-arrow" aria-hidden="true">{{ section.settings.btn_arrow_icon | default: '⟶' }}</span>
-          {%- endif -%}
-        </a>
-      </div>
+    {%- assign default_wl_link = routes.root_url | append: 'pages/waitlist' | replace: '//', '/' -%}
+    {%- if section.settings.waitlist_url != blank -%}
+      {%- assign default_wl_link = section.settings.waitlist_url -%}
     {%- endif -%}
+    <!-- Bottom Waitlist Call To Action (Under Yellow Bench) -->
+    <div class="rack-waitlist-btn-wrap-bottom">
+      <a href="{{ default_wl_link }}" class="rack-waitlist-btn" title="Join the Exclusive Waitlist">
+        <span>{{ section.settings.bottom_waitlist_btn_text | default: section.settings.waitlist_btn_text | default: 'JOIN THE WAITLIST' }}</span>
+      </a>
+    </div>
   </div>
 </section>
 
