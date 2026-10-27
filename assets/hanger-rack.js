@@ -507,14 +507,15 @@ class HangerRack {
       container.appendChild(btnWrap);
     }
 
-    // Direct inspect link clicking: smoothly scroll to waitlist form and preselect look
+    // Direct inspect title clicking: keep user right here on the rack, do NOT redirect
     this.benchOutfitTitle.addEventListener('click', (e) => {
       e.preventDefault();
+      e.stopPropagation();
       this.playDressSound();
       const activeIdx = this.hoveredIndex >= 0 ? this.hoveredIndex : 0;
-      const currentLook = this.garments[activeIdx];
-      const lookTitle = (currentLook && currentLook.title) || '';
-      window.selectOutfitAndScrollToWaitlist(lookTitle, activeIdx);
+      if (this.garments[activeIdx]) {
+        this.setHovered(activeIdx, e);
+      }
     });
 
     const bottomBtn = this.section.querySelector('.rack-waitlist-btn');
@@ -567,7 +568,7 @@ class HangerRack {
       }, 70);
     }
 
-    this.benchOutfitTitle.href = '#waitlistReservationSection';
+    this.benchOutfitTitle.href = 'javascript:void(0);';
   }
 
   getClosestCenterGarmentIndex() {
@@ -708,30 +709,32 @@ class HangerRack {
       });
 
       // Hitbox click handling & touch tap support
+      // Click handling on clothes & touch tap support: NEVER redirect, keep user right here on the rack!
+      const handleGarmentClick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (this.hasMovedSignificantly) return;
+
+        this.playDressSound();
+
+        // Keep user right here on the rack: activate front view & center to middle of rack
+        this.setHovered(index, e);
+
+        // Pre-select outfit chip in background without scrolling or redirecting anywhere
+        const garment = this.garments[index];
+        const lookTitle = (garment && garment.title) || itemEl.dataset.title || '';
+        if (window.selectOutfitInWaitlistOnly) {
+          window.selectOutfitInWaitlistOnly(lookTitle, index);
+        }
+      };
+
       const hitbox = itemEl.querySelector('.hanger-action-hitbox');
       if (hitbox) {
         hitbox.addEventListener('pointerenter', handleEnter);
         hitbox.addEventListener('mouseenter', handleEnter);
-        hitbox.addEventListener('click', (e) => {
-          e.preventDefault();
-          if (this.hasMovedSignificantly) {
-            e.stopPropagation();
-            return;
-          }
-
-          this.playDressSound();
-
-          // On touch tap or click, activate this garment
-          if (this.hoveredIndex !== index) {
-            this.setHovered(index, e);
-          }
-
-          // Pre-select this outfit in waitlist form and scroll down to it
-          const garment = this.garments[index];
-          const lookTitle = (garment && garment.title) || itemEl.dataset.title || '';
-          window.selectOutfitAndScrollToWaitlist(lookTitle, index);
-        });
+        hitbox.addEventListener('click', handleGarmentClick);
       }
+      itemEl.addEventListener('click', handleGarmentClick);
     });
 
     // When pointer leaves the entire track or section
@@ -1211,7 +1214,7 @@ window.scrollToWaitlistForm = function () {
   }
 };
 
-window.selectOutfitAndScrollToWaitlist = function (lookTitle, index) {
+window.selectOutfitInWaitlistOnly = function (lookTitle, index) {
   const formSection = document.getElementById('waitlistReservationSection');
   if (formSection) {
     const chips = formSection.querySelectorAll('.wl-piece-chip');
@@ -1224,7 +1227,10 @@ window.selectOutfitAndScrollToWaitlist = function (lookTitle, index) {
       }
     });
   }
-  window.scrollToWaitlistForm();
+};
+
+window.selectOutfitAndScrollToWaitlist = function (lookTitle, index) {
+  window.selectOutfitInWaitlistOnly(lookTitle, index);
 };
 
 // Inline Waitlist Form Submission & State Controller

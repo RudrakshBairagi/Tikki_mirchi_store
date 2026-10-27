@@ -779,10 +779,10 @@
                     </div>
                   </div>
 
-                  <!-- Interactive Action Overlay Button / Link -->
-                  <a href="#waitlistReservationSection" class="hanger-action-hitbox" aria-label="Reserve {{ dress_title | escape }}" data-look-title="{{ dress_title | escape }}" data-look-index="{{ forloop.index }}">
-                    <span class="sr-only">Reserve {{ dress_title }}</span>
-                  </a>
+                  <!-- Interactive Action Overlay Button / Stay on Rack -->
+                  <button type="button" class="hanger-action-hitbox" aria-label="View {{ dress_title | escape }}" data-look-title="{{ dress_title | escape }}" data-look-index="{{ forloop.index }}">
+                    <span class="sr-only">View {{ dress_title }}</span>
+                  </button>
                 </div>
               </div>
             {%- endfor -%}
@@ -800,7 +800,7 @@
       </div>
 
     <!-- Yellow Bench Outfit Title Display (Six Caps Typography) -->
-    <a href="#waitlistReservationSection" class="hanger-bench-outfit-title" id="BenchOutfitTitle" title="Reserve Atelier Look">
+    <a href="javascript:void(0)" class="hanger-bench-outfit-title" id="BenchOutfitTitle" title="Atelier Look">
       <span class="bench-outfit-text">Teekhi Bella Outfit 1</span>
     </a>
 
