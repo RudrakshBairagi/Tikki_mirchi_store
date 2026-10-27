@@ -762,10 +762,25 @@ class HangerRack {
     const sweepX = (e && e.movementX) ? e.movementX : (Math.random() > 0.5 ? 4 : -4);
     const clampedSweep = Math.max(-12, Math.min(12, sweepX));
 
+    // Calculate rack center and garment positions to readjust front view outfit to middle of rack
+    const trackWidth = this.track ? this.track.offsetWidth : 650;
+    const trackCenter = trackWidth / 2;
+
+    const activeGarment = this.garments[activeIndex];
+    const activeUnshiftedCenter = activeGarment ? (activeGarment.el.offsetLeft + activeGarment.el.offsetWidth / 2) : trackCenter;
+    // The exact shift required to move active garment to the horizontal center of the rack design
+    const activeCenterShift = trackCenter - activeUnshiftedCenter;
+
+    // Front view garment takes ~175px width, so clearance to left and right neighbors is ~140px
+    const frontHalfClearance = 140;
+    const neighborStep = 45;
+
     this.garments.forEach((g, idx) => {
+      const itemUnshiftedCenter = g.el.offsetLeft + g.el.offsetWidth / 2;
+
       if (idx === activeIndex) {
-        // 1. Hovered outfit takes center stage
-        g.el.style.setProperty('--part-shift', '0px');
+        // 1. Hovered outfit takes center stage right in the middle of the rack design!
+        g.el.style.setProperty('--part-shift', `${activeCenterShift.toFixed(1)}px`);
         g.el.style.setProperty('--rack-z', '40');
         g.el.classList.add('is-popped-out');
         g.el.classList.add('is-hovered');
@@ -774,10 +789,28 @@ class HangerRack {
         g.vel += clampedSweep * 0.0016 * swayFactor;
         g.vel = Math.max(-0.016, Math.min(0.016, g.vel));
       } else {
-        // 2. Left and right outfits part along the rail and "HIT" one another!
+        // 2. Garments to the left part gracefully to the left of the center;
+        //    garments to the right part gracefully to the right of the center!
+        let targetCenter;
         const dist = Math.abs(idx - activeIndex);
         const direction = idx < activeIndex ? -1 : 1;
-        const shiftPx = direction * Math.max(0, spread - (dist - 1) * spreadStep);
+
+        if (idx < activeIndex) {
+          const leftSteps = activeIndex - 1 - idx;
+          targetCenter = trackCenter - frontHalfClearance - (leftSteps * neighborStep);
+          // Don't shift further right than resting position
+          targetCenter = Math.min(targetCenter, itemUnshiftedCenter - 15);
+        } else {
+          const rightSteps = idx - activeIndex - 1;
+          targetCenter = trackCenter + frontHalfClearance + (rightSteps * neighborStep);
+          // Don't shift further left than resting position
+          targetCenter = Math.max(targetCenter, itemUnshiftedCenter + 15);
+        }
+
+        // Keep parted garments gracefully within track rail bounds
+        targetCenter = Math.max(35, Math.min(trackWidth - 35, targetCenter));
+
+        const shiftPx = targetCenter - itemUnshiftedCenter;
 
         g.el.style.setProperty('--part-shift', `${shiftPx.toFixed(1)}px`);
         g.el.style.setProperty('--rack-z', `${Math.max(1, 20 - dist)}`);
@@ -795,6 +828,12 @@ class HangerRack {
         g.vel = Math.max(-0.018, Math.min(0.018, g.vel));
       }
     });
+
+    // If track is overflowing horizontally (e.g. mobile or narrow screen), also smoothly center in viewport
+    if (this.trackWrap && this.track && this.track.scrollWidth > this.trackWrap.clientWidth + 4) {
+      const scrollTarget = activeUnshiftedCenter - (this.trackWrap.clientWidth / 2);
+      this.trackWrap.scrollTo({ left: Math.max(0, scrollTarget), behavior: 'smooth' });
+    }
 
     // Reveal the outfit name on the yellow sofa now that the outfit is in front view!
     this.showBenchOutfitTitle(this.garments[activeIndex], activeIndex);
@@ -1190,120 +1229,132 @@ window.selectOutfitAndScrollToWaitlist = function (lookTitle, index) {
 
 // Inline Waitlist Form Submission & State Controller
 function initInlineWaitlistForm() {
-  const form = document.getElementById('atelierInlineWaitlistForm');
-  if (!form || form.dataset.bound) return;
-  form.dataset.bound = 'true';
+  document.querySelectorAll('.atelier-waitlist-form').forEach((form) => {
+    if (form.dataset.bound) return;
+    form.dataset.bound = 'true';
 
-  // Chip Multi-Selection
-  const chips = form.querySelectorAll('.wl-piece-chip');
-  chips.forEach((chip) => {
-    chip.addEventListener('click', () => {
-      chip.classList.toggle('is-selected');
-    });
-  });
-
-  // Size Single Selection
-  const sizePills = form.querySelectorAll('.wl-size-pill');
-  const sizeInput = form.querySelector('#waitlistPreferredSize');
-  sizePills.forEach((pill) => {
-    pill.addEventListener('click', () => {
-      sizePills.forEach((p) => p.classList.remove('is-selected'));
-      pill.classList.add('is-selected');
-      if (sizeInput) sizeInput.value = pill.dataset.size || pill.textContent.trim();
-    });
-  });
-
-  // Google Script Webhook Submission
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const fullNameInput = form.querySelector('#waitlistFullName');
-    const emailInput = form.querySelector('#waitlistEmail');
-    const phoneInput = form.querySelector('#waitlistPhone');
-    const stateInput = form.querySelector('#waitlistState');
-
-    const fullName = fullNameInput ? fullNameInput.value.trim() : '';
-    const email = emailInput ? emailInput.value.trim() : '';
-    const cleanPhone = phoneInput ? phoneInput.value.replace(/[^0-9]/g, '') : '';
-    const state = stateInput ? stateInput.value : '';
-    const size = sizeInput ? sizeInput.value : 'M';
-
-    if (!fullName) {
-      alert('Please enter your full name.');
-      fullNameInput?.focus();
-      return;
-    }
-    if (!email) {
-      alert('Please enter your email.');
-      emailInput?.focus();
-      return;
-    }
-    if (cleanPhone.length < 10) {
-      alert('Please enter a valid 10-digit Indian mobile number.');
-      phoneInput?.focus();
-      return;
-    }
-    if (!state) {
-      alert('Please select your state.');
-      stateInput?.focus();
-      return;
-    }
-
-    const selectedChips = Array.from(form.querySelectorAll('.wl-piece-chip.is-selected'));
-    if (selectedChips.length === 0) {
-      alert('Please select at least one piece of interest.');
-      return;
-    }
-
-    const selectedLooks = selectedChips.map((c) => c.dataset.value || c.textContent.trim()).join(' | ');
-
-    const submitBtn = form.querySelector('#waitlistSubmitBtn');
-    if (submitBtn) {
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = '<span>SUBMITTING RESERVATION... ✦</span>';
-    }
-
-    const code = 'TB-IN-' + Math.floor(100000 + Math.random() * 900000);
-    const timestamp = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
-
-    const payload = {
-      code: code,
-      name: fullName,
-      fullName: fullName,
-      email: email,
-      phone: '+91 ' + cleanPhone,
-      whatsapp: '+91 ' + cleanPhone,
-      state: state,
-      size: size,
-      dresses: selectedLooks,
-      selectedLooks: selectedLooks,
-      looks: selectedLooks,
-      date: timestamp,
-      timestamp: timestamp
-    };
-
-    try {
-      await fetch('https://script.google.com/macros/s/AKfycbyf6lJGVyB4a2kx5AY51r-IpoFmwOH5I-TN53rVPCQAk_KaJ-m34qfdKlRb9thgf5UdEg/exec', {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify(payload)
+    // Chip Multi-Selection
+    const chips = form.querySelectorAll('.wl-piece-chip');
+    chips.forEach((chip) => {
+      chip.addEventListener('click', () => {
+        chip.classList.toggle('is-selected');
       });
-    } catch (err) {
-      console.warn('Google Sheet Webhook dispatch:', err);
-    }
+    });
 
-    if (submitBtn) {
-      submitBtn.style.display = 'none';
-    }
-    const successBox = form.querySelector('#waitlistSuccessNotification');
-    const details = form.querySelector('#waitlistSuccessDetails');
-    if (successBox) {
-      if (details) {
-        details.innerHTML = `Thank you <strong>${fullName}</strong>! Your reservation code <strong>${code}</strong> is confirmed. We will reach out on WhatsApp/SMS with priority drop access for <em>${selectedLooks}</em>.`;
+    // Size Single Selection
+    const sizePills = form.querySelectorAll('.wl-size-pill');
+    const sizeInput = form.querySelector('input[name="preferredSize"], #waitlistPreferredSize');
+    sizePills.forEach((pill) => {
+      pill.addEventListener('click', () => {
+        sizePills.forEach((p) => p.classList.remove('is-selected'));
+        pill.classList.add('is-selected');
+        if (sizeInput) sizeInput.value = pill.dataset.size || pill.textContent.trim();
+      });
+    });
+
+    // Google Script Webhook Submission
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const fullNameInput = form.querySelector('input[name="fullName"], #waitlistFullName');
+      const emailInput = form.querySelector('input[name="email"], #waitlistEmail');
+      const phoneInput = form.querySelector('input[name="phone"], #waitlistPhone');
+      const stateInput = form.querySelector('select[name="state"], #waitlistState');
+
+      const fullName = fullNameInput ? fullNameInput.value.trim() : '';
+      const email = emailInput ? emailInput.value.trim() : '';
+      const cleanPhone = phoneInput ? phoneInput.value.replace(/[^0-9]/g, '') : '';
+      const state = stateInput ? stateInput.value : '';
+      const size = sizeInput ? sizeInput.value : 'M';
+
+      if (!fullName) {
+        alert('Please enter your full name.');
+        fullNameInput?.focus();
+        return;
       }
-      successBox.style.display = 'block';
-    }
+      if (!email) {
+        alert('Please enter your email.');
+        emailInput?.focus();
+        return;
+      }
+      if (cleanPhone.length < 10) {
+        alert('Please enter a valid 10-digit Indian mobile number.');
+        phoneInput?.focus();
+        return;
+      }
+      if (!state) {
+        alert('Please select your state.');
+        stateInput?.focus();
+        return;
+      }
+
+      const selectedChips = Array.from(form.querySelectorAll('.wl-piece-chip.is-selected'));
+      if (selectedChips.length === 0) {
+        alert('Please select at least one piece of interest.');
+        return;
+      }
+
+      const selectedLooks = selectedChips.map((c) => c.dataset.value || c.textContent.trim()).join(' | ');
+
+      const submitBtn = form.querySelector('.wl-submit-btn, #waitlistSubmitBtn');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span>SUBMITTING RESERVATION... ✦</span>';
+      }
+
+      const code = 'TB-IN-' + Math.floor(100000 + Math.random() * 900000);
+      const timestamp = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+
+      const payload = {
+        code: code,
+        name: fullName,
+        fullName: fullName,
+        email: email,
+        phone: '+91 ' + cleanPhone,
+        whatsapp: '+91 ' + cleanPhone,
+        state: state,
+        size: size,
+        dresses: selectedLooks,
+        selectedLooks: selectedLooks,
+        looks: selectedLooks,
+        date: timestamp,
+        timestamp: timestamp
+      };
+
+      const webhookUrl = form.dataset.webhookUrl || 'https://script.google.com/macros/s/AKfycbyf6lJGVyB4a2kx5AY51r-IpoFmwOH5I-TN53rVPCQAk_KaJ-m34qfdKlRb9thgf5UdEg/exec';
+
+      try {
+        await fetch(webhookUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload)
+        });
+      } catch (err) {
+        console.warn('Google Sheet Webhook dispatch:', err);
+      }
+
+      if (submitBtn) {
+        submitBtn.style.display = 'none';
+      }
+      const successBox = form.querySelector('.wl-success-inline, #waitlistSuccessNotification');
+      const details = form.querySelector('.wl-success-sub, #waitlistSuccessDetails');
+      const titleEl = form.querySelector('.wl-success-title');
+      if (form.dataset.successTitle && titleEl) {
+        titleEl.textContent = form.dataset.successTitle;
+      }
+      if (successBox) {
+        if (details) {
+          let customMsg = form.dataset.successMsg || 'Thank you <strong>[NAME]</strong>! Your reservation code <strong>[CODE]</strong> is confirmed. We will reach out on WhatsApp/SMS with priority drop access for <em>[LOOKS]</em>.';
+          customMsg = customMsg
+            .replace(/\[NAME\]/g, fullName)
+            .replace(/\[CODE\]/g, code)
+            .replace(/\[LOOKS\]/g, selectedLooks);
+          details.innerHTML = customMsg;
+        }
+        successBox.style.display = 'block';
+      }
+    });
   });
 }
 

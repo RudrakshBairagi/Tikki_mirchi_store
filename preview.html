@@ -14,7 +14,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Allura&family=Bellefair&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Castoro+Titling&family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Serif+Display:ital@0;1&family=Forum&family=Great+Vibes&family=Italiana&family=Italianno&family=Jost:ital,wght@0,400;0,500;0,600;1,400&family=Marcellus&family=Montserrat:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@400;500;600;700&family=Parisienne&family=Pinyon+Script&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Prata&family=Six+Caps&family=Spectral:ital,wght@0,400;0,600;1,400&family=Syne:wght@400;600;700;800&family=Tenor+Sans&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/header-morph.css">
-  <link rel="stylesheet" href="assets/hanger-rack.css?v=studio-teal-v2">
+  <link rel="stylesheet" href="assets/hanger-rack.css?v=studio-teal-v6">
   <style>
     @font-face {
       font-family: 'Ahsing';
@@ -2185,8 +2185,20 @@
        ========================================================================== -->
   <section id="waitlistReservationSection" class="atelier-waitlist-section">
     <div class="atelier-waitlist-container">
+      <div class="atelier-waitlist-header" id="waitlistHeader" style="text-align: center; margin-bottom: 24px;">
+        <p class="wl-eyebrow" id="waitlistEyebrow" style="font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase; color: #d0c5b4; margin: 0 0 6px 0; opacity: 0.85;">PRIVATE ATELIER RESERVATIONS</p>
+        <h3 class="wl-heading" id="waitlistHeading" style="font-family: 'Six Caps', sans-serif; font-size: clamp(38px, 5vw, 56px); letter-spacing: 0.08em; text-transform: uppercase; color: #f5f0ea; margin: 0 0 8px 0; line-height: 1;">JOIN THE WAITLIST</h3>
+        <p class="wl-subheading" id="waitlistSubheading" style="font-size: 13px; color: #d0c5b4; margin: 0; opacity: 0.85; max-width: 520px; margin-inline: auto;">Select your silhouettes and reserve priority access before public release.</p>
+      </div>
       <div class="atelier-waitlist-card">
-        <form id="atelierInlineWaitlistForm" class="atelier-waitlist-form" novalidate>
+        <form 
+          id="atelierInlineWaitlistForm" 
+          class="atelier-waitlist-form" 
+          novalidate
+          data-webhook-url="https://script.google.com/macros/s/AKfycbyf6lJGVyB4a2kx5AY51r-IpoFmwOH5I-TN53rVPCQAk_KaJ-m34qfdKlRb9thgf5UdEg/exec"
+          data-success-title="RESERVATION SECURED"
+          data-success-msg="You are on the private atelier priority list for [LOOKS]. We will reach out on WhatsApp/SMS when drops go live."
+        >
 
           <!-- FULL NAME (Above Email) -->
           <div class="wl-field">
@@ -2581,6 +2593,30 @@
           <label class="studio-input-label" for="inputStaticBtn">Primary Button Text</label>
           <input type="text" class="studio-text-input" id="inputStaticBtn" value="Explore Lookbook" placeholder="Button Label">
         </div>
+
+        <div style="height: 1px; background: rgba(255,255,255,0.08); margin: 6px 0;"></div>
+
+        <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: #fbe459; font-weight: 700; margin: 8px 0 4px 0;">Waitlist Form (Customizable)</div>
+
+        <div class="studio-input-group">
+          <label class="studio-input-label" for="inputWaitlistHeading">Form Heading</label>
+          <input type="text" class="studio-text-input" id="inputWaitlistHeading" value="JOIN THE WAITLIST" placeholder="Form Heading">
+        </div>
+
+        <div class="studio-input-group">
+          <label class="studio-input-label" for="inputWaitlistEyebrow">Form Eyebrow</label>
+          <input type="text" class="studio-text-input" id="inputWaitlistEyebrow" value="PRIVATE ATELIER RESERVATIONS" placeholder="Form Eyebrow">
+        </div>
+
+        <div class="studio-input-group">
+          <label class="studio-input-label" for="inputWaitlistSubheading">Form Subheading</label>
+          <textarea class="studio-textarea-input" id="inputWaitlistSubheading" rows="2" placeholder="Form Subheading">Select your silhouettes and reserve priority access before public release.</textarea>
+        </div>
+
+        <div class="studio-input-group">
+          <label class="studio-input-label" for="inputWaitlistBtnText">Submit Button Label</label>
+          <input type="text" class="studio-text-input" id="inputWaitlistBtnText" value="SUBMIT RESERVATION" placeholder="Submit Button Label">
+        </div>
       </div>
     </div>
 
@@ -2726,6 +2762,20 @@
                 <span class="color-picker-hex" id="hexRailColor">#d4af37</span>
               </div>
             </div>
+            <div class="color-picker-card">
+              <input type="color" id="pickerWaitlistBg" value="#2c463c">
+              <div class="color-picker-info">
+                <span class="color-picker-title">Waitlist Teal BG</span>
+                <span class="color-picker-hex" id="hexWaitlistBg">#2c463c</span>
+              </div>
+            </div>
+            <div class="color-picker-card">
+              <input type="color" id="pickerWaitlistBtn" value="#fbe459">
+              <div class="color-picker-info">
+                <span class="color-picker-title">Waitlist Button</span>
+                <span class="color-picker-hex" id="hexWaitlistBtn">#fbe459</span>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -2820,7 +2870,7 @@
   <div class="font-toast" id="fontToast">✓ Font Applied</div>
 
   <script src="assets/header-morph.js"></script>
-  <script src="assets/hanger-rack.js?v=bench-title-v4"></script>
+  <script src="assets/hanger-rack.js?v=center-v6"></script>
   <script>
     (function() {
       // 1. Atelier Curated Font Library Database
@@ -3057,6 +3107,53 @@
         const val = e.target.value;
         const btnEl = document.querySelector('.static-element-btn-primary');
         if (btnEl) btnEl.textContent = val;
+      });
+
+      // Real-time Waitlist Form Customizer Bindings
+      const inputWaitlistHeading = document.getElementById('inputWaitlistHeading');
+      const inputWaitlistEyebrow = document.getElementById('inputWaitlistEyebrow');
+      const inputWaitlistSubheading = document.getElementById('inputWaitlistSubheading');
+      const inputWaitlistBtnText = document.getElementById('inputWaitlistBtnText');
+      const pickerWaitlistBg = document.getElementById('pickerWaitlistBg');
+      const hexWaitlistBg = document.getElementById('hexWaitlistBg');
+      const pickerWaitlistBtn = document.getElementById('pickerWaitlistBtn');
+      const hexWaitlistBtn = document.getElementById('hexWaitlistBtn');
+
+      inputWaitlistHeading?.addEventListener('input', (e) => {
+        const el = document.getElementById('waitlistHeading');
+        if (el) el.textContent = e.target.value;
+      });
+
+      inputWaitlistEyebrow?.addEventListener('input', (e) => {
+        const el = document.getElementById('waitlistEyebrow');
+        if (el) el.textContent = e.target.value;
+      });
+
+      inputWaitlistSubheading?.addEventListener('input', (e) => {
+        const el = document.getElementById('waitlistSubheading');
+        if (el) el.textContent = e.target.value;
+      });
+
+      inputWaitlistBtnText?.addEventListener('input', (e) => {
+        const el = document.querySelector('#waitlistSubmitBtn span:first-child');
+        if (el) el.textContent = e.target.value;
+      });
+
+      pickerWaitlistBg?.addEventListener('input', (e) => {
+        const val = e.target.value;
+        const wlSection = document.getElementById('waitlistReservationSection');
+        if (wlSection) {
+          wlSection.style.backgroundColor = val;
+          wlSection.style.background = `radial-gradient(ellipse at 50% 0%, ${val} 0%, ${val} 55%, #18251f 100%)`;
+        }
+        if (hexWaitlistBg) hexWaitlistBg.textContent = val;
+      });
+
+      pickerWaitlistBtn?.addEventListener('input', (e) => {
+        const val = e.target.value;
+        const btn = document.getElementById('waitlistSubmitBtn');
+        if (btn) btn.style.backgroundColor = val;
+        if (hexWaitlistBtn) hexWaitlistBtn.textContent = val;
       });
 
       // 7. TAB 2: Typography & Google Fonts

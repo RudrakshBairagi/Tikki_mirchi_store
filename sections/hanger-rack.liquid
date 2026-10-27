@@ -476,6 +476,56 @@
       max-height: none !important;
       width: auto !important;
     }
+
+  #waitlistReservationSection,
+  #waitlistReservationSection-{{ section.id }} {
+    {%- if section.settings.waitlist_section_bg_color != blank -%}
+      background-color: {{ section.settings.waitlist_section_bg_color }} !important;
+      background: radial-gradient(ellipse at 50% 0%, {{ section.settings.waitlist_section_bg_color }} 0%, {{ section.settings.waitlist_section_bg_color }} 55%, #18251f 100%) !important;
+    {%- endif -%}
+  }
+  #waitlistReservationSection .atelier-waitlist-card,
+  #waitlistReservationSection-{{ section.id }} .atelier-waitlist-card {
+    {%- if section.settings.waitlist_card_bg_color != blank -%}
+      background: {{ section.settings.waitlist_card_bg_color }} !important;
+      background: linear-gradient(160deg, {{ section.settings.waitlist_card_bg_color }} 0%, {{ section.settings.waitlist_card_bg_color }} 50%, #3e5a4e 100%) !important;
+    {%- endif -%}
+    {%- if section.settings.waitlist_card_border_color != blank -%}
+      border-color: {{ section.settings.waitlist_card_border_color }} !important;
+    {%- endif -%}
+  }
+  #waitlistReservationSection .wl-field label,
+  #waitlistReservationSection-{{ section.id }} .wl-field label,
+  #waitlistReservationSection .wl-select-hint,
+  #waitlistReservationSection-{{ section.id }} .wl-select-hint,
+  #waitlistReservationSection .wl-phone-cc,
+  #waitlistReservationSection-{{ section.id }} .wl-phone-cc {
+    {%- if section.settings.waitlist_label_color != blank -%}
+      color: {{ section.settings.waitlist_label_color }} !important;
+    {%- endif -%}
+  }
+  #waitlistReservationSection input,
+  #waitlistReservationSection-{{ section.id }} input,
+  #waitlistReservationSection select,
+  #waitlistReservationSection-{{ section.id }} select {
+    {%- if section.settings.waitlist_input_text_color != blank -%}
+      color: {{ section.settings.waitlist_input_text_color }} !important;
+    {%- endif -%}
+  }
+  #waitlistReservationSection .wl-submit-btn,
+  #waitlistReservationSection-{{ section.id }} .wl-submit-btn {
+    {%- if section.settings.waitlist_btn_bg_color != blank -%}
+      background-color: {{ section.settings.waitlist_btn_bg_color }} !important;
+    {%- endif -%}
+    {%- if section.settings.waitlist_btn_text_color != blank -%}
+      color: {{ section.settings.waitlist_btn_text_color }} !important;
+    {%- endif -%}
+  }
+  #waitlistReservationSection .wl-submit-btn:hover,
+  #waitlistReservationSection-{{ section.id }} .wl-submit-btn:hover {
+    {%- if section.settings.waitlist_btn_hover_bg != blank -%}
+      background-color: {{ section.settings.waitlist_btn_hover_bg }} !important;
+    {%- endif -%}
   }
 {%- endstyle -%}
 
@@ -766,19 +816,41 @@
 <!-- ==========================================================================
      ATELIER WAITLIST RESERVATION FORM (RIGHT UNDER JOIN THE WAITLIST)
      ========================================================================== -->
+{%- if section.settings.show_waitlist_form != false -%}
 <section id="waitlistReservationSection" class="atelier-waitlist-section">
   <div class="atelier-waitlist-container">
+    {%- if section.settings.waitlist_form_eyebrow != blank or section.settings.waitlist_form_heading != blank or section.settings.waitlist_form_subheading != blank -%}
+      <div class="atelier-waitlist-header" style="text-align: center; margin-bottom: 24px;">
+        {%- if section.settings.waitlist_form_eyebrow != blank -%}
+          <p class="wl-eyebrow" style="font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase; color: {{ section.settings.waitlist_label_color | default: '#d0c5b4' }}; margin: 0 0 6px 0; opacity: 0.85;">{{ section.settings.waitlist_form_eyebrow | escape }}</p>
+        {%- endif -%}
+        {%- if section.settings.waitlist_form_heading != blank -%}
+          <h3 class="wl-heading" style="font-family: 'Six Caps', sans-serif; font-size: clamp(38px, 5vw, 56px); letter-spacing: 0.08em; text-transform: uppercase; color: #f5f0ea; margin: 0 0 8px 0; line-height: 1;">{{ section.settings.waitlist_form_heading | escape }}</h3>
+        {%- endif -%}
+        {%- if section.settings.waitlist_form_subheading != blank -%}
+          <p class="wl-subheading" style="font-size: 13px; color: {{ section.settings.waitlist_label_color | default: '#d0c5b4' }}; margin: 0; opacity: 0.85; max-width: 520px; margin-inline: auto;">{{ section.settings.waitlist_form_subheading | escape }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
     <div class="atelier-waitlist-card">
-      <form id="atelierInlineWaitlistForm" class="atelier-waitlist-form" novalidate>
+      <form 
+        id="atelierInlineWaitlistForm" 
+        class="atelier-waitlist-form" 
+        novalidate
+        data-webhook-url="{{ section.settings.waitlist_webhook_url | default: 'https://script.google.com/macros/s/AKfycbyf6lJGVyB4a2kx5AY51r-IpoFmwOH5I-TN53rVPCQAk_KaJ-m34qfdKlRb9thgf5UdEg/exec' | escape }}"
+        data-success-title="{{ section.settings.waitlist_success_title | default: 'RESERVATION SECURED' | escape }}"
+        data-success-msg="{{ section.settings.waitlist_success_message | default: 'You are on the private atelier priority list for [LOOKS]. We will reach out on WhatsApp/SMS when drops go live.' | escape }}"
+      >
 
         <!-- FULL NAME (Above Email) -->
         <div class="wl-field">
-          <label for="waitlistFullName">FULL NAME</label>
+          <label for="waitlistFullName">{{ section.settings.waitlist_name_label | default: 'FULL NAME' | escape }}</label>
           <input 
             type="text" 
             id="waitlistFullName" 
             name="fullName" 
-            placeholder="Your full name" 
+            placeholder="{{ section.settings.waitlist_name_placeholder | default: 'Your full name' | escape }}" 
             autocomplete="name" 
             required
           >
@@ -786,12 +858,12 @@
 
         <!-- EMAIL -->
         <div class="wl-field">
-          <label for="waitlistEmail">EMAIL</label>
+          <label for="waitlistEmail">{{ section.settings.waitlist_email_label | default: 'EMAIL' | escape }}</label>
           <input 
             type="email" 
             id="waitlistEmail" 
             name="email" 
-            placeholder="name@example.com" 
+            placeholder="{{ section.settings.waitlist_email_placeholder | default: 'name@example.com' | escape }}" 
             autocomplete="email" 
             required
           >
@@ -799,14 +871,14 @@
 
         <!-- PHONE -->
         <div class="wl-field">
-          <label for="waitlistPhone">PHONE</label>
+          <label for="waitlistPhone">{{ section.settings.waitlist_phone_label | default: 'PHONE' | escape }}</label>
           <div class="wl-phone-row">
-            <span class="wl-phone-cc">+91</span>
+            <span class="wl-phone-cc">{{ section.settings.waitlist_phone_code | default: '+91' | escape }}</span>
             <input 
               type="tel" 
               id="waitlistPhone" 
               name="phone" 
-              placeholder="98765 43210" 
+              placeholder="{{ section.settings.waitlist_phone_placeholder | default: '98765 43210' | escape }}" 
               maxlength="10" 
               pattern="[0-9]{10}"
               required
@@ -816,9 +888,9 @@
 
         <!-- STATE -->
         <div class="wl-field">
-          <label for="waitlistState">STATE</label>
+          <label for="waitlistState">{{ section.settings.waitlist_state_label | default: 'STATE' | escape }}</label>
           <select id="waitlistState" name="state" required>
-            <option value="" disabled selected>Select state</option>
+            <option value="" disabled selected>{{ section.settings.waitlist_state_placeholder | default: 'Select state' | escape }}</option>
             <option value="Andhra Pradesh">Andhra Pradesh</option>
             <option value="Arunachal Pradesh">Arunachal Pradesh</option>
             <option value="Assam">Assam</option>
@@ -855,8 +927,8 @@
         <!-- PIECES OF INTEREST -->
         <div class="wl-field">
           <div class="wl-field-header">
-            <label>PIECES OF INTEREST</label>
-            <span class="wl-select-hint">SELECT MULTIPLE</span>
+            <label>{{ section.settings.waitlist_pieces_label | default: 'PIECES OF INTEREST' | escape }}</label>
+            <span class="wl-select-hint">{{ section.settings.waitlist_pieces_hint | default: 'SELECT MULTIPLE' | escape }}</span>
           </div>
           <div class="wl-pieces-chips" id="wlPiecesChips">
             {%- if section.blocks.size > 0 -%}
@@ -907,32 +979,37 @@
 
         <!-- PREFERRED SIZE -->
         <div class="wl-field">
-          <label>PREFERRED SIZE</label>
+          <label>{{ section.settings.waitlist_size_label | default: 'PREFERRED SIZE' | escape }}</label>
+          {%- assign sizes_array = section.settings.waitlist_sizes_list | default: 'XS, S, M, L, XL' | split: ',' -%}
+          {%- assign default_size = section.settings.waitlist_default_size | default: 'M' | strip -%}
           <div class="wl-size-row" role="radiogroup" aria-label="Preferred size">
-            <button type="button" class="wl-size-pill" data-size="XS">XS</button>
-            <button type="button" class="wl-size-pill" data-size="S">S</button>
-            <button type="button" class="wl-size-pill is-selected" data-size="M">M</button>
-            <button type="button" class="wl-size-pill" data-size="L">L</button>
-            <button type="button" class="wl-size-pill" data-size="XL">XL</button>
+            {%- for size_item in sizes_array -%}
+              {%- assign s_clean = size_item | strip -%}
+              {%- if s_clean != blank -%}
+                <button type="button" class="wl-size-pill{% if s_clean == default_size %} is-selected{% endif %}" data-size="{{ s_clean | escape }}">{{ s_clean }}</button>
+              {%- endif -%}
+            {%- endfor -%}
           </div>
-          <input type="hidden" id="waitlistPreferredSize" name="preferredSize" value="M">
+          <input type="hidden" id="waitlistPreferredSize" name="preferredSize" value="{{ default_size | escape }}">
         </div>
 
         <!-- SUBMIT RESERVATION BUTTON -->
         <button type="submit" class="wl-submit-btn" id="waitlistSubmitBtn">
-          <span>SUBMIT RESERVATION</span>
+          <span>{{ section.settings.waitlist_submit_btn_text | default: 'SUBMIT RESERVATION' | escape }}</span>
           <span aria-hidden="true">⟶</span>
         </button>
 
         <!-- PRIVACY NOTE / DISCLAIMER -->
-        <p class="wl-privacy-note">
-          By signing up, you agree to receive private collection drops &amp; access via WhatsApp / SMS. View our privacy policy and terms of service for more info.
-        </p>
+        {%- if section.settings.waitlist_disclaimer != blank -%}
+          <p class="wl-privacy-note">
+            {{ section.settings.waitlist_disclaimer }}
+          </p>
+        {%- endif -%}
 
         <!-- INLINE SUCCESS NOTIFICATION -->
         <div class="wl-success-inline" id="waitlistSuccessNotification" style="display: none;">
           <div class="wl-success-icon">✦</div>
-          <p class="wl-success-title">RESERVATION SECURED</p>
+          <p class="wl-success-title">{{ section.settings.waitlist_success_title | default: 'RESERVATION SECURED' | escape }}</p>
           <p class="wl-success-sub" id="waitlistSuccessDetails"></p>
         </div>
 
@@ -940,6 +1017,7 @@
     </div>
   </div>
 </section>
+{%- endif -%}
 
 {% schema %}
 {
@@ -1765,6 +1843,199 @@
       "max": 120,
       "step": 5,
       "default": 95
+    },
+    {
+      "type": "header",
+      "content": "Waitlist Reservation Form (Under Rack)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_waitlist_form",
+      "label": "Show Waitlist Form Under Rack",
+      "default": true,
+      "info": "Displays the reservation form directly below the rack & bench."
+    },
+    {
+      "type": "text",
+      "id": "waitlist_form_eyebrow",
+      "label": "Form Eyebrow Tagline",
+      "default": "PRIVATE ATELIER RESERVATIONS"
+    },
+    {
+      "type": "text",
+      "id": "waitlist_form_heading",
+      "label": "Form Heading",
+      "default": "JOIN THE WAITLIST"
+    },
+    {
+      "type": "textarea",
+      "id": "waitlist_form_subheading",
+      "label": "Form Subheading",
+      "default": "Select your silhouettes and reserve priority access before public release."
+    },
+    {
+      "type": "color",
+      "id": "waitlist_section_bg_color",
+      "label": "Section Background Color (Teal Accent)",
+      "default": "#2c463c"
+    },
+    {
+      "type": "color",
+      "id": "waitlist_card_bg_color",
+      "label": "Card Background Color",
+      "default": "#344e43"
+    },
+    {
+      "type": "color",
+      "id": "waitlist_card_border_color",
+      "label": "Card Border Color",
+      "default": "#547365"
+    },
+    {
+      "type": "color",
+      "id": "waitlist_label_color",
+      "label": "Label & Accent Color",
+      "default": "#d0c5b4"
+    },
+    {
+      "type": "color",
+      "id": "waitlist_input_text_color",
+      "label": "Input Text Color",
+      "default": "#f5f0ea"
+    },
+    {
+      "type": "color",
+      "id": "waitlist_btn_bg_color",
+      "label": "Submit Button Background Color",
+      "default": "#fbe459"
+    },
+    {
+      "type": "color",
+      "id": "waitlist_btn_text_color",
+      "label": "Submit Button Text Color",
+      "default": "#111a16"
+    },
+    {
+      "type": "color",
+      "id": "waitlist_btn_hover_bg",
+      "label": "Submit Button Hover Color",
+      "default": "#fcf38a"
+    },
+    {
+      "type": "text",
+      "id": "waitlist_name_label",
+      "label": "Full Name Label",
+      "default": "FULL NAME"
+    },
+    {
+      "type": "text",
+      "id": "waitlist_name_placeholder",
+      "label": "Full Name Placeholder",
+      "default": "Your full name"
+    },
+    {
+      "type": "text",
+      "id": "waitlist_email_label",
+      "label": "Email Label",
+      "default": "EMAIL"
+    },
+    {
+      "type": "text",
+      "id": "waitlist_email_placeholder",
+      "label": "Email Placeholder",
+      "default": "name@example.com"
+    },
+    {
+      "type": "text",
+      "id": "waitlist_phone_label",
+      "label": "Phone Label",
+      "default": "PHONE"
+    },
+    {
+      "type": "text",
+      "id": "waitlist_phone_code",
+      "label": "Phone Country Code",
+      "default": "+91"
+    },
+    {
+      "type": "text",
+      "id": "waitlist_phone_placeholder",
+      "label": "Phone Placeholder",
+      "default": "98765 43210"
+    },
+    {
+      "type": "text",
+      "id": "waitlist_state_label",
+      "label": "State Label",
+      "default": "STATE"
+    },
+    {
+      "type": "text",
+      "id": "waitlist_state_placeholder",
+      "label": "State Placeholder",
+      "default": "Select state"
+    },
+    {
+      "type": "text",
+      "id": "waitlist_pieces_label",
+      "label": "Pieces of Interest Label",
+      "default": "PIECES OF INTEREST"
+    },
+    {
+      "type": "text",
+      "id": "waitlist_pieces_hint",
+      "label": "Pieces Hint Text",
+      "default": "SELECT MULTIPLE"
+    },
+    {
+      "type": "text",
+      "id": "waitlist_size_label",
+      "label": "Preferred Size Label",
+      "default": "PREFERRED SIZE"
+    },
+    {
+      "type": "text",
+      "id": "waitlist_sizes_list",
+      "label": "Available Sizes (Comma-separated)",
+      "default": "XS, S, M, L, XL"
+    },
+    {
+      "type": "text",
+      "id": "waitlist_default_size",
+      "label": "Default Selected Size",
+      "default": "M"
+    },
+    {
+      "type": "text",
+      "id": "waitlist_submit_btn_text",
+      "label": "Submit Button Label",
+      "default": "SUBMIT RESERVATION"
+    },
+    {
+      "type": "textarea",
+      "id": "waitlist_disclaimer",
+      "label": "Privacy / Terms Notice",
+      "default": "By signing up, you agree to receive private collection drops & access via WhatsApp / SMS. View our privacy policy and terms of service for more info."
+    },
+    {
+      "type": "text",
+      "id": "waitlist_webhook_url",
+      "label": "Google Apps Script / Webhook Endpoint URL",
+      "default": "https://script.google.com/macros/s/AKfycbyf6lJGVyB4a2kx5AY51r-IpoFmwOH5I-TN53rVPCQAk_KaJ-m34qfdKlRb9thgf5UdEg/exec",
+      "info": "Submits Full Name, Email, Phone, State, Preferred Size, Selected Pieces, and Timestamp directly to your Google Sheet or CRM."
+    },
+    {
+      "type": "text",
+      "id": "waitlist_success_title",
+      "label": "Success Notification Title",
+      "default": "RESERVATION SECURED"
+    },
+    {
+      "type": "textarea",
+      "id": "waitlist_success_message",
+      "label": "Success Notification Message Template",
+      "default": "You are on the private atelier priority list for [LOOKS]. We will reach out on WhatsApp/SMS when drops go live.",
+      "info": "Use [LOOKS] for the selected outfits, [NAME] for full name, and [CODE] for the generated reservation code."
     }
   ],
   "blocks": [
