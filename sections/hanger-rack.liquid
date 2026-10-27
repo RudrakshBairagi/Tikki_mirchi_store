@@ -184,150 +184,299 @@
   }
 
   #HangerRack-{{ section.id }} {
-    position: relative;
-    {%- if section.settings.bg_mode == 'wardrobe' -%}
-      background-image: url('{{ "background_final.png" | asset_url }}') !important;
-      background-size: cover !important;
-      background-position: center top !important;
-    {%- elsif section.settings.bg_mode == 'gradient' and section.settings.bg_gradient != blank -%}
-      background: {{ section.settings.bg_gradient }} !important;
-    {%- elsif section.settings.bg_mode == 'image' and section.settings.bg_image != blank -%}
-      background-image: url('{{ section.settings.bg_image | image_url: width: 2600 }}') !important;
-      background-size: cover !important;
-      background-position: center top !important;
-    {%- else -%}
-      background-image: url('{{ "background_final.png" | asset_url }}') !important;
-      background-size: cover !important;
-      background-position: center top !important;
-    {%- endif -%}
+    position: relative !important;
+    background-color: #1a221d !important;
+    background-image: url('{{ "background_final.png" | asset_url }}') !important;
+    background-size: cover !important;
+    background-position: center top !important;
+    background-repeat: no-repeat !important;
+    min-height: calc(100dvh - 80px) !important;
+    padding-top: clamp(20px, 4vh, 40px) !important;
+    padding-bottom: clamp(24px, 4.5vh, 44px) !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    box-sizing: border-box !important;
   }
 
   #HangerRack-{{ section.id }} .hanger-rack-bg-overlay {
-    position: absolute;
-    inset: 0;
-    background: #000000;
-    opacity: {{ section.settings.bg_overlay_opacity | default: 0 | divided_by: 100.0 }};
-    pointer-events: none;
-    z-index: 1;
+    display: none !important;
   }
 
   #HangerRack-{{ section.id }} .hanger-rack-container {
-    position: relative;
-    z-index: 2;
+    position: relative !important;
+    z-index: 2 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    height: 100% !important;
+    min-height: calc(100dvh - 140px) !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    box-sizing: border-box !important;
+  }
+
+  #HangerRack-{{ section.id }} .hanger-rack-header {
+    margin: 0 auto clamp(8px, 2vh, 18px) auto !important;
+    padding: 0 16px !important;
+    text-align: center !important;
+    z-index: 5 !important;
+  }
+
+  #HangerRack-{{ section.id }} .hanger-rack-eyebrow,
+  #HangerRack-{{ section.id }} .hanger-rack-subheading,
+  #HangerRack-{{ section.id }} .rack-waitlist-btn-wrap-top,
+  #HangerRack-{{ section.id }} .hanger-rail-bar,
+  #HangerRack-{{ section.id }} .hanger-rail-bar:empty,
+  #HangerRack-{{ section.id }} .hanger-rack-hint {
+    display: none !important;
   }
 
   #HangerRack-{{ section.id }} .hanger-rack-title {
-    font-family: var(--rack-title-font) !important;
-    font-weight: var(--rack-title-weight, 400) !important;
-    font-style: var(--rack-title-style, normal) !important;
-    font-size: calc(clamp(34px, 4.5vw, 54px) * var(--rack-heading-scale, 1)) !important;
-    letter-spacing: var(--rack-title-spacing, 0.04em) !important;
+    font-family: 'Six Caps', sans-serif !important;
+    font-size: clamp(54px, 14vw, 84px) !important;
+    font-weight: 400 !important;
+    letter-spacing: 0.08em !important;
+    text-transform: uppercase !important;
+    color: #ffffff !important;
+    line-height: 0.9 !important;
+    margin: 0 auto !important;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45) !important;
   }
 
-  #HangerRack-{{ section.id }} .hanger-rack-eyebrow {
-    font-family: var(--rack-eyebrow-font) !important;
-    font-size: calc(clamp(15px, 1.5vw, 19px) * var(--rack-eyebrow-scale, 1)) !important;
+  #HangerRack-{{ section.id }} .hanger-rack-stage {
+    position: absolute !important;
+    top: var(--rod-top, calc(22.4% - 10px)) !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    z-index: 4 !important;
+    overflow: visible !important;
+    touch-action: pan-x !important;
+    overscroll-behavior: none !important;
   }
 
-  #HangerRack-{{ section.id }} .rack-eyebrow-sparkle {
-    font-size: calc(13px * var(--rack-eyebrow-scale, 1)) !important;
+  #HangerRack-{{ section.id }} .hanger-rack-track-wrap {
+    width: 100% !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    touch-action: pan-x !important;
+    overscroll-behavior-y: none !important;
+    overscroll-behavior-x: contain !important;
+    padding-top: 10px !important;
+    padding-bottom: 24px !important;
+    clip-path: var(--alcove-clip, polygon(26.8% 0%, 73.4% 0%, 73.0% 100%, 27.8% 100%)) !important;
+    -webkit-clip-path: var(--alcove-clip, polygon(26.8% 0%, 73.4% 0%, 73.0% 100%, 27.8% 100%)) !important;
+    scrollbar-width: none !important;
   }
 
-  #HangerRack-{{ section.id }} .hanger-rack-subheading {
-    font-family: var(--rack-subheading-font) !important;
-    font-size: calc(14px * var(--rack-subheading-scale, 1)) !important;
+  #HangerRack-{{ section.id }} .hanger-rack-track-wrap::-webkit-scrollbar {
+    display: none !important;
   }
 
-  #HangerRack-{{ section.id }} .tag-code,
-  #HangerRack-{{ section.id }} .tag-name,
-  #HangerRack-{{ section.id }} .tag-price {
-    font-family: var(--rack-tag-font) !important;
+  #HangerRack-{{ section.id }} .hanger-rack-track {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+    gap: clamp(8px, 1.2vw, 16px) !important;
+    padding: 0 40px !important;
+    touch-action: pan-x !important;
+    overflow-y: hidden !important;
   }
 
-  /* Critical display overrides ensuring Shopify base.css (div:empty { display:none }) never hides rail rod elements */
-  #HangerRack-{{ section.id }} .hanger-rail-bar,
-  #HangerRack-{{ section.id }} .hanger-rail-bar:empty,
-  #HangerRack-{{ section.id }} .rail-rod,
-  #HangerRack-{{ section.id }} .rail-rod:empty,
-  #HangerRack-{{ section.id }} .rail-highlight,
-  #HangerRack-{{ section.id }} .rail-highlight:empty,
-  #HangerRack-{{ section.id }} .rail-bracket,
-  #HangerRack-{{ section.id }} .rail-bracket:empty,
-  #HangerRack-{{ section.id }} .hanger-garment-shadow,
-  #HangerRack-{{ section.id }} .hanger-garment-shadow:empty,
-  #HangerRack-{{ section.id }} .tag-thread,
-  #HangerRack-{{ section.id }} .tag-thread:empty {
-    display: block !important;
+  #HangerRack-{{ section.id }} .hanger-item {
+    width: clamp(96px, 8vw, 122px) !important;
+    flex: 0 0 clamp(96px, 8vw, 122px) !important;
   }
+
+  #HangerRack-{{ section.id }} .hanger-garment-img {
+    max-height: clamp(260px, 36vh, 320px) !important;
+    width: auto !important;
+  }
+
   #HangerRack-{{ section.id }} .hanger-floating-card {
-    background: var(--rack-card-bg) !important;
-    border-color: var(--rack-card-border) !important;
-    color: var(--rack-card-text) !important;
-  }
-  #HangerRack-{{ section.id }} .hanger-floating-card .floating-card-title {
-    color: var(--rack-card-text) !important;
-  }
-  #HangerRack-{{ section.id }} .hanger-floating-card .floating-card-link {
-    color: var(--rack-card-accent) !important;
-  }
-  #HangerRack-{{ section.id }} .hanger-rail-bar .rail-rod {
-    height: var(--rack-rail-thickness) !important;
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
   }
 
-  /* Dynamic customizable Waitlist Buttons */
+  /* Bottom Waitlist CTA Pill Button */
+  #HangerRack-{{ section.id }} .rack-waitlist-btn-wrap-bottom {
+    position: absolute !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: clamp(14px, 2.8vh, 28px) !important;
+    top: auto !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    z-index: 12 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    pointer-events: auto !important;
+  }
+
   #HangerRack-{{ section.id }} .rack-waitlist-btn {
-    font-family: var(--rack-btn-font, 'Plus Jakarta Sans', sans-serif) !important;
-    font-size: {{ section.settings.btn_font_size | default: 12 }}px !important;
-    font-weight: {{ section.settings.btn_font_weight | default: 600 }} !important;
-    font-style: {{ section.settings.btn_font_style | default: 'normal' }} !important;
-    letter-spacing: {{ section.settings.btn_letter_spacing | default: 2 }}px !important;
-    text-transform: {{ section.settings.btn_text_transform | default: 'uppercase' }} !important;
-    background: {{ section.settings.btn_bg_color | default: '#1a1819' }} !important;
-    color: {{ section.settings.btn_text_color | default: '#ffffff' }} !important;
-    border: {{ section.settings.btn_border_width | default: 1 }}px solid {{ section.settings.btn_border_color | default: 'rgba(255, 255, 255, 0.18)' }} !important;
-    border-radius: {{ section.settings.btn_border_radius | default: 40 }}px !important;
-    padding: {{ section.settings.btn_padding_y | default: 13 }}px {{ section.settings.btn_padding_x | default: 34 }}px !important;
+    background: #000000 !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.22) !important;
+    font-family: 'Six Caps', sans-serif !important;
+    font-size: clamp(26px, 7vw, 34px) !important;
+    font-weight: 400 !important;
+    letter-spacing: 0.08em !important;
+    text-transform: uppercase !important;
+    padding: 10px 44px 8px 44px !important;
+    border-radius: 9999px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7) !important;
+    transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
     text-decoration: none !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 12px !important;
-    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1) !important;
+    line-height: 1 !important;
     cursor: pointer !important;
   }
+
   #HangerRack-{{ section.id }} .rack-waitlist-btn:hover {
-    background: {{ section.settings.btn_hover_bg_color | default: '#000000' }} !important;
-    color: {{ section.settings.btn_hover_text_color | default: '#ffffff' }} !important;
-    border-color: {{ section.settings.btn_hover_border_color | default: '#d4af37' }} !important;
-    transform: translateY(-2px) !important;
-  }
-  #HangerRack-{{ section.id }} .rack-waitlist-btn .btn-sparkle {
-    color: {{ section.settings.btn_sparkle_color | default: '#d4af37' }} !important;
+    background: #151515 !important;
+    border-color: rgba(255, 255, 255, 0.5) !important;
+    transform: scale(1.03) !important;
+    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.85) !important;
   }
 
-  {%- if section.settings.separate_bottom_btn_styles -%}
-    #HangerRack-{{ section.id }} .rack-waitlist-btn-wrap-bottom .rack-waitlist-btn {
-      font-family: var(--rack-btn-bottom-font, var(--rack-btn-font, 'Plus Jakarta Sans', sans-serif)) !important;
-      font-size: {{ section.settings.bottom_btn_font_size | default: 12 }}px !important;
-      font-weight: {{ section.settings.bottom_btn_font_weight | default: 600 }} !important;
-      font-style: {{ section.settings.bottom_btn_font_style | default: 'normal' }} !important;
-      letter-spacing: {{ section.settings.bottom_btn_letter_spacing | default: 2 }}px !important;
-      text-transform: {{ section.settings.bottom_btn_text_transform | default: 'uppercase' }} !important;
-      background: {{ section.settings.bottom_btn_bg_color | default: '#1a1819' }} !important;
-      color: {{ section.settings.bottom_btn_text_color | default: '#ffffff' }} !important;
-      border: {{ section.settings.bottom_btn_border_width | default: 1 }}px solid {{ section.settings.bottom_btn_border_color | default: 'rgba(255, 255, 255, 0.18)' }} !important;
-      border-radius: {{ section.settings.bottom_btn_border_radius | default: 40 }}px !important;
-      padding: {{ section.settings.bottom_btn_padding_y | default: 13 }}px {{ section.settings.bottom_btn_padding_x | default: 34 }}px !important;
+  #HangerRack-{{ section.id }} .rack-waitlist-btn .btn-arrow,
+  #HangerRack-{{ section.id }} .rack-waitlist-btn .btn-sparkle {
+    display: none !important;
+  }
+
+  /* Yellow Bench Outfit Title Display (Six Caps Typography) */
+  #HangerRack-{{ section.id }} .hanger-bench-outfit-title {
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) translateY(4px) !important;
+    top: var(--bench-title-top, 72%) !important;
+    z-index: 15 !important;
+    text-decoration: none !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: max-content !important;
+    max-width: 27% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    pointer-events: none !important;
+    cursor: pointer !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transition: opacity 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), visibility 0.3s ease !important;
+  }
+
+  #HangerRack-{{ section.id }} .hanger-bench-outfit-title.is-visible,
+  #HangerRack-{{ section.id }} .hanger-rack-container:has(.hanger-item.is-hovered) .hanger-bench-outfit-title,
+  #HangerRack-{{ section.id }} .hanger-rack-container:has(.hanger-item.is-popped-out) .hanger-bench-outfit-title {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transform: translateX(-50%) translateY(0) !important;
+  }
+
+  #HangerRack-{{ section.id }} .hanger-bench-outfit-title.is-visible:hover,
+  #HangerRack-{{ section.id }} .hanger-bench-outfit-title:hover {
+    transform: translateX(-50%) translateY(0) scale(1.03) !important;
+  }
+
+  #HangerRack-{{ section.id }} .bench-outfit-text {
+    font-family: 'Six Caps', sans-serif !important;
+    font-size: clamp(18px, 4.8vw, 25px) !important;
+    font-weight: 400 !important;
+    letter-spacing: 0.02em !important;
+    line-height: 0.9 !important;
+    color: #000000 !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    user-select: none !important;
+    -webkit-user-select: none !important;
+    transition: opacity 0.22s ease, transform 0.22s ease !important;
+  }
+
+  /* Mobile Layout Overrides */
+  @media (max-width: 768px) {
+    #HangerRack-{{ section.id }} {
+      min-height: calc(100dvh - 60px) !important;
+      height: calc(100dvh - 60px) !important;
+      max-height: calc(100dvh - 60px) !important;
+      padding: 0 !important;
     }
-    #HangerRack-{{ section.id }} .rack-waitlist-btn-wrap-bottom .rack-waitlist-btn:hover {
-      background: {{ section.settings.bottom_btn_hover_bg_color | default: '#000000' }} !important;
-      color: {{ section.settings.bottom_btn_hover_text_color | default: '#ffffff' }} !important;
-      border-color: {{ section.settings.bottom_btn_hover_border_color | default: '#d4af37' }} !important;
+
+    #HangerRack-{{ section.id }} .hanger-rack-container {
+      width: 100% !important;
+      height: 100% !important;
+      display: block !important;
     }
-    #HangerRack-{{ section.id }} .rack-waitlist-btn-wrap-bottom .rack-waitlist-btn .btn-sparkle {
-      color: {{ section.settings.bottom_btn_sparkle_color | default: '#d4af37' }} !important;
+
+    #HangerRack-{{ section.id }} .hanger-rack-header {
+      position: absolute !important;
+      top: clamp(8px, 2vh, 18px) !important;
+      left: 0 !important;
+      right: 0 !important;
+      z-index: 10 !important;
     }
-  {%- endif -%}
+
+    #HangerRack-{{ section.id }} .hanger-rack-title {
+      font-size: clamp(52px, 13.5vw, 70px) !important;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6) !important;
+    }
+
+    #HangerRack-{{ section.id }} .hanger-rack-stage {
+      top: var(--rod-top, calc(22.94% - 10px)) !important;
+      z-index: 5 !important;
+    }
+
+    #HangerRack-{{ section.id }} .hanger-rack-track-wrap {
+      padding: 0 !important;
+      margin: 0 !important;
+      -webkit-overflow-scrolling: touch !important;
+    }
+
+    #HangerRack-{{ section.id }} .hanger-rack-track {
+      justify-content: flex-start !important;
+      gap: clamp(14px, 3.5vw, 22px) !important;
+      padding: 0 calc(50vw - 65px) !important;
+      width: max-content !important;
+      min-width: 100% !important;
+    }
+
+    #HangerRack-{{ section.id }} .hanger-item {
+      width: clamp(118px, 32vw, 138px) !important;
+      flex: 0 0 clamp(118px, 32vw, 138px) !important;
+      display: block !important;
+    }
+
+    #HangerRack-{{ section.id }} .hanger-item .hanger-wire-wrapper {
+      width: 95px !important;
+      height: 52px !important;
+      margin: 0 auto -22px auto !important;
+    }
+
+    #HangerRack-{{ section.id }} .hanger-item .hanger-wire-svg {
+      stroke: #d0c5b4 !important;
+    }
+
+    #HangerRack-{{ section.id }} .hanger-garment-img {
+      height: clamp(280px, 38vh, 340px) !important;
+      max-height: none !important;
+      width: auto !important;
+    }
+  }
 {%- endstyle -%}
 
 <section
@@ -451,12 +600,17 @@
                 {%- assign dress_link = block.settings.product.url -%}
               {%- endif -%}
 
+              {%- assign outfit_display_name = block.settings.outfit_name -%}
+              {%- if outfit_display_name == blank -%}
+                {%- assign outfit_display_name = 'Teekhi Bella Outfit ' | append: forloop.index -%}
+              {%- endif -%}
+
               <!-- Individual Hanging Garment Unit -->
               <div
                 class="hanger-item"
                 data-index="{{ forloop.index0 }}"
                 data-title="{{ dress_title | escape }}"
-                data-outfit-name="{{ block.settings.outfit_name | default: 'Teekhi Bella Outfit ' | append: forloop.index }}"
+                data-outfit-name="{{ outfit_display_name | escape }}"
                 data-price="{{ dress_price | escape }}"
                 data-tag="{{ block.settings.tag | default: 'LOOK ' | append: look_num }}"
                 data-link="{{ dress_link }}"
@@ -594,7 +748,6 @@
       </div>
 
       </div>
-    </div>
 
     <!-- Yellow Bench Outfit Title Display (Six Caps Typography) -->
     <a href="{{ routes.root_url | append: 'pages/product-inspect' | replace: '//', '/' }}" class="hanger-bench-outfit-title" id="BenchOutfitTitle" title="Inspect Atelier Look">
