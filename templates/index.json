@@ -258,10 +258,30 @@
         "padding_top": 60,
         "padding_bottom": 80
       }
+    },
+    "custom_static_element": {
+      "type": "custom-static-element",
+      "settings": {
+        "eyebrow": "TEEKHI BELLA • ATELIER COUTURE",
+        "heading": "Archival Haute Couture 2026",
+        "subheading": "Each bespoke piece is meticulously draped by master artisans, blending centuries-old Indian craftsmanship with modern architectural silhouettes.",
+        "btn_primary_label": "Explore The Runway",
+        "btn_primary_url": "#HangerRack",
+        "btn_secondary_label": "Join VIP Waitlist",
+        "btn_secondary_url": "/pages/waitlist",
+        "bg_mode": "solid",
+        "bg_color": "#0a090c",
+        "text_color": "#ffffff",
+        "accent_color": "#ffffffbf",
+        "border_color": "#ffffff14",
+        "heading_font_source": "outfit",
+        "body_font_source": "outfit"
+      }
     }
   },
   "order": [
     "hero_3d_cylinder",
-    "hanger_rack"
+    "hanger_rack",
+    "custom_static_element"
   ]
 }
