@@ -143,6 +143,14 @@ class HangerRack {
     this.wakePhysics();
   }
 
+  isWideView() {
+    if (!this.section) return false;
+    const rect = this.section.getBoundingClientRect();
+    const cw = rect.width;
+    const ch = rect.height;
+    return (cw >= 900 && (cw / ch) >= 1.05);
+  }
+
   updateAlcoveBounds() {
     if (!this.section) return;
     const rect = this.section.getBoundingClientRect();
@@ -150,47 +158,63 @@ class HangerRack {
     const ch = rect.height;
     if (!cw || !ch) return;
 
-    // Native resolution of assets/background_final.png is 1536 x 2681
-    const imgW = 1536;
-    const imgH = 2681;
+    const isWide = this.isWideView();
+
+    // Native resolution and geometry:
+    // Wide Desktop: assets/background_full.jpg (1024 x 549)
+    // Portrait Mobile: assets/background_final.png (1536 x 2681)
+    const imgW = isWide ? 1024 : 1536;
+    const imgH = isWide ? 549 : 2681;
     const imgRatio = imgW / imgH;
     const containerRatio = cw / ch;
 
     let rw, rh, ox;
     if (containerRatio >= imgRatio) {
-      // Width constrained (Desktop, wide screens, or standard preview aspect ratios)
+      // Width constrained (Wide screens or standard preview aspect ratios)
       rw = cw;
       rh = imgH * (cw / imgW);
       ox = 0;
     } else {
-      // Height constrained (Tall phone screens)
+      // Height constrained (Tall phone screens or standard laptops)
       rh = ch;
       rw = imgW * (ch / imgH);
       ox = (cw - rw) / 2;
     }
 
     const scale = rw / imgW;
-    // Exactly at the red line reference markers:
-    // Left teal board inner edge: x=412 at top rail, x=430 at bottom
-    // Right teal board inner edge: x=1128 at top rail, x=1126 at bottom
-    const topLeft = Math.max(0, ox + 412 * scale);
-    const topRight = Math.min(cw, ox + 1128 * scale);
-    const botLeft = Math.max(0, ox + 430 * scale);
-    const botRight = Math.min(cw, ox + 1126 * scale);
+
+    // Alcove inner teal board edges:
+    // Wide view: x ≈ 410px to 614px
+    // Portrait view: x ≈ 412px to 1128px
+    const alcoveLeftTop = isWide ? 410 : 412;
+    const alcoveRightTop = isWide ? 614 : 1128;
+    const alcoveLeftBot = isWide ? 410 : 430;
+    const alcoveRightBot = isWide ? 614 : 1126;
+
+    const topLeft = Math.max(0, ox + alcoveLeftTop * scale);
+    const topRight = Math.min(cw, ox + alcoveRightTop * scale);
+    const botLeft = Math.max(0, ox + alcoveLeftBot * scale);
+    const botRight = Math.min(cw, ox + alcoveRightBot * scale);
 
     const clipValue = `polygon(${topLeft.toFixed(1)}px 0px, ${topRight.toFixed(1)}px 0px, ${botRight.toFixed(1)}px 100%, ${botLeft.toFixed(1)}px 100%)`;
     this.section.style.setProperty('--alcove-clip', clipValue);
 
-    // Fixed vertical anchor for the hanging rod (y=595px in native background)
-    const rodTop = 595 * scale - 12;
+    // Fixed vertical anchor for the hanging rod:
+    // Wide view: y ≈ 106px in native 1024x549
+    // Portrait view: y ≈ 595px in native 1536x2681
+    const rodTop = isWide ? (106 * scale - 6) : (595 * scale - 12);
     this.section.style.setProperty('--rod-top', `${rodTop.toFixed(1)}px`);
 
-    // Yellow bench outfit title anchor: positioned on front tufted face of yellow ottoman (y=1940px in native background)
-    const benchTitleTop = 1940 * scale;
+    // Yellow bench outfit title anchor: positioned on front tufted face of yellow ottoman:
+    // Wide view: y ≈ 415px in native 1024x549
+    // Portrait view: y ≈ 1940px in native 1536x2681
+    const benchTitleTop = (isWide ? 415 : 1940) * scale;
     this.section.style.setProperty('--bench-title-top', `${benchTitleTop.toFixed(1)}px`);
 
-    // Ground the 'Join the Waitlist' button right below yellow bench cushion, towards the base (y=2160px in native background)
-    const btnTop = 2160 * scale;
+    // Ground the 'Join the Waitlist' button towards base:
+    // Wide view: y ≈ 485px in native 1024x549
+    // Portrait view: y ≈ 2160px in native 1536x2681
+    const btnTop = (isWide ? 485 : 2160) * scale;
     this.section.style.setProperty('--btn-top', `${btnTop.toFixed(1)}px`);
   }
 
@@ -780,9 +804,10 @@ class HangerRack {
     // Exact shift required to change its X axis to the middle of the screen!
     const activeShift = targetCanvasCenter - activeRestingCenter;
 
+    const isWide = this.isWideView();
     // Symmetrical clearance for the front view gown:
-    const clearance = 135;
-    const neighborStep = 42;
+    const clearance = isWide ? 95 : 135;
+    const neighborStep = isWide ? 26 : 42;
 
     this.garments.forEach((g, idx) => {
       const itemRestingCenter = trackOffsetLeft + g.el.offsetLeft + (g.el.offsetWidth / 2);

@@ -1000,7 +1000,7 @@
     /* 2. Custom Wardrobe Closet Hero Section (Figma Mobile Design) */
     .hanger-rack-section {
       background-color: #1a221d !important;
-      background-image: url('assets/background_final.png') !important;
+      background-image: url('assets/background_full.jpg') !important;
       background-size: cover !important;
       background-position: center top !important;
       background-repeat: no-repeat !important;
@@ -1013,6 +1013,31 @@
       flex-direction: column !important;
       justify-content: space-between !important;
       box-sizing: border-box !important;
+    }
+
+    @media (max-width: 899px), (max-aspect-ratio: 1/1) {
+      .hanger-rack-section {
+        background-image: url('assets/background_final.png') !important;
+      }
+    }
+
+    @media (min-width: 900px) and (min-aspect-ratio: 1.05/1) {
+      .hanger-rack-track {
+        gap: 8px !important;
+        padding: 0 10px !important;
+      }
+      .hanger-item {
+        width: 52px !important;
+      }
+      .hanger-garment-img {
+        height: clamp(300px, 40vh, 420px) !important;
+      }
+      .hanger-bench-outfit-title {
+        max-width: 22% !important;
+      }
+      .bench-outfit-text {
+        font-size: clamp(16px, 1.8vw, 22px) !important;
+      }
     }
 
     .hanger-rack-bg-overlay {
@@ -1195,6 +1220,29 @@
       .hanger-garment-img {
         max-height: clamp(260px, 36vh, 320px) !important;
         width: auto !important;
+      }
+    }
+
+    @media (min-width: 900px) and (min-aspect-ratio: 1.05/1) {
+      .hanger-rack-track {
+        gap: 8px !important;
+        padding: 0 4px !important;
+        min-width: 0 !important;
+        width: auto !important;
+      }
+      .hanger-item {
+        width: 54px !important;
+        flex: 0 0 54px !important;
+      }
+      .hanger-garment-img {
+        max-height: none !important;
+        height: clamp(300px, 40vh, 420px) !important;
+      }
+      .hanger-bench-outfit-title {
+        max-width: 22% !important;
+      }
+      .bench-outfit-text {
+        font-size: clamp(16px, 1.8vw, 22px) !important;
       }
     }
 
@@ -2871,7 +2919,7 @@
   <div class="font-toast" id="fontToast">✓ Font Applied</div>
 
   <script src="assets/header-morph.js"></script>
-  <script src="assets/hanger-rack.js?v=stay-rack-v8"></script>
+  <script src="assets/hanger-rack.js?v=wide-v9"></script>
   <script>
     (function() {
       // 1. Atelier Curated Font Library Database

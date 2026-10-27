@@ -7,7 +7,7 @@
   position: relative !important;
   width: 100%;
   background-color: #1a221d !important;
-  background-image: url('background_final.png') !important;
+  background-image: url('background_full.jpg') !important;
   background-size: cover !important;
   background-position: center top !important;
   background-repeat: no-repeat !important;
@@ -21,6 +21,12 @@
   box-sizing: border-box !important;
   user-select: none;
   -webkit-user-select: none;
+}
+
+@media (max-width: 899px), (max-aspect-ratio: 1/1) {
+  .hanger-rack-section {
+    background-image: url('background_final.png') !important;
+  }
 }
 
 .hanger-rack-bg-overlay {
@@ -367,6 +373,28 @@
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   will-change: opacity, transform;
+}
+
+@media (min-width: 900px) and (min-aspect-ratio: 1.05/1) {
+  .hanger-rack-track {
+    gap: 8px !important;
+    padding: 0 4px !important;
+    min-width: 0 !important;
+    width: auto !important;
+  }
+  .hanger-item {
+    width: 54px !important;
+    flex: 0 0 54px !important;
+  }
+  .hanger-garment-img {
+    height: clamp(300px, 40vh, 420px) !important;
+  }
+  .hanger-bench-outfit-title {
+    max-width: 22% !important;
+  }
+  .bench-outfit-text {
+    font-size: clamp(16px, 1.8vw, 22px) !important;
+  }
 }
 
 /* Side profile image (default visible at rest) */

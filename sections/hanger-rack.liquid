@@ -186,7 +186,7 @@
   #HangerRack-{{ section.id }} {
     position: relative !important;
     background-color: #1a221d !important;
-    background-image: url('{{ "background_final.png" | asset_url }}') !important;
+    background-image: url('{{ "background_full.jpg" | asset_url }}') !important;
     background-size: cover !important;
     background-position: center top !important;
     background-repeat: no-repeat !important;
@@ -198,6 +198,34 @@
     flex-direction: column !important;
     justify-content: space-between !important;
     box-sizing: border-box !important;
+  }
+
+  @media (max-width: 899px), (max-aspect-ratio: 1/1) {
+    #HangerRack-{{ section.id }} {
+      background-image: url('{{ "background_final.png" | asset_url }}') !important;
+    }
+  }
+
+  @media (min-width: 900px) and (min-aspect-ratio: 1.05/1) {
+    #HangerRack-{{ section.id }} .hanger-rack-track {
+      gap: 8px !important;
+      padding: 0 4px !important;
+      min-width: 0 !important;
+      width: auto !important;
+    }
+    #HangerRack-{{ section.id }} .hanger-item {
+      width: 54px !important;
+      flex: 0 0 54px !important;
+    }
+    #HangerRack-{{ section.id }} .hanger-garment-img {
+      height: clamp(300px, 40vh, 420px) !important;
+    }
+    #HangerRack-{{ section.id }} .hanger-bench-outfit-title {
+      max-width: 22% !important;
+    }
+    #HangerRack-{{ section.id }} .bench-outfit-text {
+      font-size: clamp(16px, 1.8vw, 22px) !important;
+    }
   }
 
   #HangerRack-{{ section.id }} .hanger-rack-bg-overlay {
