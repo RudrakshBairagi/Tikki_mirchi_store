@@ -153,37 +153,24 @@
   opacity: 1;
 }
 
-/* Footer: Meta, Progress, Look Title */
+.preloader-brand-meta,
+.preloader-look-meta,
+.preloader-look-counter,
+.preloader-look-name {
+  display: none !important;
+}
+
+/* Footer: Progress */
 .preloader-footer {
   position: relative;
   z-index: 5;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   width: 100%;
   max-width: 440px;
   text-align: center;
-}
-
-.preloader-look-meta {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0;
-}
-
-.preloader-look-counter {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.28em;
-  color: #c5a059;
-  text-transform: uppercase;
-}
-
-.preloader-look-name {
-  display: none !important;
 }
 
 /* Hairline Progress Bar */
