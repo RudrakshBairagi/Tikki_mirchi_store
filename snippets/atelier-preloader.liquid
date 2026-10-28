@@ -1,0 +1,82 @@
+{% comment %}
+  TEEKHI BELLA — HAUTE COUTURE RUNWAY PRELOADER
+  Stroboscopic runway sequence flashing 5 archival looks until site assets are ready.
+{% endcomment %}
+
+{{ 'atelier-preloader.css' | asset_url | stylesheet_tag }}
+
+<div id="AtelierPreloader" role="status" aria-live="polite" aria-label="Loading Teekhi Bella Atelier">
+  <div class="preloader-backdrop-glow" aria-hidden="true"></div>
+
+  <!-- Header -->
+  <header class="preloader-header">
+    <h1 class="preloader-brand-title">Teekhi Bella</h1>
+    <p class="preloader-brand-meta">Autumn / Winter Atelier</p>
+  </header>
+
+  <!-- Center Stage: Flashing Outfits -->
+  <main class="preloader-stage" aria-hidden="true">
+    <div class="preloader-look-flash"></div>
+    <div class="preloader-look-wrap">
+      <img
+        src="{{ 'hanger-look-1.png' | asset_url }}"
+        alt="Archival Manuscript Corset Gown"
+        class="preloader-look-item is-active"
+        width="260"
+        height="560"
+        loading="eager"
+        fetchpriority="high"
+      >
+      <img
+        src="{{ 'hanger-look-2.png' | asset_url }}"
+        alt="Heritage Mural Mirror Lehenga"
+        class="preloader-look-item"
+        width="260"
+        height="560"
+        loading="eager"
+        fetchpriority="high"
+      >
+      <img
+        src="{{ 'hanger-look-3.png' | asset_url }}"
+        alt="Rose-Coral Shimmer Saree Gown"
+        class="preloader-look-item"
+        width="260"
+        height="560"
+        loading="eager"
+        fetchpriority="high"
+      >
+      <img
+        src="{{ 'hanger-look-4.png' | asset_url }}"
+        alt="Midnight Botanical Co-ord Set"
+        class="preloader-look-item"
+        width="260"
+        height="560"
+        loading="eager"
+        fetchpriority="high"
+      >
+      <img
+        src="{{ 'hanger-look-5.png' | asset_url }}"
+        alt="Bordeaux Peplum Halter Gown"
+        class="preloader-look-item"
+        width="260"
+        height="560"
+        loading="eager"
+        fetchpriority="high"
+      >
+    </div>
+  </main>
+
+  <!-- Footer Meta & Progress -->
+  <footer class="preloader-footer">
+    <div class="preloader-look-meta">
+      <span class="preloader-look-counter">LOOK 01 / 05</span>
+      <h2 class="preloader-look-name">Archival Manuscript Corset Gown</h2>
+    </div>
+    <div class="preloader-progress-track">
+      <div class="preloader-progress-fill"></div>
+    </div>
+    <p class="preloader-status-text">Entering The Atelier</p>
+  </footer>
+</div>
+
+<script src="{{ 'atelier-preloader.js' | asset_url }}" defer></script>

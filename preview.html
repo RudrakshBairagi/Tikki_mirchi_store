@@ -15,6 +15,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Allura&family=Bellefair&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Castoro+Titling&family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Serif+Display:ital@0;1&family=Forum&family=Great+Vibes&family=Italiana&family=Italianno&family=Jost:ital,wght@0,400;0,500;0,600;1,400&family=Marcellus&family=Montserrat:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@400;500;600;700&family=Parisienne&family=Pinyon+Script&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Prata&family=Six+Caps&family=Spectral:ital,wght@0,400;0,600;1,400&family=Syne:wght@400;600;700;800&family=Tenor+Sans&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/header-morph.css">
   <link rel="stylesheet" href="assets/hanger-rack.css?v=studio-teal-v6">
+  <link rel="stylesheet" href="assets/atelier-preloader.css">
+
+  <!-- Teekhi Bella Runway Flashing Preloader Top-Priority Preloads -->
+  <link rel="preload" as="image" href="assets/hanger-look-1.png">
+  <link rel="preload" as="image" href="assets/hanger-look-2.png">
+  <link rel="preload" as="image" href="assets/hanger-look-3.png">
+  <link rel="preload" as="image" href="assets/hanger-look-4.png">
+  <link rel="preload" as="image" href="assets/hanger-look-5.png">
   <style>
     @font-face {
       font-family: 'Ahsing';
@@ -1638,6 +1646,83 @@
 <body>
 
   <!-- ==========================================================================
+       TEEKHI BELLA — HAUTE COUTURE RUNWAY PRELOADER
+       ========================================================================== -->
+  <div id="AtelierPreloader" role="status" aria-live="polite" aria-label="Loading Teekhi Bella Atelier">
+    <div class="preloader-backdrop-glow" aria-hidden="true"></div>
+
+    <!-- Header -->
+    <header class="preloader-header">
+      <h1 class="preloader-brand-title">Teekhi Bella</h1>
+      <p class="preloader-brand-meta">Autumn / Winter Atelier</p>
+    </header>
+
+    <!-- Center Stage: Flashing Outfits -->
+    <main class="preloader-stage" aria-hidden="true">
+      <div class="preloader-look-flash"></div>
+      <div class="preloader-look-wrap">
+        <img
+          src="assets/hanger-look-1.png"
+          alt="Archival Manuscript Corset Gown"
+          class="preloader-look-item is-active"
+          width="260"
+          height="560"
+          loading="eager"
+          fetchpriority="high"
+        >
+        <img
+          src="assets/hanger-look-2.png"
+          alt="Heritage Mural Mirror Lehenga"
+          class="preloader-look-item"
+          width="260"
+          height="560"
+          loading="eager"
+          fetchpriority="high"
+        >
+        <img
+          src="assets/hanger-look-3.png"
+          alt="Rose-Coral Shimmer Saree Gown"
+          class="preloader-look-item"
+          width="260"
+          height="560"
+          loading="eager"
+          fetchpriority="high"
+        >
+        <img
+          src="assets/hanger-look-4.png"
+          alt="Midnight Botanical Co-ord Set"
+          class="preloader-look-item"
+          width="260"
+          height="560"
+          loading="eager"
+          fetchpriority="high"
+        >
+        <img
+          src="assets/hanger-look-5.png"
+          alt="Bordeaux Peplum Halter Gown"
+          class="preloader-look-item"
+          width="260"
+          height="560"
+          loading="eager"
+          fetchpriority="high"
+        >
+      </div>
+    </main>
+
+    <!-- Footer Meta & Progress -->
+    <footer class="preloader-footer">
+      <div class="preloader-look-meta">
+        <span class="preloader-look-counter">LOOK 01 / 05</span>
+        <h2 class="preloader-look-name">Archival Manuscript Corset Gown</h2>
+      </div>
+      <div class="preloader-progress-track">
+        <div class="preloader-progress-fill"></div>
+      </div>
+      <p class="preloader-status-text">Entering The Atelier</p>
+    </footer>
+  </div>
+
+  <!-- ==========================================================================
        TEEKHI BELLA — LUXURY MORPHING HEADER (SOPHIE & LUCIE INSPIRED)
        ========================================================================== -->
   <header id="LuxuryHeader" class="luxury-header scrolled-down">
@@ -2920,6 +3005,7 @@
 
   <script src="assets/header-morph.js"></script>
   <script src="assets/hanger-rack.js?v=wide-v9"></script>
+  <script src="assets/atelier-preloader.js"></script>
   <script>
     (function() {
       // 1. Atelier Curated Font Library Database
