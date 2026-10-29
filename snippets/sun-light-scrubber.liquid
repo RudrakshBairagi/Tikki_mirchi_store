@@ -1,0 +1,98 @@
+{% comment %}
+  Sun & Lighting Scrubber (8 Modes)
+  Inspired by Studio Parc (@studio.parc) prototype:
+  "What if you could see a garment in the light you’ll wear it in?"
+  
+  Modes:
+  1: 06:00 (Dawn)
+  2: 09:00 (Morning)
+  3: 12:00 (Midday)
+  4: 15:00 (Afternoon)
+  5: 18:00 (Golden Hour)
+  6: 20:00 (Blue Hour / Dusk)
+  7: 22:00 (Evening)
+  8: 00:00 (Midnight)
+{% endcomment %}
+
+{%- liquid
+  assign enable_scrubber = section.settings.enable_sun_light_scrubber
+  if enable_scrubber == nil
+    assign enable_scrubber = true
+  endif
+-%}
+
+{%- if enable_scrubber -%}
+  <sun-light-scrubber
+    id="SunLightScrubber-{{ section.id }}"
+    class="sun-scrubber"
+    data-section-id="{{ section.id }}"
+    data-fallback-city="{{ section.settings.sun_light_default_city | default: 'PARIS, FR' | escape }}"
+    role="region"
+    aria-label="Solar Lighting Scrubber"
+  >
+    <!-- Dynamic Atmospheric Shading Layer attached over media -->
+    <div class="sun-lighting-stage" data-sun-lighting-stage aria-hidden="true">
+      <div class="sun-lighting-layer sun-lighting-ambient"></div>
+      <div class="sun-lighting-layer sun-lighting-sunbeam"></div>
+      <div class="sun-lighting-layer sun-lighting-spotlight"></div>
+      <div class="sun-lighting-layer sun-lighting-shimmer"></div>
+    </div>
+
+    <!-- Bottom Left: Time & Location Indicator -->
+    <div class="sun-scrubber__status" data-scrubber-status>
+      <span class="sun-scrubber__time" data-scrubber-time>09:50</span>
+      <span class="sun-scrubber__sep">—</span>
+      <span class="sun-scrubber__location" data-scrubber-location>{{ section.settings.sun_light_default_city | default: 'PARIS, FR' }}</span>
+    </div>
+
+    <!-- Bottom Right: Sun Dial Controller -->
+    <div class="sun-scrubber__dial" data-scrubber-dial>
+      <!-- Collapsible / Expandable Track with 8 Modes -->
+      <div class="sun-scrubber__track-wrap" data-scrubber-track-wrap>
+        <div class="sun-scrubber__track" data-scrubber-track>
+          <!-- 8 Dots ordered chronologically from top to bottom -->
+          <button type="button" class="sun-scrubber__dot" data-mode-index="0" data-time="06:00" data-name="Dawn" aria-label="06:00 Dawn"></button>
+          <button type="button" class="sun-scrubber__dot" data-mode-index="1" data-time="09:00" data-name="Morning" aria-label="09:00 Morning"></button>
+          <button type="button" class="sun-scrubber__dot" data-mode-index="2" data-time="12:00" data-name="Midday" aria-label="12:00 Midday"></button>
+          <button type="button" class="sun-scrubber__dot" data-mode-index="3" data-time="15:00" data-name="Afternoon" aria-label="15:00 Afternoon"></button>
+          <button type="button" class="sun-scrubber__dot" data-mode-index="4" data-time="18:00" data-name="Golden Hour" aria-label="18:00 Golden Hour"></button>
+          <button type="button" class="sun-scrubber__dot" data-mode-index="5" data-time="20:00" data-name="Blue Hour" aria-label="20:00 Blue Hour"></button>
+          <button type="button" class="sun-scrubber__dot" data-mode-index="6" data-time="22:00" data-name="Evening" aria-label="22:00 Evening"></button>
+          <button type="button" class="sun-scrubber__dot" data-mode-index="7" data-time="00:00" data-name="Midnight" aria-label="00:00 Midnight"></button>
+
+          <!-- Floating Sun Puck Indicator -->
+          <div class="sun-scrubber__indicator" data-scrubber-indicator aria-hidden="true">
+            <svg class="sun-scrubber__indicator-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="4" fill="currentColor"/>
+              <path d="M12 2v2.5M12 19.5V22M4.93 4.93l1.77 1.77M17.3 17.3l1.77 1.77M2 12h2.5M19.5 12H22M6.7 17.3l-1.77 1.77M19.07 4.93l-1.77 1.77" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Floating Mode Tooltip Label -->
+        <div class="sun-scrubber__tooltip" data-scrubber-tooltip aria-hidden="true">
+          <span class="sun-scrubber__tooltip-time">18:00</span>
+          <span class="sun-scrubber__tooltip-sep">·</span>
+          <span class="sun-scrubber__tooltip-name">GOLDEN HOUR</span>
+        </div>
+      </div>
+
+      <!-- Resting Sun Trigger Button -->
+      <button
+        type="button"
+        class="sun-scrubber__trigger"
+        data-scrubber-trigger
+        aria-expanded="false"
+        aria-label="Adjust Light (8 Solar Modes)"
+      >
+        <span class="sun-scrubber__trigger-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4.2" fill="currentColor"/>
+            <path d="M12 2v2.2M12 19.8V22M4.93 4.93l1.55 1.55M17.52 17.52l1.55 1.55M2 12h2.2M19.8 12H22M6.48 17.52l-1.55 1.55M19.07 4.93l-1.55 1.55"/>
+          </svg>
+        </span>
+      </button>
+    </div>
+  </sun-light-scrubber>
+{%- endif -%}
+

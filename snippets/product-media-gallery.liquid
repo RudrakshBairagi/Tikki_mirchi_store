@@ -42,6 +42,9 @@
   endif
 -%}
 
+{{ 'sun-light-scrubber.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sun-light-scrubber.js' | asset_url }}" defer="defer"></script>
+
 <media-gallery
   id="MediaGallery-{{ section.id }}"
   role="region"
@@ -153,6 +156,7 @@
         </span>
       </button>
     </div>
+    {% render 'sun-light-scrubber', section: section, product: product %}
   </slider-component>
   {%- if first_3d_model -%}
     <button

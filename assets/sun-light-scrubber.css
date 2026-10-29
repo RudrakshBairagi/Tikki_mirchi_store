@@ -1,0 +1,457 @@
+/* ==========================================================================
+   Sun & Lighting Scrubber (8 Modes) - Teekhi Bella
+   Inspired by Studio Parc (@studio.parc) PDP Solar Prototype
+   ========================================================================== */
+
+:root {
+  --sun-stage-filter: none;
+  --sun-ambient-bg: transparent;
+  --sun-ambient-mix: normal;
+  --sun-ambient-opacity: 0;
+  --sun-sunbeam-bg: transparent;
+  --sun-sunbeam-opacity: 0;
+  --sun-spotlight-bg: transparent;
+  --sun-spotlight-opacity: 0;
+  --sun-shimmer-opacity: 0;
+  --sun-glow-color: rgba(255, 200, 80, 0.6);
+}
+
+/* Scrubber Container Overlay - Pinned to Product Media Viewer */
+.sun-scrubber {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  display: block;
+  overflow: visible;
+  font-family: inherit;
+}
+
+/* Ensure GalleryViewer or active slide has relative positioning */
+[id^="GalleryViewer-"],
+.product__media-wrapper,
+.product__media-list .product__media-item {
+  position: relative;
+}
+
+/* --------------------------------------------------------------------------
+   Atmospheric Lighting Stages (Applies over product imagery)
+   -------------------------------------------------------------------------- */
+.sun-lighting-stage {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  overflow: hidden;
+  border-radius: inherit;
+  transition: opacity 0.4s ease;
+}
+
+.sun-lighting-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transition: opacity 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.35s ease;
+}
+
+.sun-lighting-ambient {
+  background: var(--sun-ambient-bg);
+  mix-blend-mode: var(--sun-ambient-mix, soft-light);
+  opacity: var(--sun-ambient-opacity, 0);
+}
+
+.sun-lighting-sunbeam {
+  background: var(--sun-sunbeam-bg);
+  mix-blend-mode: screen;
+  opacity: var(--sun-sunbeam-opacity, 0);
+}
+
+.sun-lighting-spotlight {
+  background: var(--sun-spotlight-bg);
+  mix-blend-mode: multiply;
+  opacity: var(--sun-spotlight-opacity, 0);
+}
+
+.sun-lighting-shimmer {
+  background: radial-gradient(circle at 48% 42%, rgba(255, 255, 255, 0.5) 0%, transparent 8%),
+              radial-gradient(circle at 55% 58%, rgba(255, 255, 255, 0.6) 0%, transparent 6%),
+              radial-gradient(circle at 43% 66%, rgba(255, 255, 255, 0.45) 0%, transparent 7%),
+              radial-gradient(circle at 52% 75%, rgba(255, 255, 255, 0.55) 0%, transparent 6%);
+  mix-blend-mode: color-dodge;
+  opacity: var(--sun-shimmer-opacity, 0);
+  animation: sunShimmerGlint 3.5s ease-in-out infinite alternate;
+}
+
+@keyframes sunShimmerGlint {
+  0% { opacity: calc(var(--sun-shimmer-opacity, 0) * 0.7); transform: scale(0.99); }
+  50% { opacity: var(--sun-shimmer-opacity, 0); transform: scale(1.01); }
+  100% { opacity: calc(var(--sun-shimmer-opacity, 0) * 0.85); transform: scale(1); }
+}
+
+/* Image filter application */
+.product__media-list .product__media img,
+.product__media-list .product__media-item img {
+  transition: filter 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+  filter: var(--sun-stage-filter, none) !important;
+}
+
+/* --------------------------------------------------------------------------
+   Bottom-Left Status Pill (Time & City)
+   -------------------------------------------------------------------------- */
+.sun-scrubber__status {
+  position: absolute;
+  left: 1.5rem;
+  bottom: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.68);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+  font-size: 1.15rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #121212;
+  pointer-events: auto;
+  user-select: none;
+  -webkit-user-select: none;
+  z-index: 10;
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.sun-scrubber__time {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.sun-scrubber__sep {
+  opacity: 0.45;
+}
+
+.sun-scrubber__location {
+  letter-spacing: 0.14em;
+  font-size: 1.05rem;
+}
+
+/* Night mood status adaptation */
+.sun-scrubber--dark-mode .sun-scrubber__status {
+  background: rgba(18, 18, 24, 0.72);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #f5f5f7;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* --------------------------------------------------------------------------
+   Bottom-Right Sun Dial Controller (8 Modes)
+   -------------------------------------------------------------------------- */
+.sun-scrubber__dial {
+  position: absolute;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: auto;
+  z-index: 10;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* The Circular Resting Trigger */
+.sun-scrubber__trigger {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #1a1a1a;
+  padding: 0;
+  outline: none;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+              background 0.3s ease,
+              box-shadow 0.3s ease,
+              color 0.3s ease;
+}
+
+.sun-scrubber__trigger:hover {
+  transform: scale(1.08);
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.16);
+}
+
+.sun-scrubber__trigger:active {
+  transform: scale(0.95);
+}
+
+.sun-scrubber__trigger-icon {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sun-scrubber__trigger-icon svg {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.sun-scrubber.is-open .sun-scrubber__trigger-icon svg {
+  transform: rotate(45deg);
+}
+
+/* --------------------------------------------------------------------------
+   The Expanding 8-Stop Vertical Track
+   -------------------------------------------------------------------------- */
+.sun-scrubber__track-wrap {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 44px;
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-radius: 26px;
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow: 0 10px 36px rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: scale(0.85) translateY(12px);
+  transform-origin: bottom center;
+  transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+              visibility 0.28s ease,
+              background 0.3s ease;
+  z-index: 12;
+}
+
+/* Open State */
+.sun-scrubber.is-open .sun-scrubber__track-wrap {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: scale(1) translateY(0);
+}
+
+/* When open, hide the single trigger button behind the track */
+.sun-scrubber.is-open .sun-scrubber__trigger {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sun-scrubber__track {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 0;
+}
+
+/* The 8 Dot Markers */
+.sun-scrubber__dot {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+  z-index: 2;
+  transition: transform 0.2s ease;
+}
+
+.sun-scrubber__dot::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(30, 30, 30, 0.4);
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+              background 0.2s ease,
+              box-shadow 0.2s ease;
+}
+
+.sun-scrubber__dot:hover::before {
+  transform: scale(1.6);
+  background: rgba(10, 10, 10, 0.85);
+}
+
+.sun-scrubber__dot.is-active::before {
+  transform: scale(1.8);
+  background: #111;
+  box-shadow: 0 0 8px var(--sun-glow-color);
+}
+
+/* Floating Moving Sun Puck Indicator */
+.sun-scrubber__indicator {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translate(-50%, -50%);
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #111111;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2), 0 0 14px var(--sun-glow-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 4;
+  transition: top 0.18s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.15s ease,
+              background 0.3s ease,
+              color 0.3s ease;
+}
+
+.sun-scrubber.is-dragging .sun-scrubber__indicator {
+  transition: none; /* instant tracking while dragging */
+  transform: translate(-50%, -50%) scale(1.15);
+}
+
+.sun-scrubber__indicator-icon {
+  width: 14px;
+  height: 14px;
+  display: block;
+}
+
+/* Floating Tooltip Label */
+.sun-scrubber__tooltip {
+  position: absolute;
+  right: 56px;
+  top: 50%;
+  transform: translateY(-50%) translateX(6px);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.1);
+  color: #111;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+}
+
+.sun-scrubber.is-open .sun-scrubber__tooltip,
+.sun-scrubber.is-dragging .sun-scrubber__tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-50%) translateX(0);
+}
+
+.sun-scrubber__tooltip-time {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.sun-scrubber__tooltip-sep {
+  opacity: 0.4;
+}
+
+.sun-scrubber__tooltip-name {
+  letter-spacing: 0.12em;
+}
+
+/* --------------------------------------------------------------------------
+   Dark Mode Adaptation for Dial (When in Dusk / Evening / Midnight)
+   -------------------------------------------------------------------------- */
+.sun-scrubber--dark-mode .sun-scrubber__trigger,
+.sun-scrubber--dark-mode .sun-scrubber__track-wrap,
+.sun-scrubber--dark-mode .sun-scrubber__tooltip {
+  background: rgba(22, 22, 30, 0.75);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: #f2f2f7;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+}
+
+.sun-scrubber--dark-mode .sun-scrubber__dot::before {
+  background: rgba(255, 255, 255, 0.38);
+}
+
+.sun-scrubber--dark-mode .sun-scrubber__dot:hover::before {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.sun-scrubber--dark-mode .sun-scrubber__dot.is-active::before {
+  background: #ffffff;
+}
+
+.sun-scrubber--dark-mode .sun-scrubber__indicator {
+  background: #1c1c24;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* --------------------------------------------------------------------------
+   Mobile Responsiveness
+   -------------------------------------------------------------------------- */
+@media screen and (max-width: 749px) {
+  .sun-scrubber__status {
+    left: 1rem;
+    bottom: 1rem;
+    font-size: 1rem;
+    padding: 0.35rem 0.65rem;
+  }
+
+  .sun-scrubber__dial {
+    right: 1rem;
+    bottom: 1rem;
+  }
+
+  .sun-scrubber__track-wrap {
+    height: 220px;
+    width: 40px;
+  }
+
+  .sun-scrubber__trigger {
+    width: 40px;
+    height: 40px;
+  }
+
+  .sun-scrubber__tooltip {
+    right: 48px;
+    font-size: 0.95rem;
+    padding: 0.35rem 0.6rem;
+  }
+}
+
