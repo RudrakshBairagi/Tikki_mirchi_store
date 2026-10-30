@@ -1,6 +1,7 @@
 /**
  * TEEKHI BELLA — HAUTE COUTURE RUNWAY PRELOADER ENGINE
  * Coordinates high-speed flashing sequence of 5 bespoke looks until the site loads.
+ * Supports Theme Settings for session gating, frame speed, and minimum duration.
  */
 
 (function () {
@@ -18,6 +19,18 @@
         return;
       }
 
+      // Check 'Play Once Per Session' Theme Setting
+      const oncePerSession = this.el.dataset.oncePerSession === 'true';
+      if (oncePerSession && !(window.Shopify && window.Shopify.designMode)) {
+        try {
+          if (sessionStorage.getItem('tb_preloader_shown') === '1') {
+            this.el.classList.add('is-loaded');
+            this.el.style.display = 'none';
+            return;
+          }
+        } catch (_) {}
+      }
+
       this.outfits = [
         { id: 1, name: 'Archival Manuscript Corset Gown', tag: 'LOOK 01' },
         { id: 2, name: 'Heritage Mural Mirror Lehenga', tag: 'LOOK 02' },
@@ -33,10 +46,13 @@
       this.progressFill = this.el.querySelector('.preloader-progress-fill');
       this.flashGlow = this.el.querySelector('.preloader-look-flash');
 
+      const parsedMin = parseInt(this.el.dataset.minDuration, 10);
+      const parsedFrame = parseInt(this.el.dataset.frameDuration, 10);
+
       this.startTime = Date.now();
-      this.minDisplayTime = 2000; // Minimum duration for runway flash experience (2 complete cycles)
-      this.maxSafetyTimeout = 4000; // Guaranteed auto-dismiss after 4 seconds
-      this.frameDuration = 190; // Milliseconds per outfit flash
+      this.minDisplayTime = !isNaN(parsedMin) && parsedMin >= 300 ? parsedMin : 2000;
+      this.maxSafetyTimeout = Math.max(this.minDisplayTime + 1500, 4000);
+      this.frameDuration = !isNaN(parsedFrame) && parsedFrame >= 50 ? parsedFrame : 190;
 
       this.isPageLoaded = (document.readyState === 'complete');
       this.isDismissed = false;
@@ -107,7 +123,7 @@
     nextOutfit() {
       if (this.isDismissed) return;
 
-      this.currentIndex = (this.currentIndex + 1) % this.outfits.length;
+      this.currentIndex = (this.currentIndex + 1) % (this.items.length || this.outfits.length);
       this.showOutfit(this.currentIndex);
 
       // Smooth progress update over time
@@ -139,6 +155,10 @@
 
       clearInterval(this.timer);
       this.updateProgress(100);
+
+      try {
+        sessionStorage.setItem('tb_preloader_shown', '1');
+      } catch (_) {}
 
       // Add loaded class for silky smooth exit transition
       this.el.classList.add('is-loaded');

@@ -6,12 +6,12 @@
 .hanger-rack-section {
   position: relative !important;
   width: 100%;
-  background-color: #1a221d !important;
-  background-image: url('background_full.jpg') !important;
+  background-color: var(--rack-bg, #1a221d);
+  background-image: var(--rack-desktop-bg-img, url('background_full.jpg'));
   background-size: cover !important;
   background-position: center top !important;
   background-repeat: no-repeat !important;
-  min-height: calc(100dvh - 80px) !important;
+  min-height: calc(100dvh - 80px);
   padding-top: clamp(20px, 4vh, 40px) !important;
   padding-bottom: clamp(24px, 4.5vh, 44px) !important;
   overflow: hidden !important;
@@ -25,7 +25,7 @@
 
 @media (max-width: 899px), (max-aspect-ratio: 1/1) {
   .hanger-rack-section {
-    background-image: url('background_final.png') !important;
+    background-image: var(--rack-mobile-bg-img, url('background_final.png'));
   }
 }
 
@@ -376,13 +376,24 @@
 }
 
 @media (min-width: 900px) and (min-aspect-ratio: 1.05/1) {
-  .hanger-rack-track {
+  .hanger-rack-section:not([data-laptop-layout="wide_static"]):not([data-laptop-layout="portrait_scroll"]) .hanger-rack-track {
+    justify-content: flex-start !important;
+    gap: clamp(14px, 1.8vw, 24px) !important;
+    padding: 0 calc(50% - (var(--rack-desktop-item-width, 108px) / 2)) !important;
+    width: max-content !important;
+    min-width: 100% !important;
+  }
+  .hanger-rack-section:not([data-laptop-layout="wide_static"]):not([data-laptop-layout="portrait_scroll"]) .hanger-item {
+    width: var(--rack-desktop-item-width, 108px) !important;
+    flex: 0 0 var(--rack-desktop-item-width, 108px) !important;
+  }
+  .hanger-rack-section[data-laptop-layout="wide_static"] .hanger-rack-track {
     gap: 8px !important;
     padding: 0 4px !important;
     min-width: 0 !important;
     width: auto !important;
   }
-  .hanger-item {
+  .hanger-rack-section[data-laptop-layout="wide_static"] .hanger-item {
     width: 54px !important;
     flex: 0 0 54px !important;
   }
@@ -390,10 +401,10 @@
     height: clamp(300px, 40vh, 420px) !important;
   }
   .hanger-bench-outfit-title {
-    max-width: 22% !important;
+    max-width: 24% !important;
   }
   .bench-outfit-text {
-    font-size: clamp(16px, 1.8vw, 22px) !important;
+    font-size: calc(clamp(16px, 1.8vw, 22px) * var(--rack-bench-scale, 1)) !important;
   }
 }
 

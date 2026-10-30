@@ -22,6 +22,7 @@
       "label": "Header Logo Font Source",
       "options": [
         { "value": "ahsing", "label": "Ahsing (Typogama Couture)" },
+        { "value": "sixcaps", "label": "Six Caps (Tall Condensed)" },
         { "value": "ragara", "label": "Ragara (Couture Serif)" },
         { "value": "syne", "label": "Syne (Modern Luxury)" },
         { "value": "bodoni", "label": "Bodoni Moda (Editorial Serif)" },
@@ -202,6 +203,7 @@
       "label": "Product Title Font Source",
       "options": [
         { "value": "brand", "label": "Brand Sans (Plus Jakarta Sans)" },
+        { "value": "sixcaps", "label": "Six Caps (Tall Condensed)" },
         { "value": "ahsing", "label": "Ahsing (Typogama Couture)" },
         { "value": "ragara", "label": "Ragara (Couture Serif)" },
         { "value": "syne", "label": "Syne (Modern Luxury)" },
@@ -245,6 +247,34 @@
       "type": "text",
       "id": "custom_title_font",
       "label": "Custom Product Title Font Name"
+    },
+    {
+      "type": "select",
+      "id": "body_font_source",
+      "label": "Body, Buttons & Drawers Font Source",
+      "options": [
+        { "value": "brand", "label": "Brand Sans (Plus Jakarta Sans)" },
+        { "value": "sixcaps", "label": "Six Caps (Tall Condensed)" },
+        { "value": "ahsing", "label": "Ahsing (Typogama Couture)" },
+        { "value": "ragara", "label": "Ragara (Couture Serif)" },
+        { "value": "syne", "label": "Syne (Modern Luxury)" },
+        { "value": "bodoni", "label": "Bodoni Moda (Editorial Vogue)" },
+        { "value": "playfair", "label": "Playfair Display (Romantic Serif)" },
+        { "value": "shopify", "label": "Shopify Font Library (Select below)" },
+        { "value": "custom", "label": "Custom Font Name" }
+      ],
+      "default": "brand"
+    },
+    {
+      "type": "font_picker",
+      "id": "body_font",
+      "label": "Body & Buttons Font (Shopify Library)",
+      "default": "assistant_n4"
+    },
+    {
+      "type": "text",
+      "id": "custom_body_font",
+      "label": "Custom Body & Buttons Font Name"
     },
     {
       "type": "text",

@@ -77,6 +77,8 @@
 
     {%- if s.title_font_source == 'ahsing' -%}
       --pdp-title-font: 'Ahsing', serif;
+    {%- elsif s.title_font_source == 'sixcaps' -%}
+      --pdp-title-font: 'Six Caps', sans-serif;
     {%- elsif s.title_font_source == 'ragara' -%}
       --pdp-title-font: 'Ragara', 'Italiana', Georgia, serif;
     {%- elsif s.title_font_source == 'syne' -%}
@@ -101,11 +103,31 @@
       --pdp-title-font: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
     {%- endif -%}
 
+    {%- if s.body_font_source == 'ahsing' -%}
+      --pdp-body-font: 'Ahsing', serif;
+    {%- elsif s.body_font_source == 'sixcaps' -%}
+      --pdp-body-font: 'Six Caps', sans-serif;
+    {%- elsif s.body_font_source == 'ragara' -%}
+      --pdp-body-font: 'Ragara', 'Italiana', Georgia, serif;
+    {%- elsif s.body_font_source == 'syne' -%}
+      --pdp-body-font: 'Syne', sans-serif;
+    {%- elsif s.body_font_source == 'bodoni' -%}
+      --pdp-body-font: 'Bodoni Moda', serif;
+    {%- elsif s.body_font_source == 'playfair' -%}
+      --pdp-body-font: 'Playfair Display', serif;
+    {%- elsif s.body_font_source == 'shopify' and s.body_font != blank -%}
+      --pdp-body-font: {{ s.body_font.family }}, {{ s.body_font.fallback_families }};
+    {%- elsif s.body_font_source == 'custom' and s.custom_body_font != blank -%}
+      --pdp-body-font: '{{ s.custom_body_font }}', sans-serif;
+    {%- else -%}
+      --pdp-body-font: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+    {%- endif -%}
+
     --pdp-title-scale: {{ s.title_font_scale | default: 100 | divided_by: 100.0 }};
     --pdp-title-spacing: {{ s.title_letter_spacing | default: 0 }}px;
 
     --header-tagline-font: 'Italiana', Georgia, serif;
-    --header-nav-font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --header-nav-font: var(--pdp-body-font, 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif);
     --header-logo-spacing: 0.02em;
 
     /* Theme Dynamic Colors & Lines */
@@ -120,13 +142,15 @@
     --pdp-btn-text: {{ button_text_color }};
   }
 
-  /* Custom Chili Cursor — now applied globally from theme.liquid */
-
+  {%- if s.body_font_source == 'shopify' and s.body_font != blank -%}
+    {{ s.body_font | font_face: font_display: 'swap' }}
+  {%- endif -%}
 
   /* Dynamic CSS overrides based on section settings */
   .product-inspect-wrapper {
     position: relative;
     overflow: hidden;
+    font-family: var(--pdp-body-font) !important;
     {%- if s.bg_mode == 'gradient' and s.bg_gradient != blank -%}
       background: {{ s.bg_gradient }} !important;
     {%- elsif s.bg_mode == 'image' and s.bg_image != blank -%}

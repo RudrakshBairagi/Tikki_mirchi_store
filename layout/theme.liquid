@@ -18,21 +18,23 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Six+Caps&display=swap" rel="stylesheet">
 
-    <!-- Teekhi Bella Runway Flashing Preloader Top-Priority Preloads -->
-    <link rel="preload" as="image" href="{{ 'hanger-look-1.png' | asset_url }}">
-    <link rel="preload" as="image" href="{{ 'hanger-look-2.png' | asset_url }}">
-    <link rel="preload" as="image" href="{{ 'hanger-look-3.png' | asset_url }}">
-    <link rel="preload" as="image" href="{{ 'hanger-look-4.png' | asset_url }}">
-    <link rel="preload" as="image" href="{{ 'hanger-look-5.png' | asset_url }}">
+    {%- if settings.enable_preloader != false -%}
+      <!-- Teekhi Bella Runway Flashing Preloader Top-Priority Preloads -->
+      <link rel="preload" as="image" href="{% if settings.preloader_look_1 != blank %}{{ settings.preloader_look_1 | image_url: width: 600 }}{% else %}{{ 'hanger-look-1.png' | asset_url }}{% endif %}">
+      <link rel="preload" as="image" href="{% if settings.preloader_look_2 != blank %}{{ settings.preloader_look_2 | image_url: width: 600 }}{% else %}{{ 'hanger-look-2.png' | asset_url }}{% endif %}">
+      <link rel="preload" as="image" href="{% if settings.preloader_look_3 != blank %}{{ settings.preloader_look_3 | image_url: width: 600 }}{% else %}{{ 'hanger-look-3.png' | asset_url }}{% endif %}">
+      <link rel="preload" as="image" href="{% if settings.preloader_look_4 != blank %}{{ settings.preloader_look_4 | image_url: width: 600 }}{% else %}{{ 'hanger-look-4.png' | asset_url }}{% endif %}">
+      <link rel="preload" as="image" href="{% if settings.preloader_look_5 != blank %}{{ settings.preloader_look_5 | image_url: width: 600 }}{% else %}{{ 'hanger-look-5.png' | asset_url }}{% endif %}">
+    {%- endif -%}
 
     <title>
       {%- if canonical_url contains 'waitlist' or request.path contains 'waitlist' -%}
-        Waitlist &ndash; Teekhi Bella
+        Waitlist &ndash; {{ shop.name | default: 'Teekhi Bella' }}
       {%- else -%}
         {{ page_title }}
         {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
         {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
-        &ndash; Teekhi Bella
+        &ndash; {{ shop.name | default: 'Teekhi Bella' }}
       {%- endif -%}
     </title>
 
@@ -73,19 +75,28 @@
       html.is-waitlist-mode .section-footer {
         display: none !important;
       }
-      /* Custom Chili Cursor */
-      html, body {
-        cursor: url('{{ "chili-cursor-32.png" | asset_url }}') 0 0, auto !important;
-        cursor: -webkit-image-set(url('{{ "chili-cursor-32.png" | asset_url }}') 1x, url('{{ "chili-cursor-64.png" | asset_url }}') 2x) 0 0, auto !important;
-      }
-      a, button, [role="button"], input, select, textarea, label,
-      .nav-link, .menu-toggle, .header-action-btn, .rack-card-action,
-      .hanger-item, .card-inspect-btn, .dropdown-nav-link,
-      .btn-waitlist-submit, .size-select-pill, .look-btn, .chip-select-btn,
-      .wl-look-card, .btn-submit-reservation {
-        cursor: url('{{ "chili-cursor-32.png" | asset_url }}') 0 0, pointer !important;
-        cursor: -webkit-image-set(url('{{ "chili-cursor-32.png" | asset_url }}') 1x, url('{{ "chili-cursor-64.png" | asset_url }}') 2x) 0 0, pointer !important;
-      }
+      {%- if settings.enable_custom_cursor != false -%}
+        {%- liquid
+          assign cursor_1x = 'chili-cursor-32.png' | asset_url
+          assign cursor_2x = 'chili-cursor-64.png' | asset_url
+          if settings.custom_cursor_image != blank
+            assign cursor_1x = settings.custom_cursor_image | image_url: width: 32, height: 32
+            assign cursor_2x = settings.custom_cursor_image | image_url: width: 64, height: 64
+          endif
+        -%}
+        html, body {
+          cursor: url('{{ cursor_1x }}') 0 0, auto !important;
+          cursor: -webkit-image-set(url('{{ cursor_1x }}') 1x, url('{{ cursor_2x }}') 2x) 0 0, auto !important;
+        }
+        a, button, [role="button"], input, select, textarea, label,
+        .btn, [onclick], .nav-link, .menu-toggle, .header-action-btn, .rack-card-action,
+        .hanger-item, .card-inspect-btn, .dropdown-nav-link,
+        .btn-waitlist-submit, .size-select-pill, .look-btn, .chip-select-btn,
+        .wl-look-card, .btn-submit-reservation {
+          cursor: url('{{ cursor_1x }}') 0 0, pointer !important;
+          cursor: -webkit-image-set(url('{{ cursor_1x }}') 1x, url('{{ cursor_2x }}') 2x) 0 0, pointer !important;
+        }
+      {%- endif -%}
     </style>
 
     {% if page_description %}
@@ -236,8 +247,12 @@
 
         {%- if settings.logo_font_source == 'ahsing' -%}
           --header-logo-font: 'Ahsing', serif;
-        {%- elsif settings.logo_font_source == 'brand' -%}
+        {%- elsif settings.logo_font_source == 'sixcaps' -%}
+          --header-logo-font: 'Six Caps', sans-serif;
+        {%- elsif settings.logo_font_source == 'brand' or settings.logo_font_source == 'ragara' -%}
           --header-logo-font: 'Ragara', 'Italiana', Georgia, serif;
+        {%- elsif settings.logo_font_source == 'shopify' -%}
+          --header-logo-font: {{ settings.type_header_font.family }}, {{ settings.type_header_font.fallback_families }};
         {%- elsif settings.logo_font_source == 'custom' and settings.custom_logo_font != blank -%}
           --header-logo-font: '{{ settings.custom_logo_font }}', serif;
         {%- else -%}
@@ -407,22 +422,6 @@
         body {
           font-size: 1.6rem;
         }
-      }
-
-      /* ═══════════════════════════════════════════════════
-         Global Custom Chili Pepper Cursor
-         Applied site-wide from theme.liquid
-         ═══════════════════════════════════════════════════ */
-      html, body {
-        cursor: url('{{ "chili-cursor-32.png" | asset_url }}') 0 0, auto !important;
-        cursor: -webkit-image-set(url('{{ "chili-cursor-32.png" | asset_url }}') 1x, url('{{ "chili-cursor-64.png" | asset_url }}') 2x) 0 0, auto !important;
-      }
-      a, button, [role="button"], input[type="submit"],
-      input[type="button"], select, label[for],
-      .btn, [onclick], .nav-link, .menu-toggle,
-      .header-action-btn, .dropdown-nav-link {
-        cursor: url('{{ "chili-cursor-32.png" | asset_url }}') 0 0, pointer !important;
-        cursor: -webkit-image-set(url('{{ "chili-cursor-32.png" | asset_url }}') 1x, url('{{ "chili-cursor-64.png" | asset_url }}') 2x) 0 0, pointer !important;
       }
     {% endstyle %}
 

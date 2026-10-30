@@ -2,10 +2,11 @@
  * HOUSE OF ROYALS — ATELIER CLOTHES HANGER RACK CONTROLLER
  * Faithful recreation of the Celestine by Ritika physics engine:
  * 1. Continuous harmonic oscillator physics (underdamped pendulum with natural inertia & decay).
- * 2. Clothes parting / spreading: When an outfit is hovered, the middle outfit pops out
+ * 2. Clothes parting / spreading: When an outfit is hovered/selected, the middle outfit pops out
  *    forward, while left and right outfits smoothly slide aside along the rail.
  * 3. After the cursor moves away, oscillation persists and gracefully dulls down to rest.
- * 4. Momentum transfer on cursor sweep, rail pan/drag, and secondary swing tag physics.
+ * 4. Momentum transfer on cursor sweep, rail pan/drag, laptop mouse-wheel/trackpad horizontal scroll,
+ *    and secondary swing tag physics.
  */
 
 class HangerRack {
@@ -20,6 +21,9 @@ class HangerRack {
 
     this.section._hangerRack = this;
     window._hangerRack = this;
+
+    this.laptopLayoutMode = this.section.dataset.laptopLayout || 'wide_scrollable';
+    this.soundEnabled = this.section.dataset.soundEnabled !== 'false';
 
     // Config from dataset & Live Studio
     const rawSway = parseFloat(this.section.dataset.swayIntensity);
@@ -44,7 +48,7 @@ class HangerRack {
       swayFactor: (saved && saved.swayFactor) || (!isNaN(rawSway) ? 0.4 + (rawSway - 1) * (1.6 / 9) : 1.0)
     };
 
-    this.showTuningPanel = false;
+    this.showTuningPanel = this.section.dataset.showTuning === 'true';
     this.nudgeEnabled = this.section.dataset.nudge !== 'false';
     this.dragEnabled = this.section.dataset.drag !== 'false';
 
@@ -72,6 +76,12 @@ class HangerRack {
     this.garments = this.itemEls.map((el, index) => {
       const assembly = el.querySelector('.hanger-assembly');
       const tag = el.querySelector('.hanger-swing-tag');
+
+      // Prevent native ghost image dragging on desktop browsers
+      el.querySelectorAll('img').forEach((img) => {
+        img.setAttribute('draggable', 'false');
+        img.addEventListener('dragstart', (ev) => ev.preventDefault());
+      });
 
       return {
         el,
@@ -112,8 +122,9 @@ class HangerRack {
     // Start the rod and clothing rack from the middle
     this.centerInitialPosition();
     requestAnimationFrame(() => {
-      this.centerInitialPosition();
       this.updateAlcoveBounds();
+      this.updateTrackAlignment();
+      this.centerInitialPosition();
     });
 
     window.addEventListener('resize', () => {
@@ -121,6 +132,8 @@ class HangerRack {
       this.updateTrackAlignment();
       if (this.selectedIndex >= 0) {
         this.alignSelectedToScreenCenter(this.selectedIndex);
+      } else if (!this.hasUserScrolled) {
+        this.centerInitialPosition();
       }
     }, { passive: true });
 
@@ -134,10 +147,15 @@ class HangerRack {
 
     window.addEventListener('load', () => {
       this.updateAlcoveBounds();
+      this.updateTrackAlignment();
       if (!this.hasUserScrolled) {
         this.centerInitialPosition();
       }
     }, { once: true });
+
+    if (this.showTuningPanel) {
+      this.setupTuningPanel();
+    }
 
     // Initial wake to settle garments
     this.wakePhysics();
@@ -145,6 +163,9 @@ class HangerRack {
 
   isWideView() {
     if (!this.section) return false;
+    if (this.laptopLayoutMode === 'portrait_scroll') {
+      return false;
+    }
     const rect = this.section.getBoundingClientRect();
     const cw = rect.width;
     const ch = rect.height;
@@ -162,7 +183,7 @@ class HangerRack {
 
     // Native resolution and geometry:
     // Wide Desktop: assets/background_full.jpg (1024 x 549)
-    // Portrait Mobile: assets/background_final.png (1536 x 2681)
+    // Portrait Mobile / Tall Scroll: assets/background_final.png (1536 x 2681)
     const imgW = isWide ? 1024 : 1536;
     const imgH = isWide ? 549 : 2681;
     const imgRatio = imgW / imgH;
@@ -195,9 +216,13 @@ class HangerRack {
     const topRight = Math.min(cw, ox + alcoveRightTop * scale);
     const botLeft = Math.max(0, ox + alcoveLeftBot * scale);
     const botRight = Math.min(cw, ox + alcoveRightBot * scale);
+    const alcoveWidth = Math.max(160, topRight - topLeft);
 
     const clipValue = `polygon(${topLeft.toFixed(1)}px 0px, ${topRight.toFixed(1)}px 0px, ${botRight.toFixed(1)}px 100%, ${botLeft.toFixed(1)}px 100%)`;
     this.section.style.setProperty('--alcove-clip', clipValue);
+    this.section.style.setProperty('--alcove-width', `${alcoveWidth.toFixed(1)}px`);
+    this.section.style.setProperty('--alcove-left', `${topLeft.toFixed(1)}px`);
+    this.section.style.setProperty('--alcove-right', `${topRight.toFixed(1)}px`);
 
     // Fixed vertical anchor for the hanging rod:
     // Wide view: y ≈ 106px in native 1024x549
@@ -239,14 +264,16 @@ class HangerRack {
 
   updateTrackAlignment() {
     if (!this.track || !this.trackWrap) return;
+    if (this.laptopLayoutMode === 'wide_scrollable' || !this.isWideView()) {
+      this.track.style.justifyContent = 'flex-start';
+      return;
+    }
     const isOverflowing = this.track.scrollWidth > this.trackWrap.clientWidth + 2;
     this.track.style.justifyContent = isOverflowing ? 'flex-start' : 'center';
   }
 
   /* --------------------------------------------------------------------------
      Atelier Audio Feedback Controller
-     - Sound 1 & 2: Natural cloth & hanger contact when browsing/touching dresses
-     - Sound 3: Metal sliding friction when scrolling or dragging along the metal rail bar
      -------------------------------------------------------------------------- */
   setupAudio() {
     const getSoundUrl = (key, fallback) => {
@@ -263,7 +290,7 @@ class HangerRack {
     this.sound2Url = getSoundUrl(2, 'assets/sound_2.mp3');
     this.sound3Url = getSoundUrl(3, 'assets/sound_3.mp3');
 
-    this.isMuted = false;
+    this.isMuted = !this.soundEnabled;
     this.audioUnlocked = false;
     this.lastDressSoundTime = 0;
     this.dressSoundToggle = false;
@@ -286,9 +313,7 @@ class HangerRack {
         .then(decoded => {
           this.audioBuffers[key] = decoded;
         })
-        .catch(() => {
-          // Fallback to HTML5 audio pool handled automatically
-        });
+        .catch(() => {});
     };
 
     loadBuffer(1, this.sound1Url);
@@ -508,7 +533,7 @@ class HangerRack {
   }
 
   /* --------------------------------------------------------------------------
-     1. Atelier Yellow Bench Outfit Title Display (Six Caps Typography)
+     1. Atelier Yellow Bench Outfit Title Display
      -------------------------------------------------------------------------- */
   setupBenchOutfitTitle() {
     let container = this.section.querySelector('.hanger-rack-container') || this.section;
@@ -546,11 +571,14 @@ class HangerRack {
       }
     });
 
-    const bottomBtn = this.section.querySelector('.rack-waitlist-btn');
+    const bottomBtn = this.section.querySelector('.rack-waitlist-btn-wrap-bottom .rack-waitlist-btn');
     if (bottomBtn) {
       bottomBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        window.scrollToWaitlistForm();
+        const href = bottomBtn.getAttribute('href') || '';
+        if (href.startsWith('#') || document.getElementById('waitlistReservationSection')) {
+          e.preventDefault();
+          window.scrollToWaitlistForm();
+        }
       });
     }
 
@@ -618,7 +646,6 @@ class HangerRack {
     return closestIndex;
   }
 
-  // Legacy compatibility: floating pop-up cards are hidden in favor of yellow bench title
   setupFloatingCard() {
     this.setupBenchOutfitTitle();
   }
@@ -714,7 +741,6 @@ class HangerRack {
       const itemEl = g.el;
 
       // Mouse/Pointer hover: gentle natural cloth pendulum sway and fabric sound
-      // (NO X-axis translating on hover — prevents the pointerleave/mouseenter jitter glitch loop!)
       const handlePointerEnter = (e) => {
         if (this.isDragging || (e && e.pointerType === 'touch')) return;
         this.playDressSound();
@@ -862,7 +888,7 @@ class HangerRack {
   }
 
   /* --------------------------------------------------------------------------
-     5. Rail Horizontal Drag & Scroll Momentum (Celestine formulas)
+     5. Rail Horizontal Drag, Mouse-Wheel/Trackpad Scroll & Momentum
      -------------------------------------------------------------------------- */
   bindTrackScrollMomentum() {
     let lastScroll = this.trackWrap.scrollLeft;
@@ -880,6 +906,16 @@ class HangerRack {
       if (this.isInitialCentering) return;
       this.hasUserScrolled = true;
 
+      // Clear fixed selection parting if user scrolls along the rail
+      if (this.selectedIndex !== -1 && Math.abs(delta) > 3) {
+        this.selectedIndex = -1;
+        this.garments.forEach((g) => {
+          g.el.style.setProperty('--part-shift', '0px');
+          g.el.style.setProperty('--rack-z', '1');
+          g.el.classList.remove('is-selected', 'is-popped-out', 'is-hovered');
+        });
+      }
+
       // Play Sound 3 when scrolling through the metal bar
       if (Math.abs(delta) > 1) {
         this.startRailSlideSound();
@@ -895,11 +931,10 @@ class HangerRack {
       }
       this.wakePhysics();
 
-      // Only show/update bench outfit title if an outfit is currently in front view!
-      if (this.hoveredIndex >= 0 && this.garments[this.hoveredIndex]) {
-        this.updateBenchOutfitTitle(this.garments[this.hoveredIndex], this.hoveredIndex);
-      } else {
-        this.hideBenchOutfitTitle();
+      // Update bench outfit title for the garment closest to the alcove center while scrolling
+      const centerIdx = this.getClosestCenterGarmentIndex();
+      if (this.garments[centerIdx]) {
+        this.showBenchOutfitTitle(this.garments[centerIdx], centerIdx);
       }
     }, { passive: true });
 
@@ -909,11 +944,34 @@ class HangerRack {
       }
     }, { passive: true });
 
-    this.trackWrap.addEventListener('wheel', () => {
+    // Laptop / Desktop Mouse-Wheel & Two-Finger Trackpad Horizontal Rack Scrolling
+    const onWheel = (e) => {
       if (this.trackWrap.scrollTop !== 0) {
         this.trackWrap.scrollTop = 0;
       }
-    }, { passive: true });
+
+      const maxScroll = this.trackWrap.scrollWidth - this.trackWrap.clientWidth;
+      if (maxScroll <= 2) return;
+
+      // If predominantly vertical wheel/trackpad scroll over the rack, map deltaY -> scrollLeft
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+        const atStart = this.trackWrap.scrollLeft <= 2 && e.deltaY < 0;
+        const atEnd = this.trackWrap.scrollLeft >= maxScroll - 2 && e.deltaY > 0;
+
+        // If inside the scrollable range of the rack, scroll the clothes horizontally!
+        if (!atStart && !atEnd) {
+          e.preventDefault();
+          const prevBehavior = this.trackWrap.style.scrollBehavior;
+          this.trackWrap.style.scrollBehavior = 'auto';
+          this.trackWrap.scrollLeft += e.deltaY * 0.85;
+          requestAnimationFrame(() => {
+            this.trackWrap.style.scrollBehavior = prevBehavior;
+          });
+        }
+      }
+    };
+
+    this.trackWrap.addEventListener('wheel', onWheel, { passive: false });
   }
 
   bindRailDrag() {
@@ -926,11 +984,10 @@ class HangerRack {
         wrap.scrollTop = 0;
       }
       const x = e.pageX - wrap.offsetLeft;
-      const walk = (x - this.startX) * 1.2;
+      const walk = (x - this.startX) * 1.25;
 
-      if (Math.abs(walk) > 10) {
+      if (Math.abs(walk) > 8) {
         this.hasMovedSignificantly = true;
-        // Play Sound 3 when sliding along the metal bar
         this.startRailSlideSound();
       }
       wrap.scrollLeft = this.scrollLeft - walk;
@@ -980,11 +1037,12 @@ class HangerRack {
      6. Live Interactive Physics Studio Floating Panel
      -------------------------------------------------------------------------- */
   setupTuningPanel() {
-    return; // Disabled: Physics Studio icon removed
+    if (!this.showTuningPanel) return;
     if (document.querySelector('.hanger-tuning-studio')) return;
 
     const panel = document.createElement('div');
     panel.className = 'hanger-tuning-studio is-collapsed';
+    panel.style.display = 'block';
     panel.innerHTML = `
       <button class="tuning-toggle-btn" type="button" aria-label="Toggle Physics Studio">
         <span class="tuning-icon">⚙️</span>
@@ -1037,7 +1095,7 @@ class HangerRack {
               <span class="tuning-label">Rail Parting Spread</span>
               <span class="tuning-val" id="val-spread">${this.physicsConfig.spread}px</span>
             </div>
-            <input type="range" id="slider-spread" min="20" max="80" step="2" value="${this.physicsConfig.spread}">
+            <input type="range" id="slider-spread" min="20" max="180" step="2" value="${this.physicsConfig.spread}">
           </div>
 
           <div class="tuning-row">
@@ -1058,7 +1116,6 @@ class HangerRack {
 
     document.body.appendChild(panel);
 
-    // Bind events
     const toggleBtn = panel.querySelector('.tuning-toggle-btn');
     const closeBtn = panel.querySelector('.tuning-close-btn');
 
@@ -1084,9 +1141,9 @@ class HangerRack {
     const presetBtns = panel.querySelectorAll('.preset-btn');
 
     const presets = {
-      celestine: { springK: 0.011, damping: 0.055, hitForce: 0.0095, spread: 50, swayFactor: 1.0 },
-      calm: { springK: 0.003, damping: 0.025, hitForce: 0.0030, spread: 36, swayFactor: 0.6 },
-      dynamic: { springK: 0.018, damping: 0.045, hitForce: 0.0140, spread: 60, swayFactor: 1.3 }
+      celestine: { springK: 0.011, damping: 0.055, hitForce: 0.0095, spread: 130, swayFactor: 1.0 },
+      calm: { springK: 0.003, damping: 0.025, hitForce: 0.0030, spread: 90, swayFactor: 0.6 },
+      dynamic: { springK: 0.018, damping: 0.045, hitForce: 0.0140, spread: 150, swayFactor: 1.3 }
     };
 
     const updateUI = () => {
@@ -1130,6 +1187,7 @@ class HangerRack {
       this.physicsConfig.hitForce = parseFloat(e.target.value);
       valHit.textContent = this.physicsConfig.hitForce.toFixed(4);
       presetBtns.forEach(b => b.classList.remove('is-active'));
+      this.wakePhysics();
       updateUI();
     });
 
@@ -1137,6 +1195,7 @@ class HangerRack {
       this.physicsConfig.spread = parseInt(e.target.value, 10);
       valSpread.textContent = `${this.physicsConfig.spread}px`;
       presetBtns.forEach(b => b.classList.remove('is-active'));
+      this.wakePhysics();
       updateUI();
     });
 
@@ -1144,38 +1203,43 @@ class HangerRack {
       this.physicsConfig.swayFactor = parseFloat(e.target.value);
       valSway.textContent = `${this.physicsConfig.swayFactor.toFixed(1)}x`;
       presetBtns.forEach(b => b.classList.remove('is-active'));
+      this.wakePhysics();
       updateUI();
     });
 
     presetBtns.forEach(btn => {
+      const pName = btn.dataset.preset;
+      if (!pName) return;
       btn.addEventListener('click', () => {
-        presetBtns.forEach(b => b.classList.remove('is-active'));
+        presetBtns.forEach(b => {
+          if (b.dataset.preset) b.classList.remove('is-active');
+        });
         btn.classList.add('is-active');
-        const p = presets[btn.dataset.preset];
-        if (p) {
-          Object.assign(this.physicsConfig, p);
-          updateUI();
-          this.wakePhysics();
+        Object.assign(this.physicsConfig, presets[pName]);
+        updateUI();
+        for (const g of this.garments) {
+          g.vel += (Math.random() - 0.5) * 0.015;
         }
+        this.wakePhysics();
       });
     });
 
     panel.querySelector('#tuning-reset').addEventListener('click', () => {
       Object.assign(this.physicsConfig, presets.celestine);
+      localStorage.removeItem('tm_hanger_physics');
       presetBtns.forEach(b => b.classList.remove('is-active'));
-      panel.querySelector('[data-preset="celestine"]')?.classList.add('is-active');
+      panel.querySelector('[data-preset="celestine"]').classList.add('is-active');
       updateUI();
       this.wakePhysics();
     });
 
     panel.querySelector('#tuning-copy').addEventListener('click', (e) => {
-      const text = JSON.stringify(this.physicsConfig, null, 2);
-      navigator.clipboard.writeText(text).then(() => {
-        const btn = e.target;
-        const orig = btn.textContent;
-        btn.textContent = 'Copied!';
-        setTimeout(() => { btn.textContent = orig; }, 1500);
-      });
+      const jsonStr = JSON.stringify(this.physicsConfig, null, 2);
+      navigator.clipboard?.writeText(jsonStr);
+      const btn = e.target;
+      const orig = btn.textContent;
+      btn.textContent = '✓ Copied!';
+      setTimeout(() => { btn.textContent = orig; }, 1400);
     });
 
     const soundBtn = panel.querySelector('#tuning-sound-btn');

@@ -26,11 +26,15 @@
   {%- if ws.title_font_source == 'shopify' and ws.title_font != blank -%}
     {{ ws.title_font | font_face: font_display: 'swap' }}
   {%- endif -%}
+  {%- if ws.body_font_source == 'shopify' and ws.body_font != blank -%}
+    {{ ws.body_font | font_face: font_display: 'swap' }}
+  {%- endif -%}
 
   :root {
-
     {%- if ws.title_font_source == 'ahsing' -%}
       --wl-title-font: 'Ahsing', serif;
+    {%- elsif ws.title_font_source == 'sixcaps' -%}
+      --wl-title-font: 'Six Caps', sans-serif;
     {%- elsif ws.title_font_source == 'ragara' -%}
       --wl-title-font: 'Ragara', 'Italiana', Georgia, serif;
     {%- elsif ws.title_font_source == 'syne' -%}
@@ -55,6 +59,34 @@
       --wl-title-font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
     {%- endif -%}
 
+    {%- if ws.body_font_source == 'ahsing' -%}
+      --wl-body-font: 'Ahsing', serif;
+    {%- elsif ws.body_font_source == 'sixcaps' -%}
+      --wl-body-font: 'Six Caps', sans-serif;
+    {%- elsif ws.body_font_source == 'ragara' -%}
+      --wl-body-font: 'Ragara', 'Italiana', Georgia, serif;
+    {%- elsif ws.body_font_source == 'syne' -%}
+      --wl-body-font: 'Syne', sans-serif;
+    {%- elsif ws.body_font_source == 'bodoni' -%}
+      --wl-body-font: 'Bodoni Moda', serif;
+    {%- elsif ws.body_font_source == 'playfair' -%}
+      --wl-body-font: 'Playfair Display', serif;
+    {%- elsif ws.body_font_source == 'italiana' -%}
+      --wl-body-font: 'Italiana', Georgia, serif;
+    {%- elsif ws.body_font_source == 'cinzel' -%}
+      --wl-body-font: 'Cinzel', serif;
+    {%- elsif ws.body_font_source == 'cormorant' -%}
+      --wl-body-font: 'Cormorant Garamond', serif;
+    {%- elsif ws.body_font_source == 'outfit' -%}
+      --wl-body-font: 'Outfit', sans-serif;
+    {%- elsif ws.body_font_source == 'shopify' and ws.body_font != blank -%}
+      --wl-body-font: {{ ws.body_font.family }}, {{ ws.body_font.fallback_families }};
+    {%- elsif ws.body_font_source == 'custom' and ws.custom_body_font != blank -%}
+      --wl-body-font: '{{ ws.custom_body_font }}', sans-serif;
+    {%- else -%}
+      --wl-body-font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    {%- endif -%}
+
     --wl-bg: {{ wl_bg }};
     --wl-card-bg: {{ wl_card_bg }};
     --wl-text: {{ wl_text }};
@@ -71,12 +103,14 @@
     --wl-btn-bg: {{ wl_submit_bg }};
     --wl-submit-text: {{ wl_submit_text }};
     --wl-btn-text: {{ wl_submit_text }};
+    --wl-left-text: {{ ws.left_text_color | default: '#ffffff' }};
+    --wl-look-card-bg: {{ ws.look_card_bg_color | default: '#000000' }};
     --wl-font-serif: var(--wl-title-font, 'Plus Jakarta Sans', serif);
-    --wl-font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --wl-font-main: var(--wl-body-font, 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif);
   }
 
   #atelierWaitlistSection {
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: var(--wl-font-main);
   }
 
 
@@ -157,9 +191,37 @@
   .size-select-pill.is-active .size-pill-detail {
     color: var(--wl-card-bg) !important;
   }
-  .waitlist-submit-btn {
+  .waitlist-submit-btn,
+  #atelierWaitlistSection .wl-submit-btn {
     background-color: var(--wl-submit-bg) !important;
     color: var(--wl-submit-text) !important;
+    font-family: var(--wl-font-main) !important;
+  }
+  #atelierWaitlistSection .wl-left-title {
+    font-family: var(--wl-title-font) !important;
+    font-size: calc(clamp(20px, 2.1vw, 28px) * {{ ws.title_scale | default: 100 | divided_by: 100.0 }}) !important;
+    color: var(--wl-left-text, #ffffff) !important;
+  }
+  #atelierWaitlistSection .wl-left-eyebrow,
+  #atelierWaitlistSection .wl-left-sub {
+    font-family: var(--wl-font-main) !important;
+    color: var(--wl-left-text, #ffffff) !important;
+  }
+  #atelierWaitlistSection .wl-look-info {
+    background-color: var(--wl-look-card-bg, #000000) !important;
+  }
+  #atelierWaitlistSection .wl-look-num,
+  #atelierWaitlistSection .wl-look-name,
+  #atelierWaitlistSection .wl-field label,
+  #atelierWaitlistSection .wl-field input,
+  #atelierWaitlistSection .wl-field select,
+  #atelierWaitlistSection .wl-piece-chip,
+  #atelierWaitlistSection .wl-size-pill,
+  #atelierWaitlistSection .wl-privacy-note {
+    font-family: var(--wl-font-main) !important;
+  }
+  #atelierWaitlistSection .wl-right-panel::before {
+    background-color: var(--wl-card-bg, rgba(255, 255, 255, 0.88)) !important;
   }
 </style>
 
@@ -517,7 +579,7 @@
     {%- assign hero_bg_image = ws.bg_image | default: nil -%}
     <section
       class="wl-split-section"
-      style="{%- if hero_bg_image != blank -%}background-image: url('{{ hero_bg_image | image_url: width: 2600 }}');{%- else -%}background-image: url('{{ "background.jpg" | asset_url }}');{%- endif -%}"
+      style="{%- if ws.bg_mode == 'solid' -%}background-color: {{ wl_bg }}; background-image: none;{%- elsif ws.bg_mode == 'gradient' and ws.bg_gradient != blank -%}background: {{ ws.bg_gradient }};{%- elsif hero_bg_image != blank -%}background-image: url('{{ hero_bg_image | image_url: width: 2600 }}');{%- else -%}background-image: url('{{ "background.jpg" | asset_url }}');{%- endif -%}"
     >
       <div class="wl-split-overlay" aria-hidden="true" style="opacity: {{ ws.bg_overlay_opacity | default: 0 | divided_by: 100.0 }};"></div>
 

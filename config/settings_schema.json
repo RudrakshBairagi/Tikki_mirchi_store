@@ -114,7 +114,9 @@
         "label": "Brand Logo Font Source",
         "options": [
           { "value": "ahsing", "label": "Ahsing (Typogama Couture)" },
+          { "value": "sixcaps", "label": "Six Caps (Tall Condensed)" },
           { "value": "brand", "label": "Ragara Couture (Classic)" },
+          { "value": "ragara", "label": "Ragara (Couture Serif)" },
           { "value": "shopify", "label": "Shopify Font Library (Selected below)" },
           { "value": "custom", "label": "Custom Font Name" }
         ],
@@ -1486,6 +1488,235 @@
         "id": "customer_account_menu",
         "default": "customer-account-main-menu",
         "label": "t:settings_schema.customer_accounts.settings.customer_account_menu.label"
+      }
+    ]
+  },
+  {
+    "name": "Atelier Preloader & Cursor",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Runway Preloader Visibility & Timing"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_preloader",
+        "label": "Enable Runway Preloader",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "preloader_once_per_session",
+        "label": "Play Only Once Per Browser Session",
+        "default": false,
+        "info": "When enabled, the preloader plays on first visit and skips on internal page clicks."
+      },
+      {
+        "type": "range",
+        "id": "preloader_frame_duration",
+        "min": 80,
+        "max": 450,
+        "step": 10,
+        "unit": "ms",
+        "label": "Outfit Flash Speed (ms per frame)",
+        "default": 190
+      },
+      {
+        "type": "range",
+        "id": "preloader_min_duration",
+        "min": 500,
+        "max": 4500,
+        "step": 100,
+        "unit": "ms",
+        "label": "Minimum Preloader Display Duration (ms)",
+        "default": 2000
+      },
+      {
+        "type": "header",
+        "content": "Preloader Background & Colors"
+      },
+      {
+        "type": "select",
+        "id": "preloader_bg_mode",
+        "label": "Preloader Background Mode",
+        "options": [
+          { "value": "solid", "label": "Solid Color" },
+          { "value": "gradient", "label": "Luxury Gradient" },
+          { "value": "image", "label": "Background Image" }
+        ],
+        "default": "solid"
+      },
+      {
+        "type": "color",
+        "id": "preloader_bg_color",
+        "label": "Preloader Background Color",
+        "default": "#789282"
+      },
+      {
+        "type": "text",
+        "id": "preloader_bg_gradient",
+        "label": "Preloader Background Gradient (CSS)",
+        "default": "linear-gradient(135deg, #789282 0%, #52685b 100%)"
+      },
+      {
+        "type": "image_picker",
+        "id": "preloader_bg_image",
+        "label": "Preloader Background Image"
+      },
+      {
+        "type": "color",
+        "id": "preloader_title_color",
+        "label": "Brand Title Color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "preloader_status_color",
+        "label": "Bottom Status Text Color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "preloader_progress_color",
+        "label": "Progress Bar Fill Color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "preloader_progress_track_color",
+        "label": "Progress Bar Track Color",
+        "default": "#b5c4bb"
+      },
+      {
+        "type": "header",
+        "content": "Preloader Text & Typography"
+      },
+      {
+        "type": "text",
+        "id": "preloader_brand_title",
+        "label": "Preloader Brand Title",
+        "default": "Teekhi Bella"
+      },
+      {
+        "type": "select",
+        "id": "preloader_title_font_source",
+        "label": "Brand Title Font Source",
+        "options": [
+          { "value": "ahsing", "label": "Ahsing (Typogama Couture)" },
+          { "value": "ragara", "label": "Ragara (Couture Serif)" },
+          { "value": "sixcaps", "label": "Six Caps (Tall Condensed)" },
+          { "value": "syne", "label": "Syne (Modern Luxury)" },
+          { "value": "bodoni", "label": "Bodoni Moda (Editorial Vogue)" },
+          { "value": "playfair", "label": "Playfair Display (Romantic Serif)" },
+          { "value": "italiana", "label": "Italiana (Milano Couture)" },
+          { "value": "cinzel", "label": "Cinzel (Grand Roman)" },
+          { "value": "cormorant", "label": "Cormorant Garamond (Elegance)" },
+          { "value": "outfit", "label": "Outfit (Ultra Clean Sans)" },
+          { "value": "brand", "label": "Plus Jakarta Sans" },
+          { "value": "shopify", "label": "Shopify Font Library (Select below)" },
+          { "value": "custom", "label": "Custom Font Name" }
+        ],
+        "default": "ahsing"
+      },
+      {
+        "type": "font_picker",
+        "id": "preloader_title_font",
+        "label": "Brand Title Font (Shopify Library)",
+        "default": "assistant_n4"
+      },
+      {
+        "type": "text",
+        "id": "preloader_custom_title_font",
+        "label": "Custom Brand Title Font Name"
+      },
+      {
+        "type": "range",
+        "id": "preloader_title_scale",
+        "min": 60,
+        "max": 160,
+        "step": 5,
+        "unit": "%",
+        "label": "Brand Title Size Scale",
+        "default": 100
+      },
+      {
+        "type": "text",
+        "id": "preloader_status_text",
+        "label": "Bottom Status Caption",
+        "default": "Entering The Atelier"
+      },
+      {
+        "type": "select",
+        "id": "preloader_status_font_source",
+        "label": "Status Caption Font Source",
+        "options": [
+          { "value": "brand", "label": "Plus Jakarta Sans (Default)" },
+          { "value": "sixcaps", "label": "Six Caps (Tall Condensed)" },
+          { "value": "ahsing", "label": "Ahsing (Typogama Couture)" },
+          { "value": "ragara", "label": "Ragara (Couture Serif)" },
+          { "value": "syne", "label": "Syne (Modern Luxury)" },
+          { "value": "bodoni", "label": "Bodoni Moda (Editorial Vogue)" },
+          { "value": "playfair", "label": "Playfair Display (Romantic Serif)" },
+          { "value": "shopify", "label": "Shopify Font Library (Select below)" },
+          { "value": "custom", "label": "Custom Font Name" }
+        ],
+        "default": "brand"
+      },
+      {
+        "type": "font_picker",
+        "id": "preloader_status_font",
+        "label": "Status Caption Font (Shopify Library)",
+        "default": "assistant_n4"
+      },
+      {
+        "type": "text",
+        "id": "preloader_custom_status_font",
+        "label": "Custom Status Caption Font Name"
+      },
+      {
+        "type": "header",
+        "content": "Preloader Flashing Garment Cutouts (5 Looks)"
+      },
+      {
+        "type": "image_picker",
+        "id": "preloader_look_1",
+        "label": "Preloader Look 1 Cutout (Defaults to hanger-look-1.png)"
+      },
+      {
+        "type": "image_picker",
+        "id": "preloader_look_2",
+        "label": "Preloader Look 2 Cutout (Defaults to hanger-look-2.png)"
+      },
+      {
+        "type": "image_picker",
+        "id": "preloader_look_3",
+        "label": "Preloader Look 3 Cutout (Defaults to hanger-look-3.png)"
+      },
+      {
+        "type": "image_picker",
+        "id": "preloader_look_4",
+        "label": "Preloader Look 4 Cutout (Defaults to hanger-look-4.png)"
+      },
+      {
+        "type": "image_picker",
+        "id": "preloader_look_5",
+        "label": "Preloader Look 5 Cutout (Defaults to hanger-look-5.png)"
+      },
+      {
+        "type": "header",
+        "content": "Global Custom Cursor"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_custom_cursor",
+        "label": "Enable Custom Chili Pepper Cursor",
+        "default": true
+      },
+      {
+        "type": "image_picker",
+        "id": "custom_cursor_image",
+        "label": "Custom Cursor Image (Optional 32x32 / 64x64 PNG)",
+        "info": "Leave blank to use the default Teekhi Bella Chili Pepper cursor."
       }
     ]
   }

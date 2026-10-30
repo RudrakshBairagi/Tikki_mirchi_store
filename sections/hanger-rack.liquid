@@ -181,16 +181,88 @@
     --rack-eyebrow-scale: {{ section.settings.eyebrow_font_scale | default: 100 | divided_by: 100.0 }};
     --rack-subheading-scale: {{ section.settings.subheading_font_scale | default: 100 | divided_by: 100.0 }};
     --rack-title-spacing: {{ section.settings.heading_letter_spacing | default: 2 }}px;
+    --rack-heading-color: {{ section.settings.heading_color | default: '#ffffff' }};
+    --rack-bench-color: {{ section.settings.bench_text_color | default: '#000000' }};
+    --rack-bench-scale: {{ section.settings.bench_font_scale | default: 100 | divided_by: 100.0 }};
+    --rack-desktop-item-width: {{ section.settings.desktop_item_width | default: 108 }}px;
+
+    {%- if section.settings.bench_font_source == 'shopify' and section.settings.bench_font != blank -%}
+      --rack-bench-font: {{ section.settings.bench_font.family }}, {{ section.settings.bench_font.fallback_families }};
+    {%- elsif section.settings.bench_font_source == 'ahsing' -%}
+      --rack-bench-font: 'Ahsing', serif;
+    {%- elsif section.settings.bench_font_source == 'ragara' -%}
+      --rack-bench-font: 'Ragara', 'Italiana', Georgia, serif;
+    {%- elsif section.settings.bench_font_source == 'syne' -%}
+      --rack-bench-font: 'Syne', sans-serif;
+    {%- elsif section.settings.bench_font_source == 'bodoni' -%}
+      --rack-bench-font: 'Bodoni Moda', serif;
+    {%- elsif section.settings.bench_font_source == 'playfair' -%}
+      --rack-bench-font: 'Playfair Display', serif;
+    {%- elsif section.settings.bench_font_source == 'italiana' -%}
+      --rack-bench-font: 'Italiana', Georgia, serif;
+    {%- elsif section.settings.bench_font_source == 'cinzel' -%}
+      --rack-bench-font: 'Cinzel', serif;
+    {%- elsif section.settings.bench_font_source == 'cormorant' -%}
+      --rack-bench-font: 'Cormorant Garamond', serif;
+    {%- elsif section.settings.bench_font_source == 'outfit' -%}
+      --rack-bench-font: 'Outfit', sans-serif;
+    {%- elsif section.settings.bench_font_source == 'brand' -%}
+      --rack-bench-font: 'Plus Jakarta Sans', sans-serif;
+    {%- elsif section.settings.bench_font_source == 'custom' and section.settings.custom_bench_font != blank -%}
+      --rack-bench-font: '{{ section.settings.custom_bench_font }}', sans-serif;
+    {%- else -%}
+      --rack-bench-font: 'Six Caps', sans-serif;
+    {%- endif -%}
+
+    {%- liquid
+      assign desktop_bg_url = 'background_full.jpg' | asset_url
+      if section.settings.desktop_bg_image != blank
+        assign desktop_bg_url = section.settings.desktop_bg_image | image_url: width: 2400
+      elsif section.settings.bg_image != blank
+        assign desktop_bg_url = section.settings.bg_image | image_url: width: 2400
+      endif
+
+      assign mobile_bg_url = 'background_final.png' | asset_url
+      if section.settings.mobile_bg_image != blank
+        assign mobile_bg_url = section.settings.mobile_bg_image | image_url: width: 2000
+      elsif section.settings.bg_image != blank
+        assign mobile_bg_url = section.settings.bg_image | image_url: width: 2000
+      endif
+    -%}
+    --rack-desktop-bg-img: url('{{ desktop_bg_url }}');
+    --rack-mobile-bg-img: url('{{ mobile_bg_url }}');
   }
+
+  {%- if section.settings.bench_font_source == 'shopify' and section.settings.bench_font != blank -%}
+    {{ section.settings.bench_font | font_face: font_display: 'swap' }}
+  {%- endif -%}
+  {%- if section.settings.waitlist_heading_font_source == 'shopify' and section.settings.waitlist_heading_font != blank -%}
+    {{ section.settings.waitlist_heading_font | font_face: font_display: 'swap' }}
+  {%- endif -%}
+  {%- if section.settings.waitlist_body_font_source == 'shopify' and section.settings.waitlist_body_font != blank -%}
+    {{ section.settings.waitlist_body_font | font_face: font_display: 'swap' }}
+  {%- endif -%}
 
   #HangerRack-{{ section.id }} {
     position: relative !important;
-    background-color: #1a221d !important;
-    background-image: url('{{ "background_full.jpg" | asset_url }}') !important;
+    background-color: var(--rack-bg, #1a221d) !important;
+    {%- if section.settings.bg_mode == 'solid' -%}
+      background-image: none !important;
+    {%- elsif section.settings.bg_mode == 'gradient' and section.settings.bg_gradient != blank -%}
+      background: {{ section.settings.bg_gradient }} !important;
+    {%- elsif section.settings.laptop_layout_mode == 'portrait_scroll' -%}
+      background-image: var(--rack-mobile-bg-img) !important;
+    {%- else -%}
+      background-image: var(--rack-desktop-bg-img) !important;
+    {%- endif -%}
     background-size: cover !important;
     background-position: center top !important;
     background-repeat: no-repeat !important;
-    min-height: calc(100dvh - 80px) !important;
+    {%- if section.settings.laptop_layout_mode == 'portrait_scroll' -%}
+      min-height: 174vw !important;
+    {%- else -%}
+      min-height: calc(100dvh - 80px) !important;
+    {%- endif -%}
     padding-top: clamp(20px, 4vh, 40px) !important;
     padding-bottom: clamp(24px, 4.5vh, 44px) !important;
     overflow: hidden !important;
@@ -202,34 +274,84 @@
 
   @media (max-width: 899px), (max-aspect-ratio: 1/1) {
     #HangerRack-{{ section.id }} {
-      background-image: url('{{ "background_final.png" | asset_url }}') !important;
+      {%- if section.settings.bg_mode == 'solid' -%}
+        background-image: none !important;
+      {%- elsif section.settings.bg_mode == 'gradient' and section.settings.bg_gradient != blank -%}
+        background: {{ section.settings.bg_gradient }} !important;
+      {%- else -%}
+        background-image: var(--rack-mobile-bg-img) !important;
+      {%- endif -%}
     }
   }
 
   @media (min-width: 900px) and (min-aspect-ratio: 1.05/1) {
-    #HangerRack-{{ section.id }} .hanger-rack-track {
+    /* Default Laptop Mode: Wide Walk-In Closet with Scrollable Hanger Rack */
+    #HangerRack-{{ section.id }}[data-laptop-layout="wide_scrollable"] .hanger-rack-track {
+      justify-content: flex-start !important;
+      gap: clamp(14px, 1.8vw, 24px) !important;
+      padding: 0 calc(50% - (var(--rack-desktop-item-width, 108px) / 2)) !important;
+      width: max-content !important;
+      min-width: 100% !important;
+    }
+    #HangerRack-{{ section.id }}[data-laptop-layout="wide_scrollable"] .hanger-item {
+      width: var(--rack-desktop-item-width, 108px) !important;
+      flex: 0 0 var(--rack-desktop-item-width, 108px) !important;
+    }
+    #HangerRack-{{ section.id }}[data-laptop-layout="wide_scrollable"] .hanger-garment-img {
+      height: clamp(300px, 40vh, 420px) !important;
+    }
+    #HangerRack-{{ section.id }}[data-laptop-layout="wide_scrollable"] .hanger-bench-outfit-title {
+      max-width: 24% !important;
+    }
+    #HangerRack-{{ section.id }}[data-laptop-layout="wide_scrollable"] .bench-outfit-text {
+      font-size: calc(clamp(16px, 1.8vw, 22px) * var(--rack-bench-scale, 1)) !important;
+    }
+
+    /* Portrait Scroll Mode on Laptop: Uses Phone Ratio Vertical + Horizontal Scroll */
+    #HangerRack-{{ section.id }}[data-laptop-layout="portrait_scroll"] .hanger-rack-track {
+      justify-content: flex-start !important;
+      gap: clamp(16px, 2.5vw, 28px) !important;
+      padding: 0 calc(50% - 70px) !important;
+      width: max-content !important;
+      min-width: 100% !important;
+    }
+    #HangerRack-{{ section.id }}[data-laptop-layout="portrait_scroll"] .hanger-item {
+      width: clamp(130px, 14vw, 180px) !important;
+      flex: 0 0 clamp(130px, 14vw, 180px) !important;
+    }
+    #HangerRack-{{ section.id }}[data-laptop-layout="portrait_scroll"] .hanger-garment-img {
+      height: clamp(380px, 52vw, 640px) !important;
+      max-height: none !important;
+    }
+
+    /* Legacy Static Compact Mode on Laptop */
+    #HangerRack-{{ section.id }}[data-laptop-layout="wide_static"] .hanger-rack-track {
       gap: 8px !important;
       padding: 0 4px !important;
       min-width: 0 !important;
       width: auto !important;
     }
-    #HangerRack-{{ section.id }} .hanger-item {
+    #HangerRack-{{ section.id }}[data-laptop-layout="wide_static"] .hanger-item {
       width: 54px !important;
       flex: 0 0 54px !important;
     }
-    #HangerRack-{{ section.id }} .hanger-garment-img {
+    #HangerRack-{{ section.id }}[data-laptop-layout="wide_static"] .hanger-garment-img {
       height: clamp(300px, 40vh, 420px) !important;
-    }
-    #HangerRack-{{ section.id }} .hanger-bench-outfit-title {
-      max-width: 22% !important;
-    }
-    #HangerRack-{{ section.id }} .bench-outfit-text {
-      font-size: clamp(16px, 1.8vw, 22px) !important;
     }
   }
 
   #HangerRack-{{ section.id }} .hanger-rack-bg-overlay {
-    display: none !important;
+    {%- if section.settings.bg_overlay_opacity > 0 -%}
+      display: block !important;
+      position: absolute !important;
+      inset: 0 !important;
+      background: #000000 !important;
+      opacity: {{ section.settings.bg_overlay_opacity | divided_by: 100.0 }} !important;
+      pointer-events: none !important;
+      z-index: 1 !important;
+    {%- else -%}
+      display: none !important;
+    {%- endif -%}
   }
 
   #HangerRack-{{ section.id }} .hanger-rack-container {
@@ -253,8 +375,27 @@
     z-index: 5 !important;
   }
 
-  #HangerRack-{{ section.id }} .hanger-rack-eyebrow,
-  #HangerRack-{{ section.id }} .hanger-rack-subheading,
+  #HangerRack-{{ section.id }} .hanger-rack-eyebrow {
+    display: {% if section.settings.show_eyebrow %}flex{% else %}none{% endif %} !important;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--rack-eyebrow-font, 'Six Caps', sans-serif) !important;
+    font-size: calc(14px * var(--rack-eyebrow-scale, 1)) !important;
+    letter-spacing: 0.2em !important;
+    text-transform: uppercase !important;
+    color: var(--rack-heading-color, #ffffff) !important;
+    margin-bottom: 6px !important;
+  }
+
+  #HangerRack-{{ section.id }} .hanger-rack-subheading {
+    display: {% if section.settings.show_subheading %}block{% else %}none{% endif %} !important;
+    font-family: var(--rack-subheading-font, 'Plus Jakarta Sans', sans-serif) !important;
+    font-size: calc(14px * var(--rack-subheading-scale, 1)) !important;
+    color: var(--rack-heading-color, #ffffff) !important;
+    margin: 6px auto 0 auto !important;
+  }
+
   #HangerRack-{{ section.id }} .rack-waitlist-btn-wrap-top,
   #HangerRack-{{ section.id }} .hanger-rail-bar,
   #HangerRack-{{ section.id }} .hanger-rail-bar:empty,
@@ -263,12 +404,13 @@
   }
 
   #HangerRack-{{ section.id }} .hanger-rack-title {
-    font-family: 'Six Caps', sans-serif !important;
-    font-size: clamp(54px, 14vw, 84px) !important;
-    font-weight: 400 !important;
-    letter-spacing: 0.08em !important;
+    font-family: var(--rack-title-font, 'Six Caps', sans-serif) !important;
+    font-weight: var(--rack-title-weight, 400) !important;
+    font-style: var(--rack-title-style, normal) !important;
+    font-size: calc(clamp(54px, 14vw, 84px) * var(--rack-heading-scale, 1)) !important;
+    letter-spacing: var(--rack-title-spacing, 2px) !important;
     text-transform: uppercase !important;
-    color: #ffffff !important;
+    color: var(--rack-heading-color, #ffffff) !important;
     line-height: 0.9 !important;
     margin: 0 auto !important;
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45) !important;
@@ -311,10 +453,12 @@
 
   #HangerRack-{{ section.id }} .hanger-rack-track {
     display: flex !important;
-    justify-content: center !important;
+    justify-content: flex-start !important;
     align-items: flex-start !important;
     gap: clamp(8px, 1.2vw, 16px) !important;
-    padding: 0 40px !important;
+    padding: 0 calc(50% - 54px) !important;
+    width: max-content !important;
+    min-width: 100% !important;
     touch-action: pan-x !important;
     overflow-y: hidden !important;
   }
@@ -324,9 +468,15 @@
     flex: 0 0 clamp(96px, 8vw, 122px) !important;
   }
 
+  #HangerRack-{{ section.id }} .hanger-item .hanger-wire-svg {
+    stroke: var(--rack-hanger-color, #d0c5b4) !important;
+  }
+
   #HangerRack-{{ section.id }} .hanger-garment-img {
     max-height: clamp(260px, 36vh, 320px) !important;
     width: auto !important;
+    -webkit-user-drag: none !important;
+    user-select: none !important;
   }
 
   #HangerRack-{{ section.id }} .hanger-floating-card {
@@ -343,7 +493,7 @@
     right: 0 !important;
     bottom: clamp(14px, 2.8vh, 28px) !important;
     top: auto !important;
-    display: flex !important;
+    display: {% if section.settings.show_bottom_waitlist_btn == false %}none{% else %}flex{% endif %} !important;
     justify-content: center !important;
     align-items: center !important;
     z-index: 12 !important;
@@ -353,11 +503,28 @@
     pointer-events: auto !important;
   }
 
+  {%- liquid
+    assign active_btn_bg = section.settings.btn_bg_color | default: '#000000'
+    assign active_btn_text = section.settings.btn_text_color | default: '#ffffff'
+    assign active_btn_border = section.settings.btn_border_color | default: 'rgba(255, 255, 255, 0.22)'
+    assign active_btn_hover_bg = section.settings.btn_hover_bg_color | default: '#151515'
+    assign active_btn_hover_text = section.settings.btn_hover_text_color | default: '#ffffff'
+    assign active_btn_hover_border = section.settings.btn_hover_border_color | default: 'rgba(255, 255, 255, 0.5)'
+    if section.settings.separate_bottom_btn_styles
+      assign active_btn_bg = section.settings.bottom_btn_bg_color | default: active_btn_bg
+      assign active_btn_text = section.settings.bottom_btn_text_color | default: active_btn_text
+      assign active_btn_border = section.settings.bottom_btn_border_color | default: active_btn_border
+      assign active_btn_hover_bg = section.settings.bottom_btn_hover_bg_color | default: active_btn_hover_bg
+      assign active_btn_hover_text = section.settings.bottom_btn_hover_text_color | default: active_btn_hover_text
+      assign active_btn_hover_border = section.settings.bottom_btn_hover_border_color | default: active_btn_hover_border
+    endif
+  -%}
+
   #HangerRack-{{ section.id }} .rack-waitlist-btn {
-    background: #000000 !important;
-    color: #ffffff !important;
-    border: 1px solid rgba(255, 255, 255, 0.22) !important;
-    font-family: 'Six Caps', sans-serif !important;
+    background: {{ active_btn_bg }} !important;
+    color: {{ active_btn_text }} !important;
+    border: 1px solid {{ active_btn_border }} !important;
+    font-family: var(--rack-btn-bottom-font, var(--rack-btn-font, 'Six Caps', sans-serif)) !important;
     font-size: clamp(26px, 7vw, 34px) !important;
     font-weight: 400 !important;
     letter-spacing: 0.08em !important;
@@ -375,8 +542,9 @@
   }
 
   #HangerRack-{{ section.id }} .rack-waitlist-btn:hover {
-    background: #151515 !important;
-    border-color: rgba(255, 255, 255, 0.5) !important;
+    background: {{ active_btn_hover_bg }} !important;
+    color: {{ active_btn_hover_text }} !important;
+    border-color: {{ active_btn_hover_border }} !important;
     transform: scale(1.03) !important;
     box-shadow: 0 14px 36px rgba(0, 0, 0, 0.85) !important;
   }
@@ -386,7 +554,7 @@
     display: none !important;
   }
 
-  /* Yellow Bench Outfit Title Display (Six Caps Typography) */
+  /* Yellow Bench Outfit Title Display */
   #HangerRack-{{ section.id }} .hanger-bench-outfit-title {
     position: absolute !important;
     left: 50% !important;
@@ -424,12 +592,12 @@
   }
 
   #HangerRack-{{ section.id }} .bench-outfit-text {
-    font-family: 'Six Caps', sans-serif !important;
-    font-size: clamp(18px, 4.8vw, 25px) !important;
+    font-family: var(--rack-bench-font, 'Six Caps', sans-serif) !important;
+    font-size: calc(clamp(18px, 4.8vw, 25px) * var(--rack-bench-scale, 1)) !important;
     font-weight: 400 !important;
     letter-spacing: 0.02em !important;
     line-height: 0.9 !important;
-    color: #000000 !important;
+    color: var(--rack-bench-color, #000000) !important;
     text-align: center !important;
     white-space: nowrap !important;
     user-select: none !important;
@@ -461,7 +629,7 @@
     }
 
     #HangerRack-{{ section.id }} .hanger-rack-title {
-      font-size: clamp(52px, 13.5vw, 70px) !important;
+      font-size: calc(clamp(52px, 13.5vw, 70px) * var(--rack-heading-scale, 1)) !important;
       text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6) !important;
     }
 
@@ -497,7 +665,7 @@
     }
 
     #HangerRack-{{ section.id }} .hanger-item .hanger-wire-svg {
-      stroke: #d0c5b4 !important;
+      stroke: var(--rack-hanger-color, #d0c5b4) !important;
     }
 
     #HangerRack-{{ section.id }} .hanger-garment-img {
@@ -505,13 +673,61 @@
       max-height: none !important;
       width: auto !important;
     }
+  }
+
+  {%- liquid
+    assign wl_heading_font_css = "'Six Caps', sans-serif"
+    if section.settings.waitlist_heading_font_source == 'shopify' and section.settings.waitlist_heading_font != blank
+      assign wl_heading_font_css = section.settings.waitlist_heading_font.family | append: ', ' | append: section.settings.waitlist_heading_font.fallback_families
+    elsif section.settings.waitlist_heading_font_source == 'ahsing'
+      assign wl_heading_font_css = "'Ahsing', serif"
+    elsif section.settings.waitlist_heading_font_source == 'ragara'
+      assign wl_heading_font_css = "'Ragara', 'Italiana', Georgia, serif"
+    elsif section.settings.waitlist_heading_font_source == 'syne'
+      assign wl_heading_font_css = "'Syne', sans-serif"
+    elsif section.settings.waitlist_heading_font_source == 'bodoni'
+      assign wl_heading_font_css = "'Bodoni Moda', serif"
+    elsif section.settings.waitlist_heading_font_source == 'playfair'
+      assign wl_heading_font_css = "'Playfair Display', serif"
+    elsif section.settings.waitlist_heading_font_source == 'brand'
+      assign wl_heading_font_css = "'Plus Jakarta Sans', sans-serif"
+    elsif section.settings.waitlist_heading_font_source == 'custom' and section.settings.waitlist_custom_heading_font != blank
+      assign wl_heading_font_css = "'" | append: section.settings.waitlist_custom_heading_font | append: "', sans-serif"
+    endif
+
+    assign wl_body_font_css = "'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif"
+    if section.settings.waitlist_body_font_source == 'shopify' and section.settings.waitlist_body_font != blank
+      assign wl_body_font_css = section.settings.waitlist_body_font.family | append: ', ' | append: section.settings.waitlist_body_font.fallback_families
+    elsif section.settings.waitlist_body_font_source == 'sixcaps'
+      assign wl_body_font_css = "'Six Caps', sans-serif"
+    elsif section.settings.waitlist_body_font_source == 'ahsing'
+      assign wl_body_font_css = "'Ahsing', serif"
+    elsif section.settings.waitlist_body_font_source == 'ragara'
+      assign wl_body_font_css = "'Ragara', Georgia, serif"
+    elsif section.settings.waitlist_body_font_source == 'custom' and section.settings.waitlist_custom_body_font != blank
+      assign wl_body_font_css = "'" | append: section.settings.waitlist_custom_body_font | append: "', sans-serif"
+    endif
+  -%}
 
   #waitlistReservationSection,
   #waitlistReservationSection-{{ section.id }} {
-    {%- if section.settings.waitlist_section_bg_color != blank -%}
+    --wl-inline-heading-font: {{ wl_heading_font_css }};
+    --wl-inline-body-font: {{ wl_body_font_css }};
+    --wl-inline-heading-color: {{ section.settings.waitlist_heading_color | default: '#f5f0ea' }};
+    {%- if section.settings.waitlist_section_bg_image != blank -%}
+      background-color: {{ section.settings.waitlist_section_bg_color | default: '#2c463c' }} !important;
+      background-image: url('{{ section.settings.waitlist_section_bg_image | image_url: width: 2200 }}') !important;
+      background-size: cover !important;
+      background-position: center !important;
+    {%- elsif section.settings.waitlist_section_bg_color != blank -%}
       background-color: {{ section.settings.waitlist_section_bg_color }} !important;
       background: radial-gradient(ellipse at 50% 0%, {{ section.settings.waitlist_section_bg_color }} 0%, {{ section.settings.waitlist_section_bg_color }} 55%, #18251f 100%) !important;
     {%- endif -%}
+  }
+  #waitlistReservationSection .wl-heading,
+  #waitlistReservationSection-{{ section.id }} .wl-heading {
+    font-family: var(--wl-inline-heading-font, 'Six Caps', sans-serif) !important;
+    color: var(--wl-inline-heading-color, #f5f0ea) !important;
   }
   #waitlistReservationSection .atelier-waitlist-card,
   #waitlistReservationSection-{{ section.id }} .atelier-waitlist-card {
@@ -529,9 +745,19 @@
   #waitlistReservationSection-{{ section.id }} .wl-select-hint,
   #waitlistReservationSection .wl-phone-cc,
   #waitlistReservationSection-{{ section.id }} .wl-phone-cc {
+    font-family: var(--wl-inline-body-font) !important;
     {%- if section.settings.waitlist_label_color != blank -%}
       color: {{ section.settings.waitlist_label_color }} !important;
     {%- endif -%}
+  }
+  #waitlistReservationSection input,
+  #waitlistReservationSection-{{ section.id }} input,
+  #waitlistReservationSection select,
+  #waitlistReservationSection-{{ section.id }} select,
+  #waitlistReservationSection .wl-piece-chip,
+  #waitlistReservationSection .wl-size-pill,
+  #waitlistReservationSection .wl-privacy-note {
+    font-family: var(--wl-inline-body-font) !important;
   }
   #waitlistReservationSection input,
   #waitlistReservationSection-{{ section.id }} input,
@@ -543,6 +769,7 @@
   }
   #waitlistReservationSection .wl-submit-btn,
   #waitlistReservationSection-{{ section.id }} .wl-submit-btn {
+    font-family: var(--wl-inline-body-font) !important;
     {%- if section.settings.waitlist_btn_bg_color != blank -%}
       background-color: {{ section.settings.waitlist_btn_bg_color }} !important;
     {%- endif -%}
@@ -561,6 +788,8 @@
 <section
   id="HangerRack-{{ section.id }}"
   class="hanger-rack-section"
+  data-laptop-layout="{{ section.settings.laptop_layout_mode | default: 'wide_scrollable' }}"
+  data-sound-enabled="{% if section.settings.enable_sound == false %}false{% else %}true{% endif %}"
   data-sway-intensity="{{ section.settings.sway_intensity | default: 4 }}"
   data-spring-speed="{{ section.settings.spring_speed | default: 5 }}"
   data-damping-rate="{{ section.settings.damping_rate | default: 5 }}"
@@ -970,12 +1199,15 @@
                 {%- if look_title == blank -%}
                   {%- assign look_title = 'Atelier Look ' | append: look_idx -%}
                 {%- endif -%}
-                {%- assign short_title = look_title -%}
-                {%- if forloop.index == 1 -%}{%- assign short_title = '01 Archival Gown' -%}{%- endif -%}
-                {%- if forloop.index == 2 -%}{%- assign short_title = '02 Mirror Lehenga' -%}{%- endif -%}
-                {%- if forloop.index == 3 -%}{%- assign short_title = '03 Saree Gown' -%}{%- endif -%}
-                {%- if forloop.index == 4 -%}{%- assign short_title = '04 Botanical Set' -%}{%- endif -%}
-                {%- if forloop.index == 5 -%}{%- assign short_title = '05 Halter Gown' -%}{%- endif -%}
+                {%- assign short_title = block.settings.chip_label -%}
+                {%- if short_title == blank -%}
+                  {%- assign short_title = look_title -%}
+                  {%- if forloop.index == 1 and look_title == 'Archival Manuscript Corset Gown' -%}{%- assign short_title = '01 Archival Gown' -%}{%- endif -%}
+                  {%- if forloop.index == 2 and look_title == 'Heritage Mural Mirror Lehenga' -%}{%- assign short_title = '02 Mirror Lehenga' -%}{%- endif -%}
+                  {%- if forloop.index == 3 and look_title == 'Rose-Coral Shimmer Saree Gown' -%}{%- assign short_title = '03 Saree Gown' -%}{%- endif -%}
+                  {%- if forloop.index == 4 and look_title == 'Midnight Botanical Co-ord Set' -%}{%- assign short_title = '04 Botanical Set' -%}{%- endif -%}
+                  {%- if forloop.index == 5 and look_title == 'Bordeaux Peplum Halter Gown' -%}{%- assign short_title = '05 Halter Gown' -%}{%- endif -%}
+                {%- endif -%}
                 <button type="button" class="wl-piece-chip{% if forloop.first %} is-selected{% endif %}" data-value="{{ look_title | escape }}" data-index="{{ forloop.index }}">
                   <span class="wl-chip-check">✓</span>
                   <span class="wl-chip-text">{{ short_title }}</span>
@@ -1640,26 +1872,133 @@
       "label": "Custom Swing Tag Font Name"
     },
     {
+      "type": "checkbox",
+      "id": "show_eyebrow",
+      "label": "Show Eyebrow Tagline Above Heading",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_subheading",
+      "label": "Show Subheading Below Heading",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Rack Main Heading Color ('YOUR DREAM RACK')",
+      "default": "#ffffff"
+    },
+    {
       "type": "header",
-      "content": "Rack Stage Background & Colors"
+      "content": "Yellow Ottoman / Bench Outfit Title Styling"
+    },
+    {
+      "type": "select",
+      "id": "bench_font_source",
+      "label": "Bench Outfit Title Font Source",
+      "options": [
+        { "value": "sixcaps", "label": "Six Caps (Tall Condensed — Default)" },
+        { "value": "ahsing", "label": "Ahsing (Typogama Couture)" },
+        { "value": "ragara", "label": "Ragara (Couture Serif)" },
+        { "value": "syne", "label": "Syne (Modern Luxury)" },
+        { "value": "bodoni", "label": "Bodoni Moda (Editorial Vogue)" },
+        { "value": "playfair", "label": "Playfair Display (Romantic Serif)" },
+        { "value": "italiana", "label": "Italiana (Milano Couture)" },
+        { "value": "cinzel", "label": "Cinzel (Grand Roman)" },
+        { "value": "cormorant", "label": "Cormorant Garamond (Elegance)" },
+        { "value": "outfit", "label": "Outfit (Ultra Clean Sans)" },
+        { "value": "brand", "label": "Plus Jakarta Sans" },
+        { "value": "shopify", "label": "Shopify Font Library (Select below)" },
+        { "value": "custom", "label": "Custom Font Name" }
+      ],
+      "default": "sixcaps"
+    },
+    {
+      "type": "font_picker",
+      "id": "bench_font",
+      "label": "Bench Outfit Title Font (Shopify Library)",
+      "default": "assistant_n4"
+    },
+    {
+      "type": "text",
+      "id": "custom_bench_font",
+      "label": "Custom Bench Outfit Title Font Name"
+    },
+    {
+      "type": "range",
+      "id": "bench_font_scale",
+      "min": 60,
+      "max": 160,
+      "step": 5,
+      "unit": "%",
+      "label": "Bench Outfit Title Size Scale",
+      "default": 100
+    },
+    {
+      "type": "color",
+      "id": "bench_text_color",
+      "label": "Bench Outfit Title Color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Laptop Layout & Rack Stage Background"
+    },
+    {
+      "type": "select",
+      "id": "laptop_layout_mode",
+      "label": "Laptop / Desktop Viewport & Scrolling Mode",
+      "options": [
+        { "value": "wide_scrollable", "label": "Wide Walk-In Closet + Horizontal Rack Scroll (Recommended)" },
+        { "value": "portrait_scroll", "label": "Phone Ratio / Tall Vertical Closet Scroll on All Screens" },
+        { "value": "wide_static", "label": "Wide Walk-In Closet — Static Compact Rack" }
+      ],
+      "default": "wide_scrollable",
+      "info": "Controls how the closet room and horizontal hanger scrolling behave on laptop and desktop screens."
+    },
+    {
+      "type": "range",
+      "id": "desktop_item_width",
+      "label": "Laptop Scrollable Garment Slot Width (px)",
+      "min": 60,
+      "max": 160,
+      "step": 4,
+      "default": 108
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sound",
+      "label": "Enable Hanger & Fabric Sound Effects",
+      "default": true
     },
     {
       "type": "select",
       "id": "bg_mode",
       "label": "Background Mode",
       "options": [
-        { "value": "wardrobe", "label": "Custom Wardrobe Closet (background_final.png)" },
+        { "value": "wardrobe", "label": "Custom Wardrobe Closet (Desktop & Mobile Images)" },
         { "value": "solid", "label": "Solid Color" },
         { "value": "gradient", "label": "Luxury Gradient" },
-        { "value": "image", "label": "Background Image" }
+        { "value": "image", "label": "Single Background Image" }
       ],
       "default": "wardrobe"
     },
     {
+      "type": "image_picker",
+      "id": "desktop_bg_image",
+      "label": "Desktop Wide Closet Background (Defaults to background_full.jpg)"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_bg_image",
+      "label": "Mobile Portrait Closet Background (Defaults to background_final.png)"
+    },
+    {
       "type": "color",
       "id": "bg_color",
-      "label": "Background Color",
-      "default": "#f8f8f6"
+      "label": "Background Color (Solid Mode / Fallback)",
+      "default": "#1a221d"
     },
     {
       "type": "text",
@@ -1671,8 +2010,8 @@
     {
       "type": "image_picker",
       "id": "bg_image",
-      "label": "Background Image",
-      "info": "Active when Background Image mode is selected."
+      "label": "Single Background Image (Fallback)",
+      "info": "Active when Single Background Image mode is selected."
     },
     {
       "type": "range",
@@ -1692,8 +2031,8 @@
     {
       "type": "color",
       "id": "hanger_color",
-      "label": "Hanger Color",
-      "default": "#6b727c"
+      "label": "Wire Hanger Color",
+      "default": "#d0c5b4"
     },
     {
       "type": "color",
@@ -1903,6 +2242,11 @@
       "default": "Select your silhouettes and reserve priority access before public release."
     },
     {
+      "type": "image_picker",
+      "id": "waitlist_section_bg_image",
+      "label": "Waitlist Section Background Image (Optional)"
+    },
+    {
       "type": "color",
       "id": "waitlist_section_bg_color",
       "label": "Section Background Color (Teal Accent)",
@@ -1919,6 +2263,65 @@
       "id": "waitlist_card_border_color",
       "label": "Card Border Color",
       "default": "#547365"
+    },
+    {
+      "type": "select",
+      "id": "waitlist_heading_font_source",
+      "label": "Waitlist Form Heading Font Source",
+      "options": [
+        { "value": "sixcaps", "label": "Six Caps (Tall Condensed — Default)" },
+        { "value": "ahsing", "label": "Ahsing (Typogama Couture)" },
+        { "value": "ragara", "label": "Ragara (Couture Serif)" },
+        { "value": "syne", "label": "Syne (Modern Luxury)" },
+        { "value": "bodoni", "label": "Bodoni Moda (Editorial Vogue)" },
+        { "value": "playfair", "label": "Playfair Display (Romantic Serif)" },
+        { "value": "brand", "label": "Plus Jakarta Sans" },
+        { "value": "shopify", "label": "Shopify Font Library (Select below)" },
+        { "value": "custom", "label": "Custom Font Name" }
+      ],
+      "default": "sixcaps"
+    },
+    {
+      "type": "font_picker",
+      "id": "waitlist_heading_font",
+      "label": "Waitlist Heading Font (Shopify Library)",
+      "default": "assistant_n4"
+    },
+    {
+      "type": "text",
+      "id": "waitlist_custom_heading_font",
+      "label": "Custom Waitlist Heading Font Name"
+    },
+    {
+      "type": "color",
+      "id": "waitlist_heading_color",
+      "label": "Waitlist Heading Color",
+      "default": "#f5f0ea"
+    },
+    {
+      "type": "select",
+      "id": "waitlist_body_font_source",
+      "label": "Waitlist Form Labels & Inputs Font Source",
+      "options": [
+        { "value": "brand", "label": "Plus Jakarta Sans (Default)" },
+        { "value": "sixcaps", "label": "Six Caps (Tall Condensed)" },
+        { "value": "ahsing", "label": "Ahsing (Typogama Couture)" },
+        { "value": "ragara", "label": "Ragara (Couture Serif)" },
+        { "value": "shopify", "label": "Shopify Font Library (Select below)" },
+        { "value": "custom", "label": "Custom Font Name" }
+      ],
+      "default": "brand"
+    },
+    {
+      "type": "font_picker",
+      "id": "waitlist_body_font",
+      "label": "Waitlist Labels & Inputs Font (Shopify Library)",
+      "default": "assistant_n4"
+    },
+    {
+      "type": "text",
+      "id": "waitlist_custom_body_font",
+      "label": "Custom Waitlist Labels & Inputs Font Name"
     },
     {
       "type": "color",
@@ -2090,8 +2493,20 @@
         {
           "type": "text",
           "id": "title",
-          "label": "Title",
+          "label": "Full Gown Title",
           "default": "Couture Gown"
+        },
+        {
+          "type": "text",
+          "id": "outfit_name",
+          "label": "Yellow Ottoman Display Name (e.g. Teekhi Bella Outfit 1)",
+          "info": "Displayed on the yellow ottoman when this garment is selected."
+        },
+        {
+          "type": "text",
+          "id": "chip_label",
+          "label": "Waitlist Chip Short Label (e.g. 01 Archival Gown)",
+          "info": "Short label shown on the waitlist multi-select chip below."
         },
         {
           "type": "text",

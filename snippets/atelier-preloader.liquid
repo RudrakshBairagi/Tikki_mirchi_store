@@ -1,77 +1,194 @@
 {% comment %}
   TEEKHI BELLA — HAUTE COUTURE RUNWAY PRELOADER
   Stroboscopic runway sequence flashing 5 archival looks until site assets are ready.
+  Fully customizable via Theme Settings -> Atelier Preloader & Cursor.
 {% endcomment %}
 
-{{ 'atelier-preloader.css' | asset_url | stylesheet_tag }}
+{%- if settings.enable_preloader != false -%}
+  {{ 'atelier-preloader.css' | asset_url | stylesheet_tag }}
+  {% render 'font-faces' %}
 
-<div id="AtelierPreloader" role="status" aria-live="polite" aria-label="Loading Teekhi Bella Atelier">
-  <div class="preloader-backdrop-glow" aria-hidden="true"></div>
+  <style>
+    {%- if settings.preloader_title_font_source == 'shopify' and settings.preloader_title_font != blank -%}
+      {{ settings.preloader_title_font | font_face: font_display: 'swap' }}
+    {%- endif -%}
+    {%- if settings.preloader_status_font_source == 'shopify' and settings.preloader_status_font != blank -%}
+      {{ settings.preloader_status_font | font_face: font_display: 'swap' }}
+    {%- endif -%}
 
-  <!-- Header -->
-  <header class="preloader-header">
-    <h1 class="preloader-brand-title">Teekhi Bella</h1>
-  </header>
+    #AtelierPreloader {
+      --preloader-bg-color: {{ settings.preloader_bg_color | default: '#789282' }};
+      --preloader-title-color: {{ settings.preloader_title_color | default: '#ffffff' }};
+      --preloader-title-scale: {{ settings.preloader_title_scale | default: 100 | divided_by: 100.0 }};
+      --preloader-status-color: {{ settings.preloader_status_color | default: '#ffffff' }};
+      --preloader-progress-color: {{ settings.preloader_progress_color | default: '#ffffff' }};
+      --preloader-progress-track-color: {{ settings.preloader_progress_track_color | default: 'rgba(255, 255, 255, 0.28)' }};
 
-  <!-- Center Stage: Flashing Outfits -->
-  <main class="preloader-stage" aria-hidden="true">
-    <div class="preloader-look-flash"></div>
-    <div class="preloader-look-wrap">
-      <img
-        src="{{ 'hanger-look-1.png' | asset_url }}"
-        alt="Archival Look 01"
-        class="preloader-look-item is-active"
-        width="260"
-        height="560"
-        loading="eager"
-        fetchpriority="high"
-      >
-      <img
-        src="{{ 'hanger-look-2.png' | asset_url }}"
-        alt="Archival Look 02"
-        class="preloader-look-item"
-        width="260"
-        height="560"
-        loading="eager"
-        fetchpriority="high"
-      >
-      <img
-        src="{{ 'hanger-look-3.png' | asset_url }}"
-        alt="Archival Look 03"
-        class="preloader-look-item"
-        width="260"
-        height="560"
-        loading="eager"
-        fetchpriority="high"
-      >
-      <img
-        src="{{ 'hanger-look-4.png' | asset_url }}"
-        alt="Archival Look 04"
-        class="preloader-look-item"
-        width="260"
-        height="560"
-        loading="eager"
-        fetchpriority="high"
-      >
-      <img
-        src="{{ 'hanger-look-5.png' | asset_url }}"
-        alt="Archival Look 05"
-        class="preloader-look-item"
-        width="260"
-        height="560"
-        loading="eager"
-        fetchpriority="high"
-      >
-    </div>
-  </main>
+      {%- if settings.preloader_title_font_source == 'shopify' and settings.preloader_title_font != blank -%}
+        --preloader-title-font: {{ settings.preloader_title_font.family }}, {{ settings.preloader_title_font.fallback_families }};
+      {%- elsif settings.preloader_title_font_source == 'ragara' -%}
+        --preloader-title-font: 'Ragara', 'Italiana', Georgia, serif;
+      {%- elsif settings.preloader_title_font_source == 'sixcaps' -%}
+        --preloader-title-font: 'Six Caps', sans-serif;
+      {%- elsif settings.preloader_title_font_source == 'syne' -%}
+        --preloader-title-font: 'Syne', sans-serif;
+      {%- elsif settings.preloader_title_font_source == 'bodoni' -%}
+        --preloader-title-font: 'Bodoni Moda', serif;
+      {%- elsif settings.preloader_title_font_source == 'playfair' -%}
+        --preloader-title-font: 'Playfair Display', serif;
+      {%- elsif settings.preloader_title_font_source == 'italiana' -%}
+        --preloader-title-font: 'Italiana', Georgia, serif;
+      {%- elsif settings.preloader_title_font_source == 'cinzel' -%}
+        --preloader-title-font: 'Cinzel', serif;
+      {%- elsif settings.preloader_title_font_source == 'cormorant' -%}
+        --preloader-title-font: 'Cormorant Garamond', serif;
+      {%- elsif settings.preloader_title_font_source == 'outfit' -%}
+        --preloader-title-font: 'Outfit', sans-serif;
+      {%- elsif settings.preloader_title_font_source == 'brand' -%}
+        --preloader-title-font: 'Plus Jakarta Sans', sans-serif;
+      {%- elsif settings.preloader_title_font_source == 'custom' and settings.preloader_custom_title_font != blank -%}
+        --preloader-title-font: '{{ settings.preloader_custom_title_font }}', serif;
+      {%- else -%}
+        --preloader-title-font: 'Ahsing', 'Ragara', serif;
+      {%- endif -%}
 
-  <!-- Footer Progress -->
-  <footer class="preloader-footer">
-    <div class="preloader-progress-track">
-      <div class="preloader-progress-fill"></div>
-    </div>
-    <p class="preloader-status-text">Entering The Atelier</p>
-  </footer>
-</div>
+      {%- if settings.preloader_status_font_source == 'shopify' and settings.preloader_status_font != blank -%}
+        --preloader-status-font: {{ settings.preloader_status_font.family }}, {{ settings.preloader_status_font.fallback_families }};
+      {%- elsif settings.preloader_status_font_source == 'ahsing' -%}
+        --preloader-status-font: 'Ahsing', serif;
+      {%- elsif settings.preloader_status_font_source == 'ragara' -%}
+        --preloader-status-font: 'Ragara', 'Italiana', Georgia, serif;
+      {%- elsif settings.preloader_status_font_source == 'sixcaps' -%}
+        --preloader-status-font: 'Six Caps', sans-serif;
+      {%- elsif settings.preloader_status_font_source == 'syne' -%}
+        --preloader-status-font: 'Syne', sans-serif;
+      {%- elsif settings.preloader_status_font_source == 'bodoni' -%}
+        --preloader-status-font: 'Bodoni Moda', serif;
+      {%- elsif settings.preloader_status_font_source == 'playfair' -%}
+        --preloader-status-font: 'Playfair Display', serif;
+      {%- elsif settings.preloader_status_font_source == 'custom' and settings.preloader_custom_status_font != blank -%}
+        --preloader-status-font: '{{ settings.preloader_custom_status_font }}', sans-serif;
+      {%- else -%}
+        --preloader-status-font: 'Plus Jakarta Sans', sans-serif;
+      {%- endif -%}
 
-<script src="{{ 'atelier-preloader.js' | asset_url }}" defer></script>
+      {%- if settings.preloader_bg_mode == 'gradient' and settings.preloader_bg_gradient != blank -%}
+        background: {{ settings.preloader_bg_gradient }} !important;
+      {%- elsif settings.preloader_bg_mode == 'image' and settings.preloader_bg_image != blank -%}
+        background-color: var(--preloader-bg-color) !important;
+        background-image: url('{{ settings.preloader_bg_image | image_url: width: 2000 }}') !important;
+        background-size: cover !important;
+        background-position: center !important;
+      {%- else -%}
+        background-color: var(--preloader-bg-color) !important;
+        background: var(--preloader-bg-color) !important;
+      {%- endif -%}
+    }
+  </style>
+
+  {%- liquid
+    assign look_1_src = 'hanger-look-1.png' | asset_url
+    if settings.preloader_look_1 != blank
+      assign look_1_src = settings.preloader_look_1 | image_url: width: 600
+    endif
+
+    assign look_2_src = 'hanger-look-2.png' | asset_url
+    if settings.preloader_look_2 != blank
+      assign look_2_src = settings.preloader_look_2 | image_url: width: 600
+    endif
+
+    assign look_3_src = 'hanger-look-3.png' | asset_url
+    if settings.preloader_look_3 != blank
+      assign look_3_src = settings.preloader_look_3 | image_url: width: 600
+    endif
+
+    assign look_4_src = 'hanger-look-4.png' | asset_url
+    if settings.preloader_look_4 != blank
+      assign look_4_src = settings.preloader_look_4 | image_url: width: 600
+    endif
+
+    assign look_5_src = 'hanger-look-5.png' | asset_url
+    if settings.preloader_look_5 != blank
+      assign look_5_src = settings.preloader_look_5 | image_url: width: 600
+    endif
+  -%}
+
+  <div
+    id="AtelierPreloader"
+    role="status"
+    aria-live="polite"
+    aria-label="Loading {{ settings.preloader_brand_title | default: 'Teekhi Bella' | escape }}"
+    data-once-per-session="{{ settings.preloader_once_per_session | default: false }}"
+    data-frame-duration="{{ settings.preloader_frame_duration | default: 190 }}"
+    data-min-duration="{{ settings.preloader_min_duration | default: 2000 }}"
+  >
+    <div class="preloader-backdrop-glow" aria-hidden="true"></div>
+
+    <!-- Header -->
+    <header class="preloader-header">
+      <h1 class="preloader-brand-title">{{ settings.preloader_brand_title | default: 'Teekhi Bella' }}</h1>
+    </header>
+
+    <!-- Center Stage: Flashing Outfits -->
+    <main class="preloader-stage" aria-hidden="true">
+      <div class="preloader-look-flash"></div>
+      <div class="preloader-look-wrap">
+        <img
+          src="{{ look_1_src }}"
+          alt="Archival Look 01"
+          class="preloader-look-item is-active"
+          width="260"
+          height="560"
+          loading="eager"
+          fetchpriority="high"
+        >
+        <img
+          src="{{ look_2_src }}"
+          alt="Archival Look 02"
+          class="preloader-look-item"
+          width="260"
+          height="560"
+          loading="eager"
+          fetchpriority="high"
+        >
+        <img
+          src="{{ look_3_src }}"
+          alt="Archival Look 03"
+          class="preloader-look-item"
+          width="260"
+          height="560"
+          loading="eager"
+          fetchpriority="high"
+        >
+        <img
+          src="{{ look_4_src }}"
+          alt="Archival Look 04"
+          class="preloader-look-item"
+          width="260"
+          height="560"
+          loading="eager"
+          fetchpriority="high"
+        >
+        <img
+          src="{{ look_5_src }}"
+          alt="Archival Look 05"
+          class="preloader-look-item"
+          width="260"
+          height="560"
+          loading="eager"
+          fetchpriority="high"
+        >
+      </div>
+    </main>
+
+    <!-- Footer Progress -->
+    <footer class="preloader-footer">
+      <div class="preloader-progress-track">
+        <div class="preloader-progress-fill"></div>
+      </div>
+      <p class="preloader-status-text">{{ settings.preloader_status_text | default: 'Entering The Atelier' }}</p>
+    </footer>
+  </div>
+
+  <script src="{{ 'atelier-preloader.js' | asset_url }}" defer></script>
+{%- endif -%}

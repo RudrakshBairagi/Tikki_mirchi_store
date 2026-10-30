@@ -22,22 +22,10 @@
     font-display: swap;
   }
 
-  {%- if section.settings.heading_font_source == 'shopify' and section.settings.heading_font != blank -%}
-    {{ section.settings.heading_font | font_face: font_display: 'swap' }}
-  {%- endif -%}
-  {%- if section.settings.meta_font_source == 'shopify' and section.settings.meta_font != blank -%}
-    {{ section.settings.meta_font | font_face: font_display: 'swap' }}
-  {%- endif -%}
-
   #Hero3D-{{ section.id }} {
     --hero-bg: {{ section.settings.bg_color }};
     --hero-text: {{ section.settings.text_color }};
     --hero-title-color: {{ section.settings.title_color }};
-    {%- if section.settings.bg_mode == 'gradient' and section.settings.bg_gradient != blank -%}
-      background: {{ section.settings.bg_gradient }} !important;
-    {%- else -%}
-      background-color: var(--hero-bg) !important;
-    {%- endif -%}
     --cylinder-tilt: {{ section.settings.tilt_angle }}deg;
     --cylinder-perspective: {{ section.settings.perspective }}px;
     --card-width: {{ section.settings.card_width }}px;
@@ -45,81 +33,16 @@
     --card-radius: {{ section.settings.card_radius }}px;
     --card-gap: {{ section.settings.card_gap }}px;
     --reflection-opacity: {{ section.settings.reflection_opacity | divided_by: 100.0 }};
-
-    {%- if section.settings.heading_font_source == 'shopify' and section.settings.heading_font != blank -%}
-      --hero-heading-font: {{ section.settings.heading_font.family }}, {{ section.settings.heading_font.fallback_families }};
-      --hero-heading-weight: {{ section.settings.heading_font.weight }};
-      --hero-heading-style: {{ section.settings.heading_font.style }};
-    {%- elsif section.settings.heading_font_source == 'ahsing' -%}
-      --hero-heading-font: 'Ahsing', serif;
-      --hero-heading-weight: 400;
-      --hero-heading-style: normal;
-    {%- elsif section.settings.heading_font_source == 'syne' -%}
-      --hero-heading-font: 'Syne', sans-serif;
-      --hero-heading-weight: 700;
-      --hero-heading-style: normal;
-    {%- elsif section.settings.heading_font_source == 'bodoni' -%}
-      --hero-heading-font: 'Bodoni Moda', serif;
-      --hero-heading-weight: 400;
-      --hero-heading-style: normal;
-    {%- elsif section.settings.heading_font_source == 'playfair' -%}
-      --hero-heading-font: 'Playfair Display', serif;
-      --hero-heading-weight: 400;
-      --hero-heading-style: normal;
-    {%- elsif section.settings.heading_font_source == 'italiana' -%}
-      --hero-heading-font: 'Italiana', Georgia, serif;
-      --hero-heading-weight: 400;
-      --hero-heading-style: normal;
-    {%- elsif section.settings.heading_font_source == 'cinzel' -%}
-      --hero-heading-font: 'Cinzel', serif;
-      --hero-heading-weight: 600;
-      --hero-heading-style: normal;
-    {%- elsif section.settings.heading_font_source == 'cormorant' -%}
-      --hero-heading-font: 'Cormorant Garamond', serif;
-      --hero-heading-weight: 400;
-      --hero-heading-style: normal;
-    {%- elsif section.settings.heading_font_source == 'outfit' -%}
-      --hero-heading-font: 'Outfit', sans-serif;
-      --hero-heading-weight: 500;
-      --hero-heading-style: normal;
-    {%- elsif section.settings.heading_font_source == 'custom' and section.settings.custom_heading_font != blank -%}
-      --hero-heading-font: '{{ section.settings.custom_heading_font }}', serif;
-      --hero-heading-weight: 400;
-      --hero-heading-style: normal;
-    {%- else -%}
-      --hero-heading-font: 'Ragara', 'Italiana', Georgia, serif;
-      --hero-heading-weight: 400;
-      --hero-heading-style: normal;
-    {%- endif -%}
-
-    {%- if section.settings.meta_font_source == 'shopify' and section.settings.meta_font != blank -%}
-      --hero-meta-font: {{ section.settings.meta_font.family }}, {{ section.settings.meta_font.fallback_families }};
-    {%- elsif section.settings.meta_font_source == 'custom' and section.settings.custom_meta_font != blank -%}
-      --hero-meta-font: '{{ section.settings.custom_meta_font }}', sans-serif;
-    {%- else -%}
-      --hero-meta-font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    {%- endif -%}
-
-    --hero-title-scale: {{ section.settings.heading_font_scale | default: 100 | divided_by: 100.0 }};
   }
 
   #Hero3D-{{ section.id }} .hero-3d-giant-title {
-    font-family: var(--hero-heading-font) !important;
-    font-weight: var(--hero-heading-weight, 400) !important;
-    font-style: var(--hero-heading-style, normal) !important;
-    font-size: calc(clamp(3.8rem, 13vw, 11rem) * var(--hero-title-scale, 1)) !important;
-  }
-
-  #Hero3D-{{ section.id }} .hero-3d-topbar,
-  #Hero3D-{{ section.id }} .hero-3d-bottombar,
-  #Hero3D-{{ section.id }} .hero-3d-cta {
-    font-family: var(--hero-meta-font) !important;
+    font-family: 'Ragara', 'Italiana', Georgia, serif;
   }
 {%- endstyle -%}
 
 <section
   id="Hero3D-{{ section.id }}"
-  class="hero-3d-section{% unless section.settings.show_cylinder %} hero-3d-section--minimal{% endunless %}"
+  class="hero-3d-section"
   data-speed="{{ section.settings.auto_rotate_speed }}"
   data-tilt="{{ section.settings.tilt_angle }}"
   data-gap="{{ section.settings.card_gap }}"
@@ -150,109 +73,105 @@
       {%- endif -%}
     </h1>
 
-    {%- if section.settings.show_cylinder -%}
-      <!-- 3D Viewport -->
-      <div class="hero-3d-viewport">
-        <div class="hero-3d-tilter">
-          <div class="hero-3d-cylinder">
-            {%- if section.blocks.size > 0 -%}
-              {%- for block in section.blocks -%}
-                {%- assign default_img_index = forloop.index0 | modulo: 5 | plus: 1 -%}
-                {%- capture fallback_name -%}cylinder-card-{{ default_img_index }}.jpg{%- endcapture -%}
-                {%- assign card_img_src = fallback_name | asset_url -%}
-                {%- if block.settings.image != blank -%}
-                  {%- assign card_img_src = block.settings.image | image_url: width: 800 -%}
-                {%- endif -%}
-                <div
-                  class="hero-3d-card"
-                  data-src="{{ card_img_src }}"
-                  data-link="{{ block.settings.link | default: '#' }}"
-                  {{ block.shopify_attributes }}
+    <!-- 3D Viewport -->
+    <div class="hero-3d-viewport">
+      <div class="hero-3d-tilter">
+        <div class="hero-3d-cylinder">
+          {%- if section.blocks.size > 0 -%}
+            {%- for block in section.blocks -%}
+              {%- assign default_img_index = forloop.index0 | modulo: 5 | plus: 1 -%}
+              {%- capture fallback_name -%}cylinder-card-{{ default_img_index }}.jpg{%- endcapture -%}
+              {%- assign card_img_src = fallback_name | asset_url -%}
+              {%- if block.settings.image != blank -%}
+                {%- assign card_img_src = block.settings.image | image_url: width: 800 -%}
+              {%- endif -%}
+              <div
+                class="hero-3d-card"
+                data-src="{{ card_img_src }}"
+                data-link="{{ block.settings.link | default: '#' }}"
+                {{ block.shopify_attributes }}
+              >
+                <a
+                  href="{{ block.settings.link | default: '#' }}"
+                  class="hero-3d-card-inner"
+                  aria-label="Card {{ forloop.index }}"
                 >
-                  <a
-                    href="{{ block.settings.link | default: '#' }}"
-                    class="hero-3d-card-inner"
-                    aria-label="Card {{ forloop.index }}"
+                  <img
+                    src="{{ card_img_src }}"
+                    alt="{{ block.settings.image.alt | default: 'Card' | escape }}"
+                    class="hero-3d-card-media"
+                    loading="lazy"
+                    width="360"
+                    height="230"
                   >
-                    <img
-                      src="{{ card_img_src }}"
-                      alt="{{ block.settings.image.alt | default: 'Card' | escape }}"
-                      class="hero-3d-card-media"
-                      loading="lazy"
-                      width="360"
-                      height="230"
-                    >
-                  </a>
+                </a>
 
-                  {%- if section.settings.enable_reflection -%}
-                    <div class="hero-3d-reflection" aria-hidden="true">
-                      {%- if block.settings.image != blank -%}
-                        <img
-                          src="{{ block.settings.image | image_url: width: 600 }}"
-                          alt=""
-                          loading="lazy"
-                          width="300"
-                          height="400"
-                        >
-                      {%- else -%}
-                        <img
-                          src="{{ asset_name | asset_url }}"
-                          alt=""
-                          loading="lazy"
-                          width="300"
-                          height="400"
-                        >
-                      {%- endif -%}
-                    </div>
-                  {%- endif -%}
-                </div>
-              {%- endfor -%}
-            {%- else -%}
-              <!-- Fallback 5 Clean Cards with user pictures -->
-              {%- for i in (1..5) -%}
-                {%- capture fallback_name -%}cylinder-card-{{ i }}.jpg{%- endcapture -%}
-                <div class="hero-3d-card">
-                  <a href="/collections/all" class="hero-3d-card-inner" aria-label="Card {{ i }}">
-                    <img
-                      src="{{ fallback_name | asset_url }}"
-                      alt="Card {{ i }}"
-                      class="hero-3d-card-media"
-                      loading="lazy"
-                      width="300"
-                      height="400"
-                    >
-                  </a>
+                {%- if section.settings.enable_reflection -%}
+                  <div class="hero-3d-reflection" aria-hidden="true">
+                    {%- if block.settings.image != blank -%}
+                      <img
+                        src="{{ block.settings.image | image_url: width: 600 }}"
+                        alt=""
+                        loading="lazy"
+                        width="300"
+                        height="400"
+                      >
+                    {%- else -%}
+                      <img
+                        src="{{ asset_name | asset_url }}"
+                        alt=""
+                        loading="lazy"
+                        width="300"
+                        height="400"
+                      >
+                    {%- endif -%}
+                  </div>
+                {%- endif -%}
+              </div>
+            {%- endfor -%}
+          {%- else -%}
+            <!-- Fallback 5 Clean Cards with user pictures -->
+            {%- for i in (1..5) -%}
+              {%- capture fallback_name -%}cylinder-card-{{ i }}.jpg{%- endcapture -%}
+              <div class="hero-3d-card">
+                <a href="/collections/all" class="hero-3d-card-inner" aria-label="Card {{ i }}">
+                  <img
+                    src="{{ fallback_name | asset_url }}"
+                    alt="Card {{ i }}"
+                    class="hero-3d-card-media"
+                    loading="lazy"
+                    width="300"
+                    height="400"
+                  >
+                </a>
 
-                  {%- if section.settings.enable_reflection -%}
-                    <div class="hero-3d-reflection" aria-hidden="true">
-                      <img src="{{ fallback_name | asset_url }}" alt="" loading="lazy" width="300" height="400">
-                    </div>
-                  {%- endif -%}
-                </div>
-              {%- endfor -%}
-            {%- endif -%}
-          </div>
+                {%- if section.settings.enable_reflection -%}
+                  <div class="hero-3d-reflection" aria-hidden="true">
+                    <img src="{{ fallback_name | asset_url }}" alt="" loading="lazy" width="300" height="400">
+                  </div>
+                {%- endif -%}
+              </div>
+            {%- endfor -%}
+          {%- endif -%}
         </div>
       </div>
-    {%- endif -%}
+    </div>
   </div>
 
-  {%- if section.settings.show_cylinder -%}
-    <!-- Bottom Interaction & Navigation Bar -->
-    <div class="hero-3d-bottombar">
-      <div class="hero-3d-interaction-hint">
-        <span class="hint-icon">✦</span>
-        <span>Drag or swipe to rotate</span>
-      </div>
-
-      {%- if section.settings.cta_label != blank -%}
-        <a href="{{ section.settings.cta_link | default: '/collections/all' }}" class="hero-3d-cta">
-          <span>{{ section.settings.cta_label }}</span>
-          <span>→</span>
-        </a>
-      {%- endif -%}
+  <!-- Bottom Interaction & Navigation Bar -->
+  <div class="hero-3d-bottombar">
+    <div class="hero-3d-interaction-hint">
+      <span class="hint-icon">✦</span>
+      <span>Drag or swipe to rotate</span>
     </div>
-  {%- endif -%}
+
+    {%- if section.settings.cta_label != blank -%}
+      <a href="{{ section.settings.cta_link | default: '/collections/all' }}" class="hero-3d-cta">
+        <span>{{ section.settings.cta_label }}</span>
+        <span>→</span>
+      </a>
+    {%- endif -%}
+  </div>
 </section>
 
 {% schema %}
@@ -261,12 +180,6 @@
   "tag": "section",
   "class": "section-hero-3d-cylinder",
   "settings": [
-    {
-      "type": "checkbox",
-      "id": "show_cylinder",
-      "label": "Show Rotating 3D Cylinder",
-      "default": false
-    },
     {
       "type": "header",
       "content": "Typography & Branding"
@@ -281,79 +194,6 @@
       "type": "text",
       "id": "heading_accent",
       "label": "Title Accent (Italic)"
-    },
-    {
-      "type": "header",
-      "content": "Typography & Font Styling"
-    },
-    {
-      "type": "select",
-      "id": "heading_font_source",
-      "label": "Giant Title Font Source",
-      "options": [
-        { "value": "brand", "label": "Brand Default (Ragara Couture)" },
-        { "value": "ahsing", "label": "Ahsing (Typogama Couture)" },
-        { "value": "syne", "label": "Syne (Modern Luxury Bold)" },
-        { "value": "bodoni", "label": "Bodoni Moda (Editorial Vogue)" },
-        { "value": "playfair", "label": "Playfair Display (Romantic Serif)" },
-        { "value": "italiana", "label": "Italiana (Milano Couture)" },
-        { "value": "cinzel", "label": "Cinzel (Grand Roman)" },
-        { "value": "cormorant", "label": "Cormorant Garamond (Elegance)" },
-        { "value": "outfit", "label": "Outfit (Ultra Clean Sans)" },
-        { "value": "shopify", "label": "Shopify Font Library (Select below)" },
-        { "value": "custom", "label": "Custom Font Name (e.g. Google Font)" }
-      ],
-      "default": "brand"
-    },
-    {
-      "type": "font_picker",
-      "id": "heading_font",
-      "label": "Giant Title Font (Shopify Library)",
-      "default": "assistant_n4",
-      "info": "Active when 'Shopify Font Library' is selected."
-    },
-    {
-      "type": "text",
-      "id": "custom_heading_font",
-      "label": "Custom Title Font Name",
-      "info": "E.g. Playfair Display, Cinzel, Italiana, Bodoni Moda"
-    },
-    {
-      "type": "range",
-      "id": "heading_font_scale",
-      "min": 70,
-      "max": 150,
-      "step": 5,
-      "unit": "%",
-      "label": "Giant Title Font Size Scale",
-      "default": 100
-    },
-    {
-      "type": "select",
-      "id": "meta_font_source",
-      "label": "Topbar & Meta Font Source",
-      "options": [
-        { "value": "brand", "label": "Brand Default (Plus Jakarta Sans)" },
-        { "value": "shopify", "label": "Shopify Font Library (Select below)" },
-        { "value": "custom", "label": "Custom Font Name" }
-      ],
-      "default": "brand"
-    },
-    {
-      "type": "font_picker",
-      "id": "meta_font",
-      "label": "Topbar & Meta Font (Shopify Library)",
-      "default": "assistant_n4",
-      "info": "Active when 'Shopify Font Library' is selected."
-    },
-    {
-      "type": "text",
-      "id": "custom_meta_font",
-      "label": "Custom Topbar Font Name"
-    },
-    {
-      "type": "header",
-      "content": "Topbar & Meta Information"
     },
     {
       "type": "text",
@@ -390,30 +230,13 @@
     },
     {
       "type": "header",
-      "content": "Background & Atmosphere"
-    },
-    {
-      "type": "select",
-      "id": "bg_mode",
-      "label": "Background Mode",
-      "options": [
-        { "value": "solid", "label": "Solid Color" },
-        { "value": "gradient", "label": "Luxury Gradient" }
-      ],
-      "default": "solid"
+      "content": "Color Scheme"
     },
     {
       "type": "color",
       "id": "bg_color",
       "label": "Background Color",
       "default": "#0b0b0c"
-    },
-    {
-      "type": "text",
-      "id": "bg_gradient",
-      "label": "Background Gradient (CSS)",
-      "default": "linear-gradient(135deg, #0b0b0c 0%, #17151a 100%)",
-      "info": "Active when Gradient mode is selected."
     },
     {
       "type": "color",

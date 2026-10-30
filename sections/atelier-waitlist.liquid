@@ -79,7 +79,7 @@
     },
     {
       "type": "header",
-      "content": "Heading Typography"
+      "content": "Heading & Body Typography"
     },
     {
       "type": "select",
@@ -87,6 +87,7 @@
       "label": "Main Heading Font Family",
       "options": [
         { "value": "brand", "label": "Brand Sans (Plus Jakarta Sans)" },
+        { "value": "sixcaps", "label": "Six Caps (Tall Condensed)" },
         { "value": "ahsing", "label": "Ahsing (Typogama Couture)" },
         { "value": "ragara", "label": "Ragara (Couture Serif)" },
         { "value": "syne", "label": "Syne (Modern Luxury Bold)" },
@@ -131,13 +132,57 @@
       "default": 0
     },
     {
+      "type": "select",
+      "id": "body_font_source",
+      "label": "Body, Form Labels & Buttons Font Family",
+      "options": [
+        { "value": "brand", "label": "Brand Sans (Plus Jakarta Sans)" },
+        { "value": "sixcaps", "label": "Six Caps (Tall Condensed)" },
+        { "value": "ahsing", "label": "Ahsing (Typogama Couture)" },
+        { "value": "ragara", "label": "Ragara (Couture Serif)" },
+        { "value": "syne", "label": "Syne (Modern Luxury)" },
+        { "value": "bodoni", "label": "Bodoni Moda (Editorial Vogue)" },
+        { "value": "playfair", "label": "Playfair Display (Romantic Serif)" },
+        { "value": "italiana", "label": "Italiana (Milano Couture)" },
+        { "value": "cinzel", "label": "Cinzel (Grand Roman)" },
+        { "value": "cormorant", "label": "Cormorant Garamond (Elegance)" },
+        { "value": "outfit", "label": "Outfit (Ultra Clean Sans)" },
+        { "value": "shopify", "label": "Shopify Font Library (Select below)" },
+        { "value": "custom", "label": "Custom Google Font Name" }
+      ],
+      "default": "brand"
+    },
+    {
+      "type": "font_picker",
+      "id": "body_font",
+      "label": "Body & Form Font (Shopify Library)",
+      "default": "assistant_n4"
+    },
+    {
+      "type": "text",
+      "id": "custom_body_font",
+      "label": "Custom Body & Form Font Name"
+    },
+    {
       "type": "header",
       "content": "Page Colors & Styling"
     },
     {
       "type": "color",
+      "id": "left_text_color",
+      "label": "Showcase Heading & Subtitle Color (Split Mode)",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "look_card_bg_color",
+      "label": "Showcase Look Card Badge Background",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
       "id": "text_color",
-      "label": "Primary Text Color",
+      "label": "Form Primary Text Color",
       "default": "#1a1819"
     },
     {

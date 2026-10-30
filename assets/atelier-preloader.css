@@ -1,6 +1,7 @@
 /**
  * TEEKHI BELLA — HAUTE COUTURE RUNWAY PRELOADER
  * High-fashion stroboscopic flashing runway sequence of 5 bespoke looks.
+ * Driven by CSS custom properties from Theme Settings.
  */
 
 @font-face {
@@ -29,8 +30,8 @@
   height: 100vh !important;
   height: 100dvh !important;
   z-index: 999999 !important;
-  background-color: #789282 !important;
-  background: #789282 !important;
+  background-color: var(--preloader-bg-color, #789282);
+  background: var(--preloader-bg-color, #789282);
   display: flex !important;
   flex-direction: column !important;
   justify-content: space-between !important;
@@ -73,10 +74,10 @@
 }
 
 .preloader-brand-title {
-  font-family: 'Ahsing', 'Ragara', serif;
-  font-size: clamp(28px, 6vw, 44px);
+  font-family: var(--preloader-title-font, 'Ahsing', 'Ragara', serif);
+  font-size: calc(clamp(28px, 6vw, 44px) * var(--preloader-title-scale, 1));
   font-weight: 400;
-  color: #ffffff;
+  color: var(--preloader-title-color, #ffffff);
   letter-spacing: -0.01em;
   line-height: 1;
   margin: 0;
@@ -84,7 +85,7 @@
 }
 
 .preloader-brand-meta {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--preloader-status-font, 'Plus Jakarta Sans', sans-serif);
   font-size: clamp(8px, 1.4vw, 10px);
   font-weight: 600;
   letter-spacing: 0.28em;
@@ -177,7 +178,7 @@
 .preloader-progress-track {
   width: clamp(140px, 32vw, 220px);
   height: 2px;
-  background: rgba(255, 255, 255, 0.28);
+  background: var(--preloader-progress-track-color, rgba(255, 255, 255, 0.28));
   border-radius: 9999px;
   overflow: hidden;
   position: relative;
@@ -190,18 +191,18 @@
   left: 0;
   height: 100%;
   width: 0%;
-  background: #ffffff;
+  background: var(--preloader-progress-color, #ffffff);
   border-radius: 9999px;
   transition: width 0.18s ease-out;
 }
 
 .preloader-status-text {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--preloader-status-font, 'Plus Jakarta Sans', sans-serif);
   font-size: 8px;
   font-weight: 600;
   letter-spacing: 0.26em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.82);
+  color: var(--preloader-status-color, rgba(255, 255, 255, 0.82));
   margin: 0;
 }
 
@@ -211,7 +212,7 @@
     height: clamp(280px, 46vh, 400px);
   }
   .preloader-brand-title {
-    font-size: 32px;
+    font-size: calc(32px * var(--preloader-title-scale, 1));
   }
   .preloader-look-name {
     font-size: 26px;
