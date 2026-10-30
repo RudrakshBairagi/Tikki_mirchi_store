@@ -61,7 +61,10 @@
 }
 
 .hanger-rack-eyebrow,
-.hanger-rack-subheading,
+.hanger-rack-subheading {
+  /* Visibility controlled dynamically by section settings in liquid */
+}
+
 .rack-waitlist-btn-wrap-top,
 .hanger-rail-bar,
 .hanger-rail-bar:empty,
@@ -70,12 +73,12 @@
 }
 
 .hanger-rack-title {
-  font-family: 'Six Caps', sans-serif !important;
-  font-size: clamp(54px, 14vw, 84px) !important;
-  font-weight: 400 !important;
-  letter-spacing: 0.08em !important;
+  font-family: var(--rack-title-font, 'Six Caps', sans-serif) !important;
+  font-size: calc(clamp(54px, 14vw, 84px) * var(--rack-heading-scale, 1)) !important;
+  font-weight: var(--rack-title-weight, 400) !important;
+  letter-spacing: var(--rack-title-spacing, 2px) !important;
   text-transform: uppercase !important;
-  color: #ffffff !important;
+  color: var(--rack-heading-color, #ffffff) !important;
   line-height: 0.9 !important;
   margin: 0 auto !important;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45) !important;
@@ -689,7 +692,10 @@
   }
 
   .hanger-rack-eyebrow,
-  .hanger-rack-subheading,
+  .hanger-rack-subheading {
+    /* Visibility controlled dynamically by section settings in liquid */
+  }
+
   .rack-waitlist-btn-wrap-top,
   .hanger-rail-bar,
   .hanger-rack-hint {
@@ -697,12 +703,12 @@
   }
 
   .hanger-rack-title {
-    font-family: 'Six Caps', sans-serif !important;
-    font-size: clamp(52px, 13.5vw, 72px) !important;
-    font-weight: 400 !important;
-    letter-spacing: 0.08em !important;
+    font-family: var(--rack-title-font, 'Six Caps', sans-serif) !important;
+    font-size: calc(clamp(52px, 13.5vw, 72px) * var(--rack-heading-scale, 1)) !important;
+    font-weight: var(--rack-title-weight, 400) !important;
+    letter-spacing: var(--rack-title-spacing, 2px) !important;
     text-transform: uppercase !important;
-    color: #ffffff !important;
+    color: var(--rack-heading-color, #ffffff) !important;
     line-height: 0.9 !important;
     margin: 0 auto !important;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6) !important;
