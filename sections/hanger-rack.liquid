@@ -821,7 +821,7 @@
           </div>
         {%- endif -%}
 
-        <h2 class="hanger-rack-title">{{ section.settings.heading | default: 'House of Royals' }}</h2>
+        <h2 class="hanger-rack-title" style="font-family: var(--rack-title-font) !important; font-weight: var(--rack-title-weight, 400) !important; font-style: var(--rack-title-style, normal) !important; letter-spacing: var(--rack-title-spacing, 2px) !important; color: var(--rack-heading-color, #ffffff) !important; font-size: calc(clamp(54px, 14vw, 84px) * var(--rack-heading-scale, 1)) !important;">{{ section.settings.heading | default: 'House of Royals' }}</h2>
 
         {%- if section.settings.subheading != blank -%}
           <p class="hanger-rack-subheading">{{ section.settings.subheading }}</p>
